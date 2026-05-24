@@ -26,42 +26,29 @@ export default function Profile() {
   const getSb = () => createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
   useEffect(() => {
-    let attempts = 0
-    const maxAttempts = 30
-
-    const tryLoad = async () => {
-      attempts++
+    if (contextUser) {
+      setUser(contextUser)
       const sb = getSb()
-      const { data: { session } } = await sb.auth.getSession()
-      
-      if (!session?.user) {
-        if (attempts < maxAttempts) {
-          setTimeout(tryLoad, 800)
+      sb.from('profiles').select('*').eq('id', contextUser.id).single().then(({ data }) => {
+        if (data) setForm({ full_name: data.full_name||contextUser.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
+        setLoading(false)
+      })
+    } else {
+      const sb = getSb()
+      const { data: { subscription } } = sb.auth.onAuthStateChange((_e, session) => {
+        if (session?.user) {
+          setUser(session.user)
+          sb.from('profiles').select('*').eq('id', session.user.id).single().then(({ data }) => {
+            if (data) setForm({ full_name: data.full_name||session.user.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
+            setLoading(false)
+          })
         } else {
           router.replace('/auth/login')
         }
-        return
-      }
-
-      setUser(session.user)
-      const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).single()
-      if (data) {
-        setForm({
-          full_name: data.full_name||session.user.user_metadata?.full_name||'',
-          pays_origine: data.pays_origine||'',
-          pays_accueil: data.pays_accueil||'',
-          ville_accueil: data.ville_accueil||'',
-          statut: data.statut||'',
-          date_arrivee: data.date_arrivee||'',
-          universite: data.universite||'',
-          programme: data.programme||'',
-        })
-      }
-      setLoading(false)
+      })
+      return () => subscription.unsubscribe()
     }
-
-    tryLoad()
-  }, [])
+  }, [contextUser])
 
   const set = (k,v) => setForm(f=>({...f,[k]:v}))
 
@@ -157,5 +144,6 @@ export default function Profile() {
     </div>
   )
 }
+
 
 
