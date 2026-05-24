@@ -14,9 +14,9 @@ const STATUTS = [
 ]
 
 export default function Profile() {
-  const { C, lang } = useApp()
+  const { C, lang, user: contextUser } = useApp()
   const router = useRouter()
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(contextUser)
   const [form, setForm] = useState({full_name:'',pays_origine:'',pays_accueil:'',ville_accueil:'',statut:'',date_arrivee:'',universite:'',programme:''})
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -27,7 +27,7 @@ export default function Profile() {
 
   useEffect(() => {
     let attempts = 0
-    const maxAttempts = 20
+    const maxAttempts = 30
 
     const tryLoad = async () => {
       attempts++
@@ -36,7 +36,7 @@ export default function Profile() {
       
       if (!session?.user) {
         if (attempts < maxAttempts) {
-          setTimeout(tryLoad, 1000)
+          setTimeout(tryLoad, 800)
         } else {
           router.replace('/auth/login')
         }
@@ -157,4 +157,5 @@ export default function Profile() {
     </div>
   )
 }
+
 
