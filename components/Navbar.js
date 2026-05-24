@@ -70,7 +70,7 @@ export default function Navbar() {
           {/* Auth */}
           {user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Link href="/profile" style={{
+              <Link href="/profile_1" style={{
                 width: 32, height: 32, borderRadius: '50%',
                 background: `${C.accent}20`,
                 border: `1.5px solid ${C.accent}40`,
@@ -109,3 +109,4 @@ export default function Navbar() {
     </nav>
   )
 }
+
