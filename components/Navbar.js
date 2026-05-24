@@ -7,12 +7,7 @@ export default function Navbar() {
   const { C, t, lang, setLang, theme, setTheme, user, profile } = useApp()
   const router = useRouter()
 
-  const logout = async () => {
-    const { createClient } = await import('@supabase/supabase-js')
-    const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-    await sb.auth.signOut()
-    router.push('/')
-  }
+  const logout = async () => { const { createClient } = await import('@supabase/supabase-js'); const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY); await sb.auth.signOut(); window.location.href = '/' }
 
   const links = [
     { href:'/dashboard',  label: t.nav_checklist },
@@ -109,4 +104,5 @@ export default function Navbar() {
     </nav>
   )
 }
+
 
