@@ -27,7 +27,7 @@ export default function Profile() {
 
   useEffect(() => {
     let attempts = 0
-    const maxAttempts = 10
+    const maxAttempts = 20
 
     const tryLoad = async () => {
       attempts++
@@ -36,7 +36,7 @@ export default function Profile() {
       
       if (!session?.user) {
         if (attempts < maxAttempts) {
-          setTimeout(tryLoad, 500)
+          setTimeout(tryLoad, 1000)
         } else {
           router.replace('/auth/login')
         }
@@ -157,3 +157,4 @@ export default function Profile() {
     </div>
   )
 }
+
