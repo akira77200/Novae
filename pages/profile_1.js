@@ -27,22 +27,18 @@ export default function Profile() {
 
   useEffect(() => {
     const sb = getSb()
-    const timeout = setTimeout(() => router.replace('/auth/login'), 8000)
     
-    const { data: { subscription } } = sb.auth.onAuthStateChange((_e, session) => {
+    sb.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        clearTimeout(timeout)
         setUser(session.user)
         sb.from('profiles').select('*').eq('id', session.user.id).single().then(({ data }) => {
           if (data) setForm({ full_name: data.full_name||session.user.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
           setLoading(false)
         })
       } else {
-        clearTimeout(timeout)
         router.replace('/auth/login')
       }
     })
-    return () => { subscription.unsubscribe(); clearTimeout(timeout) }
   }, [])
 
   const set = (k,v) => setForm(f=>({...f,[k]:v}))
