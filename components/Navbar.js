@@ -74,12 +74,7 @@ export default function Navbar() {
               }}>
                 {(profile?.full_name || user.email || 'U')[0].toUpperCase()}
               </Link>
-              <button onClick={logout} style={{
-                padding: '5px 12px', borderRadius: 7, border: `1px solid ${C.border}`,
-                background: 'transparent', color: C.muted, fontSize: 13, cursor: 'pointer',
-              }}>
-                {t.nav_logout}
-              </button>
+              <a href="/logout" style={{ padding: "5px 12px", borderRadius: 7, border: "1px solid #333", background: "transparent", color: "#6B7280", fontSize: 13, cursor: "pointer", textDecoration: "none" }}>{t.nav_logout}</a>
             </div>
           ) : (
             <div style={{ display: 'flex', gap: 6 }}>
@@ -104,6 +99,7 @@ export default function Navbar() {
     </nav>
   )
 }
+
 
 
 
