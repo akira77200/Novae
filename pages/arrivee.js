@@ -1,0 +1,132 @@
+// pages/arrivee.js
+import { useState } from 'react'
+import Navbar from '../components/Navbar'
+import { useApp } from '../context/AppContext'
+
+const DATA = {
+  fr: {
+    h72: [
+      { moment: 'Aéroport',  icon: '✈️', tasks: ['Acheter une SIM (Fizz ou Public Mobile — kiosque à l\'aéroport, ~20$/mois)', 'Retirer 100–200$ en cash', 'Confirmer le trajet vers ton logement'] },
+      { moment: 'Jour 1',    icon: '🏠', tasks: ['Installer ton logement temporaire', 'Trouver le supermarché le plus proche (Maxi ou Super C)', 'Acheter le strict nécessaire', 'Dormir — récupère de ton vol'] },
+      { moment: 'Jour 2',    icon: '🏦', tasks: ['Ouvrir ton compte bancaire (Banque Nationale ou Desjardins)', 'Passeport + permis suffisent — pas besoin du NAS', 'Demander une carte de débit'] },
+      { moment: 'Jour 3',    icon: '🪪', tasks: ['Aller à Service Canada pour ton NAS', 'Apporter : passeport, permis d\'études, preuve d\'adresse', 'Durée : environ 30 minutes'] },
+    ],
+    week1: [
+      { moment: 'Jours 4–5', icon: '🏥', tasks: ['S\'inscrire à la RAMQ si tu es au Québec', 'Fenêtre de 3 mois — commence maintenant', 'Documents : passeport + permis + preuve d\'adresse québécoise'] },
+      { moment: 'Jours 5–6', icon: '🎓', tasks: ['Visiter ton campus universitaire', 'Trouver ta faculté, bibliothèque, services aux étudiants', 'Récupérer ta carte étudiante'] },
+      { moment: 'Jours 6–7', icon: '🗺️', tasks: ['Explorer ton quartier à pied', 'Télécharger l\'app STM/OC Transpo selon ta ville', 'Trouver : supermarché, pharmacie, transport en commun'] },
+    ],
+    month1: [
+      { moment: 'Semaine 2',   icon: '💳', tasks: ['Demander ta carte de crédit sécurisée (Secured Visa Banque Nationale)', 'Dépôt : 200–500$', 'Utiliser uniquement pour l\'épicerie'] },
+      { moment: 'Semaine 2–3', icon: '🤝', tasks: ['Rejoindre les associations étudiantes de ton université', 'Chercher des groupes de compatriotes (Facebook, WhatsApp)', 'Assister à une session d\'accueil étudiants internationaux'] },
+      { moment: 'Semaine 3–4', icon: '💼', tasks: ['Vérifier les conditions de ton permis de travail hors campus', 'Regarder les offres d\'emploi sur le campus', 'Mettre à jour ton CV au format canadien'] },
+      { moment: 'Fin du mois', icon: '📊', tasks: ['Faire le bilan de ton budget', 'Vérifier que toutes les démarches admin sont faites', 'Planifier les prochains mois'] },
+    ],
+  },
+  en: {
+    h72: [
+      { moment: 'Airport',  icon: '✈️', tasks: ['Buy a SIM (Fizz or Public Mobile — airport kiosk, ~$20/month)', 'Withdraw $100–200 cash', 'Confirm route to your accommodation'] },
+      { moment: 'Day 1',    icon: '🏠', tasks: ['Set up temporary accommodation', 'Find nearest supermarket (Maxi or Super C)', 'Buy essentials only', 'Sleep — recover from your flight'] },
+      { moment: 'Day 2',    icon: '🏦', tasks: ['Open a bank account (Banque Nationale or Desjardins)', 'Passport + permit is enough — no SIN needed yet', 'Get a debit card'] },
+      { moment: 'Day 3',    icon: '🪪', tasks: ['Go to Service Canada for your SIN', 'Bring: passport, study permit, proof of address', 'Duration: about 30 minutes'] },
+    ],
+    week1: [
+      { moment: 'Days 4–5', icon: '🏥', tasks: ['Register for RAMQ if in Quebec', '3-month window — start now', 'Documents: passport + permit + Quebec proof of address'] },
+      { moment: 'Days 5–6', icon: '🎓', tasks: ['Visit your university campus', 'Find your faculty, library, student services', 'Get your student card'] },
+      { moment: 'Days 6–7', icon: '🗺️', tasks: ['Explore your neighborhood on foot', 'Download STM/OC Transpo app for your city', 'Find: supermarket, pharmacy, public transit'] },
+    ],
+    month1: [
+      { moment: 'Week 2',       icon: '💳', tasks: ['Apply for secured credit card (Secured Visa Banque Nationale)', 'Deposit: $200–500', 'Use only for groceries'] },
+      { moment: 'Week 2–3',     icon: '🤝', tasks: ['Join student associations at your university', 'Find compatriot groups (Facebook, WhatsApp)', 'Attend international student welcome session'] },
+      { moment: 'Week 3–4',     icon: '💼', tasks: ['Check your off-campus work permit conditions', 'Look at on-campus job postings', 'Update your CV to Canadian format'] },
+      { moment: 'End of month', icon: '📊', tasks: ['Review your budget', 'Verify all administrative steps are complete', 'Plan the next few months'] },
+    ],
+  }
+}
+
+const PHASES = [
+  { id: 'h72',   fr: 'Les 72 premières heures', en: 'First 72 hours', icon: '⚡', color: '#52B788' },
+  { id: 'week1', fr: 'La première semaine',     en: 'First week',     icon: '📅', color: '#60A5FA' },
+  { id: 'month1',fr: 'Le premier mois',         en: 'First month',    icon: '🗓️', color: '#FBBF24' },
+]
+
+export default function Arrivee() {
+  const { C, lang } = useApp()
+  const [phase, setPhase] = useState('h72')
+  const data  = DATA[lang] || DATA.fr
+  const items = data[phase] || []
+  const col   = PHASES.find(p => p.id === phase)?.color || C.accent2
+
+  return (
+    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
+      <Navbar />
+      <main style={{ maxWidth: 760, margin: '0 auto', padding: '36px 20px 80px' }}>
+
+        <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
+          🛬 {lang === 'fr' ? 'Guide d\'arrivée' : 'Arrival Guide'}
+        </h1>
+        <p style={{ fontSize: 15, color: C.muted, marginBottom: 32, lineHeight: 1.6 }}>
+          {lang === 'fr' ? 'Ton plan d\'action étape par étape. Garde-le sur ton téléphone.' : 'Your step-by-step action plan. Keep it on your phone.'}
+        </p>
+
+        {/* Phase selector */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 32, flexWrap: 'wrap' }}>
+          {PHASES.map(p => (
+            <button key={p.id} onClick={() => setPhase(p.id)} style={{
+              flex: 1, minWidth: 140, padding: '13px 16px', borderRadius: 12, border: `1px solid`,
+              fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
+              background: phase === p.id ? `${p.color}18` : 'transparent',
+              borderColor: phase === p.id ? `${p.color}50` : C.border,
+              color: phase === p.id ? p.color : C.muted,
+            }}>
+              <span style={{ fontSize: 20, display: 'block', marginBottom: 3 }}>{p.icon}</span>
+              {lang === 'fr' ? p.fr : p.en}
+            </button>
+          ))}
+        </div>
+
+        {/* Timeline */}
+        <div style={{ position: 'relative', paddingLeft: 32 }}>
+          <div style={{ position: 'absolute', left: 10, top: 10, bottom: 10, width: 2, background: `linear-gradient(180deg,${col},transparent)` }} />
+          {items.map((item, i) => (
+            <div key={i} style={{ position: 'relative', marginBottom: 20 }}>
+              <div style={{ position: 'absolute', left: -32, top: 12, width: 22, height: 22, borderRadius: '50%', background: `${col}20`, border: `2px solid ${col}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>
+                {item.icon}
+              </div>
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 13, padding: '16px 18px' }}>
+                <p style={{ fontWeight: 700, fontSize: 15, color: col, marginBottom: 10 }}>{item.moment}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                  {item.tasks.map((task, j) => (
+                    <div key={j} style={{ display: 'flex', gap: 10, fontSize: 14, color: C.muted, lineHeight: 1.55 }}>
+                      <span style={{ color: col, flexShrink: 0 }}>→</span>{task}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Urgence numbers */}
+        <div style={{ marginTop: 28, background: C.surface, border: `1px solid rgba(248,113,113,0.3)`, borderRadius: 14, padding: '18px 20px' }}>
+          <p style={{ fontWeight: 700, fontSize: 14, color: C.error, marginBottom: 12 }}>
+            🆘 {lang === 'fr' ? 'Numéros utiles' : 'Useful numbers'}
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 10 }}>
+            {[
+              { label: 'Urgences', num: '911' },
+              { label: 'IRCC',     num: '1-888-242-2100' },
+              { label: 'RAMQ',     num: '1-800-561-9749' },
+              { label: 'Service Canada', num: '1-800-206-7218' },
+            ].map((c, i) => (
+              <div key={i} style={{ padding: '10px 14px', background: `${C.error}08`, borderRadius: 9 }}>
+                <p style={{ fontSize: 11, color: C.muted, marginBottom: 2 }}>{c.label}</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{c.num}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
