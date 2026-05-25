@@ -26,20 +26,17 @@ export default function Profile() {
 
  const getSb = () => createPagesBrowserClient()
   useEffect(() => {
+    if (!contextUser) {
+      router.replace('/auth/login')
+      return
+    }
+    setUser(contextUser)
     const sb = getSb()
-    
-    sb.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user)
-        sb.from('profiles').select('*').eq('id', session.user.id).single().then(({ data }) => {
-          if (data) setForm({ full_name: data.full_name||session.user.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
-          setLoading(false)
-        })
-      } else {
-        router.replace('/auth/login')
-      }
+    sb.from('profiles').select('*').eq('id', contextUser.id).single().then(({ data }) => {
+      if (data) setForm({ full_name: data.full_name||contextUser.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
+      setLoading(false)
     })
-  }, [])
+  }, [contextUser])
 
   const set = (k,v) => setForm(f=>({...f,[k]:v}))
 
