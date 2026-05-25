@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { createClient } from '@supabase/supabase-js'
+import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
@@ -23,8 +24,7 @@ export default function Profile() {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
-  const getSb = () => createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-
+ const getSb = () => createPagesBrowserClient()
   useEffect(() => {
     const sb = getSb()
     
