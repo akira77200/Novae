@@ -15,7 +15,7 @@ const STATUTS = [
 ]
 
 export default function Profile() {
-  const { C, lang, user: contextUser, loading: authLoading } = useApp()
+  const { C, lang, user: contextUser, loading: authLoading, refreshProfile } = useApp()
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [form, setForm] = useState({full_name:'',pays_origine:'',pays_accueil:'',ville_accueil:'',statut:'',date_arrivee:'',universite:'',programme:''})
@@ -50,8 +50,22 @@ export default function Profile() {
     setSaving(true); setError(''); setSaved(false)
     const sb = getSb()
     const { error: e } = await sb.from('profiles').update({...form, updated_at: new Date().toISOString()}).eq('id', user.id)
-    if (e) setError(e.message)
-    else { setSaved(true); setTimeout(()=>setSaved(false), 3000) }
+    if (e) {
+      setError(e.message)
+    } else {
+      // Mettre à jour le profil en mémoire dans AppContext
+      refreshProfile()
+      // Régénérer les recommandations en arrière-plan (fire-and-forget)
+      fetch('/api/generate-recommendations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile: { ...form, id: user.id } })
+      }).then(r => r.json())
+        .then(data => { if (data.success && refreshProfile) refreshProfile() })
+        .catch(err => console.warn('Recommandations:', err.message))
+      setSaved(true)
+      setTimeout(()=>setSaved(false), 3000)
+    }
     setSaving(false)
   }
 

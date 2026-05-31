@@ -102,7 +102,7 @@ const filtrerTaches = (taches, province) => taches.filter(t => {
 })
 
 export default function Dashboard() {
-  const { C, t, lang, user, profile, loading: authLoading, sb } = useApp()
+  const { C, t, lang, user, profile, loading: authLoading, sb, refreshProfile } = useApp()
 
   const hasFetched = useRef(false)
 
@@ -117,6 +117,22 @@ export default function Dashboard() {
   const [duree,     setDuree]     = useState(30)
   const [paying,    setPaying]    = useState(false)
   const [ready,     setReady]     = useState(false)
+  const [genLoading, setGenLoading] = useState(false)
+
+  const genererRecommandations = async () => {
+    if (!profile || !user) return
+    setGenLoading(true)
+    try {
+      const res = await fetch('/api/generate-recommendations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profile: { ...profile, id: user.id } })
+      })
+      const data = await res.json()
+      if (data.success) refreshProfile()
+    } catch (e) { console.error(e) }
+    finally { setGenLoading(false) }
+  }
 
   useEffect(() => {
     if (authLoading || !sb) return
@@ -337,6 +353,117 @@ export default function Dashboard() {
             {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:`${C.accent}18`, border:`1px solid ${C.accent}35`, borderRadius:7, color:C.accent2, fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>Agir →</a>}
           </div>
         ))}
+
+        {/* ── RECOMMANDATIONS IA ── */}
+        {user && profile && (
+          <>
+            {/* Profil assez complet mais pas encore de reco → bouton générer */}
+            {!profile.ai_recommendations && completion >= 60 && (
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, flexWrap:'wrap', padding:'18px 22px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, marginBottom:20 }}>
+                <div>
+                  <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:4 }}>
+                    ✨ {lang === 'fr' ? 'Recommandations personnalisées' : 'Personalized Recommendations'}
+                  </p>
+                  <p style={{ fontSize:13, color:C.muted }}>
+                    {lang === 'fr' ? 'Génère des conseils, livres et ressources adaptés à ton profil.' : 'Generate advice, books and resources tailored to your profile.'}
+                  </p>
+                </div>
+                <button onClick={genererRecommandations} disabled={genLoading}
+                  style={{ padding:'10px 20px', background: genLoading ? C.border : C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, cursor: genLoading ? 'not-allowed' : 'pointer', whiteSpace:'nowrap', opacity: genLoading ? 0.7 : 1, flexShrink:0 }}>
+                  {genLoading ? '...' : (lang === 'fr' ? '✨ Générer' : '✨ Generate')}
+                </button>
+              </div>
+            )}
+
+            {/* Recommandations disponibles → affichage des 4 blocs */}
+            {profile.ai_recommendations && (() => {
+              const rec = profile.ai_recommendations
+              return (
+                <div style={{ marginBottom:24 }}>
+
+                  {/* BLOC 1 — Message de bienvenue */}
+                  {rec.welcome_message && (
+                    <div style={{ padding:'20px 24px', background:'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius:14, marginBottom:16 }}>
+                      <p style={{ color:'#fff', fontSize:15, lineHeight:1.75, fontStyle:'italic', margin:0 }}>{rec.welcome_message}</p>
+                    </div>
+                  )}
+
+                  {/* BLOC 2 — Livres recommandés */}
+                  {rec.books?.length > 0 && (
+                    <div style={{ marginBottom:20 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:12 }}>
+                        📚 {lang === 'fr' ? 'Livres recommandés pour toi' : 'Books recommended for you'}
+                      </p>
+                      <div style={{ display:'flex', gap:12, overflowX:'auto', paddingBottom:6 }}>
+                        {rec.books.map((b, i) => (
+                          <div key={i} style={{ minWidth:200, maxWidth:220, flexShrink:0, background:C.surface, border:`1px solid ${C.border}`, borderRadius:12, padding:'16px 14px' }}>
+                            <span style={{ fontSize:26, display:'block', marginBottom:10 }}>{b.emoji}</span>
+                            <p style={{ fontSize:13, fontWeight:700, color:C.text, marginBottom:3, lineHeight:1.4 }}>{b.title}</p>
+                            <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>{b.author}</p>
+                            <p style={{ fontSize:12, color:C.accent2, lineHeight:1.5 }}>{b.why}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* BLOC 3 — Conseils personnalisés */}
+                  {rec.tips?.length > 0 && (
+                    <div style={{ marginBottom:20 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:12 }}>
+                        💡 {lang === 'fr' ? 'Conseils pour toi' : 'Tips for you'}
+                      </p>
+                      <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
+                        {rec.tips.map((tip, i) => {
+                          const bs =
+                            tip.category === 'finance'    ? { bg:`rgba(45,106,79,0.18)`,   color:C.accent2   } :
+                            tip.category === 'social'     ? { bg:`rgba(96,165,250,0.18)`,  color:'#60A5FA'   } :
+                            tip.category === 'academique' ? { bg:`rgba(251,191,36,0.18)`,  color:C.warning   } :
+                            tip.category === 'sante'      ? { bg:`rgba(248,113,113,0.18)`, color:C.error     } :
+                            { bg:C.surface2, color:C.muted }
+                          return (
+                            <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:8, padding:'10px 16px', background:bs.bg, borderRadius:99 }}>
+                              <span style={{ fontSize:15, flexShrink:0, lineHeight:1.5 }}>{tip.emoji}</span>
+                              <span style={{ fontSize:13, color:bs.color, lineHeight:1.5 }}>{tip.text}</span>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* BLOC 4 — Ressources utiles */}
+                  {rec.resources?.length > 0 && (
+                    <div style={{ marginBottom:12 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:12 }}>
+                        🔗 {lang === 'fr' ? 'Ressources utiles' : 'Useful Resources'}
+                      </p>
+                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                        {rec.resources.map((r, i) => (
+                          <a key={i} href={r.url} target="_blank" rel="noreferrer"
+                            style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'12px 16px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:10, textDecoration:'none' }}>
+                            <span style={{ fontSize:18, flexShrink:0 }}>{r.emoji}</span>
+                            <div>
+                              <p style={{ fontSize:13, fontWeight:600, color:C.accent2, marginBottom:2 }}>{r.name} ↗</p>
+                              <p style={{ fontSize:12, color:C.muted }}>{r.description}</p>
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Bouton régénérer */}
+                  <button onClick={genererRecommandations} disabled={genLoading}
+                    style={{ padding:'6px 14px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor: genLoading ? 'not-allowed' : 'pointer', marginTop:4 }}>
+                    {genLoading ? '...' : (lang === 'fr' ? '↻ Régénérer' : '↻ Regenerate')}
+                  </button>
+
+                </div>
+              )
+            })()}
+          </>
+        )}
 
         {/* ── STATS ── */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10, marginBottom:28 }}>
