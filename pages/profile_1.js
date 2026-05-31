@@ -15,28 +15,30 @@ const STATUTS = [
 ]
 
 export default function Profile() {
-  const { C, lang, user: contextUser } = useApp()
+  const { C, lang, user: contextUser, loading: authLoading } = useApp()
   const router = useRouter()
-  const [user, setUser] = useState(contextUser)
+  const [user, setUser] = useState(null)
   const [form, setForm] = useState({full_name:'',pays_origine:'',pays_accueil:'',ville_accueil:'',statut:'',date_arrivee:'',universite:'',programme:''})
-  const [loading, setLoading] = useState(true)
+  const [profileLoading, setProfileLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
- const getSb = () => createPagesBrowserClient()
+  const getSb = () => createPagesBrowserClient()
   useEffect(() => {
+    if (authLoading) return
     if (!contextUser) {
       router.replace('/auth/login')
       return
     }
     setUser(contextUser)
+    setProfileLoading(true)
     const sb = getSb()
     sb.from('profiles').select('*').eq('id', contextUser.id).single().then(({ data }) => {
       if (data) setForm({ full_name: data.full_name||contextUser.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
-      setLoading(false)
+      setProfileLoading(false)
     })
-  }, [contextUser])
+  }, [authLoading, contextUser])
 
   const set = (k,v) => setForm(f=>({...f,[k]:v}))
 
@@ -61,7 +63,7 @@ export default function Profile() {
   const lbl = {display:'block',fontSize:11,fontWeight:600,color:C.muted,textTransform:'uppercase',letterSpacing:0.8,marginBottom:7,marginTop:18}
   const chip = (active) => ({padding:'7px 14px',borderRadius:20,border:`1px solid ${active?C.accent+'60':C.border}`,background:active?C.accent+'18':'transparent',color:active?C.accent2:C.muted,fontSize:13,cursor:'pointer'})
 
-  if (loading) return (
+  if (authLoading || profileLoading) return (
     <div style={{minHeight:'100vh',background:C.bg,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'system-ui,sans-serif'}}>
       <div style={{textAlign:'center'}}>
         <div style={{width:40,height:40,borderRadius:10,background:C.accent,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,fontWeight:800,color:'#fff',margin:'0 auto 14px'}}>N</div>

@@ -211,12 +211,6 @@ export function AppProvider({ children }) {
     const t = localStorage.getItem('novae_theme') || 'dark'
     setLangState(l); setThemeState(t)
 
-    sb.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user || null)
-      if (session?.user) loadProfile(session.user.id)
-      else setLoading(false)
-    })
-
     const { data: { subscription } } = sb.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user || null)
       if (session?.user) loadProfile(session.user.id)
