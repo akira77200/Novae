@@ -4,6 +4,10 @@ import { createClient } from '@supabase/supabase-js'
 
 const AppContext = createContext({})
 
+const sb = typeof window !== 'undefined'
+  ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  : null
+
 // ── Palette premium sobre ─────────────────────────────────────────
 export const PALETTE = {
   dark: {
@@ -199,10 +203,6 @@ export function AppProvider({ children }) {
   const [profile, setProfile]    = useState(null)
   const [loading, setLoading]    = useState(true)
   const [mounted, setMounted]    = useState(false)
-
-  const sb = typeof window !== 'undefined'
-    ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-    : null
 
   useEffect(() => {
     setMounted(true)

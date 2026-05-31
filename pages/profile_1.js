@@ -1,5 +1,5 @@
 // pages/profile.js
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { createClient } from '@supabase/supabase-js'
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
@@ -23,6 +23,7 @@ export default function Profile() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+  const hasFetched = useRef(false)
 
   const getSb = () => createPagesBrowserClient()
   useEffect(() => {
@@ -31,6 +32,8 @@ export default function Profile() {
       router.replace('/auth/login')
       return
     }
+    if (hasFetched.current) return
+    hasFetched.current = true
     setUser(contextUser)
     setProfileLoading(true)
     const sb = getSb()
@@ -38,7 +41,7 @@ export default function Profile() {
       if (data) setForm({ full_name: data.full_name||contextUser.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
       setProfileLoading(false)
     })
-  }, [authLoading, contextUser])
+  }, [authLoading, contextUser?.id])
 
   const set = (k,v) => setForm(f=>({...f,[k]:v}))
 
