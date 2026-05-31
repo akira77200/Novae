@@ -1,18 +1,25 @@
 // pages/todo.js
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
+const sb = typeof window !== 'undefined'
+  ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  : null
+
 export default function Todo() {
- const { C, t, lang, user } = useApp()
-  const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  const { C, t, lang, user, loading: authLoading } = useApp()
 
   const [todos,   setTodos]   = useState([])
   const [input,   setInput]   = useState('')
   const [loading, setLoading] = useState(true)
+  const hasFetched = useRef(false)
 
   useEffect(() => {
+    if (authLoading) return
+    if (hasFetched.current) return
+    hasFetched.current = true
     if (user) {
       sb.from('todos').select('*').eq('utilisateur_id', user.id).order('created_at')
         .then(({ data }) => { setTodos(data || []); setLoading(false) })
@@ -20,7 +27,7 @@ export default function Todo() {
       setTodos(JSON.parse(localStorage.getItem('novae_todos') || '[]'))
       setLoading(false)
     }
-  }, [user])
+  }, [authLoading, user?.id])
 
   const save = (list) => {
     setTodos(list)

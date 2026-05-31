@@ -1,7 +1,6 @@
 // pages/dashboard.js — NOVAE v5 — zéro donnée fictive
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
@@ -43,7 +42,7 @@ const CAT_STYLE = {
 }
 
 export default function Dashboard() {
-  const { C, t, user, profile, loading: authLoading } = useApp()
+  const { C, t, user, profile, loading: authLoading, sb } = useApp()
   const router = useRouter()
 
   const [tab,       setTab]       = useState('checklist')
@@ -59,10 +58,7 @@ export default function Dashboard() {
   const [paying,    setPaying]    = useState(false)
   const [ready,     setReady]     = useState(false)
 
-  const sb = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  )
+  const hasFetched = useRef(false)
 
   // Profil actif — connecté ou localStorage
   const localProfile = typeof window !== 'undefined'
@@ -71,11 +67,11 @@ export default function Dashboard() {
   const activeProfile = profile || localProfile
 
   useEffect(() => {
-    // Attendre que l'auth soit résolue
     if (authLoading) return
-    // Charger les données peu importe l'état du profil
+    if (hasFetched.current) return
+    hasFetched.current = true
     loadData()
-  }, [authLoading, user])
+  }, [authLoading, user?.id])
 
   const loadData = async () => {
     try {
