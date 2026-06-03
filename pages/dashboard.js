@@ -118,19 +118,24 @@ export default function Dashboard() {
   const [paying,    setPaying]    = useState(false)
   const [ready,     setReady]     = useState(false)
   const [genLoading, setGenLoading] = useState(false)
+  const [monAvenirResult, setMonAvenirResult] = useState(null)
 
   const genererRecommandations = async () => {
     if (!profile || !user) return
     setGenLoading(true)
     try {
+      const payload = { profile: { ...profile, id: user.id } }
       const res = await fetch('/api/generate-recommendations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profile: { ...profile, id: user.id } })
+        body: JSON.stringify(payload)
       })
       const data = await res.json()
       if (data.success) refreshProfile()
-    } catch (e) { console.error(e) }
+      else console.error('[generer] Erreur API:', data.error)
+    } catch (e) {
+      console.error('[generer] Erreur fetch:', e.message)
+    }
     finally { setGenLoading(false) }
   }
 
@@ -139,6 +144,11 @@ export default function Dashboard() {
     if (hasFetched.current) return
     hasFetched.current = true
     loadAll()
+    // Charge le résultat du quiz Mon Avenir depuis localStorage
+    try {
+      const saved = localStorage.getItem('novae_quiz_result')
+      if (saved) setMonAvenirResult(JSON.parse(saved))
+    } catch {}
   }, [authLoading, user?.id])
 
   const loadAll = async () => {
@@ -353,6 +363,44 @@ export default function Dashboard() {
             {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:`${C.accent}18`, border:`1px solid ${C.accent}35`, borderRadius:7, color:C.accent2, fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>Agir →</a>}
           </div>
         ))}
+
+        {/* ── CARTE MON AVENIR ── */}
+        {user && (
+          monAvenirResult ? (
+            /* Quiz déjà complété — carte compacte */
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, padding:'14px 18px', background:`${C.accent}08`, border:`1px solid ${C.accent}20`, borderRadius:12, marginBottom:16, flexWrap:'wrap' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                <span style={{ fontSize:22 }}>{monAvenirResult.top?.[0]?.emoji || '📊'}</span>
+                <div>
+                  <p style={{ fontSize:13, fontWeight:700, color:C.text }}>
+                    {lang === 'fr' ? 'Ton orientation' : 'Your path'} : {monAvenirResult.top?.[0]?.nom?.[lang] || '—'}
+                  </p>
+                  <p style={{ fontSize:12, color:C.muted }}>
+                    {lang === 'fr' ? 'Compatibilité' : 'Match'} {monAvenirResult.top?.[0]?.pct || 0}%
+                  </p>
+                </div>
+              </div>
+              <a href="/mon-avenir" style={{ padding:'7px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:8, color:C.accent2, fontWeight:600, fontSize:13, textDecoration:'none', whiteSpace:'nowrap' }}>
+                {lang === 'fr' ? 'Explorer ma vision →' : 'Explore my vision →'}
+              </a>
+            </div>
+          ) : (
+            /* Quiz pas encore fait — carte CTA */
+            <div style={{ padding:'20px 22px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, marginBottom:16, display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:14 }}>
+              <div>
+                <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:4 }}>
+                  🎯 {lang === 'fr' ? "As-tu défini ton projet d'avenir ?" : 'Have you defined your future project?'}
+                </p>
+                <p style={{ fontSize:13, color:C.muted, lineHeight:1.6 }}>
+                  {lang === 'fr' ? "Découvre les programmes qui correspondent à ton profil et les opportunités dans ton pays d'origine." : 'Discover the programs that match your profile and opportunities in your home country.'}
+                </p>
+              </div>
+              <a href="/mon-avenir" style={{ padding:'10px 22px', background:C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, textDecoration:'none', whiteSpace:'nowrap', flexShrink:0 }}>
+                {lang === 'fr' ? 'Découvrir mon orientation →' : 'Discover my path →'}
+              </a>
+            </div>
+          )
+        )}
 
         {/* ── RECOMMANDATIONS IA ── */}
         {user && profile && (

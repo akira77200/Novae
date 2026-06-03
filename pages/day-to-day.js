@@ -1,7 +1,17 @@
 // pages/day-to-day.js
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+
+const MapView = dynamic(() => import('../components/MapView'), {
+  ssr: false,
+  loading: () => (
+    <div style={{ height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1a1a', borderRadius: '12px', color: '#888', fontSize: 14 }}>
+      Chargement de la carte...
+    </div>
+  ),
+})
 
 const PRICES = {
   Montreal: [
@@ -33,9 +43,8 @@ export default function DayToDay() {
   const { C, lang } = useApp()
   const [city,   setCity]   = useState('Montreal')
   const [active, setActive] = useState('halal')
-  const cat     = CATEGORIES.find(c => c.id === active)
-  const prices  = PRICES[city] || PRICES.Montreal
-  const apiKey  = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
+  const cat    = CATEGORIES.find(c => c.id === active)
+  const prices = PRICES[city] || PRICES.Montreal
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
@@ -74,29 +83,14 @@ export default function DayToDay() {
           ))}
         </div>
 
-        {/* Google Maps */}
+        {/* Carte OpenStreetMap via Leaflet */}
         {active !== 'prices' && cat?.query && (
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden', marginBottom: 20 }}>
-            {apiKey && apiKey !== 'AIzaXXXXXXXXXXXXXXXXX' ? (
-              <iframe
-                src={`https://www.google.com/maps/embed/v1/search?key=${apiKey}&q=${cat.query(city)}&zoom=13`}
-                style={{ width: '100%', height: 360, border: 'none', display: 'block' }}
-                allowFullScreen loading="lazy"
-              />
-            ) : (
-              <div style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 12 }}>
-                <p style={{ fontSize: 14, color: C.muted }}>
-                  {lang === 'fr' ? 'Clé Google Maps non configurée.' : 'Google Maps key not configured.'}
-                </p>
-                <p style={{ fontSize: 12, color: C.muted }}>Ajoute NEXT_PUBLIC_GOOGLE_MAPS_KEY dans .env.local</p>
-              </div>
-            )}
-            <div style={{ padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <p style={{ fontSize: 13, color: C.muted }}>{lang === 'fr' ? cat.fr : cat.en} à {city}</p>
-              <a href={`https://www.google.com/maps/search/${cat.query(city)}`} target="_blank" rel="noreferrer"
-                style={{ padding: '7px 14px', background: `${cat.color}18`, border: `1px solid ${cat.color}35`, borderRadius: 8, color: cat.color, fontSize: 13, fontWeight: 600 }}>
-                {lang === 'fr' ? 'Ouvrir dans Maps' : 'Open in Maps'} →
-              </a>
+            <MapView city={city} query={cat.query(city)} />
+            <div style={{ padding: '12px 16px' }}>
+              <p style={{ fontSize: 13, color: C.muted }}>
+                {lang === 'fr' ? cat.fr : cat.en} · {city} · {lang === 'fr' ? 'via OpenStreetMap' : 'via OpenStreetMap'}
+              </p>
             </div>
           </div>
         )}

@@ -16,6 +16,7 @@ export default function Navbar() {
     { href:'/todo',       label: t.nav_todo        },
     { href:'/arrivee',    label: t.nav_arrival     },
     { href:'/mentors',    label: t.nav_mentors     },
+    { href:'/mon-avenir', label: t.nav_future      },
   ]
 
   const isActive = (href) => router.pathname === href

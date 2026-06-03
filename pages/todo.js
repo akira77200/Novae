@@ -1,15 +1,10 @@
 // pages/todo.js
 import { useState, useEffect, useRef } from 'react'
-import { createClient } from '@supabase/supabase-js'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
-const sb = typeof window !== 'undefined'
-  ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
-  : null
-
 export default function Todo() {
-  const { C, t, lang, user, loading: authLoading } = useApp()
+  const { C, t, lang, user, loading: authLoading, sb } = useApp()
 
   const [todos,   setTodos]   = useState([])
   const [input,   setInput]   = useState('')

@@ -5,7 +5,19 @@ import { createClient } from '@supabase/supabase-js'
 const AppContext = createContext({})
 
 const sb = typeof window !== 'undefined'
-  ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        storageKey: 'novae-auth',
+        storage: {
+          getItem:    (key) => { if (typeof window === 'undefined') return null;  return window.localStorage.getItem(key) },
+          setItem:    (key, value) => { if (typeof window === 'undefined') return; window.localStorage.setItem(key, value) },
+          removeItem: (key) => { if (typeof window === 'undefined') return; window.localStorage.removeItem(key) }
+        }
+      }
+    })
   : null
 
 // ── Palette premium sobre ─────────────────────────────────────────
@@ -60,6 +72,7 @@ export const T = {
     nav_todo: 'Mes tâches',
     nav_arrival: 'Arrivée',
     nav_mentors: 'Mentors',
+    nav_future: 'Mon Avenir',
     nav_ebooks: 'Ebooks',
     nav_login: 'Connexion',
     nav_register: 'S\'inscrire',
@@ -132,6 +145,7 @@ export const T = {
     nav_todo: 'My Tasks',
     nav_arrival: 'Arrival',
     nav_mentors: 'Mentors',
+    nav_future: 'My Future',
     nav_ebooks: 'Ebooks',
     nav_login: 'Login',
     nav_register: 'Sign up',
@@ -211,7 +225,8 @@ export function AppProvider({ children }) {
     const t = localStorage.getItem('novae_theme') || 'dark'
     setLangState(l); setThemeState(t)
 
-    const { data: { subscription } } = sb.auth.onAuthStateChange((_e, session) => {
+    const { data: { subscription } } = sb.auth.onAuthStateChange((event, session) => {
+      console.log('[auth] event:', event, 'session:', session?.user?.email)
       setUser(session?.user || null)
       if (session?.user) loadProfile(session.user.id)
       else { setProfile(null); setLoading(false) }

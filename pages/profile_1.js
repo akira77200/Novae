@@ -1,8 +1,6 @@
 // pages/profile.js
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
@@ -15,7 +13,7 @@ const STATUTS = [
 ]
 
 export default function Profile() {
-  const { C, lang, user: contextUser, loading: authLoading, refreshProfile } = useApp()
+  const { C, lang, user: contextUser, loading: authLoading, refreshProfile, sb } = useApp()
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [form, setForm] = useState({full_name:'',pays_origine:'',pays_accueil:'',ville_accueil:'',statut:'',date_arrivee:'',universite:'',programme:''})
@@ -25,7 +23,6 @@ export default function Profile() {
   const [error, setError] = useState('')
   const hasFetched = useRef(false)
 
-  const getSb = () => createPagesBrowserClient()
   useEffect(() => {
     if (authLoading) return
     if (!contextUser) {
@@ -36,7 +33,6 @@ export default function Profile() {
     hasFetched.current = true
     setUser(contextUser)
     setProfileLoading(true)
-    const sb = getSb()
     sb.from('profiles').select('*').eq('id', contextUser.id).single().then(({ data }) => {
       if (data) setForm({ full_name: data.full_name||contextUser.user_metadata?.full_name||'', pays_origine: data.pays_origine||'', pays_accueil: data.pays_accueil||'', ville_accueil: data.ville_accueil||'', statut: data.statut||'', date_arrivee: data.date_arrivee||'', universite: data.universite||'', programme: data.programme||'' })
       setProfileLoading(false)
@@ -48,8 +44,17 @@ export default function Profile() {
   const sauvegarder = async () => {
     if (!user) return
     setSaving(true); setError(''); setSaved(false)
-    const sb = getSb()
-    const { error: e } = await sb.from('profiles').update({...form, updated_at: new Date().toISOString()}).eq('id', user.id)
+
+    // Récupère une session fraîche pour éviter le skew d'horloge Supabase
+    const { data: { session } } = await sb.auth.getSession()
+    if (!session) {
+      setError('Session expirée. Reconnecte-toi.')
+      setSaving(false)
+      return
+    }
+    const userId = session.user.id
+
+    const { error: e } = await sb.from('profiles').upsert({ id: userId, ...form, updated_at: new Date().toISOString() }, { onConflict: 'id' })
     if (e) {
       setError(e.message)
     } else {
@@ -59,7 +64,7 @@ export default function Profile() {
       fetch('/api/generate-recommendations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profile: { ...form, id: user.id } })
+        body: JSON.stringify({ profile: { ...form, id: userId } })
       }).then(r => r.json())
         .then(data => { if (data.success && refreshProfile) refreshProfile() })
         .catch(err => console.warn('Recommandations:', err.message))
@@ -70,7 +75,6 @@ export default function Profile() {
   }
 
   const logout = async () => {
-    const sb = getSb()
     await sb.auth.signOut()
     router.push('/')
   }

@@ -2,17 +2,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
 import { useApp } from '../../context/AppContext'
 
 export default function Login() {
-  const { C, t } = useApp()
+  const { C, t, sb } = useApp()
   const router = useRouter()
   const [form,    setForm]    = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState('')
-
-  const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 

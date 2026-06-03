@@ -3,19 +3,16 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
+import { useApp } from '../context/AppContext'
 
 export default function Home() {
   const router = useRouter()
+  const { sb } = useApp()
   const [status, setStatus] = useState('Chargement...')
 
   useEffect(() => {
+    if (!sb) return
     const init = async () => {
-      const sb = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      )
-
       // Attendre que Supabase traite le token OAuth depuis l'URL
       await new Promise(resolve => setTimeout(resolve, 1000))
 

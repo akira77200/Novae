@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
 import { useApp } from '../../context/AppContext'
 
 const PAYS = ['Canada','France','Belgique','Royaume-Uni','Allemagne','Autre']
@@ -16,9 +15,8 @@ const VILLES = {
 }
 
 export default function Register() {
-  const { C, t } = useApp()
+  const { C, t, sb } = useApp()
   const router = useRouter()
-  const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
   const [step,    setStep]    = useState(1)
   const [loading, setLoading] = useState(false)

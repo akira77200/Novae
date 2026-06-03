@@ -2,15 +2,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
 import { useApp } from '../../context/AppContext'
 
 const SUJETS = ['PGWP','RAMQ','Logement','Emploi','Université','Budget','Banque','Immigration','RP','Express Entry','Impôts','Permis de travail']
 
 export default function RegisterMentor() {
-  const { C } = useApp()
+  const { C, sb } = useApp()
   const router = useRouter()
-  const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
   const [step,    setStep]    = useState(1)
   const [loading, setLoading] = useState(false)

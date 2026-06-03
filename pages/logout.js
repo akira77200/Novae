@@ -1,9 +1,10 @@
 ﻿import { useEffect } from "react"
-import { createClient } from "@supabase/supabase-js"
+import { useApp } from '../context/AppContext'
 
 export default function Logout() {
+  const { sb } = useApp()
   useEffect(() => {
-    const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+    if (!sb) return
     sb.auth.signOut().then(() => { window.location.href = "/" })
   }, [])
 

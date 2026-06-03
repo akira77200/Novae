@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { createClient } from '@supabase/supabase-js'
+import { useApp } from '../../context/AppContext'
 
 export default function AuthCallback() {
   const router = useRouter()
+  const { sb } = useApp()
 
   useEffect(() => {
-    const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+    if (!sb) return
     sb.auth.getSession().then(({ data: { session } }) => {
       if (session) router.replace('/dashboard')
       else router.replace('/auth/login')
