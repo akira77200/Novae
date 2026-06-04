@@ -25,7 +25,7 @@ const PILIERS_NAV = [
     en: 'Academia',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
-    paths: ['/culture', '/quiz-culture', '/bourses', '/day-to-day', '/orientation-type', '/simulateur-budget', '/calendrier-academique'],
+    paths: ['/culture', '/quiz-culture', '/bourses', '/orientation-type', '/simulateur-budget', '/calendrier-academique'],
     links: [
       { href: '/culture',               fr: 'Culture',               en: 'Culture'              },
       { href: '/quiz-culture',          fr: '🎮 Quiz culture',        en: '🎮 Culture quiz'      },
@@ -33,7 +33,6 @@ const PILIERS_NAV = [
       { href: '/orientation-type',      fr: '🏛️ Univ. ou Collège ?', en: '🏛️ Univ. or College?' },
       { href: '/simulateur-budget',     fr: '💰 Simulateur budget',  en: '💰 Budget simulator'  },
       { href: '/calendrier-academique', fr: '🗓️ Calendrier',         en: '🗓️ Calendar'          },
-      { href: '/day-to-day',            fr: 'Vie quotidienne',       en: 'Daily life'           },
     ],
   },
   {
@@ -57,12 +56,13 @@ const PILIERS_NAV = [
     en: 'Integration',
     color: '#2D6A4F',
     colorLight: '#52B788',
-    paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage'],
+    paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage', '/culture'],
     links: [
-      { href: '/day-to-day', fr: 'Vie quotidienne',  en: 'Daily life'     },
-      { href: '/todo',       fr: 'Mes tâches',        en: 'My tasks'       },
-      { href: '/bienetre',   fr: '🌱 Bien-être',      en: '🌱 Wellbeing'   },
+      { href: '/day-to-day', fr: 'Vie quotidienne',  en: 'Daily life'        },
+      { href: '/todo',       fr: 'Mes tâches',        en: 'My tasks'          },
+      { href: '/bienetre',   fr: '🌱 Bien-être',      en: '🌱 Wellbeing'      },
       { href: '/parrainage', fr: '🤝 Parrainage',     en: '🤝 Peer Mentoring' },
+      { href: '/culture',    fr: 'Culture',            en: 'Culture'           },
     ],
   },
 ]
