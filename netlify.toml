@@ -4,22 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_VERSION  = "9"
   NEXT_TELEMETRY_DISABLED = "1"
   SECRETS_SCAN_ENABLED = "false"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[[redirects]]
-  from   = "/auth/callback"
-  to     = "/auth/callback"
-  status = 200
-
-[[redirects]]
-  from   = "/*"
-  to     = "/.netlify/functions/___netlify-handler"
-  status = 200
-
-[functions]
-  node_bundler = "nft"
