@@ -25,12 +25,13 @@ const PILIERS_NAV = [
     en: 'Academia',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
-    paths: ['/culture', '/bourses', '/day-to-day', '/orientation-type'],
+    paths: ['/culture', '/bourses', '/day-to-day', '/orientation-type', '/simulateur-budget'],
     links: [
-      { href: '/culture',          fr: 'Culture',              en: 'Culture'          },
-      { href: '/bourses',          fr: 'Bourses & Univs',      en: 'Scholarships'     },
-      { href: '/day-to-day',       fr: 'Vie quotidienne',      en: 'Daily life'       },
-      { href: '/orientation-type', fr: '🏛️ Univ. ou Collège ?', en: '🏛️ Univ. or College?' },
+      { href: '/culture',             fr: 'Culture',               en: 'Culture'             },
+      { href: '/bourses',             fr: 'Bourses & Univs',       en: 'Scholarships'        },
+      { href: '/day-to-day',          fr: 'Vie quotidienne',       en: 'Daily life'          },
+      { href: '/orientation-type',    fr: '🏛️ Univ. ou Collège ?', en: '🏛️ Univ. or College?' },
+      { href: '/simulateur-budget',   fr: '💰 Simulateur budget',  en: '💰 Budget simulator' },
     ],
   },
   {
