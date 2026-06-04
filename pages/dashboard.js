@@ -119,6 +119,7 @@ export default function Dashboard() {
   const [ready,     setReady]     = useState(false)
   const [genLoading, setGenLoading] = useState(false)
   const [monAvenirResult, setMonAvenirResult] = useState(null)
+  const [scoreDoc,   setScoreDoc]   = useState(null) // nb docs ajoutés
 
   const genererRecommandations = async () => {
     if (!profile || !user) return
@@ -149,7 +150,19 @@ export default function Dashboard() {
       const saved = localStorage.getItem('novae_quiz_result')
       if (saved) setMonAvenirResult(JSON.parse(saved))
     } catch {}
+    // Charge le nombre de documents (non bloquant)
+    if (user) chargerScoreDoc()
   }, [authLoading, user?.id])
+
+  const chargerScoreDoc = async () => {
+    try {
+      const { data: { session } } = await sb.auth.getSession()
+      if (!session?.access_token) return
+      const res = await fetch('/api/documents', { headers: { Authorization: `Bearer ${session.access_token}` } })
+      const json = await res.json()
+      setScoreDoc((json.data || []).length)
+    } catch {}
+  }
 
   const loadAll = async () => {
     try {
@@ -240,6 +253,34 @@ export default function Dashboard() {
   const alertes    = getAlertes(profile, lang)
   const prog       = taches.length > 0 ? Math.round((faites.length / taches.length) * 100) : 0
   const tF         = filtre === 'tous' ? taches : filtre === 'a_faire' ? taches.filter(t => !faites.includes(t.id)) : taches.filter(t => faites.includes(t.id))
+
+  // ── Score préparation dossier ─────────────────────────────────
+  const calcScore = () => {
+    if (!user) return null
+    const pts = []
+    // 1. Profil (30 pts)
+    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: '#52B788', href: '/profile_1' })
+    // 2. Checklist (25 pts)
+    const pctCheck = taches.length > 0 ? faites.length / taches.length : 0
+    pts.push({ label: lang === 'fr' ? 'Tâches checklist' : 'Checklist',  labelEn: 'Checklist',  pts: Math.round(pctCheck * 25),          max: 25, color: '#60A5FA', href: null })
+    // 3. Documents (20 pts)
+    const ptsDoc = scoreDoc === null ? null : Math.min(Math.round((scoreDoc / 5) * 20), 20)
+    pts.push({ label: lang === 'fr' ? 'Documents ajoutés': 'Documents',  labelEn: 'Documents',  pts: ptsDoc ?? 0, max: 20, color: '#FBBF24', href: '/documents', loading: scoreDoc === null })
+    // 4. CV créé (15 pts)
+    const hasCv = typeof window !== 'undefined' && !!localStorage.getItem('novae_cv_nom')
+    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: '#F97316', href: '/cv' })
+    // 5. Mon Avenir (10 pts)
+    pts.push({ label: lang === 'fr' ? 'Projet d\'avenir'  : 'Future plan',labelEn:'Future plan', pts: monAvenirResult ? 10 : 0,             max: 10, color: '#A78BFA', href: '/mon-avenir' })
+    return pts
+  }
+  const scoreItems = calcScore()
+  const scoreTotal = scoreItems ? scoreItems.reduce((s, i) => s + i.pts, 0) : 0
+  const scoreColor = scoreTotal >= 80 ? '#34D399' : scoreTotal >= 50 ? '#FBBF24' : '#F87171'
+  const scoreBadge = scoreTotal >= 80
+    ? (lang === 'fr' ? 'Excellent' : 'Excellent')
+    : scoreTotal >= 50
+    ? (lang === 'fr' ? 'En bonne voie' : 'On track')
+    : (lang === 'fr' ? 'À compléter' : 'Needs work')
 
   const jouDisplayVal   = jours === null ? 'J+0' : jours < 0 ? `J-${Math.abs(jours)}` : `J+${jours}`
   const jouDisplayColor = jours !== null && jours < 0 ? C.warning : C.rose
@@ -363,6 +404,59 @@ export default function Dashboard() {
             {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:`${C.accent}18`, border:`1px solid ${C.accent}35`, borderRadius:7, color:C.accent2, fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>Agir →</a>}
           </div>
         ))}
+
+        {/* ── SCORE PRÉPARATION DOSSIER ── */}
+        {user && scoreItems && (
+          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '18px 20px', marginBottom: 18 }}>
+            {/* Header score */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
+              <div>
+                <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 2 }}>
+                  📋 {lang === 'fr' ? 'Score de préparation' : 'Readiness Score'}
+                </p>
+                <p style={{ fontSize: 12, color: C.muted }}>{lang === 'fr' ? 'Ton dossier d\'immigration en un coup d\'œil' : 'Your immigration file at a glance'}</p>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <p style={{ fontSize: 36, fontWeight: 900, color: scoreColor, letterSpacing: -1, lineHeight: 1 }}>{scoreTotal}<span style={{ fontSize: 16, fontWeight: 500, color: C.muted }}>/100</span></p>
+                <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: scoreColor + '18', color: scoreColor }}>{scoreBadge}</span>
+              </div>
+            </div>
+
+            {/* Barre globale */}
+            <div style={{ height: 8, background: C.border, borderRadius: 4, overflow: 'hidden', marginBottom: 16 }}>
+              <div style={{ width: `${scoreTotal}%`, height: '100%', background: `linear-gradient(90deg, ${scoreColor}99, ${scoreColor})`, borderRadius: 4, transition: 'width 0.6s ease' }} />
+            </div>
+
+            {/* Lignes détail */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {scoreItems.map((item, i) => {
+                const pct = Math.round((item.pts / item.max) * 100)
+                const done = item.pts === item.max
+                const content = (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 9, background: C.surface2, border: `1px solid ${done ? item.color + '30' : C.border}`, cursor: item.href ? 'pointer' : 'default', transition: 'border-color 0.15s' }}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: done ? item.color : C.border, flexShrink: 0 }} />
+                    <p style={{ fontSize: 13, color: done ? C.text : C.muted, flex: 1, fontWeight: done ? 500 : 400 }}>{item.label}</p>
+                    {item.loading
+                      ? <span style={{ fontSize: 11, color: C.muted }}>…</span>
+                      : <span style={{ fontSize: 13, fontWeight: 700, color: done ? item.color : C.muted }}>{item.pts}/{item.max}</span>
+                    }
+                    {!done && item.href && <span style={{ fontSize: 11, color: item.color, fontWeight: 600 }}>+{item.max - item.pts} →</span>}
+                    {done && <span style={{ fontSize: 14 }}>✅</span>}
+                  </div>
+                )
+                return item.href && !done
+                  ? <a key={i} href={item.href} style={{ textDecoration: 'none' }}>{content}</a>
+                  : <div key={i}>{content}</div>
+              })}
+            </div>
+
+            {scoreTotal < 100 && (
+              <p style={{ fontSize: 12, color: C.muted, marginTop: 12, textAlign: 'center' }}>
+                {lang === 'fr' ? '👆 Clique sur une ligne pour compléter ce point.' : '👆 Click a line to complete that item.'}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* ── CARTE MON AVENIR ── */}
         {user && (

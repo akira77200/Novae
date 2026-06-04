@@ -1,5 +1,6 @@
 // pages/_app.js
 import { AppProvider } from '../context/AppContext'
+import NovaChat from '../components/NovaChat'
 
 export default function App({ Component, pageProps }) {
   return (
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }) {
         ::selection { background: rgba(45,106,79,0.25); }
       `}</style>
       <Component {...pageProps} />
+      <NovaChat />
     </AppProvider>
   )
 }

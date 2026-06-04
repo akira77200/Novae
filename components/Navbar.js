@@ -6,27 +6,17 @@ import { useApp } from '../context/AppContext'
 
 const PILIERS_NAV = [
   {
-    emoji: '🎯',
-    fr: 'Opportunités',
-    en: 'Opportunities',
-    color: '#2D6A4F',
-    colorLight: '#52B788',
-    paths: ['/mon-avenir'],
-    links: [
-      { href: '/mon-avenir', fr: 'Mon Avenir', en: 'My Future' },
-    ],
-  },
-  {
     emoji: '✈️',
     fr: 'Immigration',
     en: 'Immigration',
     color: '#1565C0',
     colorLight: '#42A5F5',
-    paths: ['/dashboard', '/arrivee', '/todo'],
+    paths: ['/dashboard', '/documents', '/echeances', '/arrivee'],
     links: [
-      { href: '/dashboard', fr: 'Checklist',      en: 'Checklist'    },
-      { href: '/arrivee',   fr: 'Guide arrivée',  en: 'Arrival guide' },
-      { href: '/todo',      fr: 'Mes tâches',      en: 'My tasks'     },
+      { href: '/dashboard',  fr: 'Checklist',       en: 'Checklist'      },
+      { href: '/documents',  fr: '📁 Documents',    en: '📁 Documents'   },
+      { href: '/echeances',  fr: '📅 Échéances',    en: '📅 Deadlines'   },
+      { href: '/arrivee',    fr: 'Guide d\'arrivée',en: 'Arrival guide'  },
     ],
   },
   {
@@ -35,10 +25,11 @@ const PILIERS_NAV = [
     en: 'Academia',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
-    paths: ['/culture', '/day-to-day'],
+    paths: ['/culture', '/bourses', '/day-to-day'],
     links: [
-      { href: '/culture',    fr: 'Culture',       en: 'Culture'    },
-      { href: '/day-to-day', fr: 'Quotidien',     en: 'Daily life' },
+      { href: '/culture',    fr: 'Culture',          en: 'Culture'        },
+      { href: '/bourses',    fr: 'Bourses & Univs',  en: 'Scholarships'   },
+      { href: '/day-to-day', fr: 'Vie quotidienne',  en: 'Daily life'     },
     ],
   },
   {
@@ -47,9 +38,24 @@ const PILIERS_NAV = [
     en: 'Career',
     color: '#E65100',
     colorLight: '#FF7043',
-    paths: ['/mentors'],
+    paths: ['/mentors', '/cv', '/entrevue', '/mon-avenir'],
     links: [
-      { href: '/mentors', fr: 'Mentors', en: 'Mentors' },
+      { href: '/mon-avenir', fr: 'Mon Avenir',       en: 'My Future'        },
+      { href: '/mentors',    fr: 'Mentors',           en: 'Mentors'          },
+      { href: '/cv',         fr: 'Créer mon CV',      en: 'Build my Resume'  },
+      { href: '/entrevue',   fr: 'Entrevue IA',       en: 'Mock Interview'   },
+    ],
+  },
+  {
+    emoji: '🏠',
+    fr: 'Intégration',
+    en: 'Integration',
+    color: '#2D6A4F',
+    colorLight: '#52B788',
+    paths: ['/day-to-day', '/todo'],
+    links: [
+      { href: '/day-to-day', fr: 'Vie quotidienne',  en: 'Daily life'     },
+      { href: '/todo',        fr: 'Mes tâches',       en: 'My tasks'       },
     ],
   },
 ]
