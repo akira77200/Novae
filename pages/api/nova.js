@@ -19,6 +19,7 @@ Règles :
 Contexte Canada : RAMQ (QC), OHIP (ON), NAS, permis d'études, CAQ, PGWP, RP, impôts 30 avril, crédit TPS/TVH, T2202.`
 
 export default async function handler(req, res) {
+  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
   if (req.method !== 'POST') return res.status(405).end()
 
   const { messages, profile } = req.body

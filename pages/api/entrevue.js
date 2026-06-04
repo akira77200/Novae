@@ -38,6 +38,7 @@ Règles STRICTES :
 }
 
 export default async function handler(req, res) {
+  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
   if (req.method !== 'POST') return res.status(405).end()
   const { messages, type, cible, lang } = req.body
   if (!messages?.length || !type) return res.status(400).json({ error: 'messages et type requis' })
