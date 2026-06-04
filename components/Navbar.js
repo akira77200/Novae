@@ -52,10 +52,12 @@ const PILIERS_NAV = [
     en: 'Integration',
     color: '#2D6A4F',
     colorLight: '#52B788',
-    paths: ['/day-to-day', '/todo'],
+    paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage'],
     links: [
       { href: '/day-to-day', fr: 'Vie quotidienne',  en: 'Daily life'     },
-      { href: '/todo',        fr: 'Mes tâches',       en: 'My tasks'       },
+      { href: '/todo',       fr: 'Mes tâches',        en: 'My tasks'       },
+      { href: '/bienetre',   fr: '🌱 Bien-être',      en: '🌱 Wellbeing'   },
+      { href: '/parrainage', fr: '🤝 Parrainage',     en: '🤝 Peer Mentoring' },
     ],
   },
 ]

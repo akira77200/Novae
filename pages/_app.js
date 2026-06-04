@@ -1,10 +1,28 @@
 // pages/_app.js
+import { useEffect } from 'react'
+import Head from 'next/head'
 import { AppProvider } from '../context/AppContext'
 import NovaChat from '../components/NovaChat'
 
 export default function App({ Component, pageProps }) {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(() => console.log('[SW] Novae offline ready'))
+        .catch(err => console.warn('[SW] Error:', err))
+    }
+  }, [])
+
   return (
     <AppProvider>
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2D6A4F" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Novae" />
+      </Head>
       <style global jsx>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }

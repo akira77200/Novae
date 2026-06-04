@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novae — Hors-ligne</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #0F1A14;
+      color: #F5F5F4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+    }
+    .logo {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: #2D6A4F;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 800; color: #fff;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 22px; font-weight: 800; color: #F5F5F4; margin-bottom: 6px; }
+    .sub { font-size: 14px; color: #6B7280; margin-bottom: 40px; }
+    .card {
+      background: #1C1C1E;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%; max-width: 560px;
+      margin-bottom: 16px;
+    }
+    .card h2 {
+      font-size: 15px; font-weight: 700; color: #52B788;
+      margin-bottom: 16px;
+    }
+    .task {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .task:last-child { border-bottom: none; }
+    .task-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .task-content { flex: 1; }
+    .task-title { font-size: 14px; font-weight: 600; color: #F5F5F4; margin-bottom: 2px; }
+    .task-detail { font-size: 12px; color: #6B7280; line-height: 1.5; }
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+      background: rgba(248,113,113,0.12); color: #F87171;
+      margin-left: 6px; letter-spacing: 0.4px;
+    }
+    .badge.haute { background: rgba(251,191,36,0.12); color: #FBBF24; }
+    .reconnect {
+      margin-top: 32px; padding: 14px 28px;
+      background: #2D6A4F; border-radius: 10px;
+      color: #fff; font-size: 14px; font-weight: 700;
+      text-decoration: none; display: inline-block;
+    }
+    .note { font-size: 12px; color: #6B7280; margin-top: 20px; text-align: center; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="logo">N</div>
+  <h1>📵 Tu es hors-ligne</h1>
+  <p class="sub">Pas d'inquiétude — voici ta checklist disponible sans internet.</p>
+
+  <div class="card">
+    <h2>✅ Checklist des 30 premiers jours au Canada</h2>
+
+    <div class="task">
+      <span class="task-icon">🪪</span>
+      <div class="task-content">
+        <div class="task-title">Obtenir ton NAS <span class="badge">CRITIQUE</span></div>
+        <div class="task-detail">Numéro d'Assurance Sociale — indispensable pour travailler et ouvrir un compte. Centre Service Canada.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">🏦</span>
+      <div class="task-content">
+        <div class="task-title">Ouvrir un compte bancaire étudiant <span class="badge">CRITIQUE</span></div>
+        <div class="task-detail">Banque Nationale, Desjardins ou TD. Apporte passeport + permis d'études. Pas besoin du NAS le jour J.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">🏥</span>
+      <div class="task-content">
+        <div class="task-title">S'inscrire à la RAMQ (Québec) <span class="badge">CRITIQUE</span></div>
+        <div class="task-detail">Délai : 3 mois après l'arrivée. Tout bureau RAMQ sans rendez-vous. Passeport + permis + preuve d'adresse.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">🏥</span>
+      <div class="task-content">
+        <div class="task-title">S'inscrire à l'OHIP (Ontario) <span class="badge">CRITIQUE</span></div>
+        <div class="task-detail">Service Ontario. Délai de carence de 3 mois — souscris une assurance privée en attendant.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">💳</span>
+      <div class="task-content">
+        <div class="task-title">Demander une carte de crédit sécurisée <span class="badge haute">HAUTE</span></div>
+        <div class="task-detail">Dépôt 200–500$. Utilise-la pour l'épicerie et rembourse en totalité chaque mois. Cote de crédit établie en 6 mois.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">📋</span>
+      <div class="task-content">
+        <div class="task-title">Activer le permis de travail hors campus <span class="badge haute">HAUTE</span></div>
+        <div class="task-detail">Après inscription à 60% des cours. Jusqu'à 20h/semaine. Sur canada.ca.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">🩺</span>
+      <div class="task-content">
+        <div class="task-title">Assurance maladie universitaire <span class="badge haute">HAUTE</span></div>
+        <div class="task-detail">Contacte l'association étudiante de ton université. Couvre en attendant la RAMQ/OHIP.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">🗺️</span>
+      <div class="task-content">
+        <div class="task-title">Explorer les transports en commun</div>
+        <div class="task-detail">Montréal : STM (109$/mois). Toronto : TTC (156$/mois). Vancouver : TransLink (109$/mois).</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">🤝</span>
+      <div class="task-content">
+        <div class="task-title">Rejoindre une communauté</div>
+        <div class="task-detail">Association africaine de ton université, Facebook "Africains à [ta ville]", Novae parrainage.</div>
+      </div>
+    </div>
+
+    <div class="task">
+      <span class="task-icon">📊</span>
+      <div class="task-content">
+        <div class="task-title">Préparer ta déclaration d'impôts <span class="badge">CRITIQUE</span></div>
+        <div class="task-detail">Date limite : 30 avril. Même sans revenus — tu as droit aux crédits TPS/TVH. Wealthsimple Tax gratuit.</div>
+      </div>
+    </div>
+  </div>
+
+  <a class="reconnect" href="/">🔄 Reconnecte-toi à Novae</a>
+  <p class="note">Reconnecte-toi pour accéder à toutes tes données,<br/>ta progression et les recommandations personnalisées.</p>
+</body>
+</html>

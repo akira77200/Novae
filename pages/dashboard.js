@@ -3,6 +3,68 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
+// ── Widget Bien-être compact ──────────────────────────────────────
+const SCORE_EMOJIS_DB = ['😔', '😕', '😐', '🙂', '😊']
+const getSemLundi = () => {
+  const now = new Date(); const day = now.getDay()
+  const d = new Date(now); d.setDate(now.getDate() - (day === 0 ? 6 : day - 1))
+  return d.toISOString().split('T')[0]
+}
+function BienetreWidget({ C, lang, sb }) {
+  const [checkin, setCheckin] = useState(undefined) // undefined=loading, null=absent, obj=présent
+  useEffect(() => {
+    if (!sb) return
+    const load = async () => {
+      try {
+        const { data: { session } } = await sb.auth.getSession()
+        if (!session?.access_token) { setCheckin(null); return }
+        const res  = await fetch('/api/bienetre/historique', { headers: { Authorization: `Bearer ${session.access_token}` } })
+        const json = await res.json()
+        const sem  = getSemLundi()
+        const found = (json.data || []).find(h => h.semaine === sem)
+        setCheckin(found || null)
+      } catch { setCheckin(null) }
+    }
+    load()
+  }, [sb])
+
+  if (checkin === undefined) return null
+
+  if (checkin === null) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '12px 16px', background: `${C.accent}07`, border: `1px solid ${C.accent}20`, borderRadius: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ fontSize: 20 }}>🌱</span>
+        <p style={{ fontSize: 13, color: C.text, fontWeight: 500 }}>
+          {lang === 'fr' ? 'Check-in bien-être — 1 minute' : 'Wellbeing check-in — 1 minute'}
+        </p>
+      </div>
+      <a href="/bienetre" style={{ padding: '6px 14px', background: C.accent, border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 12, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+        {lang === 'fr' ? 'Commencer →' : 'Start →'}
+      </a>
+    </div>
+  )
+
+  const numSem = Math.ceil((new Date(checkin.semaine) - new Date(new Date().getFullYear(), 0, 1)) / 604800000)
+  const scoreColor = checkin.score <= 2 ? '#F87171' : checkin.score === 3 ? '#FBBF24' : '#34D399'
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: scoreColor + '08', border: `1px solid ${scoreColor}25`, borderRadius: 12, marginBottom: 16 }}>
+      <span style={{ fontSize: 22 }}>{SCORE_EMOJIS_DB[checkin.score - 1]}</span>
+      <div style={{ flex: 1 }}>
+        <div style={{ height: 5, background: C.border, borderRadius: 3, overflow: 'hidden' }}>
+          <div style={{ width: `${(checkin.score / 5) * 100}%`, height: '100%', background: scoreColor, borderRadius: 3 }} />
+        </div>
+        <p style={{ fontSize: 11, color: C.muted, marginTop: 4 }}>
+          {lang === 'fr' ? `Semaine ${numSem}/52` : `Week ${numSem}/52`}
+          {checkin.note ? ` · "${checkin.note}"` : ''}
+        </p>
+      </div>
+      <a href="/bienetre" style={{ fontSize: 12, color: scoreColor, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+        {lang === 'fr' ? 'Voir →' : 'View →'}
+      </a>
+    </div>
+  )
+}
+
 // ── Calcul jours bulletproof ──────────────────────────────────────
 const calcJours = (dateStr) => {
   if (!dateStr) return null
@@ -457,6 +519,9 @@ export default function Dashboard() {
             )}
           </div>
         )}
+
+        {/* ── WIDGET BIEN-ÊTRE ── */}
+        {user && <BienetreWidget C={C} lang={lang} sb={sb} />}
 
         {/* ── CARTE MON AVENIR ── */}
         {user && (
