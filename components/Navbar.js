@@ -38,12 +38,13 @@ const PILIERS_NAV = [
     en: 'Career',
     color: '#E65100',
     colorLight: '#FF7043',
-    paths: ['/mentors', '/cv', '/entrevue', '/mon-avenir'],
+    paths: ['/mentors', '/cv', '/entrevue', '/mon-avenir', '/reseau'],
     links: [
-      { href: '/mon-avenir', fr: 'Mon Avenir',       en: 'My Future'        },
-      { href: '/mentors',    fr: 'Mentors',           en: 'Mentors'          },
-      { href: '/cv',         fr: 'Créer mon CV',      en: 'Build my Resume'  },
-      { href: '/entrevue',   fr: 'Entrevue IA',       en: 'Mock Interview'   },
+      { href: '/mon-avenir', fr: 'Mon Avenir',        en: 'My Future'        },
+      { href: '/mentors',    fr: 'Mentors',            en: 'Mentors'          },
+      { href: '/cv',         fr: 'Créer mon CV',       en: 'Build my Resume'  },
+      { href: '/entrevue',   fr: 'Entrevue IA',        en: 'Mock Interview'   },
+      { href: '/reseau',     fr: '🎯 Mon Réseau',      en: '🎯 My Network'    },
     ],
   },
   {
