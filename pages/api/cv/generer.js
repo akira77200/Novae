@@ -51,7 +51,12 @@ Règles pour les bullets :
       messages:   [{ role: 'user', content: prompt }],
     })
 
-    const raw  = msg.content[0]?.text?.trim() || '{}'
+    const raw = (msg.content[0]?.text || '{}')
+      .trim()
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/```\s*$/i, '')
+      .trim()
     const json = JSON.parse(raw)
     return res.status(200).json({ success: true, data: json })
   } catch (e) {
