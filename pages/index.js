@@ -6,52 +6,56 @@ import { useApp } from '../context/AppContext'
 
 const PILIERS = [
   {
-    emoji: '🎯',
-    titleFr: 'Opportunités',
-    titleEn: 'Opportunities',
-    descFr: 'Explore les métiers de demain, teste ton orientation et génère ta vision de carrière personnalisée par IA.',
-    descEn: 'Explore future careers, test your orientation and generate your personalized AI career vision.',
-    href: '/mon-avenir',
-    color: '#2D6A4F',
-    colorLight: '#52B788',
-    bg: 'rgba(45,106,79,0.12)',
-    border: 'rgba(45,106,79,0.30)',
-  },
-  {
     emoji: '✈️',
     titleFr: 'Immigration',
     titleEn: 'Immigration',
-    descFr: 'Checklist d\'arrivée, démarches administratives et tout ce qu\'il faut faire dès ton premier jour au Canada.',
-    descEn: 'Arrival checklist, administrative steps and everything you need to do from your first day in Canada.',
+    descFr: 'Checklist d\'arrivée · Coffre-fort documents · Calendrier d\'échéances · Guide d\'arrivée au Canada.',
+    descEn: 'Arrival checklist · Document vault · Deadline calendar · Canada arrival guide.',
     href: '/dashboard',
     color: '#1565C0',
     colorLight: '#42A5F5',
     bg: 'rgba(21,101,192,0.10)',
     border: 'rgba(21,101,192,0.28)',
+    items: ['Checklist', '📁 Documents', '📅 Échéances', 'Guide arrivée'],
   },
   {
     emoji: '🎓',
-    titleFr: 'Académie & Intégration',
-    titleEn: 'Academia & Integration',
-    descFr: 'Culture canadienne, codes sociaux, vie quotidienne et ressources pour t\'intégrer rapidement.',
-    descEn: 'Canadian culture, social codes, daily life and resources to integrate quickly.',
+    titleFr: 'Académie',
+    titleEn: 'Academia',
+    descFr: 'Culture canadienne · Bourses & universités · Comparateur · Simulateur budget · Calendrier académique.',
+    descEn: 'Canadian culture · Scholarships & universities · Comparator · Budget simulator · Academic calendar.',
     href: '/culture',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
     bg: 'rgba(106,27,154,0.10)',
     border: 'rgba(106,27,154,0.28)',
+    items: ['🎮 Quiz culture', 'Bourses & Univs', '🏛️ Univ. ou Collège', '💰 Budget', '🗓️ Calendrier'],
   },
   {
     emoji: '💼',
-    titleFr: 'Carrière Professionnelle',
-    titleEn: 'Professional Career',
-    descFr: 'Connecte-toi avec des mentors de ta diaspora, booste ton CV et prépare tes entretiens au Canada.',
-    descEn: 'Connect with mentors from your diaspora, boost your CV and prepare your Canadian job interviews.',
-    href: '/mentors',
+    titleFr: 'Carrière',
+    titleEn: 'Career',
+    descFr: 'Mon Avenir IA · Mentors de ta diaspora · Créateur CV · Simulation entrevue · Réseau professionnel.',
+    descEn: 'My Future AI · Diaspora mentors · CV builder · Interview simulator · Professional network.',
+    href: '/mon-avenir',
     color: '#E65100',
     colorLight: '#FF7043',
     bg: 'rgba(230,81,0,0.10)',
     border: 'rgba(230,81,0,0.28)',
+    items: ['Mon Avenir', 'Mentors', '📄 CV', '🎙️ Entrevue IA', '🎯 Réseau'],
+  },
+  {
+    emoji: '🏠',
+    titleFr: 'Intégration',
+    titleEn: 'Integration',
+    descFr: 'Vie quotidienne · Budget & logement · Bien-être étudiant · Parrainage bénévole · Mes tâches.',
+    descEn: 'Daily life · Budget & housing · Student wellbeing · Peer mentoring · My tasks.',
+    href: '/bienetre',
+    color: '#2D6A4F',
+    colorLight: '#52B788',
+    bg: 'rgba(45,106,79,0.12)',
+    border: 'rgba(45,106,79,0.30)',
+    items: ['🌱 Bien-être', '🤝 Parrainage', 'Vie quotidienne', '🏠 Logement', 'Mes tâches'],
   },
 ]
 
@@ -233,10 +237,19 @@ export default function Home() {
                     {isFr ? p.titleFr : p.titleEn}
                   </h3>
                 </div>
-                <p style={{ fontSize:14, color: C.muted, lineHeight:1.65, margin:0, flexGrow:1 }}>
+                <p style={{ fontSize:13, color: C.muted, lineHeight:1.65, margin:0 }}>
                   {isFr ? p.descFr : p.descEn}
                 </p>
-                <div style={{ display:'flex', alignItems:'center', gap:6, color: p.colorLight, fontSize:13, fontWeight:600 }}>
+                {p.items && (
+                  <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
+                    {p.items.map(item => (
+                      <span key={item} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background: p.bg, color: p.colorLight, border:`1px solid ${p.border}`, fontWeight:500 }}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div style={{ display:'flex', alignItems:'center', gap:6, color: p.colorLight, fontSize:13, fontWeight:600, marginTop:'auto' }}>
                   {isFr ? 'Explorer' : 'Explore'} <span>→</span>
                 </div>
               </div>
@@ -324,15 +337,21 @@ export default function Home() {
             <div style={{ width:28, height:28, borderRadius:8, background: C.accent, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:800, color:'#fff' }}>N</div>
             <span style={{ fontWeight:700, fontSize:15, color: C.text }}>novae</span>
           </div>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:20 }}>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:16 }}>
             {[
-              { href:'/dashboard',  fr:'Immigration',  en:'Immigration' },
-              { href:'/culture',    fr:'Intégration',  en:'Integration' },
-              { href:'/mentors',    fr:'Mentors',      en:'Mentors' },
-              { href:'/mon-avenir', fr:'Mon Avenir',   en:'My Future' },
-              { href:'/arrivee',    fr:'Guide arrivée',en:'Arrival guide' },
+              { href:'/dashboard',             fr:'Checklist',         en:'Checklist'       },
+              { href:'/documents',             fr:'Documents',         en:'Documents'       },
+              { href:'/bienetre',              fr:'Bien-être',         en:'Wellbeing'       },
+              { href:'/parrainage',            fr:'Parrainage',        en:'Peer mentoring'  },
+              { href:'/bourses',               fr:'Bourses',           en:'Scholarships'    },
+              { href:'/simulateur-budget',     fr:'Budget',            en:'Budget'          },
+              { href:'/calendrier-academique', fr:'Calendrier',        en:'Calendar'        },
+              { href:'/mon-avenir',            fr:'Mon Avenir',        en:'My Future'       },
+              { href:'/cv',                    fr:'CV',                en:'Resume'          },
+              { href:'/reseau',                fr:'Réseau',            en:'Network'         },
+              { href:'/entrevue',              fr:'Entrevue IA',       en:'Mock Interview'  },
             ].map(l => (
-              <Link key={l.href} href={l.href} style={{ fontSize:13, color: C.muted, textDecoration:'none' }}>
+              <Link key={l.href} href={l.href} style={{ fontSize:12, color: C.muted, textDecoration:'none' }}>
                 {isFr ? l.fr : l.en}
               </Link>
             ))}
