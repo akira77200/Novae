@@ -22,45 +22,45 @@ const PILIERS = [
     emoji: '🎓',
     titleFr: 'Académie',
     titleEn: 'Academia',
-    descFr: 'Culture canadienne · Bourses & universités · Comparateur · Simulateur budget · Calendrier académique.',
-    descEn: 'Canadian culture · Scholarships & universities · Comparator · Budget simulator · Academic calendar.',
-    href: '/culture',
+    descFr: 'Mon orientation · Bourses & universités · Comparateur · Simulateur budget · Calendrier académique.',
+    descEn: 'My path · Scholarships & universities · Comparator · Budget simulator · Academic calendar.',
+    href: '/mon-avenir',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
     bg: 'rgba(106,27,154,0.10)',
     border: 'rgba(106,27,154,0.28)',
-    items: ['🎮 Quiz culture', 'Bourses & Univs', '🏛️ Univ. ou Collège', '💰 Budget', '🗓️ Calendrier'],
+    items: ['Mon orientation', 'Bourses & Univs', '🏛️ Univ. ou Collège', '💰 Budget', '🗓️ Calendrier'],
   },
   {
     emoji: '💼',
     titleFr: 'Carrière',
     titleEn: 'Career',
-    descFr: 'Mon Avenir IA · Mentors de ta diaspora · Créateur CV · Simulation entrevue · Réseau professionnel.',
-    descEn: 'My Future AI · Diaspora mentors · CV builder · Interview simulator · Professional network.',
-    href: '/mon-avenir',
+    descFr: 'Mentors · Créateur CV canadien · Simulation entrevue · Réseau professionnel.',
+    descEn: 'Mentors · Canadian resume builder · Interview simulator · Professional network.',
+    href: '/mentors',
     color: '#E65100',
     colorLight: '#FF7043',
     bg: 'rgba(230,81,0,0.10)',
     border: 'rgba(230,81,0,0.28)',
-    items: ['Mon Avenir', 'Mentors', '📄 CV', '🎙️ Entrevue IA', '🎯 Réseau'],
+    items: ['Mentors', '📄 CV', '🎙️ Entrevue IA', '🎯 Réseau'],
   },
   {
     emoji: '🏠',
     titleFr: 'Intégration',
     titleEn: 'Integration',
-    descFr: 'Vie quotidienne · Budget & logement · Bien-être étudiant · Parrainage bénévole · Mes tâches.',
-    descEn: 'Daily life · Budget & housing · Student wellbeing · Peer mentoring · My tasks.',
-    href: '/bienetre',
+    descFr: 'Vie quotidienne · Mes tâches · Bien-être · Parrainage · Culture canadienne · Quiz culture.',
+    descEn: 'Daily life · My tasks · Wellbeing · Peer mentoring · Canadian culture · Culture quiz.',
+    href: '/day-to-day',
     color: '#2D6A4F',
     colorLight: '#52B788',
     bg: 'rgba(45,106,79,0.12)',
     border: 'rgba(45,106,79,0.30)',
-    items: ['🌱 Bien-être', '🤝 Parrainage', 'Vie quotidienne', '🏠 Logement', 'Mes tâches'],
+    items: ['Vie quotidienne', 'Mes tâches', '🌱 Bien-être', '🤝 Parrainage', 'Culture', '🎮 Quiz'],
   },
 ]
 
 const STATS = [
-  { numFr: '12 000+', numEn: '12,000+', labelFr: 'étudiants aidés', labelEn: 'students helped' },
+  { numFr: '12 000+', numEn: '12,000+', labelFr: 'nouveaux arrivants aidés', labelEn: 'newcomers helped' },
   { numFr: '47',      numEn: '47',       labelFr: 'pays représentés', labelEn: 'countries represented' },
   { numFr: '94%',     numEn: '94%',      labelFr: 'satisfaction', labelEn: 'satisfaction rate' },
 ]
@@ -86,8 +86,8 @@ const TESTIMONIALS = [
     name: 'Koffi Asante',
     origin: 'Yaoundé → Québec',
     avatar: 'K',
-    textFr: 'Le guide culturel m\'a évité beaucoup de malentendus. Je recommande Novae à tous les étudiants africains qui arrivent au Canada.',
-    textEn: 'The cultural guide saved me from many misunderstandings. I recommend Novae to every African student coming to Canada.',
+    textFr: 'Le guide culturel m\'a évité beaucoup de malentendus. Je recommande Novae à tous les nouveaux arrivants au Canada.',
+    textEn: 'The cultural guide saved me from many misunderstandings. I recommend Novae to every newcomer in Canada.',
     color: '#6A1B9A',
   },
 ]
@@ -141,6 +141,9 @@ export default function Home() {
   const isDark = theme === 'dark'
   const isFr   = lang === 'fr'
 
+  const pilierHref = (href) =>
+    user ? href : `/auth/login?redirect=${encodeURIComponent(href)}`
+
   return (
     <div style={{ minHeight:'100vh', background: C.bg, fontFamily:'system-ui,-apple-system,sans-serif', color: C.text }}>
 
@@ -155,7 +158,7 @@ export default function Home() {
           <div style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'6px 14px', borderRadius:100, border:`1px solid ${C.accent}40`, background:`${C.accent}12`, marginBottom:28 }}>
             <span style={{ fontSize:13 }}>🌍</span>
             <span style={{ fontSize:13, color: C.accent2, fontWeight:600, letterSpacing:0.3 }}>
-              {isFr ? 'Pour les étudiants africains au Canada' : 'For African students in Canada'}
+              {isFr ? 'Pour les nouveaux arrivants au Canada' : 'For newcomers to Canada'}
             </span>
           </div>
 
@@ -173,8 +176,8 @@ export default function Home() {
           {/* Subtitle */}
           <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: C.muted, lineHeight:1.7, maxWidth:560, margin:'0 auto 36px' }}>
             {isFr
-              ? 'De ton arrivée à Montréal jusqu\'à ta première promotion — Novae t\'accompagne à chaque étape avec des outils IA, des mentors et une communauté.'
-              : 'From your arrival in Montreal to your first promotion — Novae supports you at every step with AI tools, mentors and a community.'}
+              ? 'De ton arrivée au Canada jusqu\'à ta première promotion — Novae t\'accompagne à chaque étape avec des outils IA, des mentors et une communauté.'
+              : 'From your arrival in Canada to your first promotion — Novae supports you at every step with AI tools, mentors and a community.'}
           </p>
 
           {/* CTAs */}
@@ -215,7 +218,7 @@ export default function Home() {
 
         <div className="piliers-grid">
           {PILIERS.map((p, i) => (
-            <Link key={p.href} href={p.href} style={{ textDecoration:'none' }}>
+            <Link key={p.href} href={pilierHref(p.href)} style={{ textDecoration:'none' }}>
               <div className="pilier-card" style={{
                 background: isDark ? C.surface : '#fff',
                 border: `1.5px solid ${p.border}`,
@@ -281,7 +284,7 @@ export default function Home() {
             {isFr ? 'Ils ont transformé leur parcours' : 'They transformed their journey'}
           </h2>
           <p style={{ color: C.muted, fontSize:15 }}>
-            {isFr ? 'Des milliers d\'étudiants africains nous font confiance' : 'Thousands of African students trust us'}
+            {isFr ? 'Des milliers de nouveaux arrivants nous font confiance' : 'Thousands of newcomers trust us'}
           </p>
         </div>
 
@@ -321,7 +324,7 @@ export default function Home() {
               {isFr ? 'Prêt à commencer ?' : 'Ready to start?'}
             </h2>
             <p style={{ color: C.muted, fontSize:15, marginBottom:28 }}>
-              {isFr ? 'Rejoins des milliers d\'étudiants africains qui réussissent au Canada.' : 'Join thousands of African students succeeding in Canada.'}
+              {isFr ? 'Rejoins des milliers de nouveaux arrivants qui réussissent au Canada.' : 'Join thousands of newcomers succeeding in Canada.'}
             </p>
             <Link href="/auth/register" style={{ display:'inline-block', padding:'15px 36px', borderRadius:12, background: C.accent, color:'#fff', fontWeight:700, fontSize:16, textDecoration:'none' }}>
               {isFr ? 'Créer mon compte gratuit' : 'Create my free account'}
@@ -357,7 +360,7 @@ export default function Home() {
             ))}
           </div>
           <div style={{ fontSize:12, color: C.muted }}>
-            © {new Date().getFullYear()} Novae · {isFr ? 'Fait avec ❤️ pour la diaspora africaine' : 'Made with ❤️ for the African diaspora'}
+            © {new Date().getFullYear()} Novae · {isFr ? 'Fait avec ❤️ pour les nouveaux arrivants' : 'Made with ❤️ for newcomers'}
           </div>
         </div>
       </footer>

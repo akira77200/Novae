@@ -25,12 +25,11 @@ const PILIERS_NAV = [
     en: 'Academia',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
-    paths: ['/culture', '/quiz-culture', '/bourses', '/orientation-type', '/simulateur-budget', '/calendrier-academique'],
+    paths: ['/mon-avenir', '/bourses', '/orientation-type', '/simulateur-budget', '/calendrier-academique'],
     links: [
-      { href: '/culture',               fr: 'Culture',               en: 'Culture'              },
-      { href: '/quiz-culture',          fr: '🎮 Quiz culture',        en: '🎮 Culture quiz'      },
+      { href: '/mon-avenir',            fr: 'Mon Orientation',       en: 'My Path'              },
       { href: '/bourses',               fr: 'Bourses & Univs',       en: 'Scholarships'         },
-      { href: '/orientation-type',      fr: '🏛️ Univ. ou Collège ?', en: '🏛️ Univ. or College?' },
+      { href: '/orientation-type',      fr: '🏛️ Univ. ou Collège',  en: '🏛️ Univ. or College'  },
       { href: '/simulateur-budget',     fr: '💰 Simulateur budget',  en: '💰 Budget simulator'  },
       { href: '/calendrier-academique', fr: '🗓️ Calendrier',         en: '🗓️ Calendar'          },
     ],
@@ -41,13 +40,12 @@ const PILIERS_NAV = [
     en: 'Career',
     color: '#E65100',
     colorLight: '#FF7043',
-    paths: ['/mon-avenir', '/mentors', '/cv', '/entrevue', '/reseau'],
+    paths: ['/mentors', '/cv', '/entrevue', '/reseau'],
     links: [
-      { href: '/mon-avenir', fr: 'Mon Avenir',    en: 'My Future'       },
-      { href: '/mentors',    fr: 'Mentors',        en: 'Mentors'         },
-      { href: '/cv',         fr: 'Créer mon CV',   en: 'Build my Resume' },
-      { href: '/entrevue',   fr: 'Entrevue IA',    en: 'Mock Interview'  },
-      { href: '/reseau',     fr: '🎯 Mon Réseau',  en: '🎯 My Network'   },
+      { href: '/mentors',  fr: 'Mentors',       en: 'Mentors'         },
+      { href: '/cv',       fr: 'CV canadien',   en: 'Canadian Resume' },
+      { href: '/entrevue', fr: 'Entrevue IA',   en: 'Mock Interview'  },
+      { href: '/reseau',   fr: 'Mon Réseau',    en: 'My Network'      },
     ],
   },
   {
@@ -56,13 +54,14 @@ const PILIERS_NAV = [
     en: 'Integration',
     color: '#2D6A4F',
     colorLight: '#52B788',
-    paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage', '/culture'],
+    paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage', '/culture', '/quiz-culture'],
     links: [
-      { href: '/day-to-day', fr: 'Vie quotidienne',  en: 'Daily life'        },
-      { href: '/todo',       fr: 'Mes tâches',        en: 'My tasks'          },
-      { href: '/bienetre',   fr: '🌱 Bien-être',      en: '🌱 Wellbeing'      },
-      { href: '/parrainage', fr: '🤝 Parrainage',     en: '🤝 Peer Mentoring' },
-      { href: '/culture',    fr: 'Culture',            en: 'Culture'           },
+      { href: '/day-to-day',   fr: 'Vie quotidienne',    en: 'Daily life'         },
+      { href: '/todo',         fr: 'Mes tâches',          en: 'My tasks'           },
+      { href: '/bienetre',     fr: 'Bien-être',           en: 'Wellbeing'          },
+      { href: '/parrainage',   fr: 'Parrainage',          en: 'Peer Mentoring'     },
+      { href: '/culture',      fr: 'Culture canadienne',  en: 'Canadian Culture'   },
+      { href: '/quiz-culture', fr: 'Quiz culture',        en: 'Culture Quiz'       },
     ],
   },
 ]
@@ -94,32 +93,72 @@ export default function Navbar() {
             <span style={{ fontWeight:700, fontSize:16, color: C.text, letterSpacing:-0.3 }}>novae</span>
           </Link>
 
-          {/* Desktop — 4 piliers */}
+          {/* Desktop — 4 piliers + dropdowns */}
           <div className="nav-desktop" style={{ display:'flex', gap:4, alignItems:'center' }}>
             {PILIERS_NAV.map(p => {
               const isActive = activePilier?.fr === p.fr
+              const dropBg   = theme === 'dark' ? '#1B2B1E' : '#fff'
               return (
-                <Link
-                  key={p.fr}
-                  href={p.links[0].href}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '6px 13px',
-                    borderRadius: 9,
-                    fontSize: 13,
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? p.colorLight : C.muted,
-                    background: isActive ? `${p.color}18` : 'transparent',
-                    textDecoration: 'none',
-                    transition: 'all 0.15s',
-                    borderBottom: isActive ? `2px solid ${p.colorLight}` : '2px solid transparent',
-                  }}
-                >
-                  <span style={{ fontSize:14 }}>{p.emoji}</span>
-                  {isFr ? p.fr : p.en}
-                </Link>
+                <div key={p.fr} className="nav-pilier-wrap" style={{ position:'relative' }}>
+                  <Link
+                    href={p.links[0].href}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      padding: '6px 13px',
+                      borderRadius: 9,
+                      fontSize: 13,
+                      fontWeight: isActive ? 700 : 500,
+                      color: isActive ? p.colorLight : C.muted,
+                      background: isActive ? `${p.color}18` : 'transparent',
+                      textDecoration: 'none',
+                      transition: 'all 0.15s',
+                      borderBottom: isActive ? `2px solid ${p.colorLight}` : '2px solid transparent',
+                    }}
+                  >
+                    <span style={{ fontSize:14 }}>{p.emoji}</span>
+                    {isFr ? p.fr : p.en}
+                  </Link>
+                  <div
+                    className="nav-dropdown"
+                    style={{
+                      display: 'none',
+                      position: 'absolute',
+                      top: 'calc(100% + 6px)',
+                      left: 0,
+                      minWidth: 210,
+                      background: dropBg,
+                      border: '1px solid #2D6A4F30',
+                      borderRadius: 8,
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                      padding: '6px 0',
+                      zIndex: 60,
+                    }}
+                  >
+                    {p.links.map(l => {
+                      const isLinkActive = router.pathname === l.href
+                      return (
+                        <Link
+                          key={l.href}
+                          href={l.href}
+                          className="nav-dropdown-link"
+                          style={{
+                            display: 'block',
+                            padding: '10px 16px',
+                            fontSize: 13,
+                            color: isLinkActive ? C.accent2 : C.text2,
+                            textDecoration: 'none',
+                            fontWeight: isLinkActive ? 600 : 400,
+                            transition: 'background 0.12s, color 0.12s',
+                          }}
+                        >
+                          {isFr ? l.fr : l.en}
+                        </Link>
+                      )
+                    })}
+                  </div>
+                </div>
               )
             })}
           </div>
@@ -298,6 +337,13 @@ export default function Navbar() {
       </div>
 
       <style jsx global>{`
+        .nav-pilier-wrap:hover .nav-dropdown {
+          display: block !important;
+        }
+        .nav-dropdown-link:hover {
+          background: rgba(45, 106, 79, 0.12);
+          color: #52B788 !important;
+        }
         @media (max-width: 768px) {
           .nav-desktop { display: none !important; }
           .nav-hamburger { display: flex !important; }

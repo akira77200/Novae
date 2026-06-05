@@ -4,6 +4,42 @@ import Link from 'next/link'
 import { useApp } from '../../context/AppContext'
 
 const PAYS = ['Canada','France','Belgique','Royaume-Uni','Allemagne','Autre']
+
+const PAYS_LISTE = [
+  'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie',
+  'Allemagne', 'Angola', 'Arabie Saoudite', 'Argentine',
+  'Australie', 'Autriche', 'Azerbaïdjan', 'Bahreïn',
+  'Bangladesh', 'Belgique', 'Bénin', 'Birmanie',
+  'Bolivie', 'Bosnie-Herzégovine', 'Brésil', 'Bulgarie',
+  'Burkina Faso', 'Burundi', 'Cambodge', 'Cameroun',
+  'Canada', 'Chili', 'Chine', 'Chypre', 'Colombie',
+  'Congo', 'Corée du Sud', 'Costa Rica', 'Côte d\'Ivoire',
+  'Croatie', 'Cuba', 'Danemark', 'Djibouti',
+  'Égypte', 'Émirats arabes unis', 'Équateur',
+  'Espagne', 'Éthiopie', 'États-Unis', 'Finlande',
+  'France', 'Gabon', 'Ghana', 'Grèce', 'Guatemala',
+  'Guinée', 'Guinée-Bissau', 'Haïti', 'Honduras',
+  'Hongrie', 'Inde', 'Indonésie', 'Irak', 'Iran',
+  'Irlande', 'Israël', 'Italie', 'Jamaïque', 'Japon',
+  'Jordanie', 'Kazakhstan', 'Kenya', 'Koweït', 'Laos',
+  'Liban', 'Libye', 'Luxembourg', 'Madagascar', 'Malaisie',
+  'Mali', 'Maroc', 'Mauritanie', 'Mexique', 'Moldavie',
+  'Mongolie', 'Mozambique', 'Namibie', 'Népal',
+  'Nicaragua', 'Niger', 'Nigeria', 'Norvège',
+  'Nouvelle-Zélande', 'Oman', 'Ouganda', 'Ouzbékistan',
+  'Pakistan', 'Panama', 'Paraguay', 'Pays-Bas',
+  'Pérou', 'Philippines', 'Pologne', 'Portugal',
+  'Qatar', 'République centrafricaine', 'République dominicaine',
+  'République tchèque', 'Roumanie', 'Royaume-Uni',
+  'Russie', 'Rwanda', 'Sénégal', 'Serbie',
+  'Sierra Leone', 'Singapour', 'Slovaquie', 'Slovénie',
+  'Somalie', 'Soudan', 'Sri Lanka', 'Suède',
+  'Suisse', 'Syrie', 'Taïwan', 'Tanzanie',
+  'Tchad', 'Thaïlande', 'Togo', 'Tunisie',
+  'Turkménistan', 'Turquie', 'Ukraine', 'Uruguay',
+  'Venezuela', 'Vietnam', 'Yémen', 'Zambie', 'Zimbabwe',
+  'Autre',
+]
 const VILLES = {
   Canada:       ['Montréal','Toronto','Vancouver','Québec','Ottawa','Gatineau','Calgary','Autre'],
   France:       ['Paris','Lyon','Marseille','Bordeaux','Toulouse','Autre'],
@@ -14,7 +50,7 @@ const VILLES = {
 }
 
 export default function Register() {
-  const { C, t, lang, sb } = useApp()
+  const { C, t, lang, sb, theme } = useApp()
 
   const [step,     setStep]     = useState(1)
   const [loading,  setLoading]  = useState(false)
@@ -195,7 +231,24 @@ export default function Register() {
           {step === 2 && (
             <>
               <label style={lbl}>{t.register_country_origin}</label>
-              <input value={form.pays_origine} onChange={e => set('pays_origine', e.target.value)} placeholder="Côte d'Ivoire, Sénégal, Maroc..." style={inp} />
+              <select
+                value={form.pays_origine}
+                onChange={e => set('pays_origine', e.target.value)}
+                style={{
+                  width: '100%', padding: '12px',
+                  borderRadius: '8px', border: '1px solid #ccc',
+                  background: theme === 'dark' ? '#1a2a1e' : '#fff',
+                  color: theme === 'dark' ? '#fff' : '#333',
+                  fontSize: '0.95rem',
+                  boxSizing: 'border-box',
+                  outline: 'none',
+                }}
+              >
+                <option value="">{lang === 'fr' ? '— Sélectionner ton pays —' : '— Select your country —'}</option>
+                {PAYS_LISTE.map(p => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
 
               <label style={lbl}>{t.register_country_dest}</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 4 }}>

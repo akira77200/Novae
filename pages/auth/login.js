@@ -39,7 +39,8 @@ export default function Login() {
         password: form.password,
       })
       if (err) { setError(ERR_MAP(err.message)); return }
-      router.replace(redirect.startsWith('/') ? redirect : '/dashboard')
+      const dest = typeof redirect === 'string' && redirect.startsWith('/') ? redirect : '/dashboard'
+      router.push(dest)
     } catch (e) {
       setError(ERR_MAP(e?.message))
     } finally {
