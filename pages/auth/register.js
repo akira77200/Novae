@@ -75,7 +75,9 @@ export default function Register() {
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ email, prenom }),
       })
-    } catch (_) { /* MVP — silencieux */ }
+    } catch (e) {
+      console.warn('[register] Welcome email failed:', e.message)
+    }
   }
 
   // Validations

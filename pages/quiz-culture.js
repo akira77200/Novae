@@ -292,13 +292,19 @@ export default function QuizCulture() {
       try {
         const { data: { session } } = await sb.auth.getSession()
         if (session?.access_token) {
-          await fetch('/api/quiz/sauvegarder', {
+          const res = await fetch('/api/quiz/sauvegarder', {
             method:  'POST',
             headers: { 'Content-Type':'application/json', Authorization:`Bearer ${session.access_token}` },
             body:    JSON.stringify({ categorie: catId, score: finalScore, total }),
           })
+          if (!res.ok) {
+            const body = await res.json().catch(() => ({}))
+            console.warn('[quiz] Failed to save score:', body.error || res.statusText)
+          }
         }
-      } catch {}
+      } catch (e) {
+        console.warn('[quiz] Failed to save score:', e.message)
+      }
     }
     setScore(finalScore)
     setEcran('resultats')

@@ -19,7 +19,10 @@ export default async function handler(req, res) {
   if (!sujets?.length) return res.status(400).json({ error: 'Au moins un sujet requis' })
 
   // Récupérer le profil pour les infos du parrain
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single()
+  const { data: profile, error: profileErr } = await sb.from('profiles').select('*').eq('id', user.id).single()
+  if (profileErr) {
+    console.error('[parrainages/devenir] Failed to load profile:', profileErr.message)
+  }
 
   const mentorData = {
     user_id:     user.id,

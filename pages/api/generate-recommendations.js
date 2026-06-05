@@ -159,15 +159,19 @@ Règles :
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    await supabase
+    const { error: updateErr } = await supabase
       .from('profiles')
       .update({ ai_recommendations: recommendations })
       .eq('id', profile.id);
+
+    if (updateErr) {
+      console.error('[generate-recommendations] Failed to save:', updateErr.message)
+    }
 
     res.status(200).json({ success: true, recommendations });
 
   } catch (err) {
     console.error('[generate-recommendations]', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Erreur de génération des recommandations. Réessaie.' });
   }
 }
