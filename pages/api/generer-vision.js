@@ -69,14 +69,23 @@ Règles importantes :
       messages: [{ role: 'user', content: prompt }],
     })
 
-    const raw = message.content[0].text.trim()
+    const raw = message.content[0].text
+      .trim()
       .replace(/^```json\s*/i, '')
       .replace(/^```\s*/i, '')
       .replace(/```\s*$/i, '')
+      .replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
       .trim()
 
-    const vision = JSON.parse(raw)
-    res.status(200).json({ success: true, vision })
+    try {
+      const vision = JSON.parse(raw)
+      res.status(200).json({ success: true, vision })
+    } catch (err) {
+      console.error('[generer-vision] JSON invalide:', raw.substring(0, 200))
+      res.status(500).json({
+        error: 'Erreur de génération. Réessaie dans quelques secondes.',
+      })
+    }
   } catch (err) {
     console.error('[generer-vision]', err.message)
     res.status(500).json({ error: err.message })

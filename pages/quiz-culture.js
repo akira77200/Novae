@@ -15,46 +15,46 @@ const QUIZ_DATA = {
       {
         q: { fr: "Au Canada, quand quelqu'un te tient la porte, tu dois :", en: "In Canada, when someone holds the door for you, you should:" },
         options: {
-          fr: ["Passer sans rien dire","Dire merci et sourire","Attendre qu'ils passent d'abord","Faire un signe de tête"],
-          en: ["Walk through without a word","Say thank you and smile","Wait for them to go first","Nod your head"]
+          fr: ["Dire merci et sourire","Passer sans rien dire","Attendre qu'ils passent d'abord","Faire un signe de tête"],
+          en: ["Say thank you and smile","Walk through without a word","Wait for them to go first","Nod your head"]
         },
-        correct: 1,
+        correct: 0,
         explication: { fr: "Au Canada, dire 'merci' quand quelqu'un tient la porte est une norme sociale très forte. Ne pas le faire peut paraître impoli.", en: "In Canada, saying 'thank you' when someone holds the door is a very strong social norm. Not doing so can seem rude." }
       },
       {
         q: { fr: "Au travail canadien, ton patron te demande ton avis. Tu :", en: "At a Canadian workplace, your boss asks your opinion. You:" },
         options: {
-          fr: ["Attends qu'il finisse de parler","Donnes ton avis honnêtement même s'il diffère","Approuves ce qu'il dit","Restes silencieux par respect"],
-          en: ["Wait for them to finish","Give your honest opinion even if different","Agree with what they say","Stay silent out of respect"]
+          fr: ["Attends qu'il finisse de parler","Approuves ce qu'il dit","Restes silencieux par respect","Donnes ton avis honnêtement même s'il diffère"],
+          en: ["Wait for them to finish","Agree with what they say","Stay silent out of respect","Give your honest opinion even if different"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "La culture de travail canadienne valorise les opinions directes et honnêtes. Approuver par politesse peut être perçu comme un manque d'engagement.", en: "Canadian work culture values direct and honest opinions. Agreeing just to be polite can be seen as a lack of engagement." }
       },
       {
         q: { fr: "Un collègue dit 'How are you?' en passant. Tu :", en: "A colleague says 'How are you?' in passing. You:" },
         options: {
-          fr: ["Racontes tes problèmes de la semaine","Dis 'Good, thanks! You?' et continues","Restes silencieux — c'est une formule","Demandes pourquoi il veut savoir"],
-          en: ["Tell them about your week's problems","Say 'Good, thanks! You?' and continue","Stay silent — it's just a phrase","Ask why they want to know"]
+          fr: ["Racontes tes problèmes de la semaine","Restes silencieux — c'est une formule","Dis 'Good, thanks! You?' et continues","Demandes pourquoi il veut savoir"],
+          en: ["Tell them about your week's problems","Stay silent — it's just a phrase","Say 'Good, thanks! You?' and continue","Ask why they want to know"]
         },
-        correct: 1,
+        correct: 2,
         explication: { fr: "'How are you?' au Canada est une salutation, pas une vraie question. La réponse standard est courte et positive.", en: "'How are you?' in Canada is a greeting, not a real question. The standard response is short and positive." }
       },
       {
         q: { fr: "Quelqu'un dit 'On devrait se voir bientôt !' Tu interprètes ça comme :", en: "Someone says 'We should hang out soon!' You interpret this as:" },
         options: {
-          fr: ["Une invitation ferme à planifier","Une politesse — attends qu'ils proposent une date","Une promesse — tu le rappelles demain","Un refus poli"],
-          en: ["A firm invitation to plan something","A pleasantry — wait for them to suggest a date","A promise — you call them tomorrow","A polite refusal"]
+          fr: ["Une politesse — attends qu'ils proposent une date","Une invitation ferme à planifier","Une promesse — tu le rappelles demain","Un refus poli"],
+          en: ["A pleasantry — wait for them to suggest a date","A firm invitation to plan something","A promise — you call them tomorrow","A polite refusal"]
         },
-        correct: 1,
+        correct: 0,
         explication: { fr: "'On devrait se voir' est souvent une formule de politesse. Si la personne veut vraiment te voir, elle proposera une date et un lieu précis.", en: "'We should hang out' is often a pleasantry. If the person truly wants to meet, they'll suggest a specific date and place." }
       },
       {
         q: { fr: "Tu es invité chez quelqu'un pour dîner. Tu arrives :", en: "You're invited to someone's home for dinner. You arrive:" },
         options: {
-          fr: ["30 minutes en avance pour aider","À l'heure exacte, avec un petit cadeau","10–15 minutes en retard (norme sociale)","Quand tu peux — c'est chez des amis"],
-          en: ["30 minutes early to help","On time, with a small gift","10–15 minutes late (social norm)","Whenever you can — it's friends"]
+          fr: ["30 minutes en avance pour aider","10–15 minutes en retard (norme sociale)","Quand tu peux — c'est chez des amis","À l'heure exacte, avec un petit cadeau"],
+          en: ["30 minutes early to help","10–15 minutes late (social norm)","Whenever you can — it's friends","On time, with a small gift"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "Être à l'heure est très important en contexte social canadien. Apporter un vin, dessert ou fleurs est fortement recommandé.", en: "Being on time is very important in Canadian social contexts. Bringing wine, dessert or flowers is strongly recommended." }
       },
     ]
@@ -67,46 +67,46 @@ const QUIZ_DATA = {
       {
         q: { fr: "En hiver canadien (-20°C), la règle vestimentaire est :", en: "In Canadian winter (-20°C), the dressing rule is:" },
         options: {
-          fr: ["Un gros manteau suffit","3 couches : base thermique + isolant + imperméable","S'habiller comme en automne et marcher vite","Rester à l'intérieur — c'est trop froid"],
-          en: ["One big coat is enough","3 layers: thermal base + insulator + waterproof shell","Dress like fall and walk fast","Stay inside — it's too cold"]
+          fr: ["Un gros manteau suffit","S'habiller comme en automne et marcher vite","3 couches : base thermique + isolant + imperméable","Rester à l'intérieur — c'est trop froid"],
+          en: ["One big coat is enough","Dress like fall and walk fast","3 layers: thermal base + insulator + waterproof shell","Stay inside — it's too cold"]
         },
-        correct: 1,
+        correct: 2,
         explication: { fr: "La règle des 3 couches est fondamentale. La base évacue l'humidité, l'isolant retient la chaleur, l'imperméable protège du vent et de la neige.", en: "The 3-layer rule is key. The base wicks moisture, the insulator retains heat, the shell protects from wind and snow." }
       },
       {
         q: { fr: "Ton trottoir devant chez toi est enneigé. Tu :", en: "The sidewalk in front of your home is snowy. You:" },
         options: {
-          fr: ["Attends que la ville vienne déneiger","Déneiges dans les 24h — c'est obligatoire","Mets du sel et c'est bon","C'est la responsabilité du proprio uniquement"],
-          en: ["Wait for the city to clear it","Clear it within 24h — it's required by law","Put salt and that's enough","It's only the landlord's responsibility"]
+          fr: ["Déneiges dans les 24h — c'est obligatoire","Attends que la ville vienne déneiger","Mets du sel et c'est bon","C'est la responsabilité du proprio uniquement"],
+          en: ["Clear it within 24h — it's required by law","Wait for the city to clear it","Put salt and that's enough","It's only the landlord's responsibility"]
         },
-        correct: 1,
+        correct: 0,
         explication: { fr: "Dans la plupart des villes canadiennes, les résidents ont l'obligation légale de déneiger dans les 24h. Amende possible si non respecté.", en: "In most Canadian cities, residents are legally required to clear snow within 24 hours. Fines may apply." }
       },
       {
         q: { fr: "Quelle température fait-il à Montréal en janvier en moyenne ?", en: "What is the average temperature in Montreal in January?" },
         options: {
-          fr: ["-5°C","-15°C","0°C","-25°C"],
-          en: ["-5°C","-15°C","0°C","-25°C"]
+          fr: ["-5°C","0°C","-25°C","-15°C"],
+          en: ["-5°C","0°C","-25°C","-15°C"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "Montréal a en moyenne -15°C en janvier, avec des épisodes pouvant descendre à -30°C avec le vent. Prépare-toi bien!", en: "Montreal averages -15°C in January, with wind chill making it feel like -30°C. Prepare accordingly!" }
       },
       {
         q: { fr: "Pour garder tes pieds au chaud par grand froid, tu choisis :", en: "To keep your feet warm in extreme cold, you choose:" },
         options: {
-          fr: ["Des baskets avec 2 paires de chaussettes","Des bottes d'hiver imperméables et isolées (-30°C)","Des bottines de cuir stylées","Des bottes de pluie"],
-          en: ["Sneakers with 2 pairs of socks","Waterproof insulated winter boots (-30°C)","Stylish leather ankle boots","Rain boots"]
+          fr: ["Des baskets avec 2 paires de chaussettes","Des bottines de cuir stylées","Des bottes d'hiver imperméables et isolées (-30°C)","Des bottes de pluie"],
+          en: ["Sneakers with 2 pairs of socks","Stylish leather ankle boots","Waterproof insulated winter boots (-30°C)","Rain boots"]
         },
-        correct: 1,
+        correct: 2,
         explication: { fr: "Les bottes d'hiver certifiées -30°C sont indispensables à Montréal, Ottawa et dans la plupart des villes canadiennes.", en: "Winter boots rated to -30°C are essential in Montreal, Ottawa and most Canadian cities." }
       },
       {
         q: { fr: "Le phénomène du 'windchill' (refroidissement éolien) signifie :", en: "The 'windchill' phenomenon means:" },
         options: {
-          fr: ["La température réelle sur le thermomètre","La température ressentie avec le vent — peut être 10-15°C de moins","Le vent fort sans froid","La neige soufflée par le vent"],
-          en: ["The actual thermometer temperature","The felt temperature with wind — can be 10-15°C colder","Strong wind without cold","Snow blown by the wind"]
+          fr: ["La température réelle sur le thermomètre","Le vent fort sans froid","La neige soufflée par le vent","La température ressentie avec le vent — peut être 10-15°C de moins"],
+          en: ["The actual thermometer temperature","Strong wind without cold","Snow blown by the wind","The felt temperature with wind — can be 10-15°C colder"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "Le windchill peut rendre -15°C aussi dangereux que -25°C. La météo canadienne indique toujours les deux valeurs.", en: "Windchill can make -15°C feel as dangerous as -25°C. Canadian weather reports always show both values." }
       },
     ]
@@ -128,19 +128,19 @@ const QUIZ_DATA = {
       {
         q: { fr: "70% des emplois au Canada se trouvent par :", en: "70% of jobs in Canada are found through:" },
         options: {
-          fr: ["Les sites d'emploi (Indeed, LinkedIn)","Le réseau professionnel (bouche-à-oreille, contacts)","Les agences de placement","Les kiosques emploi dans les universités"],
-          en: ["Job boards (Indeed, LinkedIn)","Professional networking (word of mouth, contacts)","Staffing agencies","University job fairs"]
+          fr: ["Les sites d'emploi (Indeed, LinkedIn)","Les agences de placement","Le réseau professionnel (bouche-à-oreille, contacts)","Les kiosques emploi dans les universités"],
+          en: ["Job boards (Indeed, LinkedIn)","Staffing agencies","Professional networking (word of mouth, contacts)","University job fairs"]
         },
-        correct: 1,
+        correct: 2,
         explication: { fr: "Le marché caché de l'emploi représente 70% des postes. Développer ton réseau dès ton arrivée est crucial.", en: "The hidden job market accounts for 70% of positions. Building your network from day one is crucial." }
       },
       {
         q: { fr: "Un CV canadien ne doit PAS contenir :", en: "A Canadian resume should NOT contain:" },
         options: {
-          fr: ["Tes réalisations chiffrées","Ta photo et ton âge","Le nom de tes références","Tes compétences techniques"],
-          en: ["Your measurable achievements","Your photo and age","The names of your references","Your technical skills"]
+          fr: ["Tes réalisations chiffrées","Le nom de tes références","Tes compétences techniques","Ta photo et ton âge"],
+          en: ["Your measurable achievements","The names of your references","Your technical skills","Your photo and age"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "Au Canada, les droits anti-discrimination interdisent de demander des infos personnelles comme l'âge, la photo ou la situation familiale.", en: "In Canada, anti-discrimination laws prohibit personal info like age, photo or family status on resumes." }
       },
       {
@@ -155,10 +155,10 @@ const QUIZ_DATA = {
       {
         q: { fr: "Tu ne comprends pas une tâche donnée par ton superviseur. Tu :", en: "You don't understand a task given by your supervisor. You:" },
         options: {
-          fr: ["Essaies de te débrouiller pour ne pas paraître incompétent","Demandes des clarifications immédiatement","Attends de voir si quelqu'un d'autre pose la question","Cherches secrètement sur internet"],
-          en: ["Try to figure it out to not look incompetent","Ask for clarification immediately","Wait to see if someone else asks","Secretly search online"]
+          fr: ["Demandes des clarifications immédiatement","Essaies de te débrouiller pour ne pas paraître incompétent","Attends de voir si quelqu'un d'autre pose la question","Cherches secrètement sur internet"],
+          en: ["Ask for clarification immediately","Try to figure it out to not look incompetent","Wait to see if someone else asks","Secretly search online"]
         },
-        correct: 1,
+        correct: 0,
         explication: { fr: "Demander des clarifications est vu positivement — cela montre que tu veux bien faire le travail. Le silence et les erreurs coûtent plus cher.", en: "Asking for clarification is seen positively — it shows you want to do the job right. Silence leading to errors is far more costly." }
       },
     ]
@@ -171,46 +171,46 @@ const QUIZ_DATA = {
       {
         q: { fr: "Pour construire ta cote de crédit rapidement au Canada :", en: "To build your credit score quickly in Canada:" },
         options: {
-          fr: ["Épargner beaucoup d'argent","Obtenir une carte de crédit sécurisée et la payer chaque mois","Éviter les cartes de crédit — trop risqué","Faire beaucoup de retraits au guichet"],
-          en: ["Save a lot of money","Get a secured credit card and pay it in full monthly","Avoid credit cards — too risky","Make many ATM withdrawals"]
+          fr: ["Obtenir une carte de crédit sécurisée et la payer chaque mois","Épargner beaucoup d'argent","Éviter les cartes de crédit — trop risqué","Faire beaucoup de retraits au guichet"],
+          en: ["Get a secured credit card and pay it in full monthly","Save a lot of money","Avoid credit cards — too risky","Make many ATM withdrawals"]
         },
-        correct: 1,
+        correct: 0,
         explication: { fr: "La cote de crédit est basée sur l'utilisation responsable du crédit. Une carte sécurisée payée mensuellement en totalité est la méthode la plus rapide.", en: "Credit score is built through responsible credit use. A secured card paid in full monthly is the fastest method for newcomers." }
       },
       {
         q: { fr: "La date limite pour la déclaration de revenus au Canada est :", en: "The income tax filing deadline in Canada is:" },
         options: {
-          fr: ["31 mars","30 avril","31 mai","1er juin"],
-          en: ["March 31","April 30","May 31","June 1"]
+          fr: ["31 mars","31 mai","1er juin","30 avril"],
+          en: ["March 31","May 31","June 1","April 30"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "Le 30 avril est la date limite. Même sans revenus, déclarer te donne accès au crédit TPS/TVH — jusqu'à 300$/an automatique.", en: "April 30 is the deadline. Even without income, filing gives you access to the GST/HST credit — up to $300/year automatically." }
       },
       {
         q: { fr: "Le 'credit score' minimum recommandé pour louer un appartement au Canada est :", en: "The minimum recommended credit score to rent an apartment in Canada is:" },
         options: {
-          fr: ["300–500","600–660","750–800","N'a pas d'importance"],
-          en: ["300–500","600–660","750–800","Doesn't matter"]
+          fr: ["300–500","750–800","600–660","N'a pas d'importance"],
+          en: ["300–500","750–800","600–660","Doesn't matter"]
         },
-        correct: 1,
+        correct: 2,
         explication: { fr: "La plupart des propriétaires exigent un score de 600+. Un score de 700+ donne accès aux meilleurs logements et taux de prêt.", en: "Most landlords require a score of 600+. A score of 700+ gives access to the best apartments and loan rates." }
       },
       {
         q: { fr: "Au Québec, il est ILLÉGAL pour un propriétaire de demander :", en: "In Quebec, it is ILLEGAL for a landlord to ask for:" },
         options: {
-          fr: ["Une preuve de revenu","Un dépôt de garantie (dernier mois)","Une référence d'un ancien propriétaire","Une copie de ton permis de conduire"],
-          en: ["Proof of income","A security deposit (last month)","A reference from a previous landlord","A copy of your driver's license"]
+          fr: ["Une preuve de revenu","Une référence d'un ancien propriétaire","Une copie de ton permis de conduire","Un dépôt de garantie (dernier mois)"],
+          en: ["Proof of income","A reference from a previous landlord","A copy of your driver's license","A security deposit (last month)"]
         },
-        correct: 1,
+        correct: 3,
         explication: { fr: "Au Québec, exiger un dépôt de garantie ou le paiement de plusieurs mois à l'avance est ILLÉGAL. Seul le premier mois de loyer peut être demandé.", en: "In Quebec, requiring a security deposit or multiple months' rent upfront is ILLEGAL. Only the first month's rent can be requested." }
       },
       {
         q: { fr: "Le NAS (Numéro d'Assurance Sociale) est nécessaire pour :", en: "The SIN (Social Insurance Number) is required for:" },
         options: {
-          fr: ["Ouvrir un compte bancaire uniquement","Travailler légalement et payer des impôts","Prendre les transports en commun","Accéder aux soins de santé"],
-          en: ["Opening a bank account only","Working legally and paying taxes","Using public transit","Accessing healthcare"]
+          fr: ["Ouvrir un compte bancaire uniquement","Prendre les transports en commun","Travailler légalement et payer des impôts","Accéder aux soins de santé"],
+          en: ["Opening a bank account only","Using public transit","Working legally and paying taxes","Accessing healthcare"]
         },
-        correct: 1,
+        correct: 2,
         explication: { fr: "Le NAS est obligatoire pour travailler, payer des impôts et accéder aux prestations sociales. Il faut l'obtenir dès les premières semaines.", en: "The SIN is mandatory for working, paying taxes and accessing social benefits. Get it in your first weeks." }
       },
     ]

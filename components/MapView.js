@@ -114,6 +114,28 @@ function parseElements(elements) {
     .filter(Boolean)
 }
 
+// ── Fetch Overpass avec retry ─────────────────────────────────────────────
+async function fetchOverpass(query, signal, retries = 2) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(
+        'https://overpass-api.de/api/interpreter',
+        {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body:    'data=' + encodeURIComponent(query),
+          signal,
+        }
+      )
+      if (res.ok) return await res.json()
+      throw new Error('network')
+    } catch (err) {
+      if (i === retries - 1) throw err
+      await new Promise(r => setTimeout(r, 2000))
+    }
+  }
+}
+
 // ── Composant ─────────────────────────────────────────────────────────────
 export default function MapView({ city, query }) {
   const { lang } = useApp()
@@ -141,18 +163,9 @@ export default function MapView({ city, query }) {
     setErrKind(null)
 
     const controller = new AbortController()
-    const timer      = setTimeout(() => controller.abort(), 22000)
+    const timeout    = setTimeout(() => controller.abort(), 35000)
 
-    fetch('https://overpass-api.de/api/interpreter', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body:    'data=' + encodeURIComponent(oql),
-      signal:  controller.signal,
-    })
-      .then(r => {
-        if (!r.ok) throw new Error('network')
-        return r.json()
-      })
+    fetchOverpass(oql, controller.signal, 2)
       .then(json => {
         const elements = json.elements || []
         console.log('[MapView] résultats Overpass:', elements.length)
@@ -168,11 +181,11 @@ export default function MapView({ city, query }) {
         }
       })
       .finally(() => {
-        clearTimeout(timer)
+        clearTimeout(timeout)
         setLoading(false)
       })
 
-    return () => { controller.abort(); clearTimeout(timer) }
+    return () => { controller.abort(); clearTimeout(timeout) }
   }, [city, query])
 
   const googleUrl = `https://www.google.com/maps/search/${encodeURIComponent(query.replace(/\+/g, ' ') + ' ' + city)}`

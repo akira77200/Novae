@@ -236,8 +236,21 @@ export default function Dashboard() {
   const loadAll = async () => {
     try {
       if (user) {
-        const { data: faitesData } = await sb.from('taches_utilisateur').select('tache_id').eq('utilisateur_id', user.id).eq('complete', true)
-        setFaites((faitesData || []).map(f => f.tache_id))
+        // Cache localStorage pour affichage immédiat
+        try {
+          const cached = JSON.parse(localStorage.getItem('novae_faites') || '[]')
+          if (cached.length) setFaites(cached)
+        } catch {}
+
+        const { data: faitesData } = await sb
+          .from('taches_completees')
+          .select('tache_id')
+          .eq('user_id', user.id)
+          .eq('completee', true)
+
+        const ids = (faitesData || []).map(f => Number(f.tache_id) || f.tache_id)
+        setFaites(ids)
+        try { localStorage.setItem('novae_faites', JSON.stringify(ids)) } catch {}
 
         const { data: todosData } = await sb.from('todos').select('*').eq('utilisateur_id', user.id).order('created_at')
         setTodos(todosData || [])
@@ -260,8 +273,13 @@ export default function Dashboard() {
     const estFaite = faites.includes(id)
     const next = estFaite ? faites.filter(i => i !== id) : [...faites, id]
     setFaites(next)
-    if (user) await sb.from('taches_utilisateur').upsert({ utilisateur_id: user.id, tache_id: id, complete: !estFaite, complete_at: !estFaite ? new Date().toISOString() : null }, { onConflict: 'utilisateur_id,tache_id' })
-    else localStorage.setItem('novae_faites', JSON.stringify(next))
+    try { localStorage.setItem('novae_faites', JSON.stringify(next)) } catch {}
+    if (user) {
+      await sb.from('taches_completees').upsert(
+        { user_id: user.id, tache_id: String(id), completee: !estFaite },
+        { onConflict: 'user_id,tache_id' }
+      )
+    }
   }
 
   const addTodo = async () => {

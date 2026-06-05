@@ -232,7 +232,26 @@ export default function CV() {
   }
 
   // ── Export PDF via print ──────────────────────────────────────
-  const imprimer = () => window.print()
+  const telechargerPDF = () => {
+    const style = document.createElement('style')
+    style.innerHTML = `
+      @media print {
+        body > *:not(#cv-print-wrapper) { display: none !important; }
+        #cv-print-wrapper { display: block !important; }
+        #cv-print {
+          width: 210mm !important;
+          padding: 15mm !important;
+          margin: 0 !important;
+          background: white !important;
+          color: black !important;
+          font-size: 11pt !important;
+        }
+      }
+    `
+    document.head.appendChild(style)
+    window.print()
+    document.head.removeChild(style)
+  }
 
   // ── Données consolidées pour le preview ──────────────────────
   const cvData = {
@@ -300,12 +319,25 @@ export default function CV() {
       {/* ── Print CSS ── */}
       <style>{`
         @media print {
+          * { -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important; }
           body > * { display: none !important; }
-          #cv-print-wrapper { display: block !important; position: fixed; inset: 0; background: #fff; }
-          #cv-print { box-shadow: none !important; margin: 0 !important; padding: 32px 40px !important; }
+          #cv-print {
+            display: block !important;
+            position: absolute;
+            top: 0; left: 0;
+            width: 210mm;
+            margin: 0;
+            padding: 20mm;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #000 !important;
+            background: #fff !important;
+          }
+          #cv-print * { color: #000 !important; }
         }
         #cv-print-wrapper { display: none; }
-        @media print { #cv-print-wrapper { display: block; } }
+        @media print { #cv-print-wrapper { display: block !important; } }
       `}</style>
 
       {/* Wrapper imprimable caché */}
@@ -326,7 +358,7 @@ export default function CV() {
             </p>
           </div>
           {etape === 4 && (
-            <button onClick={imprimer} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+            <button onClick={telechargerPDF} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
               ⬇ {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
             </button>
           )}
@@ -520,7 +552,7 @@ export default function CV() {
                   {generating ? '...' : (lang === 'fr' ? '↺ Régénérer l\'IA' : '↺ Regenerate AI')}
                 </button>
               </div>
-              <button onClick={imprimer} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+              <button onClick={telechargerPDF} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
                 ⬇ {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
               </button>
             </div>
