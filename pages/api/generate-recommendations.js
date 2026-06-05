@@ -168,6 +168,6 @@ Règles :
 
   } catch (err) {
     console.error('[generate-recommendations]', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: 'Erreur lors de la génération des recommandations.' });
   }
 }

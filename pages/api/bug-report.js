@@ -1,8 +1,14 @@
 // pages/api/bug-report.js — Rapports de bug
 import { createClient } from '@supabase/supabase-js'
+import { checkRateLimit, getIP } from '../../lib/apiGuards'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
+
+  const ip = getIP(req)
+  if (!checkRateLimit(ip, 5)) {
+    return res.status(429).json({ error: 'Trop de rapports. Réessaie plus tard.' })
+  }
 
   const { email, page, description } = req.body
   if (!description?.trim()) {
@@ -17,7 +23,7 @@ export default async function handler(req, res) {
   const { error } = await supabase.from('bug_reports').insert({
     user_email: email?.trim() || null,
     page:       page?.trim() || null,
-    description: description.trim(),
+    description: description.trim().slice(0, 2000),
     statut:     'nouveau',
   })
 
@@ -25,8 +31,6 @@ export default async function handler(req, res) {
     console.error('[bug-report] Erreur Supabase:', error.message)
     return res.status(500).json({ error: 'Impossible d\'enregistrer le rapport.' })
   }
-
-  console.log(`[bug-report] Nouveau bug — ${email || 'anonyme'} — page: ${page || '?'}`)
 
   res.status(200).json({ success: true })
 }
