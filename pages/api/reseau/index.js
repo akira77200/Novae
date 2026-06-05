@@ -1,23 +1,16 @@
 // pages/api/reseau/index.js — GET list + POST create
-import { createClient } from '@supabase/supabase-js'
-
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+import { supabaseAdmin } from '../../../lib/supabaseAdmin'
+import { requireAuth } from '../../../lib/apiGuards'
 
 export default async function handler(req, res) {
-  const token = req.headers.authorization?.replace('Bearer ', '')
-  if (!token) return res.status(401).json({ error: 'Non authentifié' })
-
-  const { data: { user }, error: authErr } = await sb.auth.getUser(token)
-  if (authErr || !user) return res.status(401).json({ error: 'Token invalide' })
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   if (req.method === 'GET') {
-    const { data, error } = await sb
+    const { data, error } = await supabaseAdmin
       .from('contacts_reseau')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', authResult.user.id)
       .order('date_rencontre', { ascending: false })
     if (error) return res.status(500).json({ error: error.message })
     return res.status(200).json({ data: data || [] })
@@ -28,10 +21,10 @@ export default async function handler(req, res) {
             date_rencontre, derniere_interaction, rappel_dans, notes, linkedin_url } = req.body
     if (!prenom?.trim()) return res.status(400).json({ error: 'Prénom requis' })
 
-    const { data, error } = await sb
+    const { data, error } = await supabaseAdmin
       .from('contacts_reseau')
       .insert({
-        user_id: user.id,
+        user_id: authResult.user.id,
         prenom: prenom.trim(),
         nom: nom?.trim() || null,
         poste: poste?.trim() || null,

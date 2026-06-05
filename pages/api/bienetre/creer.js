@@ -1,19 +1,12 @@
 // pages/api/bienetre/creer.js — POST check-in bien-être
-import { createClient } from '@supabase/supabase-js'
-
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+import { supabaseAdmin } from '../../../lib/supabaseAdmin'
+import { requireAuth } from '../../../lib/apiGuards'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const token = req.headers.authorization?.replace('Bearer ', '')
-  if (!token) return res.status(401).json({ error: 'Non authentifié' })
-
-  const { data: { user }, error: authErr } = await sb.auth.getUser(token)
-  if (authErr || !user) return res.status(401).json({ error: 'Token invalide' })
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { score, humeur, note } = req.body
   if (!score || score < 1 || score > 5) return res.status(400).json({ error: 'Score invalide (1-5)' })
@@ -27,9 +20,9 @@ export default async function handler(req, res) {
   const semaine = lundi.toISOString().split('T')[0]
 
   // Upsert : un seul check-in par semaine
-  const { data, error } = await sb
+  const { data, error } = await supabaseAdmin
     .from('bienetre')
-    .upsert({ user_id: user.id, score, humeur: humeur || null, note: note || null, semaine }, { onConflict: 'user_id,semaine' })
+    .upsert({ user_id: authResult.user.id, score, humeur: humeur || null, note: note || null, semaine }, { onConflict: 'user_id,semaine' })
     .select()
     .single()
 

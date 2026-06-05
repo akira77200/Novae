@@ -1,25 +1,7 @@
 // pages/api/generer-vision.js — NOVAE v5 — Vision IA personnalisée
-import Anthropic from '@anthropic-ai/sdk'
+import { anthropic } from '../../lib/anthropic'
+import { parseClaudeJson } from '../../lib/parseJson'
 import { checkRateLimit, getIP, requireAuth } from '../../lib/apiGuards'
-
-function parseVisionJson(text) {
-  let raw = (text || '')
-    .trim()
-    .replace(/^```json\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/```\s*$/i, '')
-    .replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
-    .trim()
-
-  const start = raw.indexOf('{')
-  const end   = raw.lastIndexOf('}')
-  if (start !== -1 && end > start) raw = raw.slice(start, end + 1)
-
-  // Corrige les virgules traînantes avant } ou ]
-  raw = raw.replace(/,\s*([}\]])/g, '$1')
-
-  return JSON.parse(raw)
-}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
@@ -33,7 +15,6 @@ export default async function handler(req, res) {
   const { programme, pays_origine, horizon, activites } = req.body
   if (!programme) return res.status(400).json({ error: 'Programme manquant' })
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   const pays = pays_origine || 'non renseigné'
 
   const prompt = `Tu es un conseiller de carrière expert pour nouveaux arrivants francophones qui étudient au Canada.
@@ -86,7 +67,7 @@ Règles STRICTES :
 - JSON valide uniquement, pas de texte avant ou après`
 
   try {
-    const message = await client.messages.create({
+    const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 2500,
       messages: [{ role: 'user', content: prompt }],
@@ -95,7 +76,7 @@ Règles STRICTES :
     const rawText = message.content[0]?.text || ''
 
     try {
-      const vision = parseVisionJson(rawText)
+      const vision = parseClaudeJson(rawText)
       res.status(200).json({ success: true, vision })
     } catch (err) {
       console.error('[generer-vision] JSON invalide:', rawText.substring(0, 300))

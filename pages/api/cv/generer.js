@@ -1,11 +1,10 @@
 // pages/api/cv/generer.js — Génération résumé + bullet points via Claude
-import Anthropic from '@anthropic-ai/sdk'
+import { anthropic, requireAnthropicKey } from '../../../lib/anthropic'
+import { parseClaudeJson } from '../../../lib/parseJson'
 import { checkRateLimit, getIP, requireAuth } from '../../../lib/apiGuards'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export default async function handler(req, res) {
-  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
+  if (!requireAnthropicKey(res)) return
   if (req.method !== 'POST') return res.status(405).end()
 
   const ip = getIP(req)
@@ -52,19 +51,13 @@ Règles pour les bullets :
 - Si la description est vide, invente des bullets plausibles selon le poste`
 
   try {
-    const msg = await client.messages.create({
+    const msg = await anthropic.messages.create({
       model:      'claude-haiku-4-5-20251001',
       max_tokens: 1500,
       messages:   [{ role: 'user', content: prompt }],
     })
 
-    const raw = (msg.content[0]?.text || '{}')
-      .trim()
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/```\s*$/i, '')
-      .trim()
-    const json = JSON.parse(raw)
+    const json = parseClaudeJson(msg.content[0]?.text)
     return res.status(200).json({ success: true, data: json })
   } catch (e) {
     return res.status(500).json({ error: e.message })

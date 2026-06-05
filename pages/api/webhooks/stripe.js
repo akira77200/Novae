@@ -1,11 +1,10 @@
 // pages/api/webhooks/stripe.js
 import Stripe from 'stripe'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 
 export const config = { api: { bodyParser: false } }
 
 const stripe     = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' })
-const supabase   = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { autoRefreshToken: false, persistSession: false } })
 const getRawBody = (req) => new Promise((res, rej) => { const c = []; req.on('data', d => c.push(d)); req.on('end', () => res(Buffer.concat(c))); req.on('error', rej) })
 
 export default async function handler(req, res) {
@@ -18,7 +17,7 @@ export default async function handler(req, res) {
     if (event.type === 'checkout.session.completed') {
       const s    = event.data.object
       const meta = s.metadata
-      const { data: session } = await supabase.from('sessions').insert({
+      const { data: session } = await supabaseAdmin.from('sessions').insert({
         mentor_id: meta.mentor_id, sujet: meta.sujet,
         duree_minutes: parseInt(meta.duree_minutes),
         statut: 'confirme', montant: s.amount_total, devise: 'cad',
@@ -30,7 +29,7 @@ export default async function handler(req, res) {
       }).select().single()
 
       if (session) {
-        await supabase.from('paiements').insert({ session_id: session.id, stripe_payment_intent_id: s.payment_intent, montant: s.amount_total, devise: 'cad', statut: 'reussi', description: `Session mentor — ${meta.sujet}` })
+        await supabaseAdmin.from('paiements').insert({ session_id: session.id, stripe_payment_intent_id: s.payment_intent, montant: s.amount_total, devise: 'cad', statut: 'reussi', description: `Session mentor — ${meta.sujet}` })
       }
     }
     return res.status(200).json({ ok: true })
