@@ -664,27 +664,6 @@ export default function Dashboard() {
                     </div>
                   )}
 
-                  {/* BLOC 4 — Ressources utiles */}
-                  {rec.resources?.length > 0 && (
-                    <div style={{ marginBottom:12 }}>
-                      <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:12 }}>
-                        🔗 {lang === 'fr' ? 'Ressources utiles' : 'Useful Resources'}
-                      </p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                        {rec.resources.map((r, i) => (
-                          <a key={i} href={r.url} target="_blank" rel="noreferrer"
-                            style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'12px 16px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:10, textDecoration:'none' }}>
-                            <span style={{ fontSize:18, flexShrink:0 }}>{r.emoji}</span>
-                            <div>
-                              <p style={{ fontSize:13, fontWeight:600, color:C.accent2, marginBottom:2 }}>{r.name} ↗</p>
-                              <p style={{ fontSize:12, color:C.muted }}>{r.description}</p>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* Bouton régénérer */}
                   <button onClick={genererRecommandations} disabled={genLoading}
                     style={{ padding:'6px 14px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor: genLoading ? 'not-allowed' : 'pointer', marginTop:4 }}>
@@ -891,6 +870,27 @@ export default function Dashboard() {
               </div>
             )}
           </>
+        )}
+
+        {/* ── RESSOURCES UTILES (bas de page) ── */}
+        {user && profile?.ai_recommendations?.resources?.length > 0 && (
+          <div style={{ marginTop: 36, paddingTop: 28, borderTop: `1px solid ${C.border}` }}>
+            <p style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 14 }}>
+              🔗 {lang === 'fr' ? 'Ressources utiles' : 'Useful Resources'}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {profile.ai_recommendations.resources.map((r, i) => (
+                <a key={i} href={r.url} target="_blank" rel="noreferrer"
+                  style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 16px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 10, textDecoration: 'none' }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>{r.emoji}</span>
+                  <div>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: C.accent2, marginBottom: 2 }}>{r.name} ↗</p>
+                    <p style={{ fontSize: 12, color: C.muted }}>{r.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         )}
 
       </main>

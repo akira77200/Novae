@@ -3,6 +3,42 @@ import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
+const PAYS_LISTE = [
+  'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie',
+  'Allemagne', 'Angola', 'Arabie Saoudite', 'Argentine',
+  'Australie', 'Autriche', 'Azerbaïdjan', 'Bahreïn',
+  'Bangladesh', 'Belgique', 'Bénin', 'Birmanie',
+  'Bolivie', 'Bosnie-Herzégovine', 'Brésil', 'Bulgarie',
+  'Burkina Faso', 'Burundi', 'Cambodge', 'Cameroun',
+  'Canada', 'Chili', 'Chine', 'Chypre', 'Colombie',
+  'Congo', 'Corée du Sud', 'Costa Rica', 'Côte d\'Ivoire',
+  'Croatie', 'Cuba', 'Danemark', 'Djibouti',
+  'Égypte', 'Émirats arabes unis', 'Équateur',
+  'Espagne', 'Éthiopie', 'États-Unis', 'Finlande',
+  'France', 'Gabon', 'Ghana', 'Grèce', 'Guatemala',
+  'Guinée', 'Guinée-Bissau', 'Haïti', 'Honduras',
+  'Hongrie', 'Inde', 'Indonésie', 'Irak', 'Iran',
+  'Irlande', 'Israël', 'Italie', 'Jamaïque', 'Japon',
+  'Jordanie', 'Kazakhstan', 'Kenya', 'Koweït', 'Laos',
+  'Liban', 'Libye', 'Luxembourg', 'Madagascar', 'Malaisie',
+  'Mali', 'Maroc', 'Mauritanie', 'Mexique', 'Moldavie',
+  'Mongolie', 'Mozambique', 'Namibie', 'Népal',
+  'Nicaragua', 'Niger', 'Nigeria', 'Norvège',
+  'Nouvelle-Zélande', 'Oman', 'Ouganda', 'Ouzbékistan',
+  'Pakistan', 'Panama', 'Paraguay', 'Pays-Bas',
+  'Pérou', 'Philippines', 'Pologne', 'Portugal',
+  'Qatar', 'République centrafricaine', 'République dominicaine',
+  'République tchèque', 'Roumanie', 'Royaume-Uni',
+  'Russie', 'Rwanda', 'Sénégal', 'Serbie',
+  'Sierra Leone', 'Singapour', 'Slovaquie', 'Slovénie',
+  'Somalie', 'Soudan', 'Sri Lanka', 'Suède',
+  'Suisse', 'Syrie', 'Taïwan', 'Tanzanie',
+  'Tchad', 'Thaïlande', 'Togo', 'Tunisie',
+  'Turkménistan', 'Turquie', 'Ukraine', 'Uruguay',
+  'Venezuela', 'Vietnam', 'Yémen', 'Zambie', 'Zimbabwe',
+  'Autre',
+]
+
 // ── QUIZ — Questions ─────────────────────────────────────────────
 const QUESTIONS = [
   {
@@ -60,7 +96,7 @@ const QUESTIONS = [
     fr: "Ton pays d'origine", en: 'Your country of origin',
     sous_fr: 'Sélectionne dans la liste', sous_en: 'Select from the list',
     type: 'select',
-    options: ['Maroc','Algérie','Tunisie','Sénégal','Côte d\'Ivoire','Cameroun','RDC','Mali','Guinée','Madagascar','Mauritanie','Niger','Burkina Faso','Togo','Bénin','Gabon','Congo','Rwanda','Éthiopie','Autre'],
+    options: PAYS_LISTE,
   },
   {
     id: 'budget',
@@ -245,30 +281,156 @@ const PAYS_OPPORTUNITES = {
 
 // ── Helpers ──────────────────────────────────────────────────────
 const MATIERES_LABELS = { math:'mathématiques', sciences:'sciences', informatique:'informatique', langues:'langues', sh:'sciences humaines', arts:'arts', economie:'économie' }
+const MATIERES_LABELS_EN = { math:'mathematics', sciences:'sciences', informatique:'computer science', langues:'languages', sh:'humanities', arts:'arts', economie:'economics' }
 const ACTIVITES_LABELS = { analyser:'analyser des données', construire:'construire des systèmes', aider:'aider des personnes', diriger:'diriger des équipes', innover:'créer et innover' }
+const ACTIVITES_LABELS_EN = { analyser:'analyze data', construire:'build systems', aider:'help people', diriger:'lead teams', innover:'create and innovate' }
+const HORIZON_LABELS = { rester:'rester au Canada', retour:'retourner dans ton pays', pont:'construire des ponts entre les deux' }
+const HORIZON_LABELS_EN = { rester:'stay in Canada', retour:'return home', pont:'build bridges between both' }
+const BUDGET_LABELS = { moins15:'un budget serré (moins de 15 000 $)', '15-25':'un budget modéré', '25-40':'un budget confortable', plus40:'un budget élevé' }
+const BUDGET_LABELS_EN = { moins15:'a tight budget (under CAD 15,000)', '15-25':'a moderate budget', '25-40':'a comfortable budget', plus40:'a high budget' }
+
+const IMPACT_RETOUR = ['education', 'sante', 'genie-civil', 'environnement', 'administration', 'data-science', 'droit']
+const PROGRAMMES_COURTS = ['education', 'sante', 'administration']
 
 function calculerScore(reponses) {
-  const matieres = reponses.matieres || []
-  return PROGRAMMES.map(prog => {
-    let score = 0
+  const matieres  = reponses.matieres || []
+  const activite  = reponses.activite
+  const horizon   = reponses.horizon
+  const budget    = reponses.budget
+  const risque    = reponses.risque
+
+  const scored = PROGRAMMES.map((prog, idx) => {
+    let score = idx * 0.07 // tiebreaker unique par programme
+
     prog.matieres.forEach(m => { if (matieres.includes(m)) score += 3 })
-    if (prog.activites.includes(reponses.activite)) score += 2
-    if (reponses.horizon === 'retour' || reponses.horizon === 'pont') score += 1
-    const pct = Math.max(10, Math.min(95, Math.round((score / 12) * 100)))
-    return { ...prog, score, pct }
-  }).sort((a, b) => b.score - a.score).slice(0, 3)
+    if (prog.activites.includes(activite)) score += 4
+
+    // Règles explicites demandées
+    if (matieres.includes('math') && matieres.includes('informatique')) {
+      if (prog.id === 'data-science')   score += 14
+      if (prog.id === 'genie-logiciel') score += 12
+    }
+
+    if (activite === 'aider' && matieres.includes('sciences')) {
+      if (prog.id === 'sante')     score += 16
+      if (prog.id === 'education') score += 6
+    }
+
+    if (activite === 'diriger' && matieres.includes('economie')) {
+      if (prog.id === 'administration') score += 14
+      if (prog.id === 'finance')        score += 12
+    }
+
+    // Horizon retour → impact pays en développement
+    if (horizon === 'retour' && IMPACT_RETOUR.includes(prog.id)) score += 8
+    if (horizon === 'pont'   && IMPACT_RETOUR.includes(prog.id)) score += 5
+    if (horizon === 'rester' && ['data-science', 'genie-logiciel', 'finance', 'genie-electrique'].includes(prog.id)) score += 4
+
+    // Budget serré → collège / programmes courts
+    if (budget === 'moins15') {
+      if (PROGRAMMES_COURTS.includes(prog.id)) score += 10
+      if (prog.id === 'administration') score += 5
+      if (['genie-civil', 'genie-electrique', 'droit'].includes(prog.id)) score -= 5
+    } else if (budget === 'plus40') {
+      if (['droit', 'genie-electrique', 'data-science'].includes(prog.id)) score += 4
+    }
+
+    // Activité complémentaire
+    if (activite === 'analyser'   && ['data-science', 'finance'].includes(prog.id)) score += 5
+    if (activite === 'construire' && ['genie-logiciel', 'genie-civil', 'genie-electrique', 'environnement'].includes(prog.id)) score += 5
+    if (activite === 'innover'    && ['genie-logiciel', 'environnement', 'data-science'].includes(prog.id)) score += 5
+    if (activite === 'aider'      && ['education', 'droit', 'sante'].includes(prog.id)) score += 4
+
+    // Rapport au risque
+    if (risque === 'stabilite'    && ['sante', 'education', 'administration'].includes(prog.id)) score += 4
+    if (risque === 'entreprendre' && ['genie-logiciel', 'data-science', 'environnement'].includes(prog.id)) score += 4
+    if (risque === 'equilibre'    && ['finance', 'droit', 'administration'].includes(prog.id)) score += 3
+
+    // Matières spécifiques
+    if (matieres.includes('langues') && ['droit', 'administration', 'education'].includes(prog.id)) score += 3
+    if (matieres.includes('arts')    && prog.id === 'education') score += 4
+    if (matieres.includes('sh')      && ['droit', 'education', 'administration'].includes(prog.id)) score += 3
+
+    return { ...prog, score }
+  })
+
+  const sorted = scored.sort((a, b) => b.score - a.score)
+  const top3   = sorted.slice(0, 3)
+  const max    = top3[0]?.score || 1
+  const min    = top3[2]?.score || 0
+  const spread = Math.max(max - min, 1)
+
+  return top3.map((prog, i) => {
+    const relative = (prog.score - min) / spread
+    const pct = Math.round(Math.max(52, Math.min(97, 72 + relative * 22 - i * 3)))
+    return { ...prog, pct }
+  })
 }
 
 function genererPourquoi(prog, reponses, lang) {
   const matieres = reponses.matieres || []
-  const matching = prog.matieres.filter(m => matieres.includes(m)).map(m => MATIERES_LABELS[m] || m)
-  const activiteMatch = prog.activites.includes(reponses.activite)
-  const parts = []
-  if (matching.length > 0) parts.push(lang === 'fr' ? `Tu es fort(e) en ${matching.join(' et ')}` : `You're strong in ${matching.join(' and ')}`)
-  if (activiteMatch && reponses.activite) parts.push(lang === 'fr' ? `tu aimes ${ACTIVITES_LABELS[reponses.activite] || reponses.activite}` : `you love ${reponses.activite}`)
+  const isFr = lang === 'fr'
+  const ml = isFr ? MATIERES_LABELS : MATIERES_LABELS_EN
+  const al = isFr ? ACTIVITES_LABELS : ACTIVITES_LABELS_EN
+  const hl = isFr ? HORIZON_LABELS : HORIZON_LABELS_EN
+  const bl = isFr ? BUDGET_LABELS : BUDGET_LABELS_EN
+  const raisons = []
+
+  const matieresMatch = prog.matieres.filter(m => matieres.includes(m)).map(m => ml[m] || m)
+  if (matieresMatch.length > 0) {
+    raisons.push(isFr
+      ? `tu excelles en ${matieresMatch.join(' et ')}`
+      : `you excel in ${matieresMatch.join(' and ')}`)
+  }
+
+  if (reponses.activite && prog.activites.includes(reponses.activite)) {
+    raisons.push(isFr
+      ? `tu veux ${al[reponses.activite]}`
+      : `you want to ${al[reponses.activite]}`)
+  }
+
+  if (matieres.includes('math') && matieres.includes('informatique') && ['data-science', 'genie-logiciel'].includes(prog.id)) {
+    raisons.push(isFr
+      ? 'ton combo math + informatique est un atout majeur dans ce secteur'
+      : 'your math + computer science combo is a major asset in this field')
+  }
+
+  if (reponses.activite === 'aider' && matieres.includes('sciences') && prog.id === 'sante') {
+    raisons.push(isFr
+      ? 'ton profil sciences + envie d\'aider pointe vers les métiers de la santé'
+      : 'your sciences profile + desire to help points to health careers')
+  }
+
+  if (reponses.activite === 'diriger' && matieres.includes('economie') && ['administration', 'finance'].includes(prog.id)) {
+    raisons.push(isFr
+      ? 'ton profil économie + leadership correspond aux métiers de gestion'
+      : 'your economics profile + leadership fits management careers')
+  }
+
+  if (reponses.horizon === 'retour' && IMPACT_RETOUR.includes(prog.id)) {
+    raisons.push(isFr
+      ? `avec ton projet de retour${reponses.pays ? ` en ${reponses.pays}` : ''}, ce programme a un fort impact`
+      : `with your plan to return${reponses.pays ? ` to ${reponses.pays}` : ''}, this program has strong impact`)
+  }
+
+  if (reponses.budget === 'moins15' && PROGRAMMES_COURTS.includes(prog.id)) {
+    raisons.push(isFr
+      ? `avec ${bl.moins15}, un parcours collégial ou court est plus adapté`
+      : `with ${bl.moins15}, a college or shorter program is a better fit`)
+  }
+
+  if (reponses.risque === 'stabilite' && ['sante', 'education', 'administration'].includes(prog.id)) {
+    raisons.push(isFr ? 'tu recherches la stabilité — ce secteur offre des débouchés sécurisés' : 'you seek stability — this sector offers secure opportunities')
+  }
+
   const nom = prog.nom[lang]
-  if (lang === 'fr') return parts.length > 0 ? `${parts.join(' et ')} — ${nom} est fait pour toi.` : `${nom} correspond à tes aspirations.`
-  return parts.length > 0 ? `${parts.join(' and ')} — ${nom} is made for you.` : `${nom} matches your aspirations.`
+  if (raisons.length === 0) {
+    return isFr ? `${nom} correspond à ton profil global.` : `${nom} matches your overall profile.`
+  }
+
+  const intro = isFr ? 'Parce que ' : 'Because '
+  const suffix = isFr ? ` — ${nom} est un excellent choix pour toi.` : ` — ${nom} is an excellent choice for you.`
+  return intro + raisons.slice(0, 3).join(isFr ? ', ' : ', ') + suffix
 }
 
 function getPaysFiches(pays) {
