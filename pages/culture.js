@@ -114,12 +114,42 @@ export default function Culture() {
           ))}
         </div>
 
-        <div style={{ marginTop: 28, padding: '14px 18px', background: `${C.accent}10`, border: `1px solid ${C.accent}30`, borderRadius: 12 }}>
+        <div style={{ marginTop: 28, padding: '14px 18px', background: `${C.accent}10`, border: `1px solid ${C.accent}30`, borderRadius: 12, marginBottom: 28 }}>
           <p style={{ fontSize: 13, color: C.accent2, lineHeight: 1.65 }}>
             💡 {lang === 'fr'
               ? "L'intégration culturelle n'est pas une trahison de tes racines — c'est la capacité de fonctionner dans deux cultures simultanément."
               : "Cultural integration is not a betrayal of your roots — it's the ability to function in two cultures simultaneously."}
           </p>
+        </div>
+
+        {/* ── SECTION QUIZ ── */}
+        <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px' }}>
+          <p style={{ fontSize: 16, fontWeight: 800, color: C.text, marginBottom: 6 }}>
+            🎮 {lang === 'fr' ? 'Teste tes connaissances' : 'Test your knowledge'}
+          </p>
+          <p style={{ fontSize: 13, color: C.muted, marginBottom: 20, lineHeight: 1.6 }}>
+            {lang === 'fr'
+              ? 'Quiz interactif sur les codes sociaux, l\'hiver, le travail et les finances au Canada.'
+              : 'Interactive quiz on social codes, winter, work and finances in Canada.'}
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 20 }}>
+            {[
+              { id:'codes_sociaux', emoji:'🤝', fr:'Codes sociaux',    en:'Social Codes',    color:'#52B788' },
+              { id:'hiver',         emoji:'❄️', fr:"Survivre à l'hiver", en:'Surviving Winter', color:'#60A5FA' },
+              { id:'travail',       emoji:'💼', fr:'Culture du travail',en:'Work Culture',    color:'#FBBF24' },
+              { id:'finances',      emoji:'💳', fr:'Finances & banque', en:'Finance & Banking',color:'#F97316' },
+            ].map(q => (
+              <a key={q.id} href={`/quiz-culture?cat=${q.id}`}
+                style={{ display:'flex', alignItems:'center', gap:10, padding:'12px 14px', background:q.color+'10', border:`1px solid ${q.color}30`, borderRadius:11, textDecoration:'none' }}>
+                <span style={{ fontSize:20 }}>{q.emoji}</span>
+                <p style={{ fontSize:13, fontWeight:600, color:C.text }}>{lang==='fr'?q.fr:q.en}</p>
+              </a>
+            ))}
+          </div>
+          <a href="/quiz-culture"
+            style={{ display:'block', textAlign:'center', padding:'11px', background: C.accent, border:'none', borderRadius:10, color:'#fff', fontWeight:700, fontSize:14, textDecoration:'none' }}>
+            {lang === 'fr' ? '🎮 Commencer le quiz →' : '🎮 Start the quiz →'}
+          </a>
         </div>
       </main>
     </div>

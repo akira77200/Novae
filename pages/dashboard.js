@@ -187,10 +187,17 @@ export default function Dashboard() {
     if (!profile || !user) return
     setGenLoading(true)
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) return
+
       const payload = { profile: { ...profile, id: user.id } }
       const res = await fetch('/api/generate-recommendations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body: JSON.stringify(payload)
       })
       const data = await res.json()
@@ -229,8 +236,21 @@ export default function Dashboard() {
   const loadAll = async () => {
     try {
       if (user) {
-        const { data: faitesData } = await sb.from('taches_utilisateur').select('tache_id').eq('utilisateur_id', user.id).eq('complete', true)
-        setFaites((faitesData || []).map(f => f.tache_id))
+        // Cache localStorage pour affichage immédiat
+        try {
+          const cached = JSON.parse(localStorage.getItem('novae_faites') || '[]')
+          if (cached.length) setFaites(cached)
+        } catch {}
+
+        const { data: faitesData } = await sb
+          .from('taches_completees')
+          .select('tache_id')
+          .eq('user_id', user.id)
+          .eq('completee', true)
+
+        const ids = (faitesData || []).map(f => Number(f.tache_id) || f.tache_id)
+        setFaites(ids)
+        try { localStorage.setItem('novae_faites', JSON.stringify(ids)) } catch {}
 
         const { data: todosData } = await sb.from('todos').select('*').eq('utilisateur_id', user.id).order('created_at')
         setTodos(todosData || [])
@@ -253,8 +273,13 @@ export default function Dashboard() {
     const estFaite = faites.includes(id)
     const next = estFaite ? faites.filter(i => i !== id) : [...faites, id]
     setFaites(next)
-    if (user) await sb.from('taches_utilisateur').upsert({ utilisateur_id: user.id, tache_id: id, complete: !estFaite, complete_at: !estFaite ? new Date().toISOString() : null }, { onConflict: 'utilisateur_id,tache_id' })
-    else localStorage.setItem('novae_faites', JSON.stringify(next))
+    try { localStorage.setItem('novae_faites', JSON.stringify(next)) } catch {}
+    if (user) {
+      await sb.from('taches_completees').upsert(
+        { user_id: user.id, tache_id: String(id), completee: !estFaite },
+        { onConflict: 'user_id,tache_id' }
+      )
+    }
   }
 
   const addTodo = async () => {
@@ -639,27 +664,6 @@ export default function Dashboard() {
                     </div>
                   )}
 
-                  {/* BLOC 4 — Ressources utiles */}
-                  {rec.resources?.length > 0 && (
-                    <div style={{ marginBottom:12 }}>
-                      <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:12 }}>
-                        🔗 {lang === 'fr' ? 'Ressources utiles' : 'Useful Resources'}
-                      </p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                        {rec.resources.map((r, i) => (
-                          <a key={i} href={r.url} target="_blank" rel="noreferrer"
-                            style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'12px 16px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:10, textDecoration:'none' }}>
-                            <span style={{ fontSize:18, flexShrink:0 }}>{r.emoji}</span>
-                            <div>
-                              <p style={{ fontSize:13, fontWeight:600, color:C.accent2, marginBottom:2 }}>{r.name} ↗</p>
-                              <p style={{ fontSize:12, color:C.muted }}>{r.description}</p>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* Bouton régénérer */}
                   <button onClick={genererRecommandations} disabled={genLoading}
                     style={{ padding:'6px 14px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor: genLoading ? 'not-allowed' : 'pointer', marginTop:4 }}>
@@ -866,6 +870,27 @@ export default function Dashboard() {
               </div>
             )}
           </>
+        )}
+
+        {/* ── RESSOURCES UTILES (bas de page) ── */}
+        {user && profile?.ai_recommendations?.resources?.length > 0 && (
+          <div style={{ marginTop: 36, paddingTop: 28, borderTop: `1px solid ${C.border}` }}>
+            <p style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 14 }}>
+              🔗 {lang === 'fr' ? 'Ressources utiles' : 'Useful Resources'}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {profile.ai_recommendations.resources.map((r, i) => (
+                <a key={i} href={r.url} target="_blank" rel="noreferrer"
+                  style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 16px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 10, textDecoration: 'none' }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>{r.emoji}</span>
+                  <div>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: C.accent2, marginBottom: 2 }}>{r.name} ↗</p>
+                    <p style={{ fontSize: 12, color: C.muted }}>{r.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
         )}
 
       </main>

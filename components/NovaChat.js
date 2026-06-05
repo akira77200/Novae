@@ -16,12 +16,13 @@ const SUGGESTIONS_EN = [
 ]
 
 export default function NovaChat() {
-  const { C, lang, profile, mounted } = useApp()
+  const { C, lang, profile, mounted, sb, planLimits, userPlan } = useApp()
   const [open,      setOpen]      = useState(false)
   const [messages,  setMessages]  = useState([]) // { role, content }
   const [input,     setInput]     = useState('')
   const [streaming, setStreaming] = useState(false)
   const [hasNew,    setHasNew]    = useState(false)
+  const [limitReached, setLimitReached] = useState(false)
 
   const bottomRef  = useRef(null)
   const inputRef   = useRef(null)
@@ -56,6 +57,18 @@ export default function NovaChat() {
   const envoyer = async (texte) => {
     const msg = (texte || input).trim()
     if (!msg || streaming) return
+
+    // Vérifier les limites quotidiennes
+    try {
+      const today = new Date().toISOString().split('T')[0]
+      const dailyKey = `novae_nova_count_${today}`
+      const dailyCount = parseInt(localStorage.getItem(dailyKey) || '0')
+      if (dailyCount >= planLimits.nova_daily) {
+        setLimitReached(true)
+        return
+      }
+    } catch {}
+
     setInput('')
 
     const userMsg = { role: 'user', content: msg }
@@ -69,9 +82,23 @@ export default function NovaChat() {
 
     abortRef.current = new AbortController()
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) {
+        setMessages(p => {
+          const copy = [...p]
+          copy[assistantIdx] = { role: 'assistant', content: lang === 'fr' ? 'Connecte-toi pour utiliser Nova.' : 'Sign in to use Nova.' }
+          return copy
+        })
+        return
+      }
+
       const res = await fetch('/api/nova', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body:    JSON.stringify({
           messages: history,
           profile: profile ? {
@@ -123,6 +150,13 @@ export default function NovaChat() {
     } finally {
       setStreaming(false)
       if (!open) setHasNew(true)
+      // Incrémenter le compteur quotidien si succès
+      try {
+        const today = new Date().toISOString().split('T')[0]
+        const dailyKey = `novae_nova_count_${today}`
+        const dailyCount = parseInt(localStorage.getItem(dailyKey) || '0')
+        localStorage.setItem(dailyKey, (dailyCount + 1).toString())
+      } catch {}
     }
   }
 
@@ -173,8 +207,22 @@ export default function NovaChat() {
           {/* Messages */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '14px 14px 8px', display: 'flex', flexDirection: 'column', gap: 10 }}>
 
+            {/* Message limite atteinte */}
+            {limitReached && (
+              <div style={{ padding: '12px 16px', background: `${C.warning}10`, border: `1px solid ${C.warning}30`, borderRadius: 10, marginBottom: 8 }}>
+                <p style={{ fontSize: 13, color: C.text, marginBottom: 8, lineHeight: 1.6 }}>
+                  {lang === 'fr'
+                    ? `Tu as atteint ta limite de ${planLimits.nova_daily} messages aujourd'hui pour le plan ${userPlan}.`
+                    : `You've reached your limit of ${planLimits.nova_daily} messages today for the ${userPlan} plan.`}
+                </p>
+                <a href="/abonnement" style={{ fontSize: 12, color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+                  {lang === 'fr' ? 'Voir les abonnements →' : 'View plans →'}
+                </a>
+              </div>
+            )}
+
             {/* Suggestions si conversation vide (1 message = accueil) */}
-            {messages.length <= 1 && (
+            {messages.length <= 1 && !limitReached && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
                 {suggestions.map((s, i) => (
                   <button key={i} onClick={() => envoyer(s)}

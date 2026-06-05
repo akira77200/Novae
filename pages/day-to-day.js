@@ -107,12 +107,196 @@ const EXEMPLES_CAD = [
   { label: 'Repas resto rapide',       cad: 15  },
 ]
 
+// ── Données logement par ville ────────────────────────────────────
+const LOGEMENT_DATA = {
+  Montreal: {
+    label: 'Montréal',
+    options: [
+      {
+        type: 'Chambre en colocation', type_en: 'Shared room',
+        budget_min: 500, budget_max: 950,
+        description: 'Appartement partagé avec 2–4 colocataires', description_en: 'Apartment shared with 2–4 roommates',
+        quartiers: ['Rosemont','Plateau-Mont-Royal','Côte-des-Neiges'],
+        avantages: ['Moins cher','Souvent meublé','Rencontres sociales'],
+        avantages_en: ['Cheaper','Often furnished','Social connections'],
+        inconvenients: ["Moins d'intimité",'Règles communes'],
+        inconvenients_en: ['Less privacy','Shared rules'],
+        conseil: 'Idéal pour les 6 premiers mois', conseil_en: 'Ideal for the first 6 months',
+        lien: 'https://www.kijiji.ca/b-colocation/montreal/k0l80002',
+      },
+      {
+        type: 'Studio / 3½', type_en: 'Studio / 1-bedroom',
+        budget_min: 950, budget_max: 1450,
+        description: 'Appartement seul, entrée indépendante', description_en: 'Solo apartment, private entrance',
+        quartiers: ['Verdun','Mercier','Saint-Michel','Rosemont'],
+        avantages: ['Intimité totale','Liberté','Pas de conflits'],
+        avantages_en: ['Full privacy','Freedom','No conflicts'],
+        inconvenients: ['Plus cher','Souvent non meublé'],
+        inconvenients_en: ['More expensive','Often unfurnished'],
+        conseil: "Prévoir 1er mois + dépôt = 2× le loyer avant d'arriver", conseil_en: 'Budget 1st month + deposit = 2× rent before arrival',
+        lien: 'https://www.kijiji.ca/b-appartement-condo/montreal/k0l80002',
+      },
+      {
+        type: 'Résidence universitaire', type_en: 'University residence',
+        budget_min: 700, budget_max: 1250,
+        description: 'Chambre sur le campus universitaire', description_en: 'Room on the university campus',
+        quartiers: ['Sur campus'],
+        avantages: ['Tout inclus','Sécurité','Communauté étudiante'],
+        avantages_en: ['All-inclusive','Safe','Student community'],
+        inconvenients: ['Places limitées','Règles strictes','Moins de liberté'],
+        inconvenients_en: ['Limited spots','Strict rules','Less freedom'],
+        conseil: 'Réserver dès l\'admission — places limitées !', conseil_en: 'Book right at admission — spots are limited!',
+        lien: 'https://www.umontreal.ca/etudiant-e-s/residences',
+      },
+    ],
+  },
+  Toronto: {
+    label: 'Toronto',
+    options: [
+      {
+        type: 'Chambre en colocation', type_en: 'Shared room',
+        budget_min: 800, budget_max: 1300,
+        description: 'Chambre dans une maison partagée', description_en: 'Room in a shared house',
+        quartiers: ['Scarborough','North York','Etobicoke'],
+        avantages: ['Moins cher','Réseau social rapide'],
+        avantages_en: ['Cheaper','Quick social network'],
+        inconvenients: ["Moins d'intimité",'Trajets plus longs'],
+        inconvenients_en: ['Less privacy','Longer commutes'],
+        conseil: 'Facebook Marketplace est très utilisé à Toronto', conseil_en: 'Facebook Marketplace is heavily used in Toronto',
+        lien: 'https://www.kijiji.ca/b-colocation/toronto/k0l1700273',
+      },
+      {
+        type: 'Studio / Bachelor', type_en: 'Studio / Bachelor',
+        budget_min: 1300, budget_max: 1900,
+        description: 'Petit appartement seul dans la ville', description_en: 'Small solo apartment in the city',
+        quartiers: ['Mississauga','Brampton','Hamilton'],
+        avantages: ['Intimité','Indépendance'],
+        avantages_en: ['Privacy','Independence'],
+        inconvenients: ['Cher proche du centre','Souvent non meublé'],
+        inconvenients_en: ['Expensive near downtown','Often unfurnished'],
+        conseil: 'Vise les banlieues bien desservies par le TTC ou GO Train', conseil_en: 'Target suburbs well-served by TTC or GO Train',
+        lien: 'https://www.kijiji.ca/b-appartement-condo/toronto/k0l1700273',
+      },
+      {
+        type: 'Résidence universitaire', type_en: 'University residence',
+        budget_min: 1000, budget_max: 1600,
+        description: 'Résidence on-campus ou off-campus affiliée', description_en: 'On-campus or affiliated off-campus residence',
+        quartiers: ['Sur campus'],
+        avantages: ['Sécurité','Proximité cours','Communauté'],
+        avantages_en: ['Safe','Close to classes','Community'],
+        inconvenients: ['Très limité','Cher'],
+        inconvenients_en: ['Very limited','Expensive'],
+        conseil: 'UofT offre des résidences dès la 1ère année — priorité aux nouveaux', conseil_en: 'UofT offers residences from 1st year — priority to new students',
+        lien: 'https://studentlife.utoronto.ca/task/find-housing/',
+      },
+    ],
+  },
+  Ottawa: {
+    label: 'Ottawa',
+    options: [
+      {
+        type: 'Chambre en colocation', type_en: 'Shared room',
+        budget_min: 600, budget_max: 950,
+        description: 'Chambre dans un appartement ou maison partagée', description_en: 'Room in a shared apartment or house',
+        quartiers: ['Vanier','Gloucester','Nepean'],
+        avantages: ['Abordable','Francophone ou anglophone selon quartier'],
+        avantages_en: ['Affordable','French or English depending on neighbourhood'],
+        inconvenients: ["Moins d'intimité"],
+        inconvenients_en: ['Less privacy'],
+        conseil: 'Vanier est le quartier le plus abordable près du centre', conseil_en: 'Vanier is the most affordable neighbourhood close to downtown',
+        lien: 'https://www.kijiji.ca/b-colocation/ottawa/k0l1600124',
+      },
+      {
+        type: 'Studio / 1 chambre', type_en: 'Studio / 1 bedroom',
+        budget_min: 950, budget_max: 1500,
+        description: 'Appartement seul, ville bilingue', description_en: 'Solo apartment, bilingual city',
+        quartiers: ['Centretown','Kanata','Barrhaven'],
+        avantages: ['Ville bilingue','Qualité de vie élevée'],
+        avantages_en: ['Bilingual city','High quality of life'],
+        inconvenients: ['Plus cher près du parlement'],
+        inconvenients_en: ['More expensive near Parliament Hill'],
+        conseil: 'Kanata est idéal pour les étudiants en technologie', conseil_en: 'Kanata is ideal for tech students near Carleton/uOttawa',
+        lien: 'https://www.kijiji.ca/b-appartement-condo/ottawa/k0l1600124',
+      },
+    ],
+  },
+  Vancouver: {
+    label: 'Vancouver',
+    options: [
+      {
+        type: 'Chambre en colocation', type_en: 'Shared room',
+        budget_min: 900, budget_max: 1350,
+        description: 'Chambre dans une maison ou appartement partagé', description_en: 'Room in a shared house or apartment',
+        quartiers: ['Surrey','Burnaby','New Westminster'],
+        avantages: ['Moins cher dans les banlieues','Accès SkyTrain'],
+        avantages_en: ['Cheaper in suburbs','SkyTrain access'],
+        inconvenients: ['Marché très tendu','Concurrence élevée'],
+        inconvenients_en: ['Very competitive market','High demand'],
+        conseil: 'Cherche via UBC ou SFU Housing Off-Campus en priorité', conseil_en: 'Start with UBC or SFU Off-Campus Housing boards',
+        lien: 'https://www.kijiji.ca/b-colocation/vancouver/k0l1700287',
+      },
+      {
+        type: 'Résidence universitaire', type_en: 'University residence',
+        budget_min: 1100, budget_max: 1700,
+        description: 'Résidence UBC ou SFU — recommandé', description_en: 'UBC or SFU residence — recommended',
+        quartiers: ['UBC Point Grey','SFU Burnaby'],
+        avantages: ['Tout inclus','Sécurité','Communauté campus'],
+        avantages_en: ['All-inclusive','Safe','Campus community'],
+        inconvenients: ['Places très limitées à UBC','Priorité aux 1ères années'],
+        inconvenients_en: ['Very limited at UBC','Priority to 1st-year students'],
+        conseil: 'UBC a l\'une des plus belles résidences universitaires du Canada', conseil_en: 'UBC has one of the most beautiful university residences in Canada',
+        lien: 'https://vancouver.housing.ubc.ca',
+      },
+    ],
+  },
+  Calgary: {
+    label: 'Calgary',
+    options: [
+      {
+        type: 'Chambre en colocation', type_en: 'Shared room',
+        budget_min: 550, budget_max: 900,
+        description: 'Chambre partagée — marché plus abordable', description_en: 'Shared room — more affordable market',
+        quartiers: ['Forest Lawn','Marlborough','Falconridge'],
+        avantages: ['Pas de taxe provinciale','Marché moins tendu qu\'à Toronto'],
+        avantages_en: ['No provincial tax','Less competitive than Toronto'],
+        inconvenients: ['Hiver rigoureux','Moins de transports en commun'],
+        inconvenients_en: ['Harsh winters','Less public transit'],
+        conseil: 'Calgary est la ville canadienne avec le meilleur rapport coût/salaire', conseil_en: 'Calgary has the best cost/salary ratio among major Canadian cities',
+        lien: 'https://www.kijiji.ca/b-colocation/calgary/k0l1700221',
+      },
+      {
+        type: 'Studio / 1 chambre', type_en: 'Studio / 1 bedroom',
+        budget_min: 900, budget_max: 1450,
+        description: 'Appartement solo — prix raisonnables vs Toronto/Vancouver', description_en: 'Solo apartment — reasonable vs Toronto/Vancouver',
+        quartiers: ['Beltline','Mission','Kensington'],
+        avantages: ['Abordable','Pas de taxe provinciale','Nature proche'],
+        avantages_en: ['Affordable','No provincial tax','Nature nearby'],
+        inconvenients: ['Voiture souvent nécessaire en banlieue'],
+        inconvenients_en: ['Car often needed in suburbs'],
+        conseil: 'Beltline est le quartier le plus vivant et proche de l\'université', conseil_en: 'Beltline is the most vibrant neighbourhood near the university',
+        lien: 'https://www.kijiji.ca/b-appartement-condo/calgary/k0l1700221',
+      },
+    ],
+  },
+}
+
+const CHECKLIST_BAIL = [
+  { fr: "Visite l'appartement en personne avant de payer quoi que ce soit",    en: 'Visit the apartment in person before paying anything' },
+  { fr: 'Vérifie que le bail est en français au Québec (droit légal)',          en: 'In Quebec, ensure the lease is in French (legal right)' },
+  { fr: "Ne paie jamais plus d'un mois de loyer à l'avance",                  en: 'Never pay more than one month of rent in advance' },
+  { fr: "Prends des photos de l'état des lieux à l'entrée",                   en: 'Take photos of the apartment condition when you move in' },
+  { fr: 'Vérifie si le chauffage est inclus dans le loyer (vital en hiver)',   en: 'Check if heating is included in rent (vital in winter)' },
+  { fr: 'Demande si les électroménagers sont fournis (frigo, cuisinière)',      en: 'Ask if appliances are included (fridge, stove)' },
+  { fr: 'Vérifie la proximité des transports en commun',                       en: 'Check proximity to public transit' },
+]
+
 const CATEGORIES = [
   { id: 'halal',      fr: 'Épiceries halal',    en: 'Halal groceries',    icon: '🥩', color: '#52B788', query: (c) => `halal+grocery+${c}` },
   { id: 'hair',       fr: 'Coiffeurs afro',      en: 'Afro hairdressers',  icon: '💈', color: '#B5838D', query: (c) => `afro+hair+salon+${c}` },
   { id: 'exotic',     fr: 'Épiceries exotiques', en: 'Exotic stores',      icon: '🛒', color: '#FBBF24', query: (c) => `african+caribbean+grocery+${c}` },
   { id: 'prices',     fr: 'Prix comparés',       en: 'Price comparison',   icon: '💰', color: '#60A5FA', query: null },
   { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#34D399', query: null },
+  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#F97316', query: null },
   { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#A78BFA', query: null },
 ]
 
@@ -127,6 +311,11 @@ export default function DayToDay() {
   const [budgetVille,  setBudgetVille]  = useState('Montreal')
   const [modeLogement, setModeLogement] = useState('coloc') // 'studio' | 'coloc'
   const [budgetCustom, setBudgetCustom] = useState({})      // surcharges manuelles
+
+  // ── État estimateur logement ─────────────────────────────────
+  const [logVille,    setLogVille]    = useState('Montreal')
+  const [logBudget,   setLogBudget]   = useState(900)
+  const [bailChecks,  setBailChecks]  = useState([])
 
   const villeData = COUT_VILLES[budgetVille] || COUT_VILLES.Montreal
   const loyer     = modeLogement === 'studio' ? villeData.loyer_studio : villeData.loyer_coloc
@@ -184,7 +373,7 @@ export default function DayToDay() {
         </div>
 
         {/* Carte OpenStreetMap via Leaflet */}
-        {active !== 'prices' && active !== 'budget' && active !== 'convertir' && cat?.query && (
+        {active !== 'prices' && active !== 'budget' && active !== 'convertir' && active !== 'logement' && cat?.query && (
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden', marginBottom: 20 }}>
             <MapView city={city} query={cat.query(city)} />
             <div style={{ padding: '12px 16px' }}>
@@ -318,6 +507,157 @@ export default function DayToDay() {
             </p>
           </div>
         )}
+
+        {/* ══ ESTIMATEUR LOGEMENT ══ */}
+        {active === 'logement' && (() => {
+          const villeData   = LOGEMENT_DATA[logVille] || LOGEMENT_DATA.Montreal
+          const optionsDispo = villeData.options.filter(
+            o => logBudget >= o.budget_min && logBudget <= o.budget_max + 200
+          )
+          const toggleCheck = (i) => setBailChecks(p =>
+            p.includes(i) ? p.filter(x => x !== i) : [...p, i]
+          )
+          return (
+            <div>
+              {/* Sélecteur ville */}
+              <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:20 }}>
+                {Object.entries(LOGEMENT_DATA).map(([k,v]) => (
+                  <button key={k} onClick={()=>{ setLogVille(k); setLogBudget(900) }}
+                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'#F97316'+'50':C.border}`, background:logVille===k?'rgba(249,115,22,0.12)':'transparent', color:logVille===k?'#F97316':C.muted, fontSize:13, fontWeight:500, cursor:'pointer' }}>
+                    {v.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* SECTION 1 — Slider budget */}
+              <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'20px', marginBottom:20 }}>
+                <p style={{ fontSize:13, fontWeight:700, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, marginBottom:14 }}>
+                  {lang==='fr'?'Mon budget logement / mois':'My housing budget / month'}
+                </p>
+                <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12, flexWrap:'wrap' }}>
+                  <input type="range" min={400} max={2500} step={50} value={logBudget}
+                    onChange={e=>setLogBudget(Number(e.target.value))}
+                    style={{ flex:1, minWidth:160, accentColor:'#F97316' }} />
+                  <div style={{ padding:'8px 16px', background:'rgba(249,115,22,0.12)', border:'1px solid rgba(249,115,22,0.30)', borderRadius:10, minWidth:110, textAlign:'center' }}>
+                    <p style={{ fontSize:22, fontWeight:800, color:'#F97316', lineHeight:1 }}>{logBudget} $</p>
+                    <p style={{ fontSize:10, color:C.muted, marginTop:2 }}>CAD / {lang==='fr'?'mois':'month'}</p>
+                  </div>
+                </div>
+                <div style={{ display:'flex', justifyContent:'space-between' }}>
+                  <span style={{ fontSize:11, color:C.muted }}>400 $</span>
+                  <span style={{ fontSize:11, color:C.muted }}>2 500 $</span>
+                </div>
+              </div>
+
+              {/* SECTION 2 — Options selon budget */}
+              <p style={{ fontSize:13, fontWeight:700, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, marginBottom:12 }}>
+                {lang==='fr'
+                  ? `Options disponibles à ${villeData.label} pour ${logBudget} $/mois`
+                  : `Options in ${villeData.label} for $${logBudget}/month`}
+              </p>
+
+              {optionsDispo.length === 0 ? (
+                <div style={{ padding:'24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, textAlign:'center', marginBottom:20 }}>
+                  <p style={{ fontSize:36, marginBottom:10 }}>💸</p>
+                  <p style={{ fontSize:14, color:C.text, fontWeight:600, marginBottom:6 }}>
+                    {lang==='fr'?'Budget insuffisant pour cette ville':'Budget too low for this city'}
+                  </p>
+                  <p style={{ fontSize:13, color:C.muted }}>
+                    {lang==='fr'
+                      ? `Augmente ton budget ou choisis une autre ville.`
+                      : `Increase your budget or choose another city.`}
+                  </p>
+                </div>
+              ) : (
+                <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:24 }}>
+                  {optionsDispo.map((opt, i) => (
+                    <div key={i} style={{ background:C.surface, border:`1px solid ${'rgba(249,115,22,0.25)'}`, borderRadius:14, overflow:'hidden' }}>
+                      {/* Header */}
+                      <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 18px', borderBottom:`1px solid ${C.border}` }}>
+                        <div style={{ width:40, height:40, borderRadius:10, background:'rgba(249,115,22,0.12)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>
+                          {i===0?'🛏️':i===1?'🏠':'🏛️'}
+                        </div>
+                        <div style={{ flex:1 }}>
+                          <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:2 }}>
+                            {lang==='fr'?opt.type:opt.type_en}
+                          </p>
+                          <p style={{ fontSize:12, color:C.muted }}>{lang==='fr'?opt.description:opt.description_en}</p>
+                        </div>
+                        <div style={{ textAlign:'right', flexShrink:0 }}>
+                          <p style={{ fontSize:16, fontWeight:800, color:'#F97316' }}>{opt.budget_min}–{opt.budget_max} $</p>
+                          <p style={{ fontSize:10, color:C.muted }}>{lang==='fr'?'/ mois':'/ month'}</p>
+                        </div>
+                      </div>
+                      <div style={{ padding:'14px 18px' }}>
+                        {/* Quartiers */}
+                        <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginBottom:12 }}>
+                          <span style={{ fontSize:11, color:C.muted, marginRight:4 }}>📍</span>
+                          {opt.quartiers.map(q => (
+                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'rgba(249,115,22,0.08)', color:'#F97316', border:'1px solid rgba(249,115,22,0.20)', fontWeight:500 }}>{q}</span>
+                          ))}
+                        </div>
+                        {/* Avantages / Inconvénients */}
+                        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:12 }}>
+                          <div>
+                            {(lang==='fr'?opt.avantages:opt.avantages_en).map((a,j) => (
+                              <p key={j} style={{ fontSize:12, color:C.success, marginBottom:3 }}>✅ {a}</p>
+                            ))}
+                          </div>
+                          <div>
+                            {(lang==='fr'?opt.inconvenients:opt.inconvenients_en).map((a,j) => (
+                              <p key={j} style={{ fontSize:12, color:C.warning, marginBottom:3 }}>⚠️ {a}</p>
+                            ))}
+                          </div>
+                        </div>
+                        {/* Conseil clé */}
+                        <div style={{ padding:'9px 12px', background:'rgba(249,115,22,0.06)', border:'1px solid rgba(249,115,22,0.18)', borderRadius:8, marginBottom:12 }}>
+                          <p style={{ fontSize:12, color:'#F97316', fontWeight:600 }}>
+                            💡 {lang==='fr'?opt.conseil:opt.conseil_en}
+                          </p>
+                        </div>
+                        {/* CTA */}
+                        <a href={opt.lien} target="_blank" rel="noreferrer"
+                          style={{ display:'inline-block', padding:'8px 18px', background:'#F97316', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                          {lang==='fr'?'Chercher →':'Search →'}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* SECTION 3 — Checklist bail */}
+              <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'20px' }}>
+                <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:14 }}>
+                  📋 {lang==='fr'?'Avant de signer un bail au Canada :':'Before signing a lease in Canada:'}
+                </p>
+                <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                  {CHECKLIST_BAIL.map((item,i) => {
+                    const checked = bailChecks.includes(i)
+                    return (
+                      <button key={i} onClick={()=>toggleCheck(i)}
+                        style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'10px 12px', background:checked?`${C.success}08`:'transparent', border:`1px solid ${checked?C.success+'30':C.border}`, borderRadius:10, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                        <div style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${checked?C.success:C.border}`, background:checked?C.success:'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
+                          {checked && <span style={{ color:C.bg, fontSize:11, fontWeight:800 }}>✓</span>}
+                        </div>
+                        <p style={{ fontSize:13, color:checked?C.text:C.muted, lineHeight:1.5, textDecoration:checked?'line-through':undefined }}>
+                          {lang==='fr'?item.fr:item.en}
+                        </p>
+                      </button>
+                    )
+                  })}
+                </div>
+                {bailChecks.length === CHECKLIST_BAIL.length && (
+                  <div style={{ marginTop:14, padding:'10px 14px', background:`${C.success}10`, border:`1px solid ${C.success}30`, borderRadius:10, textAlign:'center' }}>
+                    <p style={{ fontSize:13, color:C.success, fontWeight:600 }}>
+                      ✅ {lang==='fr'?'Tu es prêt(e) à signer en toute sécurité !':'You\'re ready to sign safely!'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        })()}
 
         {/* ══ CONVERTISSEUR AFRICA → CANADA ══ */}
         {active === 'convertir' && (

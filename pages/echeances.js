@@ -355,10 +355,11 @@ export default function Echeances() {
         </div>
 
         {/* ── FILTRES ── */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 24, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 4 }}>
+        <div className="echeances-filtres" style={{ display: 'flex', gap: 6, marginBottom: 24, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 4 }}>
           {FILTRES.map(f => (
             <button key={f.id} onClick={() => setFiltre(f.id)}
-              style={{ flex: 1, padding: '8px 10px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s', background: filtre === f.id ? C.accent : 'transparent', color: filtre === f.id ? '#fff' : C.muted }}>
+              className="echeances-filtre-btn"
+              style={{ flex: 1, padding: '8px 14px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s', background: filtre === f.id ? C.accent : 'transparent', color: filtre === f.id ? '#fff' : C.muted, whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? f.fr : f.en}
             </button>
           ))}
@@ -483,6 +484,28 @@ export default function Echeances() {
           </p>
         )}
       </main>
+
+      <style jsx global>{`
+        .echeances-filtres {
+          overflow-x: auto;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .echeances-filtres::-webkit-scrollbar {
+          display: none;
+        }
+        @media (min-width: 769px) {
+          .echeances-filtre-btn {
+            flex: 1 !important;
+            min-width: 0;
+          }
+        }
+        @media (max-width: 768px) {
+          .echeances-filtre-btn {
+            flex: 0 0 auto !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

@@ -1,7 +1,55 @@
 // pages/arrivee.js
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+
+const GUIDES_LIST = [
+  { type: 'ramq',    icon: '🏥', fr: 'RAMQ — Assurance maladie',        en: 'RAMQ — Health insurance' },
+  { type: 'nas',     icon: '🪪', fr: 'NAS — Numéro d\'assurance sociale', en: 'SIN — Social Insurance Number' },
+  { type: 'banque',  icon: '🏦', fr: 'Ouvrir un compte bancaire',       en: 'Open a bank account' },
+  { type: 'credit',  icon: '💳', fr: 'Construire sa cote de crédit',    en: 'Build your credit score' },
+  { type: 'impots',  icon: '📋', fr: 'Déclaration de revenus',          en: 'Tax filing' },
+  { type: 'logement',icon: '🏠', fr: 'Trouver un logement',             en: 'Find housing' },
+]
+
+function GuidePrintView({ data }) {
+  if (!data) return null
+  return (
+    <div id="guide-print" style={{
+      background: '#fff', color: '#1a1a1a', fontFamily: 'Georgia, "Times New Roman", serif',
+      padding: '40px 48px', maxWidth: 794, margin: '0 auto', minHeight: 1123,
+      boxSizing: 'border-box', fontSize: 12, lineHeight: 1.55,
+    }}>
+      <div style={{ borderBottom: '2.5px solid #2D6A4F', paddingBottom: 16, marginBottom: 24 }}>
+        <p style={{ fontSize: 11, color: '#2D6A4F', fontWeight: 700, letterSpacing: 1.5, textTransform: 'uppercase', margin: 0, fontFamily: 'system-ui,sans-serif' }}>
+          Novae · Guide gratuit
+        </p>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1a1a1a', margin: '8px 0 0', fontFamily: 'system-ui,sans-serif' }}>
+          {data.titre}
+        </h1>
+      </div>
+      {data.introduction && (
+        <p style={{ fontSize: 13, color: '#333', marginBottom: 28, lineHeight: 1.7 }}>{data.introduction}</p>
+      )}
+      {(data.sections || []).map((s, i) => (
+        <div key={i} style={{ marginBottom: 22, pageBreakInside: 'avoid' }}>
+          <h2 style={{
+            fontSize: 14, fontWeight: 700, color: '#2D6A4F', marginBottom: 8,
+            fontFamily: 'system-ui,sans-serif', borderLeft: '3px solid #2D6A4F', paddingLeft: 10,
+          }}>
+            {s.titre}
+          </h2>
+          <div style={{ fontSize: 12, color: '#333', whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>
+            {s.contenu}
+          </div>
+        </div>
+      ))}
+      <p style={{ marginTop: 32, fontSize: 10, color: '#888', borderTop: '1px solid #ddd', paddingTop: 12, fontFamily: 'system-ui,sans-serif' }}>
+        © Novae — novae.ca · Guide généré pour nouveaux arrivants au Canada
+      </p>
+    </div>
+  )
+}
 
 const DATA = {
   fr: {
@@ -53,13 +101,81 @@ const PHASES = [
 export default function Arrivee() {
   const { C, lang } = useApp()
   const [phase, setPhase] = useState('h72')
+  const [guideData, setGuideData] = useState(null)
+  const [loadingGuide, setLoadingGuide] = useState(null)
+  const [guideError, setGuideError] = useState('')
+  const printPending = useRef(false)
+
   const data  = DATA[lang] || DATA.fr
   const items = data[phase] || []
   const col   = PHASES.find(p => p.id === phase)?.color || C.accent2
+  const isFr  = lang === 'fr'
+
+  const telechargerGuidePDF = async (type) => {
+    setLoadingGuide(type)
+    setGuideError('')
+    try {
+      const res = await fetch(`/api/guides/generer?type=${type}`)
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Erreur')
+      setGuideData(json)
+      printPending.current = true
+    } catch (e) {
+      setGuideError(e.message)
+      setLoadingGuide(null)
+    }
+  }
+
+  useEffect(() => {
+    if (!printPending.current || !guideData) return
+    printPending.current = false
+    const timer = setTimeout(() => {
+      const style = document.createElement('style')
+      style.innerHTML = `
+        @media print {
+          body > *:not(#guide-print-wrapper) { display: none !important; }
+          #guide-print-wrapper { display: block !important; }
+          #guide-print {
+            width: 210mm !important;
+            padding: 15mm !important;
+            margin: 0 !important;
+            background: white !important;
+            color: black !important;
+          }
+        }
+      `
+      document.head.appendChild(style)
+      window.print()
+      document.head.removeChild(style)
+      setLoadingGuide(null)
+    }, 400)
+    return () => clearTimeout(timer)
+  }, [guideData])
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
       <Navbar />
+
+      <style>{`
+        #guide-print-wrapper { display: none; }
+        @media print {
+          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          body > * { display: none !important; }
+          #guide-print-wrapper { display: block !important; }
+          #guide-print {
+            display: block !important;
+            position: absolute; top: 0; left: 0;
+            width: 210mm; margin: 0; padding: 20mm;
+            font-size: 11pt; line-height: 1.45;
+            color: #000 !important; background: #fff !important;
+          }
+        }
+      `}</style>
+
+      <div id="guide-print-wrapper">
+        <GuidePrintView data={guideData} />
+      </div>
+
       <main style={{ maxWidth: 760, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
@@ -105,6 +221,49 @@ export default function Arrivee() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Guides gratuits PDF */}
+        <div style={{ marginTop: 40 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>
+            📚 {isFr ? 'Guides gratuits complets' : 'Free complete guides'}
+          </h2>
+          <p style={{ fontSize: 14, color: C.muted, marginBottom: 20, lineHeight: 1.6 }}>
+            {isFr
+              ? 'Télécharge des guides détaillés générés par IA pour chaque démarche essentielle.'
+              : 'Download detailed AI-generated guides for each essential step.'}
+          </p>
+          {guideError && (
+            <p style={{ fontSize: 13, color: C.error, marginBottom: 14 }}>⚠ {guideError}</p>
+          )}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+            {GUIDES_LIST.map(g => (
+              <div key={g.type} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 13, padding: '16px 18px' }}>
+                <p style={{ fontSize: 22, marginBottom: 8 }}>{g.icon}</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 12, lineHeight: 1.4 }}>
+                  {isFr ? g.fr : g.en}
+                </p>
+                <button
+                  onClick={() => telechargerGuidePDF(g.type)}
+                  disabled={loadingGuide === g.type}
+                  style={{
+                    width: '100%', padding: '9px 12px', background: loadingGuide === g.type ? C.border : C.accent,
+                    border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13,
+                    cursor: loadingGuide === g.type ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  {loadingGuide === g.type
+                    ? (isFr ? 'Génération...' : 'Generating...')
+                    : (isFr ? '⬇ Télécharger PDF' : '⬇ Download PDF')}
+                </button>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize: 12, color: C.muted, marginTop: 14 }}>
+            {isFr
+              ? '💡 Clique sur « Enregistrer en PDF » dans la boîte de dialogue d\'impression.'
+              : '💡 Click "Save as PDF" in the print dialog.'}
+          </p>
         </div>
 
         {/* Urgence numbers */}

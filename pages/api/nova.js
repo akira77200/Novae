@@ -1,5 +1,6 @@
 // pages/api/nova.js — Assistant IA Nova (streaming SSE)
 import Anthropic from '@anthropic-ai/sdk'
+import { checkRateLimit, getIP, requireAuth, checkMessageLength } from '../../lib/apiGuards'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -19,16 +20,36 @@ Règles :
 Contexte Canada : RAMQ (QC), OHIP (ON), NAS, permis d'études, CAQ, PGWP, RP, impôts 30 avril, crédit TPS/TVH, T2202.`
 
 export default async function handler(req, res) {
+  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
   if (req.method !== 'POST') return res.status(405).end()
+
+  const ip = getIP(req)
+  if (!checkRateLimit(ip, 20)) {
+    return res.status(429).json({ error: 'Trop de messages. Réessaie dans une heure.' })
+  }
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) {
+    return res.status(401).json({
+      error: authResult.error === 'Connexion requise.'
+        ? 'Connexion requise pour utiliser Nova.'
+        : authResult.error
+    })
+  }
 
   const { messages, profile } = req.body
   if (!messages?.length) return res.status(400).json({ error: 'messages requis' })
+
+  // 3. Longueur max 500 caractères par message
+  if (!checkMessageLength(messages, 500)) {
+    return res.status(400).json({ error: 'Message trop long (max 500 caractères).' })
+  }
 
   // Contexte profil optionnel injecté en system
   let systemFinal = SYSTEM_PROMPT
   if (profile) {
     const ctx = [
-      profile.statut     && `Statut: ${profile.statut}`,
+      profile.statut        && `Statut: ${profile.statut}`,
       profile.ville_accueil && `Ville: ${profile.ville_accueil}`,
       profile.pays_origine  && `Origine: ${profile.pays_origine}`,
       profile.date_arrivee  && `Arrivée: ${profile.date_arrivee}`,

@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
 import RESOURCES_DB from '../../data/resources-db.js';
+import { checkRateLimit, getIP, requireAuth } from '../../lib/apiGuards';
 
 // ── Détection province depuis ville ──────────────────────────────
 const getProvince = (ville) => {
@@ -81,6 +82,12 @@ const selectResources = (profile) => {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
+
+  const ip = getIP(req)
+  if (!checkRateLimit(ip)) return res.status(429).json({ error: 'Trop de requêtes.' })
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { profile } = req.body;
   if (!profile?.id) return res.status(400).json({ error: 'Profil manquant' });

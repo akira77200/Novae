@@ -135,12 +135,13 @@ function CVPreview({ data, lang }) {
 
 // ── Page principale ───────────────────────────────────────────────
 export default function CV() {
-  const { C, lang, profile, loading: authLoading, mounted } = useApp()
+  const { C, lang, profile, loading: authLoading, mounted, sb, planLimits, userPlan } = useApp()
 
   const [etape,        setEtape]       = useState(1)         // 1=infos 2=expériences 3=formation 4=preview
   const [generating,   setGenerating]  = useState(false)
   const [aiData,       setAiData]      = useState(null)
   const [aiErr,        setAiErr]       = useState('')
+  const [limitModal,  setLimitModal]  = useState(false)
 
   // Formulaire principal
   const [nom,          setNom]         = useState('')
@@ -200,11 +201,27 @@ export default function CV() {
 
   // ── Génération IA ────────────────────────────────────────────
   const generer = async () => {
+    // Vérifier les limites du plan
+    try {
+      const cvCount = parseInt(localStorage.getItem('novae_cv_count') || '0')
+      if (cvCount >= planLimits.cv) {
+        setLimitModal(true)
+        return
+      }
+    } catch {}
+
     setGenerating(true); setAiErr('')
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+
       const res = await fetch('/api/cv/generer', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body: JSON.stringify({
           profil:       { nom, email, ville, statut: profile?.statut },
           poste_cible:  poste,
@@ -220,12 +237,36 @@ export default function CV() {
       setEtape(4)
       // Flag pour le score dashboard
       try { localStorage.setItem('novae_cv_nom', nom || 'cv') } catch {}
+      // Incrémenter le compteur de CV
+      try {
+        const cvCount = parseInt(localStorage.getItem('novae_cv_count') || '0')
+        localStorage.setItem('novae_cv_count', (cvCount + 1).toString())
+      } catch {}
     } catch (e) { setAiErr(e.message) }
     finally { setGenerating(false) }
   }
 
   // ── Export PDF via print ──────────────────────────────────────
-  const imprimer = () => window.print()
+  const telechargerPDF = () => {
+    const style = document.createElement('style')
+    style.innerHTML = `
+      @media print {
+        body > *:not(#cv-print-wrapper) { display: none !important; }
+        #cv-print-wrapper { display: block !important; }
+        #cv-print {
+          width: 210mm !important;
+          padding: 15mm !important;
+          margin: 0 !important;
+          background: white !important;
+          color: black !important;
+          font-size: 11pt !important;
+        }
+      }
+    `
+    document.head.appendChild(style)
+    window.print()
+    document.head.removeChild(style)
+  }
 
   // ── Données consolidées pour le preview ──────────────────────
   const cvData = {
@@ -250,6 +291,32 @@ export default function CV() {
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
       <Navbar />
+
+      {/* ── Modal limite atteinte ── */}
+      {limitModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+          onClick={() => setLimitModal(false)}>
+          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, width: '100%', maxWidth: 420, overflow: 'hidden' }}
+            onClick={e => e.stopPropagation()}>
+            <div style={{ padding: '22px 24px 18px', borderBottom: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ fontWeight: 700, fontSize: 16, color: C.text }}>
+                {lang === 'fr' ? 'Limite atteinte' : 'Limit reached'}
+              </p>
+              <button onClick={() => setLimitModal(false)} style={{ width: 28, height: 28, borderRadius: '50%', border: `1px solid ${C.border}`, background: 'transparent', color: C.muted, cursor: 'pointer', fontSize: 13 }}>✕</button>
+            </div>
+            <div style={{ padding: '20px 24px' }}>
+              <p style={{ fontSize: 14, color: C.text, lineHeight: 1.7, marginBottom: 20 }}>
+                {lang === 'fr'
+                  ? `Tu as atteint ta limite de ${planLimits.cv} CV${planLimits.cv > 1 ? 's' : ''} pour le plan ${userPlan}. Passe au plan Starter pour générer plus de CVs.`
+                  : `You've reached your limit of ${planLimits.cv} resume${planLimits.cv > 1 ? 's' : ''} for the ${userPlan} plan. Upgrade to Starter to generate more resumes.`}
+              </p>
+              <a href="/abonnement" style={{ display: 'block', padding: '12px', borderRadius: 10, background: C.accent, border: 'none', color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
+                {lang === 'fr' ? 'Voir les abonnements →' : 'View plans →'}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Modal expérience ── */}
       {expModal && (
@@ -293,12 +360,25 @@ export default function CV() {
       {/* ── Print CSS ── */}
       <style>{`
         @media print {
+          * { -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important; }
           body > * { display: none !important; }
-          #cv-print-wrapper { display: block !important; position: fixed; inset: 0; background: #fff; }
-          #cv-print { box-shadow: none !important; margin: 0 !important; padding: 32px 40px !important; }
+          #cv-print {
+            display: block !important;
+            position: absolute;
+            top: 0; left: 0;
+            width: 210mm;
+            margin: 0;
+            padding: 20mm;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #000 !important;
+            background: #fff !important;
+          }
+          #cv-print * { color: #000 !important; }
         }
         #cv-print-wrapper { display: none; }
-        @media print { #cv-print-wrapper { display: block; } }
+        @media print { #cv-print-wrapper { display: block !important; } }
       `}</style>
 
       {/* Wrapper imprimable caché */}
@@ -319,7 +399,7 @@ export default function CV() {
             </p>
           </div>
           {etape === 4 && (
-            <button onClick={imprimer} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+            <button onClick={telechargerPDF} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
               ⬇ {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
             </button>
           )}
@@ -513,7 +593,7 @@ export default function CV() {
                   {generating ? '...' : (lang === 'fr' ? '↺ Régénérer l\'IA' : '↺ Regenerate AI')}
                 </button>
               </div>
-              <button onClick={imprimer} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+              <button onClick={telechargerPDF} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
                 ⬇ {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
               </button>
             </div>

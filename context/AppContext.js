@@ -20,6 +20,13 @@ const sb = typeof window !== 'undefined'
     })
   : null
 
+// ── Limites par plan ───────────────────────────────────────────────
+export const PLAN_LIMITS = {
+  gratuit:  { cv: 1,   nova_daily: 5,   entrevue_monthly: 0   },
+  starter:  { cv: 5,   nova_daily: 20,  entrevue_monthly: 3   },
+  premium:  { cv: 999, nova_daily: 999, entrevie_monthly: 999 }
+}
+
 // ── Palette premium sobre ─────────────────────────────────────────
 export const PALETTE = {
   dark: {
@@ -260,9 +267,11 @@ export function AppProvider({ children }) {
   const C = PALETTE[theme] || PALETTE.dark
   const t = T[lang] || T.fr
   const refreshProfile = () => user && loadProfile(user.id)
+  const userPlan = profile?.plan || 'gratuit'
+  const planLimits = PLAN_LIMITS[userPlan] || PLAN_LIMITS.gratuit
 
   return (
-    <AppContext.Provider value={{ lang, setLang, theme, setTheme, C, t, user, profile, loading, mounted, sb, refreshProfile }}>
+    <AppContext.Provider value={{ lang, setLang, theme, setTheme, C, t, user, profile, loading, mounted, sb, refreshProfile, userPlan, planLimits }}>
       {children}
     </AppContext.Provider>
   )

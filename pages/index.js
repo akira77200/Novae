@@ -6,57 +6,61 @@ import { useApp } from '../context/AppContext'
 
 const PILIERS = [
   {
-    emoji: '🎯',
-    titleFr: 'Opportunités',
-    titleEn: 'Opportunities',
-    descFr: 'Explore les métiers de demain, teste ton orientation et génère ta vision de carrière personnalisée par IA.',
-    descEn: 'Explore future careers, test your orientation and generate your personalized AI career vision.',
-    href: '/mon-avenir',
-    color: '#2D6A4F',
-    colorLight: '#52B788',
-    bg: 'rgba(45,106,79,0.12)',
-    border: 'rgba(45,106,79,0.30)',
-  },
-  {
     emoji: '✈️',
     titleFr: 'Immigration',
     titleEn: 'Immigration',
-    descFr: 'Checklist d\'arrivée, démarches administratives et tout ce qu\'il faut faire dès ton premier jour au Canada.',
-    descEn: 'Arrival checklist, administrative steps and everything you need to do from your first day in Canada.',
+    descFr: 'Checklist d\'arrivée · Coffre-fort documents · Calendrier d\'échéances · Guide d\'arrivée au Canada.',
+    descEn: 'Arrival checklist · Document vault · Deadline calendar · Canada arrival guide.',
     href: '/dashboard',
     color: '#1565C0',
     colorLight: '#42A5F5',
     bg: 'rgba(21,101,192,0.10)',
     border: 'rgba(21,101,192,0.28)',
+    items: ['Checklist', '📁 Documents', '📅 Échéances', 'Guide arrivée'],
   },
   {
     emoji: '🎓',
-    titleFr: 'Académie & Intégration',
-    titleEn: 'Academia & Integration',
-    descFr: 'Culture canadienne, codes sociaux, vie quotidienne et ressources pour t\'intégrer rapidement.',
-    descEn: 'Canadian culture, social codes, daily life and resources to integrate quickly.',
-    href: '/culture',
+    titleFr: 'Académie',
+    titleEn: 'Academia',
+    descFr: 'Mon orientation · Bourses & universités · Comparateur · Simulateur budget · Calendrier académique.',
+    descEn: 'My path · Scholarships & universities · Comparator · Budget simulator · Academic calendar.',
+    href: '/mon-avenir',
     color: '#6A1B9A',
     colorLight: '#AB47BC',
     bg: 'rgba(106,27,154,0.10)',
     border: 'rgba(106,27,154,0.28)',
+    items: ['Mon orientation', 'Bourses & Univs', '🏛️ Univ. ou Collège', '💰 Budget', '🗓️ Calendrier'],
   },
   {
     emoji: '💼',
-    titleFr: 'Carrière Professionnelle',
-    titleEn: 'Professional Career',
-    descFr: 'Connecte-toi avec des mentors de ta diaspora, booste ton CV et prépare tes entretiens au Canada.',
-    descEn: 'Connect with mentors from your diaspora, boost your CV and prepare your Canadian job interviews.',
+    titleFr: 'Carrière',
+    titleEn: 'Career',
+    descFr: 'Mentors · Créateur CV canadien · Simulation entrevue · Réseau professionnel.',
+    descEn: 'Mentors · Canadian resume builder · Interview simulator · Professional network.',
     href: '/mentors',
     color: '#E65100',
     colorLight: '#FF7043',
     bg: 'rgba(230,81,0,0.10)',
     border: 'rgba(230,81,0,0.28)',
+    items: ['Mentors', '📄 CV', '🎙️ Entrevue IA', '🎯 Réseau'],
+  },
+  {
+    emoji: '🏠',
+    titleFr: 'Intégration',
+    titleEn: 'Integration',
+    descFr: 'Vie quotidienne · Mes tâches · Bien-être · Parrainage · Culture canadienne · Quiz culture.',
+    descEn: 'Daily life · My tasks · Wellbeing · Peer mentoring · Canadian culture · Culture quiz.',
+    href: '/day-to-day',
+    color: '#2D6A4F',
+    colorLight: '#52B788',
+    bg: 'rgba(45,106,79,0.12)',
+    border: 'rgba(45,106,79,0.30)',
+    items: ['Vie quotidienne', 'Mes tâches', '🌱 Bien-être', '🤝 Parrainage', 'Culture', '🎮 Quiz'],
   },
 ]
 
 const STATS = [
-  { numFr: '12 000+', numEn: '12,000+', labelFr: 'étudiants aidés', labelEn: 'students helped' },
+  { numFr: '12 000+', numEn: '12,000+', labelFr: 'nouveaux arrivants aidés', labelEn: 'newcomers helped' },
   { numFr: '47',      numEn: '47',       labelFr: 'pays représentés', labelEn: 'countries represented' },
   { numFr: '94%',     numEn: '94%',      labelFr: 'satisfaction', labelEn: 'satisfaction rate' },
 ]
@@ -82,8 +86,8 @@ const TESTIMONIALS = [
     name: 'Koffi Asante',
     origin: 'Yaoundé → Québec',
     avatar: 'K',
-    textFr: 'Le guide culturel m\'a évité beaucoup de malentendus. Je recommande Novae à tous les étudiants africains qui arrivent au Canada.',
-    textEn: 'The cultural guide saved me from many misunderstandings. I recommend Novae to every African student coming to Canada.',
+    textFr: 'Le guide culturel m\'a évité beaucoup de malentendus. Je recommande Novae à tous les nouveaux arrivants au Canada.',
+    textEn: 'The cultural guide saved me from many misunderstandings. I recommend Novae to every newcomer in Canada.',
     color: '#6A1B9A',
   },
 ]
@@ -137,6 +141,9 @@ export default function Home() {
   const isDark = theme === 'dark'
   const isFr   = lang === 'fr'
 
+  const pilierHref = (href) =>
+    user ? href : `/auth/login?redirect=${encodeURIComponent(href)}`
+
   return (
     <div style={{ minHeight:'100vh', background: C.bg, fontFamily:'system-ui,-apple-system,sans-serif', color: C.text }}>
 
@@ -151,7 +158,7 @@ export default function Home() {
           <div style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'6px 14px', borderRadius:100, border:`1px solid ${C.accent}40`, background:`${C.accent}12`, marginBottom:28 }}>
             <span style={{ fontSize:13 }}>🌍</span>
             <span style={{ fontSize:13, color: C.accent2, fontWeight:600, letterSpacing:0.3 }}>
-              {isFr ? 'Pour les étudiants africains au Canada' : 'For African students in Canada'}
+              {isFr ? 'Pour les nouveaux arrivants au Canada' : 'For newcomers to Canada'}
             </span>
           </div>
 
@@ -169,8 +176,8 @@ export default function Home() {
           {/* Subtitle */}
           <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: C.muted, lineHeight:1.7, maxWidth:560, margin:'0 auto 36px' }}>
             {isFr
-              ? 'De ton arrivée à Montréal jusqu\'à ta première promotion — Novae t\'accompagne à chaque étape avec des outils IA, des mentors et une communauté.'
-              : 'From your arrival in Montreal to your first promotion — Novae supports you at every step with AI tools, mentors and a community.'}
+              ? 'De ton arrivée au Canada jusqu\'à ta première promotion — Novae t\'accompagne à chaque étape avec des outils IA, des mentors et une communauté.'
+              : 'From your arrival in Canada to your first promotion — Novae supports you at every step with AI tools, mentors and a community.'}
           </p>
 
           {/* CTAs */}
@@ -211,7 +218,7 @@ export default function Home() {
 
         <div className="piliers-grid">
           {PILIERS.map((p, i) => (
-            <Link key={p.href} href={p.href} style={{ textDecoration:'none' }}>
+            <Link key={p.href} href={pilierHref(p.href)} style={{ textDecoration:'none' }}>
               <div className="pilier-card" style={{
                 background: isDark ? C.surface : '#fff',
                 border: `1.5px solid ${p.border}`,
@@ -233,10 +240,19 @@ export default function Home() {
                     {isFr ? p.titleFr : p.titleEn}
                   </h3>
                 </div>
-                <p style={{ fontSize:14, color: C.muted, lineHeight:1.65, margin:0, flexGrow:1 }}>
+                <p style={{ fontSize:13, color: C.muted, lineHeight:1.65, margin:0 }}>
                   {isFr ? p.descFr : p.descEn}
                 </p>
-                <div style={{ display:'flex', alignItems:'center', gap:6, color: p.colorLight, fontSize:13, fontWeight:600 }}>
+                {p.items && (
+                  <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
+                    {p.items.map(item => (
+                      <span key={item} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background: p.bg, color: p.colorLight, border:`1px solid ${p.border}`, fontWeight:500 }}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div style={{ display:'flex', alignItems:'center', gap:6, color: p.colorLight, fontSize:13, fontWeight:600, marginTop:'auto' }}>
                   {isFr ? 'Explorer' : 'Explore'} <span>→</span>
                 </div>
               </div>
@@ -268,7 +284,7 @@ export default function Home() {
             {isFr ? 'Ils ont transformé leur parcours' : 'They transformed their journey'}
           </h2>
           <p style={{ color: C.muted, fontSize:15 }}>
-            {isFr ? 'Des milliers d\'étudiants africains nous font confiance' : 'Thousands of African students trust us'}
+            {isFr ? 'Des milliers de nouveaux arrivants nous font confiance' : 'Thousands of newcomers trust us'}
           </p>
         </div>
 
@@ -308,7 +324,7 @@ export default function Home() {
               {isFr ? 'Prêt à commencer ?' : 'Ready to start?'}
             </h2>
             <p style={{ color: C.muted, fontSize:15, marginBottom:28 }}>
-              {isFr ? 'Rejoins des milliers d\'étudiants africains qui réussissent au Canada.' : 'Join thousands of African students succeeding in Canada.'}
+              {isFr ? 'Rejoins des milliers de nouveaux arrivants qui réussissent au Canada.' : 'Join thousands of newcomers succeeding in Canada.'}
             </p>
             <Link href="/auth/register" style={{ display:'inline-block', padding:'15px 36px', borderRadius:12, background: C.accent, color:'#fff', fontWeight:700, fontSize:16, textDecoration:'none' }}>
               {isFr ? 'Créer mon compte gratuit' : 'Create my free account'}
@@ -317,6 +333,188 @@ export default function Home() {
         </section>
       )}
 
+      {/* ── ABONNEMENTS ───────────────────────────────────────────────── */}
+      <section style={{ padding:'72px 24px 80px', maxWidth:1100, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:44 }}>
+          <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
+            {isFr ? 'Nos abonnements' : 'Our plans'}
+          </h2>
+          <p style={{ color: C.muted, fontSize:15 }}>
+            {isFr ? 'Choisis le plan qui correspond à tes besoins' : 'Choose the plan that fits your needs'}
+          </p>
+        </div>
+
+        <div className="plans-grid">
+          {/* PLAN GRATUIT */}
+          <div className="plan-card" style={{
+            background: isDark ? '#162820' : '#fff',
+            borderLeft: '4px solid #888',
+            borderRadius: 16,
+            padding: '28px 24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            transition: 'all 0.3s ease',
+            animationDelay: '0ms',
+          }}>
+            <div style={{ marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: C.text, margin:'0 0 8px' }}>
+                {isFr ? 'Gratuit' : 'Free'}
+              </h3>
+              <p style={{ fontSize:32, fontWeight:800, color: C.text, margin:0 }}>
+                0<span style={{ fontSize:16, fontWeight:400, color: C.muted }}>$/{isFr ? 'mois' : 'mo'}</span>
+              </p>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+              {[
+                isFr ? '✅ Dashboard + checklist' : '✅ Dashboard + checklist',
+                isFr ? '✅ Guides gratuits' : '✅ Free guides',
+                isFr ? '✅ Quiz culture' : '✅ Culture quiz',
+                isFr ? '✅ Carte vie quotidienne' : '✅ Daily life map',
+                isFr ? '✅ 1 CV généré par IA' : '✅ 1 AI-generated resume',
+                isFr ? '✅ 5 messages à Nova par jour' : '✅ 5 Nova messages/day',
+                isFr ? '❌ Recommandations IA illimitées' : '❌ Unlimited AI recommendations',
+                isFr ? '❌ Simulation entrevue' : '❌ Interview simulation',
+                isFr ? '❌ Accès mentors' : '❌ Mentor access',
+              ].map((item, i) => (
+                <p key={i} style={{ fontSize:13, color: item.startsWith('✅') ? C.text : C.muted, margin:0 }}>
+                  {item}
+                </p>
+              ))}
+            </div>
+            <Link href="/auth/register" style={{
+              display:'block', padding:'12px', borderRadius:10,
+              border:`1px solid ${C.border}`, background:'transparent',
+              color: C.text, fontWeight:600, fontSize:14,
+              textDecoration:'none', textAlign:'center',
+            }}>
+              {isFr ? 'Commencer gratuitement' : 'Get started for free'}
+            </Link>
+          </div>
+
+          {/* PLAN STARTER */}
+          <div className="plan-card" style={{
+            background: isDark ? '#162820' : '#fff',
+            borderLeft: '4px solid #1565C0',
+            borderRadius: 16,
+            padding: '28px 24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            transition: 'all 0.3s ease',
+            animationDelay: '100ms',
+            position:'relative',
+          }}>
+            <div style={{
+              position:'absolute', top:-12, left:20,
+              padding:'4px 12px', borderRadius:20,
+              background:'#1565C0', color:'#fff',
+              fontSize:11, fontWeight:700,
+            }}>
+              {isFr ? 'Populaire' : 'Popular'}
+            </div>
+            <div style={{ marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: C.text, margin:'0 0 8px' }}>
+                Starter
+              </h3>
+              <p style={{ fontSize:32, fontWeight:800, color: C.text, margin:0 }}>
+                9.99<span style={{ fontSize:16, fontWeight:400, color: C.muted }}>$/{isFr ? 'mois' : 'mo'}</span>
+              </p>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+              {[
+                isFr ? '✅ Tout le plan gratuit' : '✅ Everything in Free',
+                isFr ? '✅ 5 CV générés par IA' : '✅ 5 AI-generated resumes',
+                isFr ? '✅ 20 messages à Nova par jour' : '✅ 20 Nova messages/day',
+                isFr ? '✅ Recommandations IA illimitées' : '✅ Unlimited AI recommendations',
+                isFr ? '✅ 3 simulations entrevue par mois' : '✅ 3 interview simulations/month',
+                isFr ? '✅ Documents illimités' : '✅ Unlimited documents',
+                isFr ? '✅ Bourses et universités' : '✅ Scholarships & universities',
+                isFr ? '❌ Accès mentors prioritaire' : '❌ Priority mentor access',
+              ].map((item, i) => (
+                <p key={i} style={{ fontSize:13, color: item.startsWith('✅') ? C.text : C.muted, margin:0 }}>
+                  {item}
+                </p>
+              ))}
+            </div>
+            <Link href="/abonnement" style={{
+              display:'block', padding:'12px', borderRadius:10,
+              border:'none', background:'#1565C0',
+              color:'#fff', fontWeight:600, fontSize:14,
+              textDecoration:'none', textAlign:'center',
+            }}>
+              {isFr ? 'Commencer — 9.99$/mois' : 'Start — 9.99$/mo'}
+            </Link>
+          </div>
+
+          {/* PLAN PREMIUM */}
+          <div className="plan-card" style={{
+            background: isDark ? '#162820' : '#fff',
+            borderLeft: '4px solid #2D6A4F',
+            borderRadius: 16,
+            padding: '28px 24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            transition: 'all 0.3s ease',
+            animationDelay: '200ms',
+            position:'relative',
+          }}>
+            <div style={{
+              position:'absolute', top:-12, left:20,
+              padding:'4px 12px', borderRadius:20,
+              background:'#2D6A4F', color:'#fff',
+              fontSize:11, fontWeight:700,
+            }}>
+              ⭐ Premium
+            </div>
+            <div style={{ marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: C.text, margin:'0 0 8px' }}>
+                Premium
+              </h3>
+              <p style={{ fontSize:32, fontWeight:800, color: C.text, margin:0 }}>
+                19.99<span style={{ fontSize:16, fontWeight:400, color: C.muted }}>$/{isFr ? 'mois' : 'mo'}</span>
+              </p>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+              {[
+                isFr ? '✅ Tout le plan Starter' : '✅ Everything in Starter',
+                isFr ? '✅ CV illimités' : '✅ Unlimited resumes',
+                isFr ? '✅ Nova illimitée' : '✅ Unlimited Nova',
+                isFr ? '✅ Simulations entrevue illimitées' : '✅ Unlimited interview simulations',
+                isFr ? '✅ Accès mentors prioritaire' : '✅ Priority mentor access',
+                isFr ? '✅ Support prioritaire' : '✅ Priority support',
+                isFr ? '✅ Nouvelles fonctionnalités en avant-première' : '✅ Early access to new features',
+              ].map((item, i) => (
+                <p key={i} style={{ fontSize:13, color: C.text, margin:0 }}>
+                  {item}
+                </p>
+              ))}
+            </div>
+            <Link href="/abonnement" style={{
+              display:'block', padding:'12px', borderRadius:10,
+              border:'none', background:'#2D6A4F',
+              color:'#fff', fontWeight:600, fontSize:14,
+              textDecoration:'none', textAlign:'center',
+            }}>
+              {isFr ? 'Commencer — 19.99$/mois' : 'Start — 19.99$/mo'}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <style jsx global>{`
+        .plans-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        @media (max-width: 768px) {
+          .plans-grid { grid-template-columns: 1fr; }
+        }
+        .plan-card {
+          animation: fadeSlideUp 0.45s ease both;
+        }
+        .plan-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+        }
+      `}</style>
+
       {/* ── FOOTER ────────────────────────────────────────────────────── */}
       <footer style={{ borderTop:`1px solid ${C.border}`, padding:'32px 24px', background: isDark ? C.surface : C.bg2 }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', flexWrap:'wrap', gap:16, alignItems:'center', justifyContent:'space-between' }}>
@@ -324,21 +522,28 @@ export default function Home() {
             <div style={{ width:28, height:28, borderRadius:8, background: C.accent, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:800, color:'#fff' }}>N</div>
             <span style={{ fontWeight:700, fontSize:15, color: C.text }}>novae</span>
           </div>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:20 }}>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:16 }}>
             {[
-              { href:'/dashboard',  fr:'Immigration',  en:'Immigration' },
-              { href:'/culture',    fr:'Intégration',  en:'Integration' },
-              { href:'/mentors',    fr:'Mentors',      en:'Mentors' },
-              { href:'/mon-avenir', fr:'Mon Avenir',   en:'My Future' },
-              { href:'/arrivee',    fr:'Guide arrivée',en:'Arrival guide' },
+              { href:'/dashboard',             fr:'Checklist',         en:'Checklist'       },
+              { href:'/documents',             fr:'Documents',         en:'Documents'       },
+              { href:'/bienetre',              fr:'Bien-être',         en:'Wellbeing'       },
+              { href:'/parrainage',            fr:'Parrainage',        en:'Peer mentoring'  },
+              { href:'/bourses',               fr:'Bourses',           en:'Scholarships'    },
+              { href:'/simulateur-budget',     fr:'Budget',            en:'Budget'          },
+              { href:'/calendrier-academique', fr:'Calendrier',        en:'Calendar'        },
+              { href:'/mon-avenir',            fr:'Mon Avenir',        en:'My Future'       },
+              { href:'/cv',                    fr:'CV',                en:'Resume'          },
+              { href:'/reseau',                fr:'Réseau',            en:'Network'         },
+              { href:'/entrevue',              fr:'Entrevue IA',       en:'Mock Interview'  },
+              { href:'/bug-report',            fr:'Signaler un bug 🐛', en:'Report a bug 🐛' },
             ].map(l => (
-              <Link key={l.href} href={l.href} style={{ fontSize:13, color: C.muted, textDecoration:'none' }}>
+              <Link key={l.href} href={l.href} style={{ fontSize:12, color: C.muted, textDecoration:'none' }}>
                 {isFr ? l.fr : l.en}
               </Link>
             ))}
           </div>
           <div style={{ fontSize:12, color: C.muted }}>
-            © {new Date().getFullYear()} Novae · {isFr ? 'Fait avec ❤️ pour la diaspora africaine' : 'Made with ❤️ for the African diaspora'}
+            © {new Date().getFullYear()} Novae · {isFr ? 'Fait avec ❤️ pour les nouveaux arrivants' : 'Made with ❤️ for newcomers'}
           </div>
         </div>
       </footer>

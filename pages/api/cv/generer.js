@@ -1,10 +1,18 @@
 // pages/api/cv/generer.js — Génération résumé + bullet points via Claude
 import Anthropic from '@anthropic-ai/sdk'
+import { checkRateLimit, getIP, requireAuth } from '../../../lib/apiGuards'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 export default async function handler(req, res) {
+  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
   if (req.method !== 'POST') return res.status(405).end()
+
+  const ip = getIP(req)
+  if (!checkRateLimit(ip)) return res.status(429).json({ error: 'Trop de requêtes.' })
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { profil, experiences, formation, competences, langues, poste_cible } = req.body
   if (!profil?.nom) return res.status(400).json({ error: 'profil.nom requis' })
@@ -50,7 +58,12 @@ Règles pour les bullets :
       messages:   [{ role: 'user', content: prompt }],
     })
 
-    const raw  = msg.content[0]?.text?.trim() || '{}'
+    const raw = (msg.content[0]?.text || '{}')
+      .trim()
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/```\s*$/i, '')
+      .trim()
     const json = JSON.parse(raw)
     return res.status(200).json({ success: true, data: json })
   } catch (e) {
