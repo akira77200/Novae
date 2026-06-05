@@ -1,8 +1,15 @@
 // pages/api/generer-vision.js — NOVAE v5 — Vision IA personnalisée
 import Anthropic from '@anthropic-ai/sdk'
+import { checkRateLimit, getIP, requireAuth } from '../../lib/apiGuards'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
+
+  const ip = getIP(req)
+  if (!checkRateLimit(ip)) return res.status(429).json({ error: 'Trop de requêtes.' })
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { programme, pays_origine, horizon, activites } = req.body
   if (!programme) return res.status(400).json({ error: 'Programme manquant' })

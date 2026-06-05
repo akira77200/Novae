@@ -282,7 +282,7 @@ function getPaysFiches(pays) {
 
 // ── COMPOSANT PRINCIPAL ──────────────────────────────────────────
 export default function MonAvenir() {
-  const { C, lang, profile, loading: authLoading } = useApp()
+  const { C, lang, profile, loading: authLoading, sb } = useApp()
 
   const [tab,         setTab]         = useState('orientation')
   const [step,        setStep]        = useState(0)
@@ -340,9 +340,17 @@ export default function MonAvenir() {
     if (!visionProg) return
     setVisLoading(true); setVisError(''); setVision(null)
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+
       const progInfo = PROGRAMMES.find(p => p.id === visionProg)
       const res = await fetch('/api/generer-vision', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body: JSON.stringify({ programme: progInfo ? progInfo.nom[lang] : visionProg, pays_origine: visionPays, horizon: reponses.horizon || 'non renseigné', activites: reponses.activite || 'non renseigné' }),
       })
       const data = await res.json()

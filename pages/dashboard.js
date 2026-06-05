@@ -187,10 +187,17 @@ export default function Dashboard() {
     if (!profile || !user) return
     setGenLoading(true)
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) return
+
       const payload = { profile: { ...profile, id: user.id } }
       const res = await fetch('/api/generate-recommendations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body: JSON.stringify(payload)
       })
       const data = await res.json()

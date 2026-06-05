@@ -135,7 +135,7 @@ function CVPreview({ data, lang }) {
 
 // ── Page principale ───────────────────────────────────────────────
 export default function CV() {
-  const { C, lang, profile, loading: authLoading, mounted } = useApp()
+  const { C, lang, profile, loading: authLoading, mounted, sb } = useApp()
 
   const [etape,        setEtape]       = useState(1)         // 1=infos 2=expériences 3=formation 4=preview
   const [generating,   setGenerating]  = useState(false)
@@ -202,9 +202,16 @@ export default function CV() {
   const generer = async () => {
     setGenerating(true); setAiErr('')
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+
       const res = await fetch('/api/cv/generer', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body: JSON.stringify({
           profil:       { nom, email, ville, statut: profile?.statut },
           poste_cible:  poste,

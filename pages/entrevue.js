@@ -37,7 +37,7 @@ const CONSEILS = {
 }
 
 export default function Entrevue() {
-  const { C, lang, profile } = useApp()
+  const { C, lang, profile, sb } = useApp()
 
   // ── Étape 1 : config ─────────────────────────────────────────
   const [etape,    setEtape]    = useState('config')  // 'config' | 'session'
@@ -91,9 +91,23 @@ export default function Entrevue() {
 
     abortRef.current = new AbortController()
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) {
+        setMessages(p => {
+          const copy = [...p]
+          copy[assistantIdx] = { role: 'assistant', content: lang === 'fr' ? 'Connecte-toi pour utiliser cette fonctionnalité.' : 'Sign in to use this feature.' }
+          return copy
+        })
+        return
+      }
+
       const res = await fetch('/api/entrevue', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body: JSON.stringify({ messages: history, type: typeId, cible: cibleOverride || cible, lang }),
         signal: abortRef.current.signal,
       })

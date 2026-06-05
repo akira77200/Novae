@@ -23,20 +23,18 @@ export default async function handler(req, res) {
   if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
   if (req.method !== 'POST') return res.status(405).end()
 
-  // 1. Auth requise
-  const { user, error: authError } = await requireAuth(req)
-  if (!user) {
-    return res.status(401).json({
-      error: authError === 'missing_token'
-        ? 'Connexion requise pour utiliser Nova.'
-        : 'Session expirée. Reconnecte-toi.'
-    })
-  }
-
-  // 2. Rate limiting — 20 req/heure par IP
   const ip = getIP(req)
   if (!checkRateLimit(ip, 20)) {
     return res.status(429).json({ error: 'Trop de messages. Réessaie dans une heure.' })
+  }
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) {
+    return res.status(401).json({
+      error: authResult.error === 'Connexion requise.'
+        ? 'Connexion requise pour utiliser Nova.'
+        : authResult.error
+    })
   }
 
   const { messages, profile } = req.body
