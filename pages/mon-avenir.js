@@ -4,39 +4,46 @@ import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
 const PAYS_LISTE = [
-  'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie',
-  'Allemagne', 'Angola', 'Arabie Saoudite', 'Argentine',
-  'Australie', 'Autriche', 'Azerbaïdjan', 'Bahreïn',
-  'Bangladesh', 'Belgique', 'Bénin', 'Birmanie',
-  'Bolivie', 'Bosnie-Herzégovine', 'Brésil', 'Bulgarie',
-  'Burkina Faso', 'Burundi', 'Cambodge', 'Cameroun',
-  'Canada', 'Chili', 'Chine', 'Chypre', 'Colombie',
-  'Congo', 'Corée du Sud', 'Costa Rica', 'Côte d\'Ivoire',
-  'Croatie', 'Cuba', 'Danemark', 'Djibouti',
-  'Égypte', 'Émirats arabes unis', 'Équateur',
-  'Espagne', 'Éthiopie', 'États-Unis', 'Finlande',
-  'France', 'Gabon', 'Ghana', 'Grèce', 'Guatemala',
-  'Guinée', 'Guinée-Bissau', 'Haïti', 'Honduras',
-  'Hongrie', 'Inde', 'Indonésie', 'Irak', 'Iran',
-  'Irlande', 'Israël', 'Italie', 'Jamaïque', 'Japon',
-  'Jordanie', 'Kazakhstan', 'Kenya', 'Koweït', 'Laos',
-  'Liban', 'Libye', 'Luxembourg', 'Madagascar', 'Malaisie',
-  'Mali', 'Maroc', 'Mauritanie', 'Mexique', 'Moldavie',
-  'Mongolie', 'Mozambique', 'Namibie', 'Népal',
-  'Nicaragua', 'Niger', 'Nigeria', 'Norvège',
-  'Nouvelle-Zélande', 'Oman', 'Ouganda', 'Ouzbékistan',
-  'Pakistan', 'Panama', 'Paraguay', 'Pays-Bas',
-  'Pérou', 'Philippines', 'Pologne', 'Portugal',
-  'Qatar', 'République centrafricaine', 'République dominicaine',
-  'République tchèque', 'Roumanie', 'Royaume-Uni',
-  'Russie', 'Rwanda', 'Sénégal', 'Serbie',
-  'Sierra Leone', 'Singapour', 'Slovaquie', 'Slovénie',
-  'Somalie', 'Soudan', 'Sri Lanka', 'Suède',
-  'Suisse', 'Syrie', 'Taïwan', 'Tanzanie',
-  'Tchad', 'Thaïlande', 'Togo', 'Tunisie',
-  'Turkménistan', 'Turquie', 'Ukraine', 'Uruguay',
-  'Venezuela', 'Vietnam', 'Yémen', 'Zambie', 'Zimbabwe',
-  'Autre',
+  "Afghanistan", "Afrique du Sud", "Albanie", 
+  "Algérie", "Allemagne", "Angola", 
+  "Arabie Saoudite", "Argentine", "Australie", 
+  "Autriche", "Azerbaïdjan", "Bahreïn",
+  "Bangladesh", "Belgique", "Bénin", "Birmanie",
+  "Bolivie", "Bosnie-Herzégovine", "Brésil", 
+  "Bulgarie", "Burkina Faso", "Burundi", 
+  "Cambodge", "Cameroun", "Canada", "Chili", 
+  "Chine", "Chypre", "Colombie", "Congo",
+  "Corée du Sud", "Costa Rica", "Côte d'Ivoire",
+  "Croatie", "Cuba", "Danemark", "Djibouti",
+  "Égypte", "Émirats arabes unis", "Équateur",
+  "Espagne", "Éthiopie", "États-Unis", 
+  "Finlande", "France", "Gabon", "Ghana", 
+  "Grèce", "Guatemala", "Guinée", 
+  "Guinée-Bissau", "Haïti", "Honduras",
+  "Hongrie", "Inde", "Indonésie", "Irak", 
+  "Iran", "Irlande", "Israël", "Italie", 
+  "Jamaïque", "Japon", "Jordanie", "Kazakhstan",
+  "Kenya", "Koweït", "Laos", "Liban", "Libye",
+  "Luxembourg", "Madagascar", "Malaisie", "Mali",
+  "Maroc", "Mauritanie", "Mexique", "Moldavie",
+  "Mongolie", "Mozambique", "Namibie", "Népal",
+  "Nicaragua", "Niger", "Nigeria", "Norvège",
+  "Nouvelle-Zélande", "Oman", "Ouganda", 
+  "Ouzbékistan", "Pakistan", "Panama", 
+  "Paraguay", "Pays-Bas", "Pérou", 
+  "Philippines", "Pologne", "Portugal",
+  "Qatar", "République centrafricaine", 
+  "République dominicaine", "République tchèque",
+  "Roumanie", "Royaume-Uni", "Russie", "Rwanda",
+  "Sénégal", "Serbie", "Sierra Leone", 
+  "Singapour", "Slovaquie", "Slovénie",
+  "Somalie", "Soudan", "Sri Lanka", "Suède",
+  "Suisse", "Syrie", "Taïwan", "Tanzanie",
+  "Tchad", "Thaïlande", "Togo", "Tunisie",
+  "Turkménistan", "Turquie", "Ukraine", 
+  "Uruguay", "Venezuela", "Vietnam", 
+  "Yémen", "Zambie", "Zimbabwe",
+  "Mon pays n'est pas dans la liste",
 ]
 
 // ── QUIZ — Questions ─────────────────────────────────────────────
@@ -454,6 +461,7 @@ export default function MonAvenir() {
   const [vision,      setVision]      = useState(null)
   const [visLoading,  setVisLoading]  = useState(false)
   const [visError,    setVisError]    = useState('')
+  const [paysAutre,   setPaysAutre]   = useState('')
 
   // Load saved quiz + pre-fill from profile
   useEffect(() => {
@@ -674,11 +682,22 @@ export default function MonAvenir() {
 
                   {/* Select dropdown */}
                   {q.type === 'select' && (
-                    <select value={reponses[q.id] || ''} onChange={e => setSingle(q.id, e.target.value)}
-                      style={{ width:'100%', maxWidth:340, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: reponses[q.id] ? C.text : C.muted, fontSize:14, outline:'none', cursor:'pointer', colorScheme:'dark' }}>
-                      <option value="">{lang === 'fr' ? '-- Sélectionne ton pays --' : '-- Select your country --'}</option>
-                      {q.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    </select>
+                    <>
+                      <select value={reponses[q.id] || ''} onChange={e => { setSingle(q.id, e.target.value); if (e.target.value !== 'Mon pays n\'est pas dans la liste') setPaysAutre('') }}
+                        style={{ width:'100%', maxWidth:340, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: reponses[q.id] ? C.text : C.muted, fontSize:14, outline:'none', cursor:'pointer', colorScheme:'dark' }}>
+                        <option value="">{lang === 'fr' ? '-- Sélectionne ton pays --' : '-- Select your country --'}</option>
+                        {q.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                      </select>
+                      {reponses[q.id] === 'Mon pays n\'est pas dans la liste' && (
+                        <input
+                          type="text"
+                          placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
+                          value={paysAutre}
+                          onChange={e => { setPaysAutre(e.target.value); setSingle(q.id, e.target.value) }}
+                          style={{ marginTop: '8px', width: '100%', maxWidth:340, padding:'10px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:14, outline:'none' }}
+                        />
+                      )}
+                    </>
                   )}
                 </div>
 
