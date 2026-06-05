@@ -1,5 +1,6 @@
 // pages/api/guides/generer.js — Génération de guides complets via Claude
-import Anthropic from '@anthropic-ai/sdk'
+import { anthropic } from '../../../lib/anthropic'
+import { parseClaudeJson } from '../../../lib/parseJson'
 import { checkRateLimit, getIP } from '../../../lib/apiGuards'
 
 export const GUIDES_CONTENT = {
@@ -82,23 +83,6 @@ export const GUIDES_CONTENT = {
 
 const cache = new Map()
 
-function parseGuideJson(text) {
-  let raw = (text || '')
-    .trim()
-    .replace(/^```json\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/```\s*$/i, '')
-    .replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
-    .trim()
-
-  const start = raw.indexOf('{')
-  const end   = raw.lastIndexOf('}')
-  if (start !== -1 && end > start) raw = raw.slice(start, end + 1)
-  raw = raw.replace(/,\s*([}\]])/g, '$1')
-
-  return JSON.parse(raw)
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'GET' && req.method !== 'POST') return res.status(405).end()
 
@@ -116,8 +100,6 @@ export default async function handler(req, res) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return res.status(500).json({ error: 'Configuration serveur manquante' })
   }
-
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   const prompt = `Tu es un expert en intégration des nouveaux arrivants au Canada.
 Rédige un guide complet en français pour : "${guide.titre}".
@@ -141,13 +123,13 @@ Règles :
 - Pas de texte hors JSON`
 
   try {
-    const message = await client.messages.create({
+    const message = await anthropic.messages.create({
       model:      'claude-haiku-4-5-20251001',
       max_tokens: 4000,
       messages:   [{ role: 'user', content: prompt }],
     })
 
-    const parsed = parseGuideJson(message.content[0]?.text || '{}')
+    const parsed = parseClaudeJson(message.content[0]?.text || '{}')
     const payload = {
       titre:        parsed.titre || guide.titre,
       introduction: parsed.introduction || '',

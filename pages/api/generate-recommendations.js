@@ -1,5 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { createClient } from '@supabase/supabase-js';
+import { anthropic } from '../../lib/anthropic';
+import { supabaseAdmin } from '../../lib/supabaseAdmin';
+import { parseClaudeJson } from '../../lib/parseJson';
 import RESOURCES_DB from '../../data/resources-db.js';
 import { checkRateLimit, getIP, requireAuth } from '../../lib/apiGuards';
 
@@ -92,8 +93,6 @@ export default async function handler(req, res) {
   const { profile } = req.body;
   if (!profile?.id) return res.status(400).json({ error: 'Profil manquant' });
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
   const prompt = `Tu es un conseiller bienveillant pour étudiants africains
 francophones arrivant au Canada. Génère des recommandations PERSONNALISÉES.
 
@@ -129,19 +128,13 @@ Règles :
 - Tout en français`;
 
   try {
-    const message = await client.messages.create({
+    const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }]
     });
 
-    const raw = message.content[0].text.trim();
-    const cleaned = raw
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/```\s*$/i, '')
-      .trim();
-    const llmResult = JSON.parse(cleaned);
+    const llmResult = parseClaudeJson(message.content[0].text);
 
     // Ressources construites programmatiquement depuis RESOURCES_DB — jamais inventées
     const resources = selectResources(profile)
@@ -154,12 +147,7 @@ Règles :
     }
 
     // Sauvegarder dans Supabase avec la clé service (bypass RLS)
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
-
-    await supabase
+    await supabaseAdmin
       .from('profiles')
       .update({ ai_recommendations: recommendations })
       .eq('id', profile.id);

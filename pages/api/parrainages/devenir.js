@@ -1,25 +1,19 @@
 // pages/api/parrainages/devenir.js — POST inscription comme parrain bénévole
-import { createClient } from '@supabase/supabase-js'
-
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+import { supabaseAdmin } from '../../../lib/supabaseAdmin'
+import { requireAuth } from '../../../lib/apiGuards'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const token = req.headers.authorization?.replace('Bearer ', '')
-  if (!token) return res.status(401).json({ error: 'Non authentifié' })
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
-  const { data: { user }, error: authErr } = await sb.auth.getUser(token)
-  if (authErr || !user) return res.status(401).json({ error: 'Token invalide' })
-
+  const user = authResult.user
   const { sujets, disponibilite } = req.body
   if (!sujets?.length) return res.status(400).json({ error: 'Au moins un sujet requis' })
 
   // Récupérer le profil pour les infos du parrain
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single()
+  const { data: profile } = await supabaseAdmin.from('profiles').select('*').eq('id', user.id).single()
 
   const mentorData = {
     user_id:     user.id,
@@ -38,7 +32,7 @@ export default async function handler(req, res) {
     annee_arrivee: profile?.date_arrivee ? new Date(profile.date_arrivee).getFullYear() : null,
   }
 
-  const { data, error } = await sb
+  const { data, error } = await supabaseAdmin
     .from('mentors')
     .upsert(mentorData, { onConflict: 'user_id' })
     .select()

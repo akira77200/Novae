@@ -1,8 +1,7 @@
 // pages/api/entrevue.js — Simulation entrevue IA (streaming SSE)
-import Anthropic from '@anthropic-ai/sdk'
+import { anthropic, requireAnthropicKey } from '../../lib/anthropic'
+import { initSSE, streamAnthropicResponse } from '../../lib/sse'
 import { checkRateLimit, getIP, requireAuth, checkMessageLength } from '../../lib/apiGuards'
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 const SYSTEM = {
   emploi: (poste, lang) => `Tu es un recruteur canadien expérimenté qui fait passer un entretien d'embauche pour le poste de "${poste}".
@@ -39,7 +38,7 @@ Règles STRICTES :
 }
 
 export default async function handler(req, res) {
-  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'Configuration serveur manquante' })
+  if (!requireAnthropicKey(res)) return
   if (req.method !== 'POST') return res.status(405).end()
 
   const ip = getIP(req)
@@ -61,26 +60,14 @@ export default async function handler(req, res) {
     type === 'admission' ? SYSTEM.admission(cible || 'programme non spécifié', lang) :
     SYSTEM.visa(cible || 'permis d\'études', lang)
 
-  res.setHeader('Content-Type', 'text/event-stream')
-  res.setHeader('Cache-Control', 'no-cache')
-  res.setHeader('Connection', 'keep-alive')
+  initSSE(res)
 
-  try {
-    const stream = await client.messages.stream({
-      model:      'claude-haiku-4-5-20251001',
-      max_tokens: 600,
-      system:     systemPrompt,
-      messages:   messages.map(m => ({ role: m.role, content: m.content })),
-    })
-    for await (const chunk of stream) {
-      if (chunk.type === 'content_block_delta' && chunk.delta?.type === 'text_delta') {
-        res.write(`data: ${JSON.stringify({ text: chunk.delta.text })}\n\n`)
-      }
-    }
-    res.write('data: [DONE]\n\n')
-  } catch (e) {
-    res.write(`data: ${JSON.stringify({ error: e.message })}\n\n`)
-  } finally {
-    res.end()
-  }
+  const stream = await anthropic.messages.stream({
+    model:      'claude-haiku-4-5-20251001',
+    max_tokens: 600,
+    system:     systemPrompt,
+    messages:   messages.map(m => ({ role: m.role, content: m.content })),
+  })
+
+  await streamAnthropicResponse(stream, res)
 }

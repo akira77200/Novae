@@ -1,5 +1,5 @@
 // pages/api/bug-report.js — Rapports de bug
-import { createClient } from '@supabase/supabase-js'
+import { supabaseAdmin } from '../../lib/supabaseAdmin'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
@@ -9,12 +9,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Description requise' })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-  )
-
-  const { error } = await supabase.from('bug_reports').insert({
+  const { error } = await supabaseAdmin.from('bug_reports').insert({
     user_email: email?.trim() || null,
     page:       page?.trim() || null,
     description: description.trim(),

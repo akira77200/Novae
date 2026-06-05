@@ -1,17 +1,10 @@
 // pages/api/echeances/[id].js — PATCH update + DELETE
-import { createClient } from '@supabase/supabase-js'
-
-const sb = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+import { supabaseAdmin } from '../../../lib/supabaseAdmin'
+import { requireAuth } from '../../../lib/apiGuards'
 
 export default async function handler(req, res) {
-  const token = req.headers.authorization?.replace('Bearer ', '')
-  if (!token) return res.status(401).json({ error: 'Non authentifié' })
-
-  const { data: { user }, error: authErr } = await sb.auth.getUser(token)
-  if (authErr || !user) return res.status(401).json({ error: 'Token invalide' })
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { id } = req.query
 
@@ -27,11 +20,11 @@ export default async function handler(req, res) {
     if (complete     !== undefined) patch.complete      = complete
     if (lu           !== undefined) patch.lu            = lu
 
-    const { data, error } = await sb
+    const { data, error } = await supabaseAdmin
       .from('alertes')
       .update(patch)
       .eq('id', id)
-      .eq('utilisateur_id', user.id)
+      .eq('utilisateur_id', authResult.user.id)
       .select()
       .single()
     if (error) return res.status(500).json({ error: error.message })
@@ -39,11 +32,11 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'DELETE') {
-    const { error } = await sb
+    const { error } = await supabaseAdmin
       .from('alertes')
       .delete()
       .eq('id', id)
-      .eq('utilisateur_id', user.id)
+      .eq('utilisateur_id', authResult.user.id)
     if (error) return res.status(500).json({ error: error.message })
     return res.status(200).json({ success: true })
   }
