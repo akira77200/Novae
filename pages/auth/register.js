@@ -56,6 +56,7 @@ export default function Register() {
   const [loading,  setLoading]  = useState(false)
   const [error,    setError]    = useState('')
   const [success,  setSuccess]  = useState(false)
+  const [welcome,  setWelcome]  = useState(false)
   const [sentEmail,setSentEmail]= useState('')
 
   const [form, setForm] = useState({
@@ -65,6 +66,17 @@ export default function Register() {
   })
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  const envoyerBienvenue = async (email, fullName) => {
+    const prenom = fullName?.trim().split(/\s+/)[0] || ''
+    try {
+      await fetch('/api/email/bienvenue', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, prenom }),
+      })
+    } catch (_) { /* MVP — silencieux */ }
+  }
 
   // Validations
   const emailOk   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
@@ -112,14 +124,14 @@ export default function Register() {
         })
       }
 
+      await envoyerBienvenue(form.email.trim().toLowerCase(), form.full_name.trim())
+
       // Supabase peut nécessiter une confirmation email
-      // Si session = null → confirmation nécessaire
       if (!data.session) {
         setSentEmail(form.email.trim())
         setSuccess(true)
       } else {
-        // Session immédiate (email confirm désactivé) → redirection
-        window.location.href = '/dashboard'
+        setWelcome(true)
       }
     } catch (e) {
       const msg = e.message || ''
@@ -138,19 +150,43 @@ export default function Register() {
   const lbl  = { display: 'block', fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
   const chip = (active) => ({ padding: '7px 15px', borderRadius: 20, border: `1px solid ${active ? C.accent + '60' : C.border}`, background: active ? C.accent + '18' : 'transparent', color: active ? C.accent2 : C.muted, fontSize: 13, cursor: 'pointer', transition: 'all 0.15s' })
 
+  // ── Écran bienvenue — compte activé immédiatement ──────────────
+  if (welcome) return (
+    <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+      <div style={{ width: '100%', maxWidth: 420, textAlign: 'center' }}>
+        <div style={{ fontSize: 52, marginBottom: 20 }}>🎉</div>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: C.text, marginBottom: 12 }}>
+          {lang === 'fr'
+            ? `Bienvenue sur Novae${form.full_name.trim() ? `, ${form.full_name.trim().split(/\s+/)[0]}` : ''} !`
+            : `Welcome to Novae${form.full_name.trim() ? `, ${form.full_name.trim().split(/\s+/)[0]}` : ''}!`}
+        </h2>
+        <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px', marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7 }}>
+            {lang === 'fr'
+              ? <>Ton compte est prêt. Commence par ta checklist d'arrivée et explore les guides gratuits pour tes premières démarches au Canada.</>
+              : <>Your account is ready. Start with your arrival checklist and explore free guides for your first steps in Canada.</>}
+          </p>
+        </div>
+        <Link href="/dashboard" style={{ display: 'inline-block', padding: '11px 24px', background: C.accent, borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+          {lang === 'fr' ? 'Accéder à mon tableau de bord →' : 'Go to my dashboard →'}
+        </Link>
+      </div>
+    </div>
+  )
+
   // ── Écran succès — confirmation email ──────────────────────────
   if (success) return (
     <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 420, textAlign: 'center' }}>
         <div style={{ fontSize: 52, marginBottom: 20 }}>📬</div>
         <h2 style={{ fontSize: 22, fontWeight: 800, color: C.text, marginBottom: 12 }}>
-          {lang === 'fr' ? 'Vérifie ta boîte mail !' : 'Check your inbox!'}
+          {lang === 'fr' ? 'Bienvenue sur Novae !' : 'Welcome to Novae!'}
         </h2>
         <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px', marginBottom: 20 }}>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7 }}>
             {lang === 'fr'
-              ? <>Un email de confirmation a été envoyé à <strong style={{ color: C.text }}>{sentEmail}</strong>.<br />Clique sur le lien dans l'email pour activer ton compte.<br /><br />Tu ne le trouves pas ? Vérifie tes <strong>spams</strong>.</>
-              : <>A confirmation email was sent to <strong style={{ color: C.text }}>{sentEmail}</strong>.<br />Click the link in the email to activate your account.<br /><br />Can't find it? Check your <strong>spam folder</strong>.</>}
+              ? <>Un email de confirmation a été envoyé à <strong style={{ color: C.text }}>{sentEmail}</strong>.<br />Clique sur le lien pour activer ton compte.<br /><br />Tu ne le trouves pas ? Vérifie tes <strong>spams</strong>.<br /><br />Un message de bienvenue t'attend une fois ton compte activé.</>
+              : <>A confirmation email was sent to <strong style={{ color: C.text }}>{sentEmail}</strong>.<br />Click the link to activate your account.<br /><br />Can't find it? Check your <strong>spam folder</strong>.<br /><br />A welcome message awaits you once your account is active.</>}
           </p>
         </div>
         <Link href="/auth/login" style={{ display: 'inline-block', padding: '11px 24px', background: C.accent, borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>

@@ -36,14 +36,25 @@ export default function AuthCallback() {
           // Crée/met à jour le profil si c'est une première connexion Google
           const { data: existing } = await sb.from('profiles').select('id').eq('id', session.user.id).single()
           if (!existing) {
+            const fullName = session.user.user_metadata?.full_name ||
+              session.user.user_metadata?.name ||
+              session.user.email?.split('@')[0] || ''
             await sb.from('profiles').upsert({
               id:         session.user.id,
               email:      session.user.email,
-              full_name:  session.user.user_metadata?.full_name ||
-                          session.user.user_metadata?.name ||
-                          session.user.email?.split('@')[0] || '',
+              full_name:  fullName,
               avatar_url: session.user.user_metadata?.avatar_url || null,
             })
+            try {
+              await fetch('/api/email/bienvenue', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({
+                  email:  session.user.email,
+                  prenom: fullName.split(/\s+/)[0] || '',
+                }),
+              })
+            } catch (_) { /* MVP */ }
           }
           router.replace('/dashboard')
         } else {

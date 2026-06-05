@@ -353,6 +353,7 @@ export default function Home() {
               { href:'/cv',                    fr:'CV',                en:'Resume'          },
               { href:'/reseau',                fr:'Réseau',            en:'Network'         },
               { href:'/entrevue',              fr:'Entrevue IA',       en:'Mock Interview'  },
+              { href:'/bug-report',            fr:'Signaler un bug 🐛', en:'Report a bug 🐛' },
             ].map(l => (
               <Link key={l.href} href={l.href} style={{ fontSize:12, color: C.muted, textDecoration:'none' }}>
                 {isFr ? l.fr : l.en}
