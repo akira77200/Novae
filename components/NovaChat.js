@@ -16,7 +16,7 @@ const SUGGESTIONS_EN = [
 ]
 
 export default function NovaChat() {
-  const { C, lang, profile, mounted } = useApp()
+  const { C, lang, profile, mounted, sb } = useApp()
   const [open,      setOpen]      = useState(false)
   const [messages,  setMessages]  = useState([]) // { role, content }
   const [input,     setInput]     = useState('')
@@ -69,9 +69,23 @@ export default function NovaChat() {
 
     abortRef.current = new AbortController()
     try {
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token
+      if (!token) {
+        setMessages(p => {
+          const copy = [...p]
+          copy[assistantIdx] = { role: 'assistant', content: lang === 'fr' ? 'Connecte-toi pour utiliser Nova.' : 'Sign in to use Nova.' }
+          return copy
+        })
+        return
+      }
+
       const res = await fetch('/api/nova', {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization:  `Bearer ${token}`,
+        },
         body:    JSON.stringify({
           messages: history,
           profile: profile ? {
