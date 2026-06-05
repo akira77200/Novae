@@ -98,6 +98,11 @@ export default function NovaChat() {
         signal: abortRef.current.signal,
       })
 
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erreur ${res.status}`)
+      }
+
       const reader  = res.body.getReader()
       const decoder = new TextDecoder()
       let   buffer  = ''
@@ -123,7 +128,11 @@ export default function NovaChat() {
                 return copy
               })
             }
-          } catch {}
+          } catch (parseErr) {
+            if (parseErr.message && !raw.includes('[DONE]')) {
+              console.warn('[NovaChat] SSE parse error:', parseErr.message)
+            }
+          }
         }
       }
     } catch (e) {

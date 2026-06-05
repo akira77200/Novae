@@ -1,10 +1,11 @@
 // pages/api/sessions/creer.js
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' })
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
+  if (!process.env.STRIPE_SECRET_KEY) return res.status(500).json({ error: 'Configuration paiement manquante' })
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' })
   const { mentorId, mentorNom, sujet, dureeMinutes, montantCAD } = req.body
   if (!mentorId || !montantCAD) return res.status(400).json({ error: 'Paramètres manquants' })
 
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
     })
     return res.status(200).json({ url: session.url })
   } catch (e) {
-    console.error(e)
-    return res.status(500).json({ error: e.message })
+    console.error('[sessions/creer]', e.message)
+    return res.status(500).json({ error: 'Erreur lors de la création de la session de paiement.' })
   }
 }

@@ -67,6 +67,7 @@ Règles pour les bullets :
     const json = JSON.parse(raw)
     return res.status(200).json({ success: true, data: json })
   } catch (e) {
-    return res.status(500).json({ error: e.message })
+    console.error('[cv/generer]', e.message)
+    return res.status(500).json({ error: 'Erreur de génération du CV. Réessaie.' })
   }
 }

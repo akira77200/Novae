@@ -17,7 +17,9 @@ export default function Logout() {
     const doLogout = async () => {
       try {
         await sb.auth.signOut()
-      } catch {}
+      } catch (e) {
+        console.warn('[logout] signOut failed:', e.message)
+      }
       // Purge localStorage (sauf préférences lang/theme)
       KEYS_TO_CLEAR.forEach(k => {
         try { localStorage.removeItem(k) } catch {}

@@ -19,7 +19,9 @@ export default function ForgotPassword() {
       await sb.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
         redirectTo: `${appUrl}/auth/reset-password`,
       })
-    } catch {}
+    } catch (e) {
+      console.warn('[forgot-password] Reset request failed:', e.message)
+    }
     // Toujours afficher le même message (ne pas révéler si l'email existe)
     setSent(true)
     setLoading(false)

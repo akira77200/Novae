@@ -111,6 +111,11 @@ export default function Entrevue() {
         body: JSON.stringify({ messages: history, type: typeId, cible: cibleOverride || cible, lang }),
         signal: abortRef.current.signal,
       })
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}))
+        throw new Error(errBody.error || `Erreur ${res.status}`)
+      }
+
       const reader  = res.body.getReader()
       const decoder = new TextDecoder()
       let buffer    = ''
@@ -126,13 +131,18 @@ export default function Entrevue() {
           const raw = line.slice(6)
           if (raw === '[DONE]') break
           try {
-            const { text } = JSON.parse(raw)
+            const { text, error } = JSON.parse(raw)
+            if (error) console.warn('[Entrevue] API error:', error)
             if (text) setMessages(p => {
               const copy = [...p]
               copy[assistantIdx] = { ...copy[assistantIdx], content: copy[assistantIdx].content + text }
               return copy
             })
-          } catch {}
+          } catch (parseErr) {
+            if (parseErr.message && !raw.includes('[DONE]')) {
+              console.warn('[Entrevue] SSE parse error:', parseErr.message)
+            }
+          }
         }
       }
       const nb = (msgHistory || messages).filter(m => m.role === 'user').length + 1

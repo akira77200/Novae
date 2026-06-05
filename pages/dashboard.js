@@ -23,7 +23,10 @@ function BienetreWidget({ C, lang, sb }) {
         const sem  = getSemLundi()
         const found = (json.data || []).find(h => h.semaine === sem)
         setCheckin(found || null)
-      } catch { setCheckin(null) }
+      } catch (e) {
+        console.warn('[BienetreWidget] Failed to load:', e.message)
+        setCheckin(null)
+      }
     }
     load()
   }, [sb])
@@ -230,7 +233,9 @@ export default function Dashboard() {
       const res = await fetch('/api/documents', { headers: { Authorization: `Bearer ${session.access_token}` } })
       const json = await res.json()
       setScoreDoc((json.data || []).length)
-    } catch {}
+    } catch (e) {
+      console.warn('[dashboard] Failed to load document count:', e.message)
+    }
   }
 
   const loadAll = async () => {
