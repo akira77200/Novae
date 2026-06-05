@@ -37,7 +37,7 @@ const CONSEILS = {
 }
 
 export default function Entrevue() {
-  const { C, lang, profile, sb } = useApp()
+  const { C, lang, profile, sb, userPlan, planLimits } = useApp()
 
   // ── Étape 1 : config ─────────────────────────────────────────
   const [etape,    setEtape]    = useState('config')  // 'config' | 'session'
@@ -169,6 +169,23 @@ export default function Entrevue() {
             ? 'Entraîne-toi avec un recruteur IA avant ton vrai entretien. Feedback en temps réel.'
             : 'Practice with an AI interviewer before your real interview. Real-time feedback.'}
         </p>
+
+        {/* Message limite plan gratuit */}
+        {userPlan === 'gratuit' && (
+          <div style={{ padding: '20px 24px', background: `${C.warning}10`, border: `1px solid ${C.warning}30`, borderRadius: 12, marginBottom: 32 }}>
+            <p style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>
+              {lang === 'fr' ? 'Disponible à partir du plan Starter' : 'Available from Starter plan'}
+            </p>
+            <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 16 }}>
+              {lang === 'fr'
+                ? 'La simulation d\'entrevue IA est une fonctionnalité premium. Passe au plan Starter pour accéder à cette fonctionnalité.'
+                : 'AI interview simulation is a premium feature. Upgrade to Starter to access this feature.'}
+            </p>
+            <a href="/abonnement" style={{ display: 'inline-block', padding: '10px 20px', borderRadius: 10, background: C.accent, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+              {lang === 'fr' ? 'Voir les abonnements →' : 'View plans →'}
+            </a>
+          </div>
+        )}
 
         {/* Type d'entrevue */}
         <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>

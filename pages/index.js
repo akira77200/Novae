@@ -333,6 +333,188 @@ export default function Home() {
         </section>
       )}
 
+      {/* ── ABONNEMENTS ───────────────────────────────────────────────── */}
+      <section style={{ padding:'72px 24px 80px', maxWidth:1100, margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:44 }}>
+          <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
+            {isFr ? 'Nos abonnements' : 'Our plans'}
+          </h2>
+          <p style={{ color: C.muted, fontSize:15 }}>
+            {isFr ? 'Choisis le plan qui correspond à tes besoins' : 'Choose the plan that fits your needs'}
+          </p>
+        </div>
+
+        <div className="plans-grid">
+          {/* PLAN GRATUIT */}
+          <div className="plan-card" style={{
+            background: isDark ? '#162820' : '#fff',
+            borderLeft: '4px solid #888',
+            borderRadius: 16,
+            padding: '28px 24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            transition: 'all 0.3s ease',
+            animationDelay: '0ms',
+          }}>
+            <div style={{ marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: C.text, margin:'0 0 8px' }}>
+                {isFr ? 'Gratuit' : 'Free'}
+              </h3>
+              <p style={{ fontSize:32, fontWeight:800, color: C.text, margin:0 }}>
+                0<span style={{ fontSize:16, fontWeight:400, color: C.muted }}>$/{isFr ? 'mois' : 'mo'}</span>
+              </p>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+              {[
+                isFr ? '✅ Dashboard + checklist' : '✅ Dashboard + checklist',
+                isFr ? '✅ Guides gratuits' : '✅ Free guides',
+                isFr ? '✅ Quiz culture' : '✅ Culture quiz',
+                isFr ? '✅ Carte vie quotidienne' : '✅ Daily life map',
+                isFr ? '✅ 1 CV généré par IA' : '✅ 1 AI-generated resume',
+                isFr ? '✅ 5 messages à Nova par jour' : '✅ 5 Nova messages/day',
+                isFr ? '❌ Recommandations IA illimitées' : '❌ Unlimited AI recommendations',
+                isFr ? '❌ Simulation entrevue' : '❌ Interview simulation',
+                isFr ? '❌ Accès mentors' : '❌ Mentor access',
+              ].map((item, i) => (
+                <p key={i} style={{ fontSize:13, color: item.startsWith('✅') ? C.text : C.muted, margin:0 }}>
+                  {item}
+                </p>
+              ))}
+            </div>
+            <Link href="/auth/register" style={{
+              display:'block', padding:'12px', borderRadius:10,
+              border:`1px solid ${C.border}`, background:'transparent',
+              color: C.text, fontWeight:600, fontSize:14,
+              textDecoration:'none', textAlign:'center',
+            }}>
+              {isFr ? 'Commencer gratuitement' : 'Get started for free'}
+            </Link>
+          </div>
+
+          {/* PLAN STARTER */}
+          <div className="plan-card" style={{
+            background: isDark ? '#162820' : '#fff',
+            borderLeft: '4px solid #1565C0',
+            borderRadius: 16,
+            padding: '28px 24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            transition: 'all 0.3s ease',
+            animationDelay: '100ms',
+            position:'relative',
+          }}>
+            <div style={{
+              position:'absolute', top:-12, left:20,
+              padding:'4px 12px', borderRadius:20,
+              background:'#1565C0', color:'#fff',
+              fontSize:11, fontWeight:700,
+            }}>
+              {isFr ? 'Populaire' : 'Popular'}
+            </div>
+            <div style={{ marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: C.text, margin:'0 0 8px' }}>
+                Starter
+              </h3>
+              <p style={{ fontSize:32, fontWeight:800, color: C.text, margin:0 }}>
+                9.99<span style={{ fontSize:16, fontWeight:400, color: C.muted }}>$/{isFr ? 'mois' : 'mo'}</span>
+              </p>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+              {[
+                isFr ? '✅ Tout le plan gratuit' : '✅ Everything in Free',
+                isFr ? '✅ 5 CV générés par IA' : '✅ 5 AI-generated resumes',
+                isFr ? '✅ 20 messages à Nova par jour' : '✅ 20 Nova messages/day',
+                isFr ? '✅ Recommandations IA illimitées' : '✅ Unlimited AI recommendations',
+                isFr ? '✅ 3 simulations entrevue par mois' : '✅ 3 interview simulations/month',
+                isFr ? '✅ Documents illimités' : '✅ Unlimited documents',
+                isFr ? '✅ Bourses et universités' : '✅ Scholarships & universities',
+                isFr ? '❌ Accès mentors prioritaire' : '❌ Priority mentor access',
+              ].map((item, i) => (
+                <p key={i} style={{ fontSize:13, color: item.startsWith('✅') ? C.text : C.muted, margin:0 }}>
+                  {item}
+                </p>
+              ))}
+            </div>
+            <Link href="/abonnement" style={{
+              display:'block', padding:'12px', borderRadius:10,
+              border:'none', background:'#1565C0',
+              color:'#fff', fontWeight:600, fontSize:14,
+              textDecoration:'none', textAlign:'center',
+            }}>
+              {isFr ? 'Commencer — 9.99$/mois' : 'Start — 9.99$/mo'}
+            </Link>
+          </div>
+
+          {/* PLAN PREMIUM */}
+          <div className="plan-card" style={{
+            background: isDark ? '#162820' : '#fff',
+            borderLeft: '4px solid #2D6A4F',
+            borderRadius: 16,
+            padding: '28px 24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            transition: 'all 0.3s ease',
+            animationDelay: '200ms',
+            position:'relative',
+          }}>
+            <div style={{
+              position:'absolute', top:-12, left:20,
+              padding:'4px 12px', borderRadius:20,
+              background:'#2D6A4F', color:'#fff',
+              fontSize:11, fontWeight:700,
+            }}>
+              ⭐ Premium
+            </div>
+            <div style={{ marginBottom:20 }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: C.text, margin:'0 0 8px' }}>
+                Premium
+              </h3>
+              <p style={{ fontSize:32, fontWeight:800, color: C.text, margin:0 }}>
+                19.99<span style={{ fontSize:16, fontWeight:400, color: C.muted }}>$/{isFr ? 'mois' : 'mo'}</span>
+              </p>
+            </div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
+              {[
+                isFr ? '✅ Tout le plan Starter' : '✅ Everything in Starter',
+                isFr ? '✅ CV illimités' : '✅ Unlimited resumes',
+                isFr ? '✅ Nova illimitée' : '✅ Unlimited Nova',
+                isFr ? '✅ Simulations entrevue illimitées' : '✅ Unlimited interview simulations',
+                isFr ? '✅ Accès mentors prioritaire' : '✅ Priority mentor access',
+                isFr ? '✅ Support prioritaire' : '✅ Priority support',
+                isFr ? '✅ Nouvelles fonctionnalités en avant-première' : '✅ Early access to new features',
+              ].map((item, i) => (
+                <p key={i} style={{ fontSize:13, color: C.text, margin:0 }}>
+                  {item}
+                </p>
+              ))}
+            </div>
+            <Link href="/abonnement" style={{
+              display:'block', padding:'12px', borderRadius:10,
+              border:'none', background:'#2D6A4F',
+              color:'#fff', fontWeight:600, fontSize:14,
+              textDecoration:'none', textAlign:'center',
+            }}>
+              {isFr ? 'Commencer — 19.99$/mois' : 'Start — 19.99$/mo'}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <style jsx global>{`
+        .plans-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        @media (max-width: 768px) {
+          .plans-grid { grid-template-columns: 1fr; }
+        }
+        .plan-card {
+          animation: fadeSlideUp 0.45s ease both;
+        }
+        .plan-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+        }
+      `}</style>
+
       {/* ── FOOTER ────────────────────────────────────────────────────── */}
       <footer style={{ borderTop:`1px solid ${C.border}`, padding:'32px 24px', background: isDark ? C.surface : C.bg2 }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', flexWrap:'wrap', gap:16, alignItems:'center', justifyContent:'space-between' }}>

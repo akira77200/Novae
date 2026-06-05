@@ -67,7 +67,7 @@ const PILIERS_NAV = [
 ]
 
 export default function Navbar() {
-  const { C, t, lang, setLang, theme, setTheme, user, profile } = useApp()
+  const { C, t, lang, setLang, theme, setTheme, user, profile, userPlan } = useApp()
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -183,6 +183,25 @@ export default function Navbar() {
             >
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
+
+            {/* Plan badge — desktop */}
+            {user && (
+              <div className="nav-desktop">
+                {userPlan === 'gratuit' ? (
+                  <a href="/abonnement" style={{ padding:'6px 12px', borderRadius:7, border:'none', background:'#F59E0B', color:'#fff', fontSize:12, fontWeight:600, cursor:'pointer', textDecoration:'none', whiteSpace:'nowrap' }}>
+                    ⭐ {isFr ? 'Passer Premium' : 'Go Premium'}
+                  </a>
+                ) : userPlan === 'starter' ? (
+                  <span style={{ padding:'5px 10px', borderRadius:7, border:'none', background:'#1565C0', color:'#fff', fontSize:11, fontWeight:600, whiteSpace:'nowrap' }}>
+                    Starter ✓
+                  </span>
+                ) : (
+                  <span style={{ padding:'5px 10px', borderRadius:7, border:'none', background:'#2D6A4F', color:'#fff', fontSize:11, fontWeight:600, whiteSpace:'nowrap' }}>
+                    Premium ✓
+                  </span>
+                )}
+              </div>
+            )}
 
             {/* Auth — desktop */}
             <div className="nav-desktop">
@@ -309,6 +328,25 @@ export default function Navbar() {
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
           </div>
+
+          {/* Plan badge — mobile */}
+          {user && (
+            <div>
+              {userPlan === 'gratuit' ? (
+                <a href="/abonnement" onClick={() => setMenuOpen(false)} style={{ display:'block', padding:'10px', borderRadius:9, border:'none', background:'#F59E0B', color:'#fff', fontSize:13, fontWeight:600, textDecoration:'none', textAlign:'center' }}>
+                  ⭐ {isFr ? 'Passer Premium' : 'Go Premium'}
+                </a>
+              ) : userPlan === 'starter' ? (
+                <span style={{ display:'block', padding:'9px', borderRadius:9, border:'none', background:'#1565C0', color:'#fff', fontSize:12, fontWeight:600, textAlign:'center' }}>
+                  Starter ✓
+                </span>
+              ) : (
+                <span style={{ display:'block', padding:'9px', borderRadius:9, border:'none', background:'#2D6A4F', color:'#fff', fontSize:12, fontWeight:600, textAlign:'center' }}>
+                  Premium ✓
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Auth */}
           {user ? (
