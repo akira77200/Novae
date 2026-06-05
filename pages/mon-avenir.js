@@ -511,7 +511,8 @@ export default function MonAvenir() {
     setVisLoading(true); setVisError(''); setVision(null)
     try {
       const { data: { session } } = await sb.auth.getSession()
-      const token = session?.access_token
+      console.log('[mon-avenir/genererVision] session:', session?.user?.email, 'token:', session?.access_token ? 'présent' : 'absent')
+      const token = session?.access_token || ''
       if (!token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 
       const progInfo = PROGRAMMES.find(p => p.id === visionProg)
