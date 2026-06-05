@@ -36,6 +36,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true })
   } catch (e) {
     console.error('[webhook]', e.message)
-    return res.status(400).json({ error: e.message })
+    return res.status(400).json({ error: 'Erreur de validation du webhook.' })
   }
 }

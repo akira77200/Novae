@@ -105,6 +105,6 @@ Règles STRICTES :
     }
   } catch (err) {
     console.error('[generer-vision]', err.message)
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: 'Erreur de génération. Réessaie dans quelques secondes.' })
   }
 }

@@ -1,6 +1,6 @@
 // pages/api/guides/generer.js — Génération de guides complets via Claude
 import Anthropic from '@anthropic-ai/sdk'
-import { checkRateLimit, getIP } from '../../../lib/apiGuards'
+import { checkRateLimit, getIP, requireAuth } from '../../../lib/apiGuards'
 
 export const GUIDES_CONTENT = {
   ramq: {
@@ -104,6 +104,9 @@ export default async function handler(req, res) {
 
   const ip = getIP(req)
   if (!checkRateLimit(ip, 10)) return res.status(429).json({ error: 'Trop de requêtes.' })
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const type = req.query?.type || req.body?.type
   const guide = GUIDES_CONTENT[type]

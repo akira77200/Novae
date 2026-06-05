@@ -1,8 +1,17 @@
 // pages/api/email/bienvenue.js — Email de bienvenue (MVP)
 import { createClient } from '@supabase/supabase-js'
+import { requireAuth, checkRateLimit, getIP } from '../../../lib/apiGuards'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
+
+  const ip = getIP(req)
+  if (!checkRateLimit(ip, 5)) {
+    return res.status(429).json({ error: 'Trop de requêtes.' })
+  }
+
+  const authResult = await requireAuth(req)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { email, prenom } = req.body
   if (!email) return res.status(400).json({ error: 'Email requis' })
@@ -12,10 +21,7 @@ export default async function handler(req, res) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   )
 
-  // MVP : log uniquement — configurer Resend/SendGrid dans Supabase pour les vrais envois
-  console.log(`[Email bienvenue] Envoyé à ${email}${prenom ? ` (${prenom})` : ''}`)
-
-  // Placeholder pour intégration future via provider email Supabase
+  // MVP : placeholder pour intégration future via provider email Supabase
   void supabase
 
   res.status(200).json({ success: true })
