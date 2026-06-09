@@ -214,6 +214,9 @@ export default function CV() {
     try {
       const { data: { session } } = await sb.auth.getSession()
       const token = session?.access_token || ''
+      console.log('[cv] session:', session ? 'présente' : 'absente')
+      console.log('[cv] access_token:', token ? token.substring(0, 20) + '...' : 'ABSENT')
+      console.log('[cv] headers envoyés:', { Authorization: `Bearer ${token?.substring(0, 20)}...` })
       if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 
       const res = await fetch('/api/cv/generer', {
