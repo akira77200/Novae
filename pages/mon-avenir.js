@@ -552,29 +552,65 @@ function getPaysFiches(pays) {
   return null
 }
 
+const LOAD_MSGS_FR = [
+  'Lecture de ton profil...', 'Identification de tes forces...',
+  'Recherche des meilleures correspondances...', 'Préparation de tes recommandations...', 'Finalisation de ton analyse...',
+]
+const LOAD_MSGS_EN = [
+  'Reading your profile...', 'Identifying your strengths...',
+  'Searching for best matches...', 'Preparing your recommendations...', 'Finalizing your analysis...',
+]
+
+const FORCES_CHIPS = [
+  { id:'maths', fr:'Les maths', en:'Math' }, { id:'parler', fr:'Parler aux gens', en:'Talking to people' },
+  { id:'construire', fr:'Construire des choses', en:'Building things' }, { id:'analyser', fr:'Analyser', en:'Analyzing' },
+  { id:'creer', fr:'Créer', en:'Creating' }, { id:'organiser', fr:'Organiser', en:'Organizing' },
+  { id:'apprendre', fr:'Apprendre vite', en:'Learning fast' }, { id:'aider', fr:'Aider les autres', en:'Helping others' },
+  { id:'convaincre', fr:'Convaincre', en:'Persuading' },
+]
+const CHANGEMENTS_CHIPS = [
+  { id:'sante', fr:'La santé dans mon pays', en:'Healthcare in my country' },
+  { id:'education', fr:"L'accès à l'éducation", en:'Access to education' },
+  { id:'tech', fr:'La technologie', en:'Technology' }, { id:'env', fr:"L'environnement", en:'The environment' },
+  { id:'finance', fr:"La finance et l'économie", en:'Finance & the economy' },
+  { id:'justice', fr:'La justice et le droit', en:'Justice & law' },
+  { id:'agri', fr:"L'agriculture", en:'Agriculture' }, { id:'infra', fr:'Les infrastructures', en:'Infrastructure' },
+]
+
 // ── COMPOSANT PRINCIPAL ──────────────────────────────────────────
 export default function MonAvenir() {
   const { C, lang, profile, loading: authLoading, sb } = useApp()
 
   const [tab,         setTab]         = useState('orientation')
-  const [step,        setStep]        = useState(0)
-  const [reponses,    setReponses]    = useState({})
-  const [quizResult,  setQuizResult]  = useState(null)
   const [selectedProg,setSelectedProg]= useState(null)
   const [vision,      setVision]      = useState(null)
   const [visLoading,  setVisLoading]  = useState(false)
   const [visError,    setVisError]    = useState('')
-  const [paysAutre,   setPaysAutre]   = useState('')
+  const [reponses,    setReponses]    = useState({}) // kept for vision tab
 
-  // Load saved quiz + pre-fill from profile
+  // ── Orientation conversationnelle (T7) ────────────────────────
+  const [orientStep,    setOrientStep]    = useState(0)  // 0-4
+  const [orientPhase,   setOrientPhase]   = useState('questions') // 'questions'|'loading'|'results'
+  const [orientAnalyse, setOrientAnalyse] = useState(null)
+  const [orientErr,     setOrientErr]     = useState('')
+  const [loadMsgIdx,    setLoadMsgIdx]    = useState(0)
+  const [orientData,    setOrientData]    = useState({
+    quiTuEs: '', forces: [], forcesTexte: '',
+    journeeIdeale: '', changements: [], changementsTexte: '',
+    pays: '', paysAutre2: '', budget: '', horizon: '',
+  })
+
   useEffect(() => {
-    const saved = localStorage.getItem('novae_quiz_result')
-    if (saved) { try { setQuizResult(JSON.parse(saved)) } catch {} }
+    const saved = localStorage.getItem('novae_orientation_complete')
+    if (saved) { try { const d = JSON.parse(saved); if (d.analyse) { setOrientAnalyse(d.analyse); setOrientData(d.reponses || {}); setOrientPhase('results') } } catch {} }
   }, [])
 
   useEffect(() => {
     if (!profile) return
-    if (profile.pays_origine) setReponses(r => r.pays ? r : { ...r, pays: profile.pays_origine })
+    if (profile.pays_origine) {
+      setOrientData(d => d.pays ? d : { ...d, pays: profile.pays_origine })
+      setReponses(r => r.pays ? r : { ...r, pays: profile.pays_origine })
+    }
     if (profile.programme) {
       const prog = profile.programme.toLowerCase()
       const match = PROGRAMMES.find(p => prog.includes(p.id.split('-')[0]) || p.nom.fr.toLowerCase().includes(prog.split(' ')[0]))
@@ -582,32 +618,53 @@ export default function MonAvenir() {
     }
   }, [profile])
 
-  // ── Quiz helpers ──────────────────────────────────────────────
-  const q = QUESTIONS[step]
-  const currentAnswer = reponses[q?.id]
-  const isAnswered = q?.type === 'multi' ? (currentAnswer || []).length > 0
-    : q?.type === 'select' ? !!currentAnswer
-    : !!currentAnswer
+  // ── Orientation helpers ───────────────────────────────────────
+  const setOD = (k, v) => setOrientData(d => ({ ...d, [k]: v }))
+  const toggleChip = (field, id) => setOrientData(d => {
+    const cur = d[field] || []
+    return { ...d, [field]: cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id] }
+  })
 
-  const toggleMatiere = (id) => {
-    const cur = reponses.matieres || []
-    setReponses(r => ({ ...r, matieres: cur.includes(id) ? cur.filter(x => x !== id) : cur.length < 3 ? [...cur, id] : cur }))
+  const q0ok = orientData.quiTuEs.trim().length >= 30
+  const q1ok = orientData.forces.length > 0
+  const q2ok = orientData.journeeIdeale.trim().length >= 30
+  const q3ok = orientData.changements.length > 0
+  const q4ok = !!orientData.pays && !!orientData.budget && !!orientData.horizon
+
+  const stepOk = [q0ok, q1ok, q2ok, q3ok, q4ok][orientStep]
+
+  const analyserProfil = async () => {
+    setOrientPhase('loading')
+    setOrientErr('')
+    let msgTimer
+    try {
+      msgTimer = setInterval(() => setLoadMsgIdx(i => (i + 1) % 5), 2000)
+      const { data: { session } } = await sb.auth.getSession()
+      const token = session?.access_token || ''
+      if (!token) { setOrientPhase('questions'); setOrientErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+      const res = await fetch('/api/analyser-profil', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ reponses: orientData }),
+      })
+      const json = await res.json()
+      if (!res.ok || !json.success) { setOrientPhase('questions'); setOrientErr(json.error || 'Erreur'); return }
+      setOrientAnalyse(json.analyse)
+      setOrientPhase('results')
+      try { localStorage.setItem('novae_orientation_complete', JSON.stringify({ reponses: orientData, analyse: json.analyse, date: new Date().toISOString() })) } catch {}
+    } catch (e) { setOrientPhase('questions'); setOrientErr(e.message) }
+    finally { clearInterval(msgTimer) }
   }
 
-  const setSingle = (qid, val) => setReponses(r => ({ ...r, [qid]: val }))
-
-  const voirResultats = () => {
-    const top = calculerScore(reponses)
-    const result = { top: top.map(p => ({ ...p, pourquoi: genererPourquoi(p, reponses, lang) })), reponses, date: new Date().toISOString() }
-    localStorage.setItem('novae_quiz_result', JSON.stringify(result))
-    setQuizResult(result)
+  const refaireOrientation = () => {
+    setOrientPhase('questions'); setOrientStep(0); setOrientAnalyse(null); setOrientErr('')
+    setOrientData({ quiTuEs:'', forces:[], forcesTexte:'', journeeIdeale:'', changements:[], changementsTexte:'', pays: orientData.pays, paysAutre2:'', budget:'', horizon:'' })
+    try { localStorage.removeItem('novae_orientation_complete') } catch {}
   }
-
-  const refaireQuiz = () => { setQuizResult(null); setStep(0); setReponses(p => ({ pays: p.pays })) }
 
   // ── Vision ────────────────────────────────────────────────────
-  const visionProg = selectedProg || quizResult?.top[0]?.id
-  const visionPays = profile?.pays_origine || reponses.pays || ''
+  const visionProg = selectedProg || orientAnalyse?.programmes_recommandes?.[0]?.id
+  const visionPays = profile?.pays_origine || orientData.pays || ''
 
   const genererVision = async () => {
     if (!visionProg) return
@@ -658,6 +715,7 @@ export default function MonAvenir() {
 
       <style>{`
         @keyframes fadeSlideUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes novaDot { 0%,80%,100%{ transform:scale(0.6); opacity:0.4; } 40%{ transform:scale(1); opacity:1; } }
         .fade-up { animation: fadeSlideUp 0.4s ease both; }
         .fade-up-1 { animation-delay: 0.05s; }
         .fade-up-2 { animation-delay: 0.15s; }
@@ -684,145 +742,425 @@ export default function MonAvenir() {
         </div>
 
         {/* ════════════════════════════════════════════════════════ */}
-        {/* TAB 1 — MON ORIENTATION                                 */}
+        {/* TAB 1 — MON ORIENTATION — 3 PHASES                      */}
         {/* ════════════════════════════════════════════════════════ */}
         {tab === 'orientation' && (
           <>
-            {/* RÉSULTATS */}
-            {quizResult ? (
-              <div className="fade-up">
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20, flexWrap:'wrap', gap:10 }}>
-                  <p style={{ fontSize:16, fontWeight:700, color:C.text }}>
-                    {lang === 'fr' ? '🎯 Tes programmes recommandés' : '🎯 Your recommended programs'}
-                  </p>
-                  <button onClick={refaireQuiz} style={{ padding:'7px 16px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor:'pointer' }}>
-                    {lang === 'fr' ? '↺ Refaire le quiz' : '↺ Retake quiz'}
-                  </button>
-                </div>
-
-                <div style={{ display:'flex', gap:14, overflowX:'auto', paddingBottom:8 }}>
-                  {quizResult.top.map((prog, i) => (
-                    <div key={prog.id} className={`fade-up fade-up-${i+1}`} style={{ minWidth:240, maxWidth:260, flexShrink:0, background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'20px 18px', display:'flex', flexDirection:'column', gap:10 }}>
-                      <span style={{ fontSize:32 }}>{prog.emoji}</span>
-                      <p style={{ fontSize:15, fontWeight:700, color:C.text, lineHeight:1.3 }}>{prog.nom[lang]}</p>
-                      <div>
-                        <div style={{ display:'flex', justifyContent:'space-between', marginBottom:5 }}>
-                          <p style={{ fontSize:11, color:C.muted, textTransform:'uppercase', letterSpacing:0.5, fontWeight:600 }}>{lang === 'fr' ? 'Compatibilité' : 'Match'}</p>
-                          <p style={{ fontSize:12, fontWeight:700, color:C.accent2 }}>{prog.pct}%</p>
-                        </div>
-                        <div style={{ height:6, background:C.border, borderRadius:3, overflow:'hidden' }}>
-                          <div style={{ width:`${prog.pct}%`, height:'100%', background: i === 0 ? C.accent2 : i === 1 ? '#60A5FA' : C.rose, borderRadius:3, transition:'width 0.8s ease' }} />
-                        </div>
-                      </div>
-                      <p style={{ fontSize:12, color:C.muted, lineHeight:1.6, flexGrow:1 }}>{prog.pourquoi || genererPourquoi(prog, quizResult.reponses, lang)}</p>
-                      <button onClick={() => { setSelectedProg(prog.id); setTab('secteur') }}
-                        style={{ padding:'9px 14px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:9, color:C.accent2, fontWeight:600, fontSize:12, cursor:'pointer' }}>
-                        {lang === 'fr' ? 'Explorer ce programme →' : 'Explore this program →'}
-                      </button>
-                    </div>
+            {/* ── PHASE 2 : CHARGEMENT ── */}
+            {orientPhase === 'loading' && (
+              <div style={{ textAlign:'center', padding:'80px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:20 }}>
+                <div style={{ fontSize:48, marginBottom:24 }}>✨</div>
+                <p style={{ fontSize:18, fontWeight:700, color:C.text, marginBottom:12 }}>
+                  {lang === 'fr' ? 'Analyse de ton profil en cours...' : 'Analyzing your profile...'}
+                </p>
+                <p style={{ fontSize:14, color:C.accent2, marginBottom:32, minHeight:24, transition:'all 0.3s' }}>
+                  {lang === 'fr' ? LOAD_MSGS_FR[loadMsgIdx] : LOAD_MSGS_EN[loadMsgIdx]}
+                </p>
+                <div style={{ display:'flex', justifyContent:'center', gap:8 }}>
+                  {[0,1,2].map(i => (
+                    <div key={i} style={{ width:10, height:10, borderRadius:'50%', background:C.accent2,
+                      animation:`novaDot 1.4s infinite ${i*0.2}s` }} />
                   ))}
                 </div>
-
-                <div style={{ marginTop:20, padding:'14px 18px', background:`${C.accent}08`, border:`1px solid ${C.accent}20`, borderRadius:12 }}>
-                  <p style={{ fontSize:13, color:C.accent2 }}>
-                    ✨ {lang === 'fr' ? 'Quiz complété le ' : 'Quiz completed on '}{new Date(quizResult.date).toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA')} · {lang === 'fr' ? 'Va dans' : 'Go to'} <button onClick={() => setTab('vision')} style={{ background:'none', border:'none', color:C.accent2, fontWeight:700, cursor:'pointer', fontSize:13, padding:0, textDecoration:'underline' }}>{lang === 'fr' ? 'Ma Vision' : 'My Vision'}</button> {lang === 'fr' ? 'pour générer ton plan IA.' : 'to generate your AI plan.'}
-                  </p>
-                </div>
               </div>
-            ) : (
-              /* QUIZ — étape par étape */
+            )}
+
+            {/* ── PHASE 1 : QUESTIONS ── */}
+            {orientPhase === 'questions' && (
               <div>
                 {/* Barre de progression */}
                 <div style={{ marginBottom:24 }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
                     <p style={{ fontSize:13, fontWeight:600, color:C.muted }}>
-                      {lang === 'fr' ? `Étape ${step + 1} sur 6` : `Step ${step + 1} of 6`}
+                      {lang === 'fr' ? `Question ${orientStep + 1} sur 5` : `Question ${orientStep + 1} of 5`}
                     </p>
-                    <p style={{ fontSize:12, color:C.muted }}>{Math.round(((step) / 6) * 100)}%</p>
+                    <p style={{ fontSize:12, color:C.muted }}>{Math.round((orientStep / 5) * 100)}%</p>
                   </div>
                   <div style={{ height:5, background:C.border, borderRadius:3, overflow:'hidden' }}>
-                    <div style={{ width:`${((step) / 6) * 100}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.4s ease' }} />
+                    <div style={{ width:`${(orientStep / 5) * 100}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.4s ease' }} />
                   </div>
                 </div>
 
-                {/* Question */}
-                <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'24px 22px', marginBottom:20 }}>
-                  <p style={{ fontSize:18, fontWeight:700, color:C.text, marginBottom:4 }}>
-                    {lang === 'fr' ? q.fr : q.en}
-                  </p>
-                  <p style={{ fontSize:13, color:C.muted, marginBottom:20 }}>
-                    {lang === 'fr' ? q.sous_fr : q.sous_en}
-                  </p>
+                {orientErr && (
+                  <div style={{ padding:'12px 16px', background:`${C.error}15`, border:`1px solid ${C.error}40`, borderRadius:10, color:C.error, fontSize:13, marginBottom:16 }}>
+                    ⚠️ {orientErr}
+                  </div>
+                )}
 
-                  {/* Multi-select */}
-                  {q.type === 'multi' && (
-                    <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
-                      {q.options.map(opt => {
-                        const sel = (reponses.matieres || []).includes(opt.id)
-                        const maxed = (reponses.matieres || []).length >= 3 && !sel
-                        return (
-                          <button key={opt.id} onClick={() => !maxed && toggleMatiere(opt.id)} style={{ ...chip(sel), opacity: maxed ? 0.4 : 1, cursor: maxed ? 'not-allowed' : 'pointer' }}>
-                            {lang === 'fr' ? opt.fr : opt.en}
-                          </button>
-                        )
-                      })}
+                {/* ── Q0 : Qui tu es ── */}
+                {orientStep === 0 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '👋 Parle-moi de toi' : '👋 Tell me about yourself'}
+                    </p>
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20, lineHeight:1.6 }}>
+                      {lang === 'fr'
+                        ? "D'où tu viens ? Qu'est-ce qui te passionne ? Qu'est-ce que tu fais dans la vie en ce moment ?"
+                        : "Where are you from? What are you passionate about? What are you doing with your life right now?"}
+                    </p>
+                    <textarea
+                      value={orientData.quiTuEs}
+                      onChange={e => setOD('quiTuEs', e.target.value)}
+                      placeholder={lang === 'fr' ? 'Écris librement — plus tu en dis, mieux je peux t\'aider...' : 'Write freely — the more you share, the better I can help...'}
+                      rows={6}
+                      style={{ width:'100%', padding:'14px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', lineHeight:1.6, fontFamily:'system-ui,sans-serif' }}
+                    />
+                    <p style={{ fontSize:12, color: q0ok ? C.accent2 : C.muted, marginTop:8 }}>
+                      {orientData.quiTuEs.length}/30 {lang === 'fr' ? 'caractères minimum' : 'characters minimum'}
+                    </p>
+                  </div>
+                )}
+
+                {/* ── Q1 : Forces naturelles ── */}
+                {orientStep === 1 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '⚡ Ce qui te vient naturellement' : '⚡ What comes naturally to you'}
+                    </p>
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
+                      {lang === 'fr' ? 'Sélectionne tout ce qui te ressemble' : 'Select everything that feels like you'}
+                    </p>
+                    <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:20 }}>
+                      {FORCES_CHIPS.map(f => (
+                        <button key={f.id} onClick={() => toggleChip('forces', f.id)}
+                          style={{ ...chip(orientData.forces.includes(f.id)), padding:'9px 18px' }}>
+                          {lang === 'fr' ? f.fr : f.en}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                    <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>{lang === 'fr' ? 'Autre chose ?' : 'Anything else?'}</p>
+                    <textarea
+                      value={orientData.forcesTexte}
+                      onChange={e => setOD('forcesTexte', e.target.value)}
+                      placeholder={lang === 'fr' ? 'Une compétence ou qualité que tu veux ajouter...' : 'A skill or quality you want to add...'}
+                      rows={3}
+                      style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                    />
+                  </div>
+                )}
 
-                  {/* Single */}
-                  {q.type === 'single' && (
-                    <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                      {q.options.map(opt => {
-                        const sel = reponses[q.id] === opt.id
-                        return (
-                          <button key={opt.id} onClick={() => setSingle(q.id, opt.id)} style={{ padding:'13px 18px', borderRadius:11, border:`1px solid ${sel ? C.accent + '55' : C.border}`, background: sel ? `${C.accent}15` : 'transparent', color: sel ? C.accent2 : C.text, fontSize:14, fontWeight: sel ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
-                            {lang === 'fr' ? opt.fr : opt.en}
-                          </button>
-                        )
-                      })}
+                {/* ── Q2 : Journée idéale ── */}
+                {orientStep === 2 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '🌅 Dans 10 ans, décris ta journée idéale' : '🌅 In 10 years, describe your ideal day'}
+                    </p>
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20, lineHeight:1.6 }}>
+                      {lang === 'fr'
+                        ? 'Tu travailles où ? Tu fais quoi exactement ? Avec qui ? Dans quel environnement ?'
+                        : 'Where do you work? What exactly do you do? With whom? In what environment?'}
+                    </p>
+                    <textarea
+                      value={orientData.journeeIdeale}
+                      onChange={e => setOD('journeeIdeale', e.target.value)}
+                      placeholder={lang === 'fr' ? 'Décris ta journée idéale avec le plus de détails possible...' : 'Describe your ideal day with as much detail as possible...'}
+                      rows={6}
+                      style={{ width:'100%', padding:'14px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', lineHeight:1.6, fontFamily:'system-ui,sans-serif' }}
+                    />
+                    <p style={{ fontSize:12, color: q2ok ? C.accent2 : C.muted, marginTop:8 }}>
+                      {orientData.journeeIdeale.length}/30 {lang === 'fr' ? 'caractères minimum' : 'characters minimum'}
+                    </p>
+                  </div>
+                )}
+
+                {/* ── Q3 : Ce que tu veux changer ── */}
+                {orientStep === 3 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '🌍 Qu\'est-ce que tu veux changer ?' : '🌍 What do you want to change?'}
+                    </p>
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
+                      {lang === 'fr' ? 'Dans quel domaine veux-tu avoir un impact ?' : 'In which domain do you want to have an impact?'}
+                    </p>
+                    <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:20 }}>
+                      {CHANGEMENTS_CHIPS.map(c => (
+                        <button key={c.id} onClick={() => toggleChip('changements', c.id)}
+                          style={{ ...chip(orientData.changements.includes(c.id)), padding:'9px 18px' }}>
+                          {lang === 'fr' ? c.fr : c.en}
+                        </button>
+                      ))}
                     </div>
-                  )}
+                    <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>{lang === 'fr' ? 'Dis-nous en plus...' : 'Tell us more...'}</p>
+                    <textarea
+                      value={orientData.changementsTexte}
+                      onChange={e => setOD('changementsTexte', e.target.value)}
+                      placeholder={lang === 'fr' ? 'Pourquoi ce domaine te tient à cœur ?' : 'Why does this domain matter to you?'}
+                      rows={3}
+                      style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                    />
+                  </div>
+                )}
 
-                  {/* Select dropdown */}
-                  {q.type === 'select' && (
-                    <>
-                      <select value={reponses[q.id] || ''} onChange={e => { setSingle(q.id, e.target.value); if (e.target.value !== 'Autre') setPaysAutre('') }}
-                        style={{ width:'100%', maxWidth:340, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: reponses[q.id] ? C.text : C.muted, fontSize:14, outline:'none', cursor:'pointer', colorScheme:'dark' }}>
-                        <option value="">{lang === 'fr' ? '-- Sélectionne ton pays --' : '-- Select your country --'}</option>
-                        {q.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                {/* ── Q4 : Infos pratiques ── */}
+                {orientStep === 4 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px', display:'flex', flexDirection:'column', gap:22 }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, margin:0 }}>
+                      {lang === 'fr' ? '📋 Quelques infos pratiques' : '📋 A few practical details'}
+                    </p>
+
+                    {/* Pays */}
+                    <div>
+                      <p style={{ fontSize:13, fontWeight:600, color:C.muted, marginBottom:10 }}>
+                        {lang === 'fr' ? "Ton pays d'origine" : 'Your country of origin'}
+                      </p>
+                      <select value={orientData.pays} onChange={e => setOD('pays', e.target.value)}
+                        style={{ width:'100%', maxWidth:340, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: orientData.pays ? C.text : C.muted, fontSize:14, outline:'none', colorScheme:'dark' }}>
+                        <option value="">{lang === 'fr' ? '-- Sélectionne --' : '-- Select --'}</option>
+                        {PAYS_LISTE.map(p => <option key={p} value={p}>{p}</option>)}
                       </select>
-                      {reponses[q.id] === 'Autre' && (
-                        <input
-                          type="text"
-                          placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
-                          value={paysAutre}
-                          onChange={e => { setPaysAutre(e.target.value); setSingle(q.id, e.target.value) }}
-                          style={{ marginTop: '8px', width: '100%', maxWidth:340, padding:'10px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:14, outline:'none' }}
-                        />
+                      {orientData.pays === 'Autre' && (
+                        <input type="text" placeholder={lang === 'fr' ? 'Écris ton pays...' : 'Write your country...'}
+                          value={orientData.paysAutre2}
+                          onChange={e => { setOD('paysAutre2', e.target.value); setOD('pays', e.target.value || 'Autre') }}
+                          style={{ marginTop:8, width:'100%', maxWidth:340, padding:'10px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:14, outline:'none' }} />
                       )}
-                    </>
-                  )}
-                </div>
+                    </div>
+
+                    {/* Budget */}
+                    <div>
+                      <p style={{ fontSize:13, fontWeight:600, color:C.muted, marginBottom:10 }}>
+                        {lang === 'fr' ? 'Budget annuel estimé (études + vie)' : 'Estimated annual budget (studies + living)'}
+                      </p>
+                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                        {[
+                          { id:'moins15', fr:'Moins de 15 000 $ CAD', en:'Under CAD 15,000' },
+                          { id:'15-25',   fr:'15 000 – 25 000 $ CAD', en:'CAD 15,000 – 25,000' },
+                          { id:'25-40',   fr:'25 000 – 40 000 $ CAD', en:'CAD 25,000 – 40,000' },
+                          { id:'plus40',  fr:'Plus de 40 000 $ CAD',  en:'Over CAD 40,000' },
+                        ].map(b => (
+                          <button key={b.id} onClick={() => setOD('budget', b.id)}
+                            style={{ padding:'11px 16px', borderRadius:10, border:`1px solid ${orientData.budget === b.id ? C.accent+'55' : C.border}`, background: orientData.budget === b.id ? `${C.accent}15` : 'transparent', color: orientData.budget === b.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.budget === b.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                            {lang === 'fr' ? b.fr : b.en}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Horizon */}
+                    <div>
+                      <p style={{ fontSize:13, fontWeight:600, color:C.muted, marginBottom:10 }}>
+                        {lang === 'fr' ? 'Ton horizon après les études' : 'Your horizon after graduation'}
+                      </p>
+                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                        {[
+                          { id:'rester', fr:'Rester au Canada après mes études', en:'Stay in Canada after graduation' },
+                          { id:'retour', fr:"Retourner dans mon pays d'origine",  en:'Return to my home country' },
+                          { id:'pont',   fr:'Les deux — construire des ponts',     en:'Both — build bridges' },
+                        ].map(h => (
+                          <button key={h.id} onClick={() => setOD('horizon', h.id)}
+                            style={{ padding:'11px 16px', borderRadius:10, border:`1px solid ${orientData.horizon === h.id ? C.accent+'55' : C.border}`, background: orientData.horizon === h.id ? `${C.accent}15` : 'transparent', color: orientData.horizon === h.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.horizon === h.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                            {lang === 'fr' ? h.fr : h.en}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Navigation */}
-                <div style={{ display:'flex', justifyContent:'space-between', gap:10 }}>
-                  <button onClick={() => setStep(s => Math.max(0, s - 1))} disabled={step === 0}
-                    style={{ padding:'11px 22px', borderRadius:10, border:`1px solid ${C.border}`, background:'transparent', color: step === 0 ? C.border : C.muted, fontSize:14, cursor: step === 0 ? 'not-allowed' : 'pointer' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', gap:10, marginTop:20 }}>
+                  <button onClick={() => setOrientStep(s => Math.max(0, s - 1))} disabled={orientStep === 0}
+                    style={{ padding:'11px 22px', borderRadius:10, border:`1px solid ${C.border}`, background:'transparent', color: orientStep === 0 ? C.border : C.muted, fontSize:14, cursor: orientStep === 0 ? 'not-allowed' : 'pointer' }}>
                     ← {lang === 'fr' ? 'Retour' : 'Back'}
                   </button>
 
-                  {step < 5 ? (
-                    <button onClick={() => setStep(s => s + 1)} disabled={!isAnswered}
-                      style={{ padding:'11px 28px', borderRadius:10, border:'none', background: isAnswered ? C.accent : C.border, color:'#fff', fontSize:14, fontWeight:600, cursor: isAnswered ? 'pointer' : 'not-allowed' }}>
+                  {orientStep < 4 ? (
+                    <button onClick={() => setOrientStep(s => s + 1)} disabled={!stepOk}
+                      style={{ padding:'11px 28px', borderRadius:10, border:'none', background: stepOk ? C.accent : C.border, color:'#fff', fontSize:14, fontWeight:600, cursor: stepOk ? 'pointer' : 'not-allowed', transition:'all 0.2s' }}>
                       {lang === 'fr' ? 'Suivant →' : 'Next →'}
                     </button>
                   ) : (
-                    <button onClick={voirResultats} disabled={!isAnswered}
-                      style={{ padding:'11px 28px', borderRadius:10, border:'none', background: isAnswered ? C.accent2 : C.border, color:'#fff', fontSize:14, fontWeight:700, cursor: isAnswered ? 'pointer' : 'not-allowed' }}>
-                      {lang === 'fr' ? '✨ Voir mes recommandations →' : '✨ See my recommendations →'}
+                    <button onClick={analyserProfil} disabled={!stepOk}
+                      style={{ padding:'11px 28px', borderRadius:10, border:'none', background: stepOk ? C.accent2 : C.border, color:'#fff', fontSize:14, fontWeight:700, cursor: stepOk ? 'pointer' : 'not-allowed', transition:'all 0.2s' }}>
+                      ✨ {lang === 'fr' ? 'Analyser mon profil →' : 'Analyze my profile →'}
                     </button>
                   )}
                 </div>
+              </div>
+            )}
+
+            {/* ── PHASE 3 : RÉSULTATS ENRICHIS ── */}
+            {orientPhase === 'results' && orientAnalyse && (
+              <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+
+                {/* Header résultats */}
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:10 }}>
+                  <p style={{ fontSize:16, fontWeight:700, color:C.text }}>
+                    🎯 {lang === 'fr' ? 'Ton analyse personnalisée' : 'Your personalized analysis'}
+                  </p>
+                  <button onClick={refaireOrientation}
+                    style={{ padding:'7px 16px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor:'pointer' }}>
+                    ↺ {lang === 'fr' ? 'Refaire l\'analyse' : 'Redo analysis'}
+                  </button>
+                </div>
+
+                {/* SECTION A — Ce qu'on a compris */}
+                <div className="fade-up" style={{ background:'linear-gradient(135deg, #1B3A2D 0%, #1F4332 100%)', border:`1px solid ${C.accent}40`, borderRadius:16, padding:'24px' }}>
+                  <p style={{ fontSize:14, fontWeight:700, color:C.accent2, marginBottom:16 }}>
+                    ✨ {lang === 'fr' ? 'Ce qu\'on a compris de toi' : 'What we understood about you'}
+                  </p>
+
+                  {/* Message personnalisé */}
+                  {orientAnalyse.message_personnalise && (
+                    <p style={{ fontSize:14, color:'#D1FAE5', lineHeight:1.8, fontStyle:'italic', marginBottom:20 }}>
+                      "{orientAnalyse.message_personnalise}"
+                    </p>
+                  )}
+
+                  {/* Traits + Valeurs */}
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+                    {orientAnalyse.traits_dominants?.length > 0 && (
+                      <div>
+                        <p style={{ fontSize:11, fontWeight:700, color:C.accent2, textTransform:'uppercase', letterSpacing:0.8, marginBottom:8 }}>
+                          {lang === 'fr' ? 'Traits dominants' : 'Dominant traits'}
+                        </p>
+                        <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                          {orientAnalyse.traits_dominants.map((t,i) => (
+                            <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:`${C.accent}30`, color:C.accent2, border:`1px solid ${C.accent}40` }}>{t}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {orientAnalyse.valeurs_profondes?.length > 0 && (
+                      <div>
+                        <p style={{ fontSize:11, fontWeight:700, color:'#60A5FA', textTransform:'uppercase', letterSpacing:0.8, marginBottom:8 }}>
+                          {lang === 'fr' ? 'Valeurs profondes' : 'Core values'}
+                        </p>
+                        <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                          {orientAnalyse.valeurs_profondes.map((v,i) => (
+                            <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'#60A5FA', border:'1px solid rgba(96,165,250,0.3)' }}>{v}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {(orientAnalyse.type_environnement || orientAnalyse.style_travail) && (
+                    <div style={{ marginTop:16, display:'flex', gap:16, flexWrap:'wrap' }}>
+                      {orientAnalyse.type_environnement && (
+                        <div style={{ flex:1, minWidth:140, padding:'10px 14px', background:'rgba(0,0,0,0.2)', borderRadius:10 }}>
+                          <p style={{ fontSize:11, color:C.accent2, fontWeight:600, marginBottom:4 }}>🏢 {lang === 'fr' ? 'Environnement' : 'Environment'}</p>
+                          <p style={{ fontSize:13, color:'#D1FAE5' }}>{orientAnalyse.type_environnement}</p>
+                        </div>
+                      )}
+                      {orientAnalyse.style_travail && (
+                        <div style={{ flex:1, minWidth:140, padding:'10px 14px', background:'rgba(0,0,0,0.2)', borderRadius:10 }}>
+                          <p style={{ fontSize:11, color:C.accent2, fontWeight:600, marginBottom:4 }}>⚡ {lang === 'fr' ? 'Style de travail' : 'Work style'}</p>
+                          <p style={{ fontSize:13, color:'#D1FAE5' }}>{orientAnalyse.style_travail}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* SECTION B — 3 programmes recommandés */}
+                {orientAnalyse.programmes_recommandes?.length > 0 && (
+                  <div className="fade-up fade-up-1">
+                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:14 }}>
+                      📚 {lang === 'fr' ? 'Tes 3 programmes recommandés' : 'Your top 3 programs'}
+                    </p>
+                    <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+                      {orientAnalyse.programmes_recommandes.slice(0,3).map((rec, i) => {
+                        const progData = PROGRAMMES.find(p => p.id === rec.id)
+                        const barColors = [C.accent2, '#60A5FA', C.rose]
+                        return (
+                          <div key={i} style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px' }}>
+                            <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
+                              <span style={{ fontSize:28 }}>{progData?.emoji || '📋'}</span>
+                              <div style={{ flex:1 }}>
+                                <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:2 }}>{progData ? progData.nom[lang] : rec.id}</p>
+                                <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                                  <div style={{ flex:1, height:6, background:C.border, borderRadius:3, overflow:'hidden' }}>
+                                    <div style={{ width:`${rec.score || 80}%`, height:'100%', background:barColors[i], borderRadius:3, transition:'width 0.8s ease' }} />
+                                  </div>
+                                  <p style={{ fontSize:12, fontWeight:700, color:barColors[i], flexShrink:0 }}>{rec.score || 80}%</p>
+                                </div>
+                              </div>
+                            </div>
+                            {rec.raison && (
+                              <div style={{ padding:'10px 14px', background:`${C.accent}08`, borderRadius:10, marginBottom:10 }}>
+                                <p style={{ fontSize:13, color:C.text2, lineHeight:1.65 }}>💡 {rec.raison}</p>
+                              </div>
+                            )}
+                            <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
+                              {rec.avertissement && (
+                                <p style={{ fontSize:12, color:C.warning, flex:1, minWidth:200 }}>⚠️ {rec.avertissement}</p>
+                              )}
+                              {rec.alternative && (
+                                <p style={{ fontSize:12, color:C.muted, flex:1, minWidth:200 }}>↳ {rec.alternative}</p>
+                              )}
+                            </div>
+                            <button onClick={() => { setSelectedProg(rec.id); setTab('secteur') }}
+                              style={{ marginTop:12, padding:'8px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:9, color:C.accent2, fontWeight:600, fontSize:12, cursor:'pointer' }}>
+                              {lang === 'fr' ? 'Explorer ce programme →' : 'Explore this program →'}
+                            </button>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* SECTION C — Questions de réflexion */}
+                {orientAnalyse.questions_reflexion?.length > 0 && (
+                  <div className="fade-up fade-up-2" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:14 }}>
+                      🤔 {lang === 'fr' ? 'Questions pour aller plus loin' : 'Questions to go further'}
+                    </p>
+                    <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                      {orientAnalyse.questions_reflexion.map((q,i) => (
+                        <div key={i} style={{ padding:'12px 16px', background:`${C.accent}08`, borderLeft:`3px solid ${C.accent}`, borderRadius:'0 10px 10px 0' }}>
+                          <p style={{ fontSize:14, color:C.text2, lineHeight:1.65 }}>{q}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <a href="/mentors" style={{ display:'inline-block', marginTop:14, padding:'9px 18px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:9, color:C.accent2, fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                      🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}
+                    </a>
+                  </div>
+                )}
+
+                {/* SECTION D — Cheminement suggéré */}
+                {orientAnalyse.plan_suggere && (
+                  <div className="fade-up fade-up-3" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>
+                      🛤️ {lang === 'fr' ? 'Ton cheminement suggéré' : 'Your suggested path'}
+                    </p>
+                    <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+                      {orientAnalyse.plan_suggere.annee_1_2 && (
+                        <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                          <span style={{ width:28, height:28, borderRadius:'50%', background:C.accent, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>1-2</span>
+                          <div><p style={{ fontSize:12, fontWeight:600, color:C.muted, marginBottom:3 }}>{lang === 'fr' ? 'Années 1-2 — Focus' : 'Years 1-2 — Focus'}</p><p style={{ fontSize:14, color:C.text2, lineHeight:1.6 }}>{orientAnalyse.plan_suggere.annee_1_2}</p></div>
+                        </div>
+                      )}
+                      {orientAnalyse.plan_suggere.competences_cles?.length > 0 && (
+                        <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                          <span style={{ width:28, height:28, borderRadius:'50%', background:'#1565C0', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>⚡</span>
+                          <div>
+                            <p style={{ fontSize:12, fontWeight:600, color:C.muted, marginBottom:6 }}>{lang === 'fr' ? 'Compétences clés à développer' : 'Key skills to develop'}</p>
+                            <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                              {orientAnalyse.plan_suggere.competences_cles.map((c,i) => (
+                                <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(21,101,192,0.12)', color:'#60A5FA', border:'1px solid rgba(96,165,250,0.2)' }}>{c}</span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {orientAnalyse.plan_suggere.premier_emploi && (
+                        <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
+                          <span style={{ width:28, height:28, borderRadius:'50%', background:'#E65100', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>💼</span>
+                          <div><p style={{ fontSize:12, fontWeight:600, color:C.muted, marginBottom:3 }}>{lang === 'fr' ? 'Premier emploi réaliste' : 'Realistic first job'}</p><p style={{ fontSize:14, color:C.text2, lineHeight:1.6 }}>{orientAnalyse.plan_suggere.premier_emploi}</p></div>
+                        </div>
+                      )}
+                      {orientAnalyse.plan_suggere.vision_5_ans && (
+                        <div style={{ padding:'14px 16px', background:'linear-gradient(135deg, #1B3A2D 0%, #1F4332 100%)', borderRadius:12, marginTop:4 }}>
+                          <p style={{ fontSize:12, fontWeight:700, color:C.accent2, marginBottom:4 }}>🌟 {lang === 'fr' ? 'Vision 5 ans' : '5-year vision'}</p>
+                          <p style={{ fontSize:14, color:'#D1FAE5', lineHeight:1.7, fontStyle:'italic' }}>{orientAnalyse.plan_suggere.vision_5_ans}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </>
