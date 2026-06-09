@@ -286,7 +286,7 @@ export default function CalendrierAcademique() {
               <button onClick={() => ajouterEcheance(prochainImportant)}
                 disabled={ajouts.has(prochainImportant.date+prochainImportant.titre.fr) || ajoutEnCours===prochainImportant.date+prochainImportant.titre.fr}
                 style={{ padding:'8px 16px', background: ajouts.has(prochainImportant.date+prochainImportant.titre.fr)?C.success:C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:12, cursor:'pointer', flexShrink:0, opacity: ajoutEnCours===prochainImportant.date+prochainImportant.titre.fr?0.7:1 }}>
-                {ajouts.has(prochainImportant.date+prochainImportant.titre.fr) ? '✓ Ajouté' : (lang==='fr'?'+ Mes échéances':'+ My deadlines')}
+                {ajouts.has(prochainImportant.date+prochainImportant.titre.fr) ? (lang==='fr'?'✓ Ajouté':'✓ Added') : (lang==='fr'?'+ Mes échéances':'+ My deadlines')}
               </button>
             )}
           </div>

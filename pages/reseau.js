@@ -304,7 +304,7 @@ export default function Reseau() {
                 </div>
               </div>
 
-              <Field C={C} label="LinkedIn (optionnel)" value={form.linkedin_url} onChange={e=>setForm(p=>({...p,linkedin_url:e.target.value}))} placeholder="linkedin.com/in/marie-dupont" />
+              <Field C={C} label={lang === 'fr' ? 'LinkedIn (optionnel)' : 'LinkedIn (optional)'} value={form.linkedin_url} onChange={e=>setForm(p=>({...p,linkedin_url:e.target.value}))} placeholder="linkedin.com/in/marie-dupont" />
               <Field C={C} label="Notes" value={form.notes} onChange={e=>setForm(p=>({...p,notes:e.target.value}))} placeholder={lang==='fr'?'Infos supplémentaires...':'Additional info...'} rows={3} />
 
               {err && <p style={{ fontSize:13, color:C.error, marginBottom:12 }}>{err}</p>}

@@ -228,7 +228,7 @@ export default function Documents() {
               </select>
 
               {/* Statut */}
-              <label style={{ fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 8 }}>Statut</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 8 }}>{lang === 'fr' ? 'Statut' : 'Status'}</label>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
                 {Object.entries(STATUT_CFG).map(([k, v]) => (
                   <button key={k} onClick={() => setForm(p => ({ ...p, statut: k }))}

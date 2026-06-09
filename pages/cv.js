@@ -424,7 +424,7 @@ export default function CV() {
               <Field label="Email" value={email} onChange={e => setEmail(e.target.value)} placeholder="marie@email.com" type="email" />
               <Field label={lang === 'fr' ? 'Téléphone' : 'Phone'} value={telephone} onChange={e => setTelephone(e.target.value)} placeholder="514-555-0123" />
               <Field label={lang === 'fr' ? 'Ville, Province' : 'City, Province'} value={ville} onChange={e => setVille(e.target.value)} placeholder="Montréal, QC" />
-              <Field label="LinkedIn (optionnel)" value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="linkedin.com/in/marie" />
+              <Field label={lang === 'fr' ? 'LinkedIn (optionnel)' : 'LinkedIn (optional)'} value={linkedin} onChange={e => setLinkedin(e.target.value)} placeholder="linkedin.com/in/marie" />
             </div>
 
             {/* Compétences */}
