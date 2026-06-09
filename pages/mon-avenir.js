@@ -529,6 +529,7 @@ export default function MonAvenir() {
   const [visLoading,  setVisLoading]  = useState(false)
   const [visError,    setVisError]    = useState('')
   const [reponses,    setReponses]    = useState({}) // kept for vision tab
+  const [visionForm,  setVisionForm]  = useState({ passion:'', defi:'', impact:'', contexte:'' })
 
   // ── Orientation conversationnelle (T7) ────────────────────────
   const [orientStep,    setOrientStep]    = useState(0)  // 0-4
@@ -642,6 +643,10 @@ export default function MonAvenir() {
           orientData.activiteTexte,
           orientData.horizonTexte,
         ].filter(Boolean).join(' | '),
+        passion:  visionForm.passion,
+        defi:     visionForm.defi,
+        impact:   visionForm.impact,
+        contexte: visionForm.contexte,
       }
 
       const res = await fetch('/api/generer-vision', {
@@ -1347,67 +1352,175 @@ export default function MonAvenir() {
               </div>
             ) : (
               <div>
-                {/* Barre de contrôle */}
+
+                {/* Barre info programme/pays + PDF si résultats */}
                 <div className="no-print" style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', marginBottom:24, padding:'14px 18px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:12 }}>
                   {(() => { const prog = PROGRAMMES.find(p => p.id === visionProg); return prog ? <><span style={{ fontSize:22 }}>{prog.emoji}</span><span style={{ fontSize:14, fontWeight:600, color:C.text }}>{prog.nom[lang]}</span></> : null })()}
                   <span style={{ color:C.border }}>·</span>
                   <span style={{ fontSize:14, color:C.muted }}>🌍 {visionPays}</span>
-                  <div style={{ marginLeft:'auto', display:'flex', gap:8, flexWrap:'wrap' }}>
-                    {vision && !visLoading && (
+                  {vision && !visLoading && (
+                    <div style={{ marginLeft:'auto', display:'flex', gap:8, flexWrap:'wrap' }}>
                       <button onClick={imprimerVision} style={{ padding:'8px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:8, color:C.accent2, fontWeight:600, fontSize:13, cursor:'pointer' }}>
                         📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
                       </button>
-                    )}
-                    {!vision && !visLoading && (
-                      <button onClick={genererVision} style={{ padding:'10px 22px', background:C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, cursor:'pointer' }}>
-                        ✨ {lang === 'fr' ? 'Générer ma vision' : 'Generate my vision'}
-                      </button>
-                    )}
-                    {vision && !visLoading && (
-                      <button onClick={genererVision} style={{ padding:'8px 14px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor:'pointer' }}>
-                        🔄 {lang === 'fr' ? 'Régénérer ma vision' : 'Regenerate'}
-                      </button>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
 
+                {/* ── FORMULAIRE (si pas de vision et pas en chargement) ── */}
+                {!vision && !visLoading && (
+                  <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+                    {/* Intro */}
+                    <div style={{ padding:'16px 20px', background:`${C.accent}08`, border:`1px solid ${C.accent}20`, borderRadius:12 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:C.accent2, marginBottom:4 }}>✨ {lang === 'fr' ? 'Dis-moi qui tu es vraiment' : 'Tell me who you really are'}</p>
+                      <p style={{ fontSize:13, color:C.muted, lineHeight:1.7, margin:0 }}>
+                        {lang === 'fr'
+                          ? 'Plus tu partages, plus ta vision sera personnalisée. L\'IA citera tes propres mots dans ses recommandations.'
+                          : 'The more you share, the more personalized your vision will be. The AI will quote your own words in its recommendations.'}
+                      </p>
+                    </div>
+
+                    {/* Q1 — Passion */}
+                    <div>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:C.accent2, textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                        {lang === 'fr' ? '❤️ Ta passion profonde' : '❤️ Your deep passion'}
+                      </label>
+                      <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
+                        {lang === 'fr' ? 'Qu\'est-ce qui te passionne vraiment ?' : 'What truly drives and excites you?'}
+                      </p>
+                      <textarea
+                        value={visionForm.passion}
+                        onChange={e => setVisionForm(f => ({ ...f, passion: e.target.value }))}
+                        rows={4}
+                        placeholder={lang === 'fr'
+                          ? 'Ex : J\'adore comprendre comment les données peuvent prédire des comportements. Je passe des heures à analyser des tendances...'
+                          : 'Ex: I love understanding how data can predict human behavior. I spend hours analyzing trends...'}
+                        style={{ width:'100%', padding:'12px 14px', background:C.surface2, border:`1.5px solid ${visionForm.passion.length >= 20 ? C.accent+'60' : C.border}`, borderRadius:10, color:C.text, fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box', transition:'border-color 0.2s' }}
+                      />
+                      <p style={{ fontSize:11, color: visionForm.passion.length >= 20 ? C.success : C.muted, textAlign:'right', marginTop:4 }}>
+                        {visionForm.passion.length}/20 {lang === 'fr' ? 'caractères min.' : 'chars min.'}
+                      </p>
+                    </div>
+
+                    {/* Q2 — Défi */}
+                    <div>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#60A5FA', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                        {lang === 'fr' ? '🌍 Ton plus grand défi' : '🌍 Your biggest challenge'}
+                      </label>
+                      <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
+                        {lang === 'fr' ? 'Quel problème dans ton pays ou dans le monde t\'empêche de dormir ?' : 'What problem in your country or the world keeps you up at night?'}
+                      </p>
+                      <textarea
+                        value={visionForm.defi}
+                        onChange={e => setVisionForm(f => ({ ...f, defi: e.target.value }))}
+                        rows={4}
+                        placeholder={lang === 'fr'
+                          ? 'Ex : Dans mon pays, 60% des agriculteurs perdent leurs récoltes faute d\'information météo fiable. Je veux changer ça...'
+                          : 'Ex: In my country, 60% of farmers lose their harvests due to unreliable weather information. I want to change that...'}
+                        style={{ width:'100%', padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
+                      />
+                    </div>
+
+                    {/* Q3 — Impact */}
+                    <div>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#F59E0B', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                        {lang === 'fr' ? '🌟 Ton impact rêvé' : '🌟 Your dream impact'}
+                      </label>
+                      <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
+                        {lang === 'fr' ? 'Dans 10 ans, quelle trace veux-tu avoir laissée ?' : 'In 10 years, what impact do you want to have made?'}
+                      </p>
+                      <textarea
+                        value={visionForm.impact}
+                        onChange={e => setVisionForm(f => ({ ...f, impact: e.target.value }))}
+                        rows={4}
+                        placeholder={lang === 'fr'
+                          ? 'Ex : J\'aimerais avoir créé une technologie qui permet à 1 million de personnes d\'accéder à des soins de qualité...'
+                          : 'Ex: I'd like to have created a technology that gives 1 million people access to quality healthcare...'}
+                        style={{ width:'100%', padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
+                      />
+                    </div>
+
+                    {/* Q4 — Contexte */}
+                    <div>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                        {lang === 'fr' ? '🧭 Ton contexte personnel' : '🧭 Your personal context'}
+                      </label>
+                      <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
+                        {lang === 'fr' ? 'Parle-moi de ton parcours et de ce qui te rend unique' : 'Tell me about your journey and what makes you unique'}
+                      </p>
+                      <textarea
+                        value={visionForm.contexte}
+                        onChange={e => setVisionForm(f => ({ ...f, contexte: e.target.value }))}
+                        rows={4}
+                        placeholder={lang === 'fr'
+                          ? 'Ex : J\'ai grandi dans une famille d\'agriculteurs au Sénégal. J\'ai fait mes études en France avant de venir au Canada. Je parle 3 langues...'
+                          : 'Ex: I grew up in a farming family in Senegal. I studied in France before coming to Canada. I speak 3 languages...'}
+                        style={{ width:'100%', padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
+                      />
+                    </div>
+
+                    {visError && <p style={{ color:C.error, fontSize:13 }}>⚠️ {visError}</p>}
+
+                    {/* Bouton générer */}
+                    <button
+                      onClick={genererVision}
+                      disabled={visionForm.passion.length < 20 || visLoading}
+                      style={{ width:'100%', padding:'15px', background: visionForm.passion.length >= 20 ? C.accent : C.border, border:'none', borderRadius:12, color: visionForm.passion.length >= 20 ? '#fff' : C.muted, fontWeight:700, fontSize:15, cursor: visionForm.passion.length >= 20 ? 'pointer' : 'not-allowed', transition:'all 0.2s' }}>
+                      {visLoading
+                        ? (lang === 'fr' ? '⏳ Analyse en cours... (30-45 sec)' : '⏳ Analyzing... (30-45 sec)')
+                        : (lang === 'fr' ? '✨ Générer ma vision personnalisée →' : '✨ Generate my personalized vision →')}
+                    </button>
+                  </div>
+                )}
+
+                {/* ── CHARGEMENT ── */}
                 {visLoading && (
                   <div style={{ textAlign:'center', padding:'60px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:16 }}>
                     <p style={{ fontSize:32, marginBottom:16 }}>✨</p>
                     <p style={{ fontSize:16, fontWeight:700, color:C.text, marginBottom:8 }}>{lang === 'fr' ? 'Génération de ta vision...' : 'Generating your vision...'}</p>
-                    <p style={{ fontSize:13, color:C.muted, marginBottom:28 }}>{lang === 'fr' ? 'L\'IA analyse ton profil en profondeur' : 'AI is analyzing your profile in depth'}</p>
+                    <p style={{ fontSize:13, color:C.muted, marginBottom:28 }}>{lang === 'fr' ? 'L\'IA analyse ton profil en profondeur (30-45 sec)' : 'AI is deeply analyzing your profile (30-45 sec)'}</p>
                     <div style={{ display:'flex', justifyContent:'center', gap:8 }}>
                       {[0,1,2].map(i => <div key={i} style={{ width:10, height:10, borderRadius:'50%', background:C.accent2, animation:`novaDot 1.4s infinite ${i*0.2}s` }} />)}
                     </div>
                   </div>
                 )}
 
-                {visError && <p style={{ color:C.error, fontSize:13, marginBottom:16 }}>⚠️ {visError}</p>}
-
+                {/* ── RÉSULTATS ENRICHIS 7 SECTIONS ── */}
                 {vision && (
                   <div id="vision-print" style={{ display:'flex', flexDirection:'column', gap:20 }}>
 
-                    {/* SECTION 1 — Profil + Message */}
+                    {/* SECTION 0 — "Ce qu'on a compris de toi" */}
                     <div className="fade-up" style={{ padding:'22px 24px', background:'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius:16 }}>
+                      <p style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.6)', textTransform:'uppercase', letterSpacing:1, marginBottom:12 }}>
+                        💎 {lang === 'fr' ? 'Ce qu\'on a compris de toi' : 'What we understood about you'}
+                      </p>
                       {vision.profil_resume && (
-                        <p style={{ color:'rgba(255,255,255,0.85)', fontSize:13, lineHeight:1.8, marginBottom:14, fontStyle:'italic' }}>{vision.profil_resume}</p>
+                        <p style={{ color:'rgba(255,255,255,0.9)', fontSize:14, lineHeight:1.8, fontStyle:'italic', marginBottom: vision.insight_unique ? 16 : 0 }}>{vision.profil_resume}</p>
                       )}
-                      {vision.message_motivation && (
-                        <p style={{ color:'#fff', fontSize:15, lineHeight:1.8, fontWeight:600, margin:0 }}>💬 {vision.message_motivation}</p>
+                      {vision.insight_unique && (
+                        <div style={{ padding:'12px 16px', background:'rgba(96,165,250,0.2)', border:'1px solid rgba(96,165,250,0.35)', borderRadius:10 }}>
+                          <p style={{ fontSize:11, fontWeight:700, color:'#93C5FD', marginBottom:6 }}>💡 {lang === 'fr' ? 'Ce que tu n\'as peut-être pas réalisé :' : 'What you may not have realized:'}</p>
+                          <p style={{ fontSize:13, color:'rgba(255,255,255,0.9)', lineHeight:1.7, margin:0 }}>{vision.insight_unique}</p>
+                        </div>
                       )}
                     </div>
 
-                    {/* SECTION 2 — Métiers actuels */}
+                    {/* SECTION 1 — Métiers aujourd'hui */}
                     {(vision.metiers_actuels || []).length > 0 && (
                       <div className="fade-up fade-up-1" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>💼 {lang === 'fr' ? 'Métiers accessibles aujourd\'hui' : 'Careers accessible today'}</p>
-                        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>💼 {lang === 'fr' ? 'Tes métiers aujourd\'hui' : 'Your careers today'}</p>
+                        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
                           {vision.metiers_actuels.map((m, i) => (
-                            <div key={i} style={{ padding:'14px 16px', background:C.surface2, borderRadius:10 }}>
+                            <div key={i} style={{ padding:'14px 16px', background:C.surface2, borderRadius:10, borderLeft:`3px solid ${C.accent}` }}>
                               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12, flexWrap:'wrap', marginBottom:8 }}>
                                 <p style={{ fontWeight:700, fontSize:14, color:C.text, margin:0 }}>{m.titre}</p>
                                 {m.salaire_canada && <span style={{ fontSize:12, padding:'4px 10px', borderRadius:20, background:`${C.success}12`, color:C.success, border:`1px solid ${C.success}25`, whiteSpace:'nowrap', fontWeight:600, flexShrink:0 }}>{m.salaire_canada}</span>}
                               </div>
+                              {(m.lien_avec_passion) && (
+                                <p style={{ fontSize:12, color:C.accent2, fontStyle:'italic', marginBottom:8 }}>
+                                  🔗 {lang === 'fr' ? 'Lien avec ta passion :' : 'Link to your passion:'} {m.lien_avec_passion}
+                                </p>
+                              )}
                               <p style={{ fontSize:13, color:C.muted, lineHeight:1.6, marginBottom: (m.entreprises_types||[]).length > 0 ? 8 : 0 }}>{m.description}</p>
                               {(m.entreprises_types||[]).length > 0 && (
                                 <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
@@ -1422,18 +1535,22 @@ export default function MonAvenir() {
                       </div>
                     )}
 
-                    {/* SECTION 3 — Métiers futur + Impact IA */}
+                    {/* SECTION 2 — Métiers dans 10 ans */}
                     {(vision.metiers_futur || []).length > 0 && (
                       <div className="fade-up fade-up-2" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🔭 {lang === 'fr' ? 'Métiers d\'avenir (2030-2035)' : 'Future careers (2030-2035)'}</p>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🚀 {lang === 'fr' ? 'Tes métiers dans 10 ans' : 'Your careers in 10 years'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom: vision.impact_ia ? 16 : 0 }}>
                           {vision.metiers_futur.map((m, i) => (
                             <div key={i} style={{ padding:'14px 16px', background:'rgba(96,165,250,0.06)', borderRadius:10, border:'1px solid rgba(96,165,250,0.15)' }}>
-                              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+                              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8, flexWrap:'wrap' }}>
                                 <p style={{ fontWeight:700, fontSize:14, color:'#60A5FA', margin:0 }}>{m.titre}</p>
                                 {m.horizon && <span style={{ fontSize:11, padding:'2px 8px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'#60A5FA' }}>{m.horizon}</span>}
                               </div>
-                              <p style={{ fontSize:13, color:C.muted, lineHeight:1.6, marginBottom:6 }}>{m.pourquoi_emerge}</p>
+                              {(m.pourquoi_pour_lui || m.pourquoi_emerge) && (
+                                <p style={{ fontSize:13, color:C.muted, lineHeight:1.6, marginBottom:8 }}>
+                                  <strong style={{ color:C.text }}>{lang === 'fr' ? 'Pourquoi ce métier pour TOI :' : 'Why this career for YOU:'}</strong> {m.pourquoi_pour_lui || m.pourquoi_emerge}
+                                </p>
+                              )}
                               {m.comment_y_arriver && (
                                 <p style={{ fontSize:12, color:C.accent2, borderTop:`1px solid ${C.border}`, paddingTop:8, marginBottom:0 }}>
                                   ✅ {m.comment_y_arriver}
@@ -1451,29 +1568,47 @@ export default function MonAvenir() {
                       </div>
                     )}
 
-                    {/* SECTION 4 — Startups */}
+                    {/* SECTION 3 — Idées startup */}
                     {(vision.startups || []).length > 0 && (
                       <div className="fade-up fade-up-3" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🚀 {lang === 'fr' ? 'Idées de startup pour toi' : 'Startup ideas for you'}</p>
-                        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>💡 {lang === 'fr' ? 'Tes idées de startup' : 'Your startup ideas'}</p>
+                        <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
                           {vision.startups.map((s, i) => (
                             <div key={i} style={{ padding:'16px 18px', background:C.surface2, borderRadius:12, borderLeft:`3px solid ${i === 0 ? C.accent2 : i === 1 ? '#60A5FA' : '#F59E0B'}` }}>
-                              <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:8 }}>🏢 {s.nom}</p>
-                              <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Problème :' : 'Problem:'}</strong> {s.probleme}</p>
-                              <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Solution :' : 'Solution:'}</strong> {s.solution}</p>
-                              {s.marche && <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Marché :' : 'Market:'}</strong> {s.marche}</p>}
-                              <p style={{ fontSize:13, color:C.accent2, marginBottom:4 }}>💡 {s.pourquoi_toi}</p>
-                              <p style={{ fontSize:12, color:C.muted, fontStyle:'italic', marginBottom:0 }}>{lang === 'fr' ? 'Modèle mondial :' : 'Global model:'} {s.exemple_mondial}</p>
+                              <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:10 }}>🏢 {s.nom}</p>
+                              <p style={{ fontSize:13, color:C.muted, marginBottom:6 }}>
+                                <strong style={{ color:C.text }}>{lang === 'fr' ? 'Problème résolu :' : 'Problem solved:'}</strong> {s.probleme_resolu || s.probleme}
+                              </p>
+                              <p style={{ fontSize:13, color:C.muted, marginBottom:6 }}>
+                                <strong style={{ color:C.text }}>{lang === 'fr' ? 'Solution :' : 'Solution:'}</strong> {s.solution}
+                              </p>
+                              {(s.marche_cible || s.marche) && (
+                                <p style={{ fontSize:13, color:C.muted, marginBottom:8 }}>
+                                  <strong style={{ color:C.text }}>{lang === 'fr' ? 'Marché cible :' : 'Target market:'}</strong> {s.marche_cible || s.marche}
+                                </p>
+                              )}
+                              {(s.pourquoi_lui || s.pourquoi_toi) && (
+                                <p style={{ fontSize:13, color:C.accent2, marginBottom:10 }}>💡 {s.pourquoi_lui || s.pourquoi_toi}</p>
+                              )}
+                              {s.premier_pas && (
+                                <div style={{ padding:'10px 14px', background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.25)', borderRadius:8, marginBottom:8 }}>
+                                  <p style={{ fontSize:12, fontWeight:700, color:'#F59E0B', marginBottom:4 }}>🎯 {lang === 'fr' ? 'Premier pas cette semaine :' : 'First step this week:'}</p>
+                                  <p style={{ fontSize:13, color:C.text, margin:0, lineHeight:1.6 }}>{s.premier_pas}</p>
+                                </div>
+                              )}
+                              <p style={{ fontSize:12, color:C.muted, fontStyle:'italic', margin:0 }}>
+                                {lang === 'fr' ? 'Modèle mondial :' : 'Global model:'} {s.exemple_mondial}
+                              </p>
                             </div>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {/* SECTION 5 — Plan 5 ans + Ressources clés */}
+                    {/* SECTION 4 — Plan 5 ans */}
                     {(vision.plan_5_ans || vision.plan_5ans) && (
                       <div className="fade-up" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🗺️ {lang === 'fr' ? 'Mon plan en 5 ans' : 'My 5-year plan'}</p>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>📅 {lang === 'fr' ? 'Ton plan en 5 ans' : 'Your 5-year plan'}</p>
                         {(() => {
                           const plan = vision.plan_5_ans || vision.plan_5ans
                           return [
@@ -1489,25 +1624,45 @@ export default function MonAvenir() {
                             </div>
                           ))
                         })()}
-
-                        {(vision.ressources_cles || []).length > 0 && (
-                          <>
-                            <p style={{ fontSize:13, fontWeight:700, color:C.text, marginTop:20, marginBottom:12 }}>📚 {lang === 'fr' ? 'Ressources clés pour toi' : 'Key resources for you'}</p>
-                            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                              {vision.ressources_cles.map((r, i) => (
-                                <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'10px 14px', background:C.surface2, borderRadius:8 }}>
-                                  <span style={{ fontSize:11, padding:'3px 8px', borderRadius:20, background:`${C.accent}12`, color:C.accent2, border:`1px solid ${C.accent}25`, whiteSpace:'nowrap', flexShrink:0, marginTop:1 }}>{r.type}</span>
-                                  <div>
-                                    <p style={{ fontSize:13, fontWeight:600, color:C.text, margin:'0 0 2px' }}>{r.nom}</p>
-                                    <p style={{ fontSize:12, color:C.muted, margin:0 }}>{r.pourquoi}</p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </>
-                        )}
                       </div>
                     )}
+
+                    {/* SECTION 5 — Ressources clés */}
+                    {(vision.ressources_cles || []).length > 0 && (
+                      <div className="fade-up" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>📚 {lang === 'fr' ? 'Ressources clés pour toi' : 'Key resources for you'}</p>
+                        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                          {vision.ressources_cles.map((r, i) => (
+                            <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'12px 14px', background:C.surface2, borderRadius:10 }}>
+                              <span style={{ fontSize:11, padding:'3px 8px', borderRadius:20, background:`${C.accent}12`, color:C.accent2, border:`1px solid ${C.accent}25`, whiteSpace:'nowrap', flexShrink:0, marginTop:2 }}>{r.type}</span>
+                              <div>
+                                <p style={{ fontSize:13, fontWeight:700, color:C.text, margin:'0 0 3px' }}>{r.nom}</p>
+                                <p style={{ fontSize:12, color:C.muted, margin:0, lineHeight:1.6 }}>{r.pourquoi_lui || r.pourquoi}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* SECTION 6 — Message final */}
+                    {(vision.message_final || vision.message_motivation) && (
+                      <div className="fade-up" style={{ padding:'24px 26px', background:'linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%)', borderRadius:16, textAlign:'center' }}>
+                        <p style={{ fontSize:22, marginBottom:12 }}>💬</p>
+                        <p style={{ color:'#fff', fontSize:15, lineHeight:1.9, fontStyle:'italic', margin:0 }}>
+                          {vision.message_final || vision.message_motivation}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Bouton modifier & régénérer */}
+                    <div className="no-print" style={{ textAlign:'center', paddingTop:8 }}>
+                      <button
+                        onClick={() => { setVision(null); setVisError('') }}
+                        style={{ padding:'10px 24px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:10, color:C.muted, fontSize:13, cursor:'pointer' }}>
+                        🔄 {lang === 'fr' ? 'Modifier mes réponses & régénérer' : 'Edit my answers & regenerate'}
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
