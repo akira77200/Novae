@@ -24,23 +24,26 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('fetch', event => {
-  // Ne pas intercepter les requêtes API ou Supabase
   const url = new URL(event.request.url)
-  if (url.pathname.startsWith('/api/') || url.hostname.includes('supabase')) return
 
+  // Ne jamais intercepter les APIs et Supabase
+  if (
+    url.pathname.startsWith('/api/') ||
+    url.hostname.includes('supabase.co') ||
+    url.hostname.includes('anthropic.com') ||
+    url.hostname.includes('stripe.com') ||
+    event.request.method === 'POST' ||
+    event.request.headers.get('Authorization')
+  ) {
+    return // Laisse passer sans intercepter
+  }
+
+  // Seulement pour les pages statiques
   event.respondWith(
     caches.match(event.request)
-      .then(cached => {
-        if (cached) return cached
+      .then(response => {
+        if (response) return response
         return fetch(event.request)
-          .then(response => {
-            // Cache les pages HTML naviguées
-            if (event.request.mode === 'navigate' && response.ok) {
-              const clone = response.clone()
-              caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone))
-            }
-            return response
-          })
           .catch(() => caches.match('/offline.html'))
       })
   )
