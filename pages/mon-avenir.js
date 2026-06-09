@@ -619,36 +619,61 @@ export default function MonAvenir() {
   const genererVision = async () => {
     if (!visionProg) return
     setVisLoading(true); setVisError(''); setVision(null)
+
     try {
-      const { data: { session } } = await sb.auth.getSession()
-      if (!session?.access_token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+      // Session fraîche avec vérification d'erreur explicite
+      const { data: sessionData, error: sessionError } = await sb.auth.getSession()
+
+      if (sessionError || !sessionData?.session) {
+        setVisError(lang === 'fr' ? 'Tu dois être connecté.' : 'You must be signed in.')
+        return
+      }
+
+      const token = sessionData.session.access_token
 
       const progInfo = PROGRAMMES.find(p => p.id === visionProg)
-      const description = [orientData.matieresTexte, orientData.activiteTexte, orientData.horizonTexte].filter(Boolean).join(' ')
+      const payload = {
+        programme: progInfo ? progInfo.nom[lang] : visionProg,
+        pays_origine: visionPays,
+        horizon: orientData.horizon || 'non renseigné',
+        activites: orientData.activite || 'non renseigné',
+        description: [
+          orientData.matieresTexte,
+          orientData.activiteTexte,
+          orientData.horizonTexte,
+        ].filter(Boolean).join(' | '),
+      }
+
       const res = await fetch('/api/generer-vision', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': 'Bearer ' + token,
         },
-        body: JSON.stringify({
-          programme: progInfo ? progInfo.nom[lang] : visionProg,
-          pays_origine: visionPays,
-          horizon: orientData.horizon || 'non renseigné',
-          activites: orientData.activite || 'non renseigné',
-          description,
-        }),
+        body: JSON.stringify(payload),
       })
+
       const data = await res.json()
+
+      if (!res.ok) {
+        setVisError(data.error || 'Erreur serveur')
+        return
+      }
+
       if (data.success) {
         setVision(data.vision)
         try { localStorage.setItem('novae_vision_complete', JSON.stringify({ vision: data.vision, prog: visionProg, pays: visionPays, date: new Date().toISOString() })) } catch {}
         if (profile?.id && sb) {
           try { await sb.from('profiles').update({ ai_recommendations: data.vision }).eq('id', profile.id) } catch {}
         }
-      } else setVisError(data.error || 'Erreur')
-    } catch (e) { setVisError(e.message) }
-    finally { setVisLoading(false) }
+      } else {
+        setVisError(data.error || 'Erreur')
+      }
+    } catch (err) {
+      setVisError('Erreur réseau. Réessaie.')
+    } finally {
+      setVisLoading(false)
+    }
   }
 
   const imprimerVision = () => {
