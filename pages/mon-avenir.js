@@ -1436,7 +1436,7 @@ export default function MonAvenir() {
                         rows={4}
                         placeholder={lang === 'fr'
                           ? 'Ex : J\'aimerais avoir créé une technologie qui permet à 1 million de personnes d\'accéder à des soins de qualité...'
-                          : 'Ex: I'd like to have created a technology that gives 1 million people access to quality healthcare...'}
+                          : "Ex: I'd like to have created a technology that gives 1 million people access to quality healthcare..."}
                         style={{ width:'100%', padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
                       />
                     </div>
