@@ -1,6 +1,7 @@
 // pages/mon-avenir.js — NOVAE v5 — Orientation · Secteur · Vision
 import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 const PAYS_PAR_REGION = {
@@ -1670,6 +1671,8 @@ export default function MonAvenir() {
           </>
         )}
 
+
+        <FeedbackSection page="mon-avenir" />
       </main>
     </div>
   )

@@ -1,6 +1,7 @@
 // pages/arrivee.js
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 const GUIDES_LIST = [
@@ -185,6 +186,8 @@ export default function Arrivee() {
             ))}
           </div>
         </div>
+
+        <FeedbackSection page="arrivee" />
       </main>
     </div>
   )

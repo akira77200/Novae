@@ -1,6 +1,7 @@
 // pages/culture.js
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 const DATA = {
@@ -151,6 +152,8 @@ export default function Culture() {
             {lang === 'fr' ? '🎮 Commencer le quiz →' : '🎮 Start the quiz →'}
           </a>
         </div>
+
+        <FeedbackSection page="culture" />
       </main>
     </div>
   )

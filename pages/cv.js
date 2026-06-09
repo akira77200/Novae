@@ -1,6 +1,7 @@
 // pages/cv.js — NOVAE v5 — Créateur de CV canadien
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -722,6 +723,8 @@ export default function CV() {
             </div>
           </div>
         )}
+
+        <FeedbackSection page="cv" />
       </main>
     </div>
   )

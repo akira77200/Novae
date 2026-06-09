@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import FeedbackSection from '../components/FeedbackSection'
 
 const TYPES = [
   { id: 'emploi',    fr: "💼 Entrevue d'emploi",       en: '💼 Job Interview',           color: '#52B788', desc_fr: 'Prépare-toi pour un poste au Canada', desc_en: 'Prepare for a Canadian job position' },
@@ -362,6 +363,9 @@ export default function Entrevue() {
         </div>
       </div>
 
+      <div style={{ maxWidth: 820, margin: '0 auto', padding: '0 20px' }}>
+        <FeedbackSection page="entrevue" />
+      </div>
       <style>{`@keyframes novaDot { 0%,80%,100%{opacity:.2;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }`}</style>
     </div>
   )

@@ -1,6 +1,7 @@
 // pages/bienetre.js — NOVAE v5 — Indice de bien-être étudiant
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 // ── Semaine courante (lundi) ─────────────────────────────────────
@@ -331,6 +332,8 @@ export default function Bienetre() {
             <p style={{ fontSize: 14, color: C.muted }}>{lang === 'fr' ? 'Connecte-toi pour accéder à ton suivi bien-être.' : 'Log in to access your wellbeing tracker.'}</p>
           </div>
         )}
+
+        <FeedbackSection page="bienetre" />
       </main>
     </div>
   )

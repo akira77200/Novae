@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import FeedbackSection from '../components/FeedbackSection'
 
 // ── Widget Bien-être compact ──────────────────────────────────────
 const SCORE_EMOJIS_DB = ['😔', '😕', '😐', '🙂', '😊']
@@ -893,6 +894,7 @@ export default function Dashboard() {
           </div>
         )}
 
+        <FeedbackSection page="dashboard" />
       </main>
     </div>
   )

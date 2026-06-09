@@ -1,6 +1,7 @@
 // pages/bourses.js — NOVAE v5 — Bourses d'études + Recherche universités
 import { useState, useMemo } from 'react'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 // ─────────────────────────────────────────────────────────────────
@@ -583,6 +584,8 @@ export default function Bourses() {
             </div>
           </>
         )}
+
+        <FeedbackSection page="bourses" />
       </main>
     </div>
   )

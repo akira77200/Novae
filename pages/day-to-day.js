@@ -3,6 +3,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import FeedbackSection from '../components/FeedbackSection'
 
 const MapView = dynamic(() => import('../components/MapView'), {
   ssr: false,
@@ -301,7 +302,7 @@ const CATEGORIES = [
 ]
 
 export default function DayToDay() {
-  const { C, lang } = useApp()
+  const { C, lang, theme } = useApp()
   const [city,    setCity]   = useState('Montreal')
   const [active,  setActive] = useState('halal')
   const cat    = CATEGORIES.find(c => c.id === active)
@@ -384,42 +385,52 @@ export default function DayToDay() {
           </div>
         )}
 
-        {/* Price comparison */}
+        {/* Price comparison — BÊTA */}
         {active === 'prices' && (
-          <div>
-            <p style={{ fontSize: 14, color: C.muted, marginBottom: 16 }}>
-              {lang === 'fr' ? `Comparaison des prix à ${city} (données indicatives)` : `Price comparison in ${city} (indicative data)`}
-            </p>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-                <thead>
-                  <tr>
-                    {['Produit','Maxi','Super C','IGA','Walmart'].map((h, i) => (
-                      <th key={i} style={{ padding: '10px 14px', background: C.surface, border: `1px solid ${C.border}`, textAlign: i === 0 ? 'left' : 'center', color: C.muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {prices.map((row, i) => {
-                    const vals = [row.maxi, row.superc, row.iga, row.walmart].filter(Boolean)
-                    const min  = Math.min(...vals)
-                    return (
-                      <tr key={i} style={{ background: i % 2 === 0 ? C.surface : 'transparent' }}>
-                        <td style={{ padding: '10px 14px', border: `1px solid ${C.border}`, fontWeight: 500, color: C.text }}>{row.produit}</td>
-                        {[row.maxi, row.superc, row.iga, row.walmart].map((p, j) => (
-                          <td key={j} style={{ padding: '10px 14px', border: `1px solid ${C.border}`, textAlign: 'center', fontWeight: p === min && p ? 700 : 400, color: p === min && p ? C.success : p ? C.text : C.muted }}>
-                            {p ? `${p.toFixed(2)} $` : '—'}
-                            {p === min && p && <span style={{ fontSize: 10, marginLeft: 3 }}>✓</span>}
-                          </td>
-                        ))}
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+          <div style={{
+            textAlign: 'center',
+            padding: '40px 20px',
+            background: theme === 'dark' ? '#1a2a1e' : '#f9fafb',
+            borderRadius: '16px',
+            border: '2px dashed #2D6A4F40',
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🚧</div>
+            <div style={{
+              display: 'inline-block',
+              background: '#F4A261',
+              color: '#fff',
+              padding: '4px 12px',
+              borderRadius: '99px',
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              marginBottom: '16px',
+            }}>
+              {lang === 'fr' ? 'BÊTA — EN COURS DE VALIDATION' : 'BETA — UNDER VALIDATION'}
             </div>
-            <p style={{ fontSize: 11, color: C.muted, marginTop: 10, fontStyle: 'italic' }}>
-              {lang === 'fr' ? '✓ = Prix le plus bas pour ce produit.' : '✓ = Lowest price for this item.'}
+            <h3 style={{
+              fontSize: '1.2rem',
+              fontWeight: 700,
+              color: C.text,
+              marginBottom: '12px',
+            }}>
+              {lang === 'fr' ? 'Comparatif de prix — Bientôt disponible' : 'Price Comparison — Coming Soon'}
+            </h3>
+            <p style={{
+              color: C.muted,
+              fontSize: '0.9rem',
+              maxWidth: '400px',
+              margin: '0 auto 20px',
+              lineHeight: 1.6,
+            }}>
+              {lang === 'fr'
+                ? 'Nous travaillons à valider les prix avec des sources fiables. Cette section sera disponible prochainement avec des données vérifiées.'
+                : 'We are working to validate prices with reliable sources. This section will be available soon with verified data.'}
+            </p>
+            <p style={{ color: '#2D6A4F', fontSize: '0.85rem', fontWeight: 600 }}>
+              {lang === 'fr'
+                ? '💡 Tu connais les prix dans ta ville ? Partage-les avec nous →'
+                : '💡 Do you know prices in your city? Share them with us →'}
             </p>
           </div>
         )}
@@ -768,6 +779,8 @@ export default function DayToDay() {
             </p>
           </div>
         )}
+
+        <FeedbackSection page="day-to-day" />
       </main>
     </div>
   )

@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import Navbar from '../components/Navbar'
+import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
 const VILLES_CHIPS = ['Toutes', 'Montréal', 'Ottawa', 'Toronto', 'Vancouver', 'Calgary', 'Québec', 'Edmonton', 'Winnipeg']
@@ -506,6 +507,8 @@ export default function Mentors() {
           </div>
         )}
 
+
+        <FeedbackSection page="mentors" />
       </main>
     </div>
   )
