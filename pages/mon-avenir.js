@@ -43,7 +43,7 @@ const PAYS_LISTE = [
   "Turkménistan", "Turquie", "Ukraine", 
   "Uruguay", "Venezuela", "Vietnam", 
   "Yémen", "Zambie", "Zimbabwe",
-  "Mon pays n'est pas dans la liste",
+  "Autre",
 ]
 
 // ── QUIZ — Questions ─────────────────────────────────────────────
@@ -119,19 +119,51 @@ const QUESTIONS = [
   },
 ]
 
-// ── PROGRAMMES — matrice de scoring ─────────────────────────────
+// ── PROGRAMMES — 25 programmes groupés par domaine ──────────────
 const PROGRAMMES = [
-  { id:'data-science',     emoji:'📊', nom:{fr:'Data Science / Statistiques',      en:'Data Science / Statistics'      }, matieres:['math','informatique','economie'],        activites:['analyser']               },
-  { id:'genie-logiciel',   emoji:'💻', nom:{fr:'Génie logiciel / Informatique',    en:'Software Engineering'           }, matieres:['informatique','math'],                  activites:['construire','innover']   },
-  { id:'genie-civil',      emoji:'🏗️', nom:{fr:'Génie civil / Construction',       en:'Civil Engineering'              }, matieres:['math','sciences'],                      activites:['construire']             },
-  { id:'finance',          emoji:'💰', nom:{fr:'Finance / Comptabilité',           en:'Finance / Accounting'           }, matieres:['math','economie'],                      activites:['analyser','diriger']     },
-  { id:'administration',   emoji:'📋', nom:{fr:'Administration des affaires',      en:'Business Administration'        }, matieres:['economie','langues'],                   activites:['diriger']                },
-  { id:'sante',            emoji:'🏥', nom:{fr:'Santé / Sciences infirmières',     en:'Health Sciences / Nursing'      }, matieres:['sciences','sh'],                        activites:['aider']                  },
-  { id:'droit',            emoji:'⚖️', nom:{fr:'Droit / Sciences politiques',      en:'Law / Political Science'        }, matieres:['langues','sh'],                         activites:['aider','diriger']        },
-  { id:'education',        emoji:'🎓', nom:{fr:"Éducation / Sciences de l'éducation", en:'Education'                  }, matieres:['sh','langues'],                         activites:['aider']                  },
-  { id:'genie-electrique', emoji:'⚡', nom:{fr:'Génie électrique / Télécoms',      en:'Electrical Engineering / Telecom'}, matieres:['math','sciences','informatique'],      activites:['construire','innover']   },
-  { id:'environnement',    emoji:'🌱', nom:{fr:'Environnement / Énergies renouvelables', en:'Environment / Renewable Energy'}, matieres:['sciences','math'],              activites:['construire','innover']   },
+  // 💻 TECH & DATA
+  { id:'data-science',    emoji:'📊', nom:{fr:'Data Science / Statistiques',            en:'Data Science'},              domaine:'tech'         },
+  { id:'genie-logiciel',  emoji:'💻', nom:{fr:'Génie logiciel / Informatique',          en:'Software Engineering'},      domaine:'tech'         },
+  { id:'cybersecurite',   emoji:'🔐', nom:{fr:'Cybersécurité',                          en:'Cybersecurity'},             domaine:'tech'         },
+  { id:'ia-ml',           emoji:'🤖', nom:{fr:'Intelligence artificielle / ML',         en:'AI / ML'},                   domaine:'tech'         },
+  { id:'reseaux',         emoji:'📡', nom:{fr:'Réseaux & Télécommunications',            en:'Networks & Telecom'},        domaine:'tech'         },
+  // ⚙️ INGÉNIERIE
+  { id:'genie-civil',     emoji:'🏗️', nom:{fr:'Génie civil / Construction',             en:'Civil Engineering'},         domaine:'ingenierie'   },
+  { id:'genie-electrique',emoji:'⚡', nom:{fr:'Génie électrique',                       en:'Electrical Engineering'},    domaine:'ingenierie'   },
+  { id:'genie-mecanique', emoji:'⚙️', nom:{fr:'Génie mécanique',                        en:'Mechanical Engineering'},    domaine:'ingenierie'   },
+  { id:'genie-minier',    emoji:'⛏️', nom:{fr:'Génie minier / Géologie',               en:'Mining Engineering'},        domaine:'ingenierie'   },
+  // 💼 BUSINESS & FINANCE
+  { id:'finance',         emoji:'💰', nom:{fr:'Finance / Comptabilité',                 en:'Finance / Accounting'},      domaine:'business'     },
+  { id:'administration',  emoji:'📋', nom:{fr:'Administration des affaires',            en:'Business Administration'},   domaine:'business'     },
+  { id:'marketing',       emoji:'📣', nom:{fr:'Marketing / Communication',              en:'Marketing'},                 domaine:'business'     },
+  { id:'entrepreneuriat', emoji:'🚀', nom:{fr:'Entrepreneuriat / Innovation',           en:'Entrepreneurship'},          domaine:'business'     },
+  { id:'rh',              emoji:'👥', nom:{fr:'Ressources humaines',                    en:'Human Resources'},           domaine:'business'     },
+  // 🏥 SANTÉ
+  { id:'sante',           emoji:'🏥', nom:{fr:'Sciences infirmières / Soins',           en:'Nursing / Health'},          domaine:'sante'        },
+  { id:'pharmacie',       emoji:'💊', nom:{fr:'Pharmacie',                              en:'Pharmacy'},                  domaine:'sante'        },
+  { id:'sante-publique',  emoji:'🌡️', nom:{fr:'Santé publique / Épidémiologie',        en:'Public Health'},             domaine:'sante'        },
+  { id:'psychologie',     emoji:'🧠', nom:{fr:'Psychologie / Travail social',           en:'Psychology'},                domaine:'sante'        },
+  // ⚖️ SCIENCES SOCIALES
+  { id:'droit',           emoji:'⚖️', nom:{fr:'Droit / Sciences juridiques',            en:'Law'},                       domaine:'social'       },
+  { id:'sciences-po',     emoji:'🌍', nom:{fr:'Sciences politiques / Relations intern.',en:'Political Science'},         domaine:'social'       },
+  { id:'education',       emoji:'🎓', nom:{fr:'Éducation / Enseignement',               en:'Education'},                 domaine:'social'       },
+  // 🌱 ENVIRONNEMENT
+  { id:'environnement',   emoji:'🌱', nom:{fr:'Environnement / Développement durable',  en:'Environment'},               domaine:'environnement'},
+  { id:'energie',         emoji:'☀️', nom:{fr:'Énergies renouvelables',                 en:'Renewable Energy'},          domaine:'environnement'},
+  { id:'agriculture',     emoji:'🌾', nom:{fr:'Agriculture / Agroalimentaire',          en:'Agriculture'},               domaine:'environnement'},
+  // 🎨 ARTS & MÉDIAS
+  { id:'design-ux',       emoji:'🎨', nom:{fr:'Design / UX / Architecture',             en:'Design / UX'},               domaine:'arts'         },
 ]
+
+const DOMAINES_LABELS = {
+  tech:          { fr:'💻 Tech & Data',          en:'💻 Tech & Data'          },
+  ingenierie:    { fr:'⚙️ Ingénierie',           en:'⚙️ Engineering'          },
+  business:      { fr:'💼 Business & Finance',   en:'💼 Business & Finance'   },
+  sante:         { fr:'🏥 Santé',                en:'🏥 Health'               },
+  social:        { fr:'⚖️ Sciences sociales',    en:'⚖️ Social Sciences'      },
+  environnement: { fr:'🌱 Environnement',        en:'🌱 Environment'          },
+  arts:          { fr:'🎨 Arts & Médias',        en:'🎨 Arts & Media'         },
+}
 
 // ── PROGRAMMES INFO — fiches détaillées ─────────────────────────
 const PROGRAMMES_INFO = {
@@ -300,78 +332,124 @@ const IMPACT_RETOUR = ['education', 'sante', 'genie-civil', 'environnement', 'ad
 const PROGRAMMES_COURTS = ['education', 'sante', 'administration']
 
 function calculerScore(reponses) {
-  const matieres  = reponses.matieres || []
-  const activite  = reponses.activite
-  const horizon   = reponses.horizon
-  const budget    = reponses.budget
-  const risque    = reponses.risque
+  const { matieres = [], activite, risque, horizon, budget } = reponses
 
-  const scored = PROGRAMMES.map((prog, idx) => {
-    let score = idx * 0.07 // tiebreaker unique par programme
+  const scores = {}
+  PROGRAMMES.forEach(p => { scores[p.id] = 0 })
 
-    prog.matieres.forEach(m => { if (matieres.includes(m)) score += 3 })
-    if (prog.activites.includes(activite)) score += 4
+  // MATIÈRES — impact fort (+30 par match)
+  if (matieres.includes('math')) {
+    scores['data-science']     += 30; scores['finance']          += 25
+    scores['genie-logiciel']   += 25; scores['genie-electrique'] += 30
+    scores['ia-ml']            += 25
+  }
+  if (matieres.includes('informatique')) {
+    scores['genie-logiciel']   += 35; scores['data-science']     += 30
+    scores['cybersecurite']    += 30; scores['ia-ml']            += 35
+    scores['reseaux']          += 25
+  }
+  if (matieres.includes('sciences')) {
+    scores['sante']            += 30; scores['environnement']    += 30
+    scores['genie-civil']      += 20; scores['genie-electrique'] += 25
+    scores['pharmacie']        += 30; scores['sante-publique']   += 25
+    scores['genie-mecanique']  += 25; scores['energie']          += 25
+    scores['agriculture']      += 20
+  }
+  if (matieres.includes('economie')) {
+    scores['finance']          += 35; scores['administration']   += 30
+    scores['droit']            += 20; scores['entrepreneuriat']  += 25
+    scores['marketing']        += 20
+  }
+  if (matieres.includes('langues')) {
+    scores['droit']            += 25; scores['administration']   += 20
+    scores['education']        += 30; scores['marketing']        += 25
+    scores['sciences-po']      += 25; scores['rh']               += 20
+  }
+  if (matieres.includes('sh')) {
+    scores['education']        += 35; scores['droit']            += 25
+    scores['sante']            += 15; scores['psychologie']      += 35
+    scores['sciences-po']      += 30; scores['rh']               += 25
+  }
+  if (matieres.includes('arts')) {
+    scores['design-ux']        += 40; scores['marketing']        += 25
+    scores['education']        += 15
+  }
 
-    // Règles explicites demandées
-    if (matieres.includes('math') && matieres.includes('informatique')) {
-      if (prog.id === 'data-science')   score += 14
-      if (prog.id === 'genie-logiciel') score += 12
-    }
+  // ACTIVITÉ (+25)
+  if (activite === 'analyser') {
+    scores['data-science']     += 25; scores['finance']          += 20
+    scores['sante-publique']   += 20; scores['ia-ml']            += 20
+  }
+  if (activite === 'construire') {
+    scores['genie-civil']      += 25; scores['genie-electrique'] += 20
+    scores['genie-logiciel']   += 15; scores['genie-mecanique']  += 25
+    scores['genie-minier']     += 20
+  }
+  if (activite === 'aider') {
+    scores['sante']            += 25; scores['education']        += 20
+    scores['droit']            += 15; scores['psychologie']      += 25
+    scores['rh']               += 20
+  }
+  if (activite === 'diriger') {
+    scores['administration']   += 25; scores['droit']            += 20
+    scores['entrepreneuriat']  += 25; scores['sciences-po']      += 20
+    scores['rh']               += 15
+  }
+  if (activite === 'innover') {
+    scores['genie-logiciel']   += 25; scores['data-science']     += 20
+    scores['environnement']    += 20; scores['genie-electrique'] += 15
+    scores['ia-ml']            += 30; scores['entrepreneuriat']  += 30
+    scores['design-ux']        += 20
+  }
 
-    if (activite === 'aider' && matieres.includes('sciences')) {
-      if (prog.id === 'sante')     score += 16
-      if (prog.id === 'education') score += 6
-    }
+  // RISQUE (+15)
+  if (risque === 'startup' || risque === 'entreprendre') {
+    scores['genie-logiciel']   += 15; scores['data-science']     += 15
+    scores['entrepreneuriat']  += 25; scores['ia-ml']            += 15
+    scores['design-ux']        += 10
+  }
+  if (risque === 'stabilite') {
+    scores['sante']            += 15; scores['education']        += 15
+    scores['droit']            += 10; scores['genie-civil']      += 10
+    scores['pharmacie']        += 15
+  }
 
-    if (activite === 'diriger' && matieres.includes('economie')) {
-      if (prog.id === 'administration') score += 14
-      if (prog.id === 'finance')        score += 12
-    }
+  // HORIZON (+10)
+  if (horizon === 'retour') {
+    scores['sante']            += 10; scores['education']        += 10
+    scores['genie-civil']      += 10; scores['environnement']    += 15
+    scores['agriculture']      += 20; scores['energie']          += 15
+    scores['sante-publique']   += 15
+  }
+  if (horizon === 'rester') {
+    scores['genie-logiciel']   += 10; scores['data-science']     += 10
+    scores['finance']          += 10; scores['cybersecurite']    += 10
+    scores['ia-ml']            += 10
+  }
+  if (horizon === 'pont' || horizon === 'les-deux') {
+    scores['entrepreneuriat']  += 15; scores['data-science']     += 5
+    scores['sciences-po']      += 10
+  }
 
-    // Horizon retour → impact pays en développement
-    if (horizon === 'retour' && IMPACT_RETOUR.includes(prog.id)) score += 8
-    if (horizon === 'pont'   && IMPACT_RETOUR.includes(prog.id)) score += 5
-    if (horizon === 'rester' && ['data-science', 'genie-logiciel', 'finance', 'genie-electrique'].includes(prog.id)) score += 4
+  // BUDGET (+10)
+  if (budget === 'moins15' || budget === 'moins15k') {
+    scores['education']        += 10; scores['administration']   += 10
+    scores['marketing']        += 10
+  }
+  if (budget === 'plus40' || budget === 'plus40k') {
+    scores['sante']            += 10; scores['droit']            += 10
+    scores['pharmacie']        += 15
+  }
 
-    // Budget serré → collège / programmes courts
-    if (budget === 'moins15') {
-      if (PROGRAMMES_COURTS.includes(prog.id)) score += 10
-      if (prog.id === 'administration') score += 5
-      if (['genie-civil', 'genie-electrique', 'droit'].includes(prog.id)) score -= 5
-    } else if (budget === 'plus40') {
-      if (['droit', 'genie-electrique', 'data-science'].includes(prog.id)) score += 4
-    }
+  const maxScore = Math.max(...Object.values(scores), 1)
 
-    // Activité complémentaire
-    if (activite === 'analyser'   && ['data-science', 'finance'].includes(prog.id)) score += 5
-    if (activite === 'construire' && ['genie-logiciel', 'genie-civil', 'genie-electrique', 'environnement'].includes(prog.id)) score += 5
-    if (activite === 'innover'    && ['genie-logiciel', 'environnement', 'data-science'].includes(prog.id)) score += 5
-    if (activite === 'aider'      && ['education', 'droit', 'sante'].includes(prog.id)) score += 4
-
-    // Rapport au risque
-    if (risque === 'stabilite'    && ['sante', 'education', 'administration'].includes(prog.id)) score += 4
-    if (risque === 'entreprendre' && ['genie-logiciel', 'data-science', 'environnement'].includes(prog.id)) score += 4
-    if (risque === 'equilibre'    && ['finance', 'droit', 'administration'].includes(prog.id)) score += 3
-
-    // Matières spécifiques
-    if (matieres.includes('langues') && ['droit', 'administration', 'education'].includes(prog.id)) score += 3
-    if (matieres.includes('arts')    && prog.id === 'education') score += 4
-    if (matieres.includes('sh')      && ['droit', 'education', 'administration'].includes(prog.id)) score += 3
-
-    return { ...prog, score }
-  })
-
-  const sorted = scored.sort((a, b) => b.score - a.score)
-  const top3   = sorted.slice(0, 3)
-  const max    = top3[0]?.score || 1
-  const min    = top3[2]?.score || 0
-  const spread = Math.max(max - min, 1)
-
-  return top3.map((prog, i) => {
-    const relative = (prog.score - min) / spread
-    const pct = Math.round(Math.max(52, Math.min(97, 72 + relative * 22 - i * 3)))
-    return { ...prog, pct }
-  })
+  return Object.entries(scores)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([id, score]) => {
+      const prog = PROGRAMMES.find(p => p.id === id) || { id, emoji:'📋', nom:{fr:id,en:id} }
+      return { ...prog, score, pct: Math.min(Math.round((score / maxScore) * 100), 99) }
+    })
 }
 
 function genererPourquoi(prog, reponses, lang) {
@@ -383,20 +461,45 @@ function genererPourquoi(prog, reponses, lang) {
   const bl = isFr ? BUDGET_LABELS : BUDGET_LABELS_EN
   const raisons = []
 
-  const matieresMatch = prog.matieres.filter(m => matieres.includes(m)).map(m => ml[m] || m)
+  // Matières pertinentes selon le programme
+  const PROG_MATIERES = {
+    'data-science':['math','informatique','economie'], 'genie-logiciel':['informatique','math'],
+    'genie-civil':['math','sciences'], 'finance':['math','economie'], 'administration':['economie','langues'],
+    'sante':['sciences','sh'], 'droit':['langues','sh'], 'education':['sh','langues'],
+    'genie-electrique':['math','sciences','informatique'], 'environnement':['sciences','math'],
+    'cybersecurite':['informatique','math'], 'ia-ml':['informatique','math'],
+    'reseaux':['informatique','math','sciences'], 'genie-mecanique':['math','sciences'],
+    'genie-minier':['math','sciences'], 'marketing':['economie','langues'],
+    'entrepreneuriat':['economie'], 'rh':['langues','sh'], 'pharmacie':['sciences'],
+    'sante-publique':['sciences','sh'], 'psychologie':['sh'], 'sciences-po':['langues','sh'],
+    'energie':['sciences','math'], 'agriculture':['sciences'], 'design-ux':['arts'],
+  }
+  const progMatieres = PROG_MATIERES[prog.id] || []
+  const matieresMatch = progMatieres.filter(m => matieres.includes(m)).map(m => ml[m] || m)
   if (matieresMatch.length > 0) {
     raisons.push(isFr
       ? `tu excelles en ${matieresMatch.join(' et ')}`
       : `you excel in ${matieresMatch.join(' and ')}`)
   }
 
-  if (reponses.activite && prog.activites.includes(reponses.activite)) {
+  const PROG_ACTIVITES = {
+    'data-science':['analyser'], 'genie-logiciel':['construire','innover'], 'genie-civil':['construire'],
+    'finance':['analyser','diriger'], 'administration':['diriger'], 'sante':['aider'],
+    'droit':['aider','diriger'], 'education':['aider'], 'genie-electrique':['construire','innover'],
+    'environnement':['construire','innover'], 'cybersecurite':['analyser','construire'],
+    'ia-ml':['analyser','innover'], 'reseaux':['construire'], 'genie-mecanique':['construire'],
+    'genie-minier':['construire'], 'marketing':['innover'], 'entrepreneuriat':['innover','diriger'],
+    'rh':['aider','diriger'], 'pharmacie':['aider'], 'sante-publique':['analyser','aider'],
+    'psychologie':['aider'], 'sciences-po':['analyser','diriger'], 'energie':['construire','innover'],
+    'agriculture':['construire'], 'design-ux':['innover'],
+  }
+  if (reponses.activite && (PROG_ACTIVITES[prog.id] || []).includes(reponses.activite)) {
     raisons.push(isFr
       ? `tu veux ${al[reponses.activite]}`
       : `you want to ${al[reponses.activite]}`)
   }
 
-  if (matieres.includes('math') && matieres.includes('informatique') && ['data-science', 'genie-logiciel'].includes(prog.id)) {
+  if (matieres.includes('math') && matieres.includes('informatique') && ['data-science', 'genie-logiciel', 'ia-ml', 'cybersecurite'].includes(prog.id)) {
     raisons.push(isFr
       ? 'ton combo math + informatique est un atout majeur dans ce secteur'
       : 'your math + computer science combo is a major asset in this field')
@@ -683,12 +786,12 @@ export default function MonAvenir() {
                   {/* Select dropdown */}
                   {q.type === 'select' && (
                     <>
-                      <select value={reponses[q.id] || ''} onChange={e => { setSingle(q.id, e.target.value); if (e.target.value !== 'Mon pays n\'est pas dans la liste') setPaysAutre('') }}
+                      <select value={reponses[q.id] || ''} onChange={e => { setSingle(q.id, e.target.value); if (e.target.value !== 'Autre') setPaysAutre('') }}
                         style={{ width:'100%', maxWidth:340, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: reponses[q.id] ? C.text : C.muted, fontSize:14, outline:'none', cursor:'pointer', colorScheme:'dark' }}>
                         <option value="">{lang === 'fr' ? '-- Sélectionne ton pays --' : '-- Select your country --'}</option>
                         {q.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                       </select>
-                      {reponses[q.id] === 'Mon pays n\'est pas dans la liste' && (
+                      {reponses[q.id] === 'Autre' && (
                         <input
                           type="text"
                           placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
@@ -730,18 +833,27 @@ export default function MonAvenir() {
         {/* ════════════════════════════════════════════════════════ */}
         {tab === 'secteur' && (
           <>
-            {/* Sélecteur programme */}
+            {/* Sélecteur programme groupé */}
             <div style={{ marginBottom:24 }}>
-              <p style={{ fontSize:11, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.8, marginBottom:10 }}>
+              <p style={{ fontSize:11, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.8, marginBottom:14 }}>
                 {lang === 'fr' ? 'Choisis un programme' : 'Select a program'}
               </p>
-              <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                {PROGRAMMES.map(p => (
-                  <button key={p.id} onClick={() => setSelectedProg(p.id)} style={{ ...chip(selectedProg === p.id), padding:'7px 14px' }}>
-                    {p.emoji} {p.nom[lang]}
-                  </button>
-                ))}
-              </div>
+              {Object.entries(DOMAINES_LABELS).map(([domaine, label]) => {
+                const progs = PROGRAMMES.filter(p => p.domaine === domaine)
+                if (!progs.length) return null
+                return (
+                  <div key={domaine} style={{ marginBottom:16 }}>
+                    <p style={{ fontSize:12, fontWeight:700, color:C.muted, marginBottom:8 }}>{lang === 'fr' ? label.fr : label.en}</p>
+                    <div style={{ display:'flex', gap:7, flexWrap:'wrap' }}>
+                      {progs.map(p => (
+                        <button key={p.id} onClick={() => setSelectedProg(p.id)} style={{ ...chip(selectedProg === p.id), padding:'6px 13px', fontSize:12 }}>
+                          {p.emoji} {p.nom[lang]}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
 
             {!selectedProg && (
