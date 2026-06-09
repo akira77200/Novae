@@ -196,7 +196,7 @@ const PROGRAMMES_INFO = {
     chemin:"BBA/MBA → stage en entreprise → poste junior → manager → directeur → RP via RÉQ (QC) ou Express Entry (ON)",
   },
   'sante': {
-    cest_quoi: "Les sciences de la santé couvrent un vaste spectre : soins infirmiers, physiothérapie, médecine, santé publique, nutrition. Au Canada, le secteur de la santé est le plus grand employeur public — et souffre d'une pénurie chronique de professionnels qualifiés. Pour un étudiant africain, c'est une porte d'entrée très sérieuse vers la résidence permanente.",
+    cest_quoi: "Les sciences de la santé couvrent un vaste spectre : soins infirmiers, physiothérapie, médecine, santé publique, nutrition. Au Canada, le secteur de la santé est le plus grand employeur public — et souffre d'une pénurie chronique de professionnels qualifiés. Pour les nouveaux arrivants, c'est une porte d'entrée très sérieuse vers la résidence permanente.",
     monde: [
       { ctx:"Pénurie d'infirmiers au Sénégal", action:"Les professionnels de santé forment des agents de santé communautaires en zones rurales", impact:"Couverture vaccinale augmentée de 35% dans les zones isolées" },
       { ctx:"Malnutrition infantile au Niger", action:"Nutritionnistes et agents de santé déploient des protocoles d'intervention ciblés", impact:"Mortalité infantile réduite de 20% dans les zones d'intervention en 3 ans" },
@@ -208,7 +208,7 @@ const PROGRAMMES_INFO = {
     chemin:"DEC ou Bac soins infirmiers → équivalence provinciale → stage clinique → poste hospitalier → RP via programme provincial ou Express Entry",
   },
   'droit': {
-    cest_quoi: "Le droit t'apprend à comprendre les règles qui organisent la société et à défendre les droits des individus et des organisations. Au Canada, la formation juridique ouvre des portes dans les cabinets d'avocats, les entreprises, les gouvernements et les ONG. Le droit international et les droits humains sont des spécialisations particulièrement porteuses pour les étudiants africains.",
+    cest_quoi: "Le droit t'apprend à comprendre les règles qui organisent la société et à défendre les droits des individus et des organisations. Au Canada, la formation juridique ouvre des portes dans les cabinets d'avocats, les entreprises, les gouvernements et les ONG. Le droit international et les droits humains sont des spécialisations particulièrement porteuses pour les nouveaux arrivants.",
     monde: [
       { ctx:"Droits fonciers au Cameroun", action:"Les juristes défendent les communautés rurales face aux accaparements de terres", impact:"Des milliers d'hectares restitués à des communautés autochtones spoliées" },
       { ctx:"Commerce international Afrique-Canada", action:"Avocats spécialisés structurent des accords dans le cadre de la ZLECAF", impact:"Facilitation de 2 milliards $ d'échanges entre entreprises canadiennes et africaines" },
@@ -511,7 +511,6 @@ export default function MonAvenir() {
     setVisLoading(true); setVisError(''); setVision(null)
     try {
       const { data: { session } } = await sb.auth.getSession()
-      console.log('[mon-avenir/genererVision] session:', session?.user?.email, 'token:', session?.access_token ? 'présent' : 'absent')
       const token = session?.access_token || ''
       if (!token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 

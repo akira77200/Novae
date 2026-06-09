@@ -201,8 +201,8 @@ export default function Parrainage() {
         </h1>
         <p style={{ fontSize: 14, color: C.muted, marginBottom: 28, lineHeight: 1.6 }}>
           {lang === 'fr'
-            ? 'Des étudiants africains qui ont vécu ce que tu vis, prêts à t\'aider gratuitement.'
-            : 'African students who lived what you\'re living, ready to help you for free.'}
+            ? 'Des nouveaux arrivants qui ont vécu ce que tu vis, prêts à t\'aider gratuitement.'
+            : 'Newcomers who lived what you\'re living, ready to help you for free.'}
         </p>
 
         {/* Onglets */}
@@ -225,8 +225,8 @@ export default function Parrainage() {
             <div style={{ padding: '16px 18px', background: `${C.accent}08`, border: `1px solid ${C.accent}20`, borderRadius: 12, marginBottom: 24 }}>
               <p style={{ fontSize: 14, color: C.text, lineHeight: 1.7 }}>
                 {lang === 'fr'
-                  ? '💡 Un parrain est un étudiant africain arrivé avant toi dans la même ville. Il partage son expérience gratuitement et bénévolement — quelques messages suffisent.'
-                  : '💡 A peer mentor is an African student who arrived before you in the same city. They share their experience for free — a few messages is all it takes.'}
+                  ? '💡 Un parrain est un nouveau arrivant installé avant toi dans la même ville. Il partage son expérience gratuitement et bénévolement — quelques messages suffisent.'
+                  : '💡 A peer mentor is a newcomer who settled before you in the same city. They share their experience for free — a few messages is all it takes.'}
               </p>
             </div>
 

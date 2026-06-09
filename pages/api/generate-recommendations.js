@@ -94,8 +94,8 @@ export default async function handler(req, res) {
 
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  const prompt = `Tu es un conseiller bienveillant pour étudiants africains
-francophones arrivant au Canada. Génère des recommandations PERSONNALISÉES.
+  const prompt = `Tu es un conseiller bienveillant pour nouveaux arrivants
+francophones au Canada. Génère des recommandations PERSONNALISÉES.
 
 Profil :
 - Nom : ${profile.full_name || 'Non renseigné'}

@@ -213,7 +213,6 @@ export default function CV() {
     setGenerating(true); setAiErr('')
     try {
       const { data: { session } } = await sb.auth.getSession()
-      console.log('[cv/generer] session:', session?.user?.email, 'token:', session?.access_token ? 'présent' : 'absent')
       const token = session?.access_token || ''
       if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 

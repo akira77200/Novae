@@ -233,7 +233,6 @@ export function AppProvider({ children }) {
     setLangState(l); setThemeState(t)
 
     const { data: { subscription } } = sb.auth.onAuthStateChange((event, session) => {
-      console.log('[auth] event:', event, 'session:', session?.user?.email)
       setUser(session?.user || null)
       if (session?.user) loadProfile(session.user.id)
       else { setProfile(null); setLoading(false) }
