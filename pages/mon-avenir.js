@@ -599,7 +599,7 @@ export default function MonAvenir() {
         body: JSON.stringify({ reponses: orientData }),
       })
       const json = await res.json()
-      if (!res.ok || !json.success) { setOrientPhase('questions'); setOrientErr(json.error || 'Erreur'); return }
+      if (!res.ok || !json.success) { setOrientPhase('questions'); setOrientErr(json.error || (lang === 'fr' ? 'Erreur' : 'Error')); return }
       setOrientAnalyse(json.analyse)
       setOrientPhase('results')
       try { localStorage.setItem('novae_orientation_v2', JSON.stringify({ reponses: orientData, analyse: json.analyse, date: new Date().toISOString() })) } catch {}
@@ -661,7 +661,7 @@ export default function MonAvenir() {
       const data = await res.json()
 
       if (!res.ok) {
-        setVisError(data.error || 'Erreur serveur')
+        setVisError(data.error || (lang === 'fr' ? 'Erreur serveur' : 'Server error'))
         return
       }
 
@@ -672,10 +672,10 @@ export default function MonAvenir() {
           try { await sb.from('profiles').update({ ai_recommendations: data.vision }).eq('id', profile.id) } catch {}
         }
       } else {
-        setVisError(data.error || 'Erreur')
+        setVisError(data.error || (lang === 'fr' ? 'Erreur' : 'Error'))
       }
     } catch (err) {
-      setVisError('Erreur réseau. Réessaie.')
+      setVisError(lang === 'fr' ? 'Erreur réseau. Réessaie.' : 'Network error. Please try again.')
     } finally {
       setVisLoading(false)
     }
@@ -704,7 +704,7 @@ export default function MonAvenir() {
 
   if (authLoading) return (
     <div style={{ minHeight:'100vh', background:C.bg, display:'flex', alignItems:'center', justifyContent:'center' }}>
-      <p style={{ color:C.muted, fontSize:14 }}>Chargement...</p>
+      <p style={{ color:C.muted, fontSize:14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
     </div>
   )
 

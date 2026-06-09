@@ -8,7 +8,7 @@ const MapView = dynamic(() => import('../components/MapView'), {
   ssr: false,
   loading: () => (
     <div style={{ height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1a1a', borderRadius: '12px', color: '#888', fontSize: 14 }}>
-      Chargement de la carte...
+      Loading map...
     </div>
   ),
 })

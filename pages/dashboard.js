@@ -388,7 +388,7 @@ export default function Dashboard() {
 
       {paying && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', backdropFilter:'blur(4px)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <p style={{ color:C.text, fontSize:16, fontWeight:600 }}>Redirection vers le paiement...</p>
+          <p style={{ color:C.text, fontSize:16, fontWeight:600 }}>{lang === 'fr' ? 'Redirection vers le paiement...' : 'Redirecting to payment...'}</p>
         </div>
       )}
 
@@ -409,7 +409,7 @@ export default function Dashboard() {
             </div>
             <div style={{ padding:'18px 24px' }}>
               {mOpen.bio && <p style={{ fontSize:14, color:C.muted, lineHeight:1.7, marginBottom:18 }}>{mOpen.bio}</p>}
-              <p style={{ fontSize:11, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.8, marginBottom:10 }}>Durée</p>
+              <p style={{ fontSize:11, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.8, marginBottom:10 }}>{lang === 'fr' ? 'Durée' : 'Duration'}</p>
               <div style={{ display:'flex', gap:10, marginBottom:20 }}>
                 {[30,45].map(d => {
                   const tarif = ((d === 30 ? mOpen.tarif_30min : mOpen.tarif_45min) || (d === 30 ? 1499 : 1999)) / 100
@@ -488,7 +488,7 @@ export default function Dashboard() {
               <p style={{ fontWeight:600, fontSize:13, color:C.text, marginBottom:2 }}>{a.titre}</p>
               <p style={{ fontSize:12, color:C.muted }}>{a.message}</p>
             </div>
-            {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:`${C.accent}18`, border:`1px solid ${C.accent}35`, borderRadius:7, color:C.accent2, fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>Agir →</a>}
+            {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:`${C.accent}18`, border:`1px solid ${C.accent}35`, borderRadius:7, color:C.accent2, fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>{lang === 'fr' ? 'Agir →' : 'Act →'}</a>}
           </div>
         ))}
 
@@ -717,7 +717,7 @@ export default function Dashboard() {
               ))}
             </div>
             {!ready ? (
-              <p style={{ textAlign:'center', color:C.muted, padding:'32px', fontSize:14 }}>Chargement...</p>
+              <p style={{ textAlign:'center', color:C.muted, padding:'32px', fontSize:14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
             ) : (
               <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
                 {tF.length === 0 && taches.length === 0 && !province ? (
@@ -819,7 +819,7 @@ export default function Dashboard() {
                   <div key={g.id} style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px' }}>
                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
                       <span style={{ fontSize:10, fontWeight:700, padding:'3px 10px', borderRadius:20, background:g.gratuit ? `${C.success}18` : `${C.accent}18`, color:g.gratuit ? C.success : C.accent2, letterSpacing:0.5 }}>
-                        {g.gratuit ? 'GRATUIT' : `${(3.99).toFixed(2)} $`}
+                        {g.gratuit ? (lang === 'fr' ? 'GRATUIT' : 'FREE') : `${(3.99).toFixed(2)} $`}
                       </span>
                       <span style={{ fontSize:11, color:C.muted }}>⏱ {g.temps_lecture} min</span>
                     </div>

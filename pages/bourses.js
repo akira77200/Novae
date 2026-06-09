@@ -398,8 +398,8 @@ export default function Bourses() {
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 5 }}>
                             <p style={{ fontSize: 14, fontWeight: 700, color: C.text, lineHeight: 1.4 }}>{lang === 'fr' ? b.nom : (b.nom_en || b.nom)}</p>
-                            {b.new && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${C.error}15`, color: C.error, letterSpacing: 0.4, flexShrink: 0 }}>NOUVEAU</span>}
-                            {matchPO && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${C.accent}15`, color: C.accent2, letterSpacing: 0.4, flexShrink: 0 }}>✓ TON PAYS</span>}
+                            {b.new && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${C.error}15`, color: C.error, letterSpacing: 0.4, flexShrink: 0 }}>{lang === 'fr' ? 'NOUVEAU' : 'NEW'}</span>}
+                            {matchPO && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${C.accent}15`, color: C.accent2, letterSpacing: 0.4, flexShrink: 0 }}>✓ {lang === 'fr' ? 'TON PAYS' : 'YOUR COUNTRY'}</span>}
                           </div>
                           <p style={{ fontSize: 12, color: C.muted, marginBottom: 8 }}>{b.organisme}</p>
                           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>

@@ -49,7 +49,7 @@ function CVPreview({ data, lang }) {
 
       {/* En-tête */}
       <div style={{ borderBottom: '2.5px solid #2D6A4F', paddingBottom: 16, marginBottom: 18 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1a1a1a', margin: 0, letterSpacing: -0.5, fontFamily: 'system-ui, sans-serif' }}>{nom || 'Votre Nom'}</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1a1a1a', margin: 0, letterSpacing: -0.5, fontFamily: 'system-ui, sans-serif' }}>{nom || (lang === 'fr' ? 'Votre Nom' : 'Your Name')}</h1>
         {poste_cible && <p style={{ fontSize: 14, color: '#2D6A4F', fontWeight: 600, marginTop: 3, fontFamily: 'system-ui, sans-serif' }}>{poste_cible}</p>}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 18px', marginTop: 8 }}>
           {email     && <span style={{ fontSize: 11, color: '#444' }}>✉ {email}</span>}
@@ -605,7 +605,7 @@ export default function CV() {
                     </p>
                     <button onClick={() => copierTexte(aiData.resume_professionnel, 'resume')}
                       style={{ padding: '5px 12px', background: copied === 'resume' ? `${C.success}20` : `${C.accent}12`, border: `1px solid ${copied === 'resume' ? C.success : C.accent}30`, borderRadius: 7, color: copied === 'resume' ? C.success : C.accent2, fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
-                      {copied === 'resume' ? '✓ Copié' : '📋 Copier'}
+                      {copied === 'resume' ? (lang === 'fr' ? '✓ Copié' : '✓ Copied') : (lang === 'fr' ? '📋 Copier' : '📋 Copy')}
                     </button>
                   </div>
                   <div style={{ padding: '14px 16px', background: C.surface2, borderRadius: 10, borderLeft: `3px solid ${C.accent}` }}>
@@ -635,7 +635,7 @@ export default function CV() {
                             </div>
                             <button onClick={() => copierTexte(bulletsText, blockId)}
                               style={{ padding: '4px 10px', background: copied === blockId ? `${C.success}20` : `${C.accent}12`, border: `1px solid ${copied === blockId ? C.success : C.accent}30`, borderRadius: 7, color: copied === blockId ? C.success : C.accent2, fontSize: 11, cursor: 'pointer', fontWeight: 600, flexShrink: 0 }}>
-                              {copied === blockId ? '✓' : '📋'}
+                              {copied === blockId ? (lang === 'fr' ? '✓ Copié' : '✓ Copied') : (lang === 'fr' ? '📋 Copier' : '📋 Copy')}
                             </button>
                           </div>
                           <ul style={{ margin: 0, paddingLeft: 18 }}>
