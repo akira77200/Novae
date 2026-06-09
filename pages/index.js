@@ -65,32 +65,6 @@ const STATS = [
   { numFr: '100%',  numEn: '100%',  labelFr: 'gratuit pour commencer',   labelEn: 'free to get started'    },
 ]
 
-const TESTIMONIALS = [
-  {
-    name: 'Amara Diallo',
-    origin: 'Dakar, Sénégal → Montréal',
-    avatar: 'A',
-    textFr: 'Novae m\'a aidé à comprendre les démarches dès mon arrivée. En 2 semaines j\'avais mon NAS, mon compte bancaire et mes premiers contacts en informatique à l\'UdeM.',
-    textEn: 'Novae helped me from day one. In 2 weeks I had my SIN, bank account and first CS contacts at UdeM.',
-    color: '#2D6A4F',
-  },
-  {
-    name: 'Diego Vargas',
-    origin: 'Bogotá, Colombie → Ottawa',
-    avatar: 'D',
-    textFr: 'Novae m\'a guidé vers le génie civil à uOttawa. J\'ai trouvé mon stage en 3 semaines grâce aux outils de CV et aux recommandations de mentors.',
-    textEn: 'Novae guided me toward civil engineering at uOttawa. I found my internship in 3 weeks thanks to the resume tools and mentor matching.',
-    color: '#E65100',
-  },
-  {
-    name: 'Mei Zhang',
-    origin: 'Shanghai, Chine → Toronto',
-    avatar: 'M',
-    textFr: 'L\'orientation IA m\'a recommandé Data Science à UToronto — exactement ce que je cherchais. Les modules sont précis et adaptés aux réalités canadiennes.',
-    textEn: 'The AI orientation recommended Data Science at UToronto — exactly what I needed. The modules are precise and tailored to Canadian realities.',
-    color: '#1565C0',
-  },
-]
 
 export default function Home() {
   const router = useRouter()
@@ -276,45 +250,6 @@ export default function Home() {
               </div>
               <div style={{ fontSize:13, color: C.muted, marginTop:6 }}>
                 {isFr ? s.labelFr : s.labelEn}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS ──────────────────────────────────────────────── */}
-      <section style={{ padding:'72px 24px', maxWidth:1100, margin:'0 auto' }}>
-        <div style={{ textAlign:'center', marginBottom:44 }}>
-          <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
-            {isFr ? 'Ils ont transformé leur parcours' : 'They transformed their journey'}
-          </h2>
-          <p style={{ color: C.muted, fontSize:15 }}>
-            {isFr ? 'Des milliers de nouveaux arrivants nous font confiance' : 'Thousands of newcomers trust us'}
-          </p>
-        </div>
-
-        <div className="testimonials-grid">
-          {TESTIMONIALS.map((t_, i) => (
-            <div key={i} style={{
-              background: isDark ? C.surface : '#fff',
-              border: `1px solid ${C.border}`,
-              borderRadius: 18,
-              padding: '26px 24px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 16,
-            }}>
-              <p style={{ fontSize:14, color: C.text2, lineHeight:1.7, margin:0, fontStyle:'italic' }}>
-                "{isFr ? t_.textFr : t_.textEn}"
-              </p>
-              <div style={{ display:'flex', alignItems:'center', gap:12, marginTop:'auto' }}>
-                <div style={{ width:38, height:38, borderRadius:'50%', background:`${t_.color}22`, border:`1.5px solid ${t_.color}44`, color: t_.color, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:15, flexShrink:0 }}>
-                  {t_.avatar}
-                </div>
-                <div>
-                  <div style={{ fontSize:14, fontWeight:600, color: C.text }}>{t_.name}</div>
-                  <div style={{ fontSize:12, color: C.muted }}>{t_.origin}</div>
-                </div>
               </div>
             </div>
           ))}

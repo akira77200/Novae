@@ -137,11 +137,12 @@ function CVPreview({ data, lang }) {
 export default function CV() {
   const { C, lang, profile, loading: authLoading, mounted, sb, planLimits, userPlan } = useApp()
 
-  const [etape,        setEtape]       = useState(1)         // 1=infos 2=expériences 3=formation 4=preview
+  const [etape,        setEtape]       = useState(1)
   const [generating,   setGenerating]  = useState(false)
   const [aiData,       setAiData]      = useState(null)
   const [aiErr,        setAiErr]       = useState('')
-  const [limitModal,  setLimitModal]  = useState(false)
+  const [limitModal,   setLimitModal]  = useState(false)
+  const [copied,       setCopied]      = useState(null)
 
   // Formulaire principal
   const [nom,          setNom]         = useState('')
@@ -213,14 +214,13 @@ export default function CV() {
     setGenerating(true); setAiErr('')
     try {
       const { data: { session } } = await sb.auth.getSession()
-      const token = session?.access_token || ''
-if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+      if (!session?.access_token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 
       const res = await fetch('/api/cv/generer', {
         method:  'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:  `Bearer ${token}`,
+          Authorization:  `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           profil:       { nom, email, ville, statut: profile?.statut },
@@ -234,6 +234,7 @@ if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.
       const json = await res.json()
       if (!res.ok) { setAiErr(json.error || 'Erreur'); return }
       setAiData(json.data)
+      setCopied(null)
       setEtape(4)
       // Flag pour le score dashboard
       try { localStorage.setItem('novae_cv_nom', nom || 'cv') } catch {}
@@ -246,26 +247,21 @@ if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.
     finally { setGenerating(false) }
   }
 
-  // ── Export PDF via print ──────────────────────────────────────
-  const telechargerPDF = () => {
+  // ── Export PDF guide via print ────────────────────────────────
+  const imprimerGuide = () => {
     const style = document.createElement('style')
-    style.innerHTML = `
-      @media print {
-        body > *:not(#cv-print-wrapper) { display: none !important; }
-        #cv-print-wrapper { display: block !important; }
-        #cv-print {
-          width: 210mm !important;
-          padding: 15mm !important;
-          margin: 0 !important;
-          background: white !important;
-          color: black !important;
-          font-size: 11pt !important;
-        }
-      }
-    `
+    style.innerHTML = `@media print { body > *:not(#cv-guide-print) { display: none !important; } #cv-guide-print { display: block !important; padding: 15mm; font-size: 11pt; color: #000 !important; background: #fff !important; } #cv-guide-print * { color: #000 !important; background: transparent !important; } .no-print { display: none !important; } }`
     document.head.appendChild(style)
     window.print()
     document.head.removeChild(style)
+  }
+
+  // ── Copier dans le presse-papier ─────────────────────────────
+  const copierTexte = (text, id) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(id)
+      setTimeout(() => setCopied(null), 2000)
+    }).catch(() => {})
   }
 
   // ── Données consolidées pour le preview ──────────────────────
@@ -285,7 +281,7 @@ if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.
     { id: 1, fr: 'Infos',        en: 'Info'       },
     { id: 2, fr: 'Expériences',  en: 'Experience' },
     { id: 3, fr: 'Formation',    en: 'Education'  },
-    { id: 4, fr: 'Aperçu',       en: 'Preview'    },
+    { id: 4, fr: 'Guide',        en: 'Guide'      },
   ]
 
   return (
@@ -392,15 +388,15 @@ if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
           <div>
             <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, letterSpacing: -0.5, marginBottom: 4 }}>
-              📄 {lang === 'fr' ? 'Créateur de CV canadien' : 'Canadian Resume Builder'}
+              📄 {lang === 'fr' ? 'Guide CV canadien' : 'Canadian Resume Guide'}
             </h1>
             <p style={{ fontSize: 14, color: C.muted }}>
-              {lang === 'fr' ? "Format canadien · Optimisé par IA · Exportable en PDF" : 'Canadian format · AI-optimized · Export to PDF'}
+              {lang === 'fr' ? 'Contenu optimisé par IA · Format Canva · Adapté au Canada' : 'AI-optimized content · Canva template · Canada-ready'}
             </p>
           </div>
           {etape === 4 && (
-            <button onClick={telechargerPDF} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
-              ⬇ {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+            <button onClick={imprimerGuide} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+              📄 {lang === 'fr' ? 'Imprimer le guide' : 'Print guide'}
             </button>
           )}
         </div>
@@ -581,31 +577,149 @@ if (!token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.
           </div>
         )}
 
-        {/* ══ ÉTAPE 4 — Aperçu CV ══ */}
-        {etape === 4 && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button onClick={() => setEtape(3)} style={{ padding: '9px 16px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 9, color: C.muted, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
-                  ← {lang === 'fr' ? 'Modifier' : 'Edit'}
-                </button>
-                <button onClick={generer} disabled={generating} style={{ padding: '9px 16px', background: `${C.accent}15`, border: `1px solid ${C.accent}30`, borderRadius: 9, color: C.accent2, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
-                  {generating ? '...' : (lang === 'fr' ? '↺ Régénérer l\'IA' : '↺ Regenerate AI')}
-                </button>
-              </div>
-              <button onClick={telechargerPDF} style={{ padding: '10px 22px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
-                ⬇ {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+        {/* ══ ÉTAPE 4 — Guide CV ══ */}
+        {etape === 4 && aiData && (
+          <div id="cv-guide-print">
+
+            {/* Barre d'actions */}
+            <div className="no-print" style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+              <button onClick={() => setEtape(3)} style={{ padding: '9px 16px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 9, color: C.muted, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                ← {lang === 'fr' ? 'Modifier' : 'Edit'}
+              </button>
+              <button onClick={generer} disabled={generating} style={{ padding: '9px 16px', background: `${C.accent}15`, border: `1px solid ${C.accent}30`, borderRadius: 9, color: C.accent2, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                {generating ? '...' : (lang === 'fr' ? '↺ Régénérer' : '↺ Regenerate')}
+              </button>
+              <button onClick={imprimerGuide} style={{ marginLeft: 'auto', padding: '9px 18px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+                📄 {lang === 'fr' ? 'Imprimer ce guide' : 'Print this guide'}
               </button>
             </div>
 
-            {/* Aperçu dans un cadre */}
-            <div style={{ border: `1px solid ${C.border}`, borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
-              <CVPreview data={cvData} lang={lang} />
-            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
 
-            <p style={{ textAlign: 'center', fontSize: 12, color: C.muted, marginTop: 16 }}>
-              {lang === 'fr' ? '💡 Clique sur "Télécharger PDF" puis "Enregistrer en PDF" dans la boîte de dialogue d\'impression.' : '💡 Click "Download PDF" then "Save as PDF" in the print dialog.'}
-            </p>
+              {/* ─ A — Résumé professionnel ─ */}
+              {aiData.resume_professionnel && (
+                <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '20px 22px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0 }}>
+                      A — {lang === 'fr' ? 'Résumé professionnel' : 'Professional Summary'}
+                    </p>
+                    <button onClick={() => copierTexte(aiData.resume_professionnel, 'resume')}
+                      style={{ padding: '5px 12px', background: copied === 'resume' ? `${C.success}20` : `${C.accent}12`, border: `1px solid ${copied === 'resume' ? C.success : C.accent}30`, borderRadius: 7, color: copied === 'resume' ? C.success : C.accent2, fontSize: 12, cursor: 'pointer', fontWeight: 600 }}>
+                      {copied === 'resume' ? '✓ Copié' : '📋 Copier'}
+                    </button>
+                  </div>
+                  <div style={{ padding: '14px 16px', background: C.surface2, borderRadius: 10, borderLeft: `3px solid ${C.accent}` }}>
+                    <p style={{ fontSize: 14, lineHeight: 1.8, color: C.text, margin: 0 }}>{aiData.resume_professionnel}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* ─ B — Expériences optimisées ─ */}
+              {(aiData.experiences_optimisees || []).length > 0 && (
+                <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '20px 22px' }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 16 }}>
+                    B — {lang === 'fr' ? 'Expériences optimisées' : 'Optimized Experience'}
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                    {aiData.experiences_optimisees.map((e, i) => {
+                      const bulletsText = (e.bullets || []).join('\n')
+                      const blockId = `exp-${i}`
+                      return (
+                        <div key={i} style={{ padding: '14px 16px', background: C.surface2, borderRadius: 10 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
+                            <div>
+                              <p style={{ fontWeight: 700, fontSize: 14, color: C.text, margin: '0 0 4px' }}>{e.poste_optimise || e.poste}</p>
+                              {e.poste_optimise && e.poste !== e.poste_optimise && (
+                                <p style={{ fontSize: 11, color: C.muted, margin: 0 }}>{lang === 'fr' ? 'Original :' : 'Original:'} {e.poste}</p>
+                              )}
+                            </div>
+                            <button onClick={() => copierTexte(bulletsText, blockId)}
+                              style={{ padding: '4px 10px', background: copied === blockId ? `${C.success}20` : `${C.accent}12`, border: `1px solid ${copied === blockId ? C.success : C.accent}30`, borderRadius: 7, color: copied === blockId ? C.success : C.accent2, fontSize: 11, cursor: 'pointer', fontWeight: 600, flexShrink: 0 }}>
+                              {copied === blockId ? '✓' : '📋'}
+                            </button>
+                          </div>
+                          <ul style={{ margin: 0, paddingLeft: 18 }}>
+                            {(e.bullets || []).map((b, j) => (
+                              <li key={j} style={{ fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 4 }}>{b}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* ─ C — Conseils canadiens + Mots-clés ATS ─ */}
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '20px 22px' }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 16 }}>
+                  C — {lang === 'fr' ? 'Conseils pour le marché canadien' : 'Canadian Market Tips'}
+                </p>
+
+                {(aiData.conseils_canadiens || []).length > 0 && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
+                    {aiData.conseils_canadiens.map((c, i) => (
+                      <div key={i} style={{ display: 'flex', gap: 10, padding: '10px 14px', background: `${C.accent}08`, border: `1px solid ${C.accent}18`, borderRadius: 9 }}>
+                        <span style={{ color: C.accent2, fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
+                        <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6, margin: 0 }}>{c}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {(aiData.mots_cles_secteur || []).length > 0 && (
+                  <div>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
+                      🔍 {lang === 'fr' ? 'Mots-clés ATS pour ton secteur' : 'ATS keywords for your sector'}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+                      {aiData.mots_cles_secteur.map((m, i) => (
+                        <span key={i} style={{ fontSize: 12, padding: '4px 12px', borderRadius: 20, background: `${C.accent}12`, color: C.accent2, border: `1px solid ${C.accent}25`, fontWeight: 500 }}>
+                          {m}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {aiData.competences_classees && (
+                  <div style={{ marginTop: 18 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
+                      🛠 {lang === 'fr' ? 'Compétences classées' : 'Classified skills'}
+                    </p>
+                    {[
+                      { label: lang === 'fr' ? 'Techniques' : 'Technical', items: aiData.competences_classees.techniques, color: '#60A5FA' },
+                      { label: lang === 'fr' ? 'Langues' : 'Languages', items: aiData.competences_classees.langues, color: C.accent2 },
+                      { label: lang === 'fr' ? 'Soft skills' : 'Soft Skills', items: aiData.competences_classees.soft_skills, color: '#F59E0B' },
+                    ].map((group, gi) => (group.items || []).length > 0 && (
+                      <div key={gi} style={{ marginBottom: 10 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: group.color, marginRight: 8 }}>{group.label} :</span>
+                        {group.items.map((item, ii) => (
+                          <span key={ii} style={{ fontSize: 12, marginRight: 6, padding: '2px 8px', borderRadius: 20, background: `${group.color}15`, color: group.color, border: `1px solid ${group.color}30` }}>{item}</span>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* ─ D — Canva template ─ */}
+              <div style={{ background: 'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius: 14, padding: '24px 22px', textAlign: 'center' }}>
+                <p style={{ fontSize: 22, marginBottom: 10 }}>🎨</p>
+                <p style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
+                  D — {lang === 'fr' ? 'Mets en forme avec Canva' : 'Format with Canva'}
+                </p>
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.82)', lineHeight: 1.7, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
+                  {lang === 'fr'
+                    ? 'Copie ton contenu optimisé ci-dessus, puis choisis un template Canva professionnel gratuit pour créer un CV visuellement parfait.'
+                    : 'Copy your optimized content above, then choose a free professional Canva template to create a visually perfect resume.'}
+                </p>
+                <a href="https://www.canva.com/resumes/templates/" target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'inline-block', padding: '13px 32px', background: '#fff', borderRadius: 10, color: '#2D6A4F', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
+                  {lang === 'fr' ? 'Ouvrir Canva Templates →' : 'Open Canva Templates →'}
+                </a>
+              </div>
+            </div>
           </div>
         )}
       </main>

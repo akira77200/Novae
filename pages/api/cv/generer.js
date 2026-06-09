@@ -1,4 +1,4 @@
-// pages/api/cv/generer.js — Génération résumé + bullet points via Claude
+// pages/api/cv/generer.js — Guide CV canadien via Claude
 import Anthropic from '@anthropic-ai/sdk'
 import { checkRateLimit, getIP, requireAuth } from '../../../lib/apiGuards'
 
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     `${i + 1}. ${e.poste} chez ${e.entreprise} (${e.debut}–${e.fin || 'présent'}) — ${e.description || 'aucune description'}`
   ).join('\n') || 'Aucune expérience renseignée.'
 
-  const prompt = `Tu es un expert en recrutement canadien. Génère du contenu pour un CV professionnel adapté au marché canadien.
+  const prompt = `Tu es un expert en recrutement canadien. Génère un guide d'optimisation de CV adapté au marché canadien pour ce candidat.
 
 Données du candidat :
 - Nom : ${profil.nom}
@@ -34,27 +34,47 @@ Données du candidat :
 - Expériences :
 ${expText}
 
-Génère un JSON STRICT (sans markdown) avec exactement ces clés :
+Génère un JSON STRICT (sans markdown, sans backticks) avec exactement ces clés :
 {
-  "resume": "Résumé professionnel de 2-3 phrases percutantes pour le marché canadien. Commence par un verbe d'action ou une qualification forte. Mentionne la ville si pertinent.",
-  "bullets": [
-    {"index": 0, "points": ["bullet 1", "bullet 2", "bullet 3"]},
-    ...un objet par expérience dans l'ordre
+  "resume_professionnel": "Résumé professionnel de 3-4 phrases percutantes, optimisé pour le marché canadien. Commence fort. Mentionne le poste cible, la valeur apportée, et une réalisation clé.",
+  "experiences_optimisees": [
+    {
+      "poste": "Titre original du poste",
+      "poste_optimise": "Titre optimisé pour le marché canadien (plus vendeur si besoin)",
+      "bullets": [
+        "Verbe d'action fort + réalisation concrète + métrique si possible",
+        "Verbe d'action fort + réalisation concrète",
+        "Verbe d'action fort + réalisation concrète"
+      ]
+    }
   ],
-  "competences_triees": ["compétence 1", "compétence 2", ...jusqu'à 8 max, triées par pertinence pour le poste cible]
+  "competences_classees": {
+    "techniques": ["compétence technique 1", "compétence technique 2", "compétence technique 3"],
+    "langues": ["Français (natif)", "Anglais (avancé)"],
+    "soft_skills": ["Leadership", "Communication interculturelle", "Adaptabilité"]
+  },
+  "conseils_canadiens": [
+    "Conseil spécifique au marché canadien (format, longueur, style)",
+    "Conseil sur l'adaptation culturelle du CV",
+    "Conseil sur les mots-clés ATS populaires dans ce secteur",
+    "Conseil sur la mise en page (pas de photo, pas d'âge, pas d'état civil)"
+  ],
+  "mots_cles_secteur": ["mot-clé 1", "mot-clé 2", "mot-clé 3", "mot-clé 4", "mot-clé 5", "mot-clé 6", "mot-clé 7", "mot-clé 8"]
 }
 
-Règles pour les bullets :
-- Commence chaque bullet par un verbe d'action passé fort (Développé, Géré, Augmenté, Optimisé, etc.)
-- Ajoute des métriques quand possible (ex: "Réduit les délais de 30%")
+Règles :
+- Chaque bullet commence par un verbe d'action au passé (Développé, Géré, Augmenté, Optimisé, Coordonné, etc.)
+- Ajoute des métriques quand possible (ex: "Réduit les délais de 30%", "Géré une équipe de 5 personnes")
 - 2 à 4 bullets par expérience
-- Adapte au marché canadien (vocabulaire, normes)
-- Si la description est vide, invente des bullets plausibles selon le poste`
+- Si la description est vide, génère des bullets plausibles et réalistes selon le poste
+- mots_cles_secteur = mots-clés recherchés par les recruteurs ATS dans ce domaine
+- Tout en français professionnel
+- JSON valide uniquement`
 
   try {
     const msg = await client.messages.create({
       model:      'claude-haiku-4-5-20251001',
-      max_tokens: 1500,
+      max_tokens: 2000,
       messages:   [{ role: 'user', content: prompt }],
     })
 

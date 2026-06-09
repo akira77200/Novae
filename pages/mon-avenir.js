@@ -548,6 +548,8 @@ export default function MonAvenir() {
   useEffect(() => {
     const saved = localStorage.getItem('novae_orientation_v2')
     if (saved) { try { const d = JSON.parse(saved); if (d.analyse) { setOrientAnalyse(d.analyse); setOrientData(d.reponses || {}); setOrientPhase('results') } } catch {} }
+    const savedVision = localStorage.getItem('novae_vision_complete')
+    if (savedVision) { try { const v = JSON.parse(savedVision); if (v.vision) setVision(v.vision) } catch {} }
   }, [])
 
   useEffect(() => {
@@ -622,19 +624,39 @@ export default function MonAvenir() {
       if (!session?.access_token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 
       const progInfo = PROGRAMMES.find(p => p.id === visionProg)
+      const description = [orientData.matieresTexte, orientData.activiteTexte, orientData.horizonTexte].filter(Boolean).join(' ')
       const res = await fetch('/api/generer-vision', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ programme: progInfo ? progInfo.nom[lang] : visionProg, pays_origine: visionPays, horizon: orientData.horizon || 'non renseigné', activites: orientData.activite || 'non renseigné' }),
+        body: JSON.stringify({
+          programme: progInfo ? progInfo.nom[lang] : visionProg,
+          pays_origine: visionPays,
+          horizon: orientData.horizon || 'non renseigné',
+          activites: orientData.activite || 'non renseigné',
+          description,
+        }),
       })
       const data = await res.json()
-      if (data.success) setVision(data.vision)
-      else setVisError(data.error || 'Erreur')
+      if (data.success) {
+        setVision(data.vision)
+        try { localStorage.setItem('novae_vision_complete', JSON.stringify({ vision: data.vision, prog: visionProg, pays: visionPays, date: new Date().toISOString() })) } catch {}
+        if (profile?.id && sb) {
+          try { await sb.from('profiles').update({ ai_recommendations: data.vision }).eq('id', profile.id) } catch {}
+        }
+      } else setVisError(data.error || 'Erreur')
     } catch (e) { setVisError(e.message) }
     finally { setVisLoading(false) }
+  }
+
+  const imprimerVision = () => {
+    const style = document.createElement('style')
+    style.innerHTML = `@media print { body > *:not(#vision-print) { display: none !important; } #vision-print { display: block !important; width: 210mm; padding: 12mm; font-size: 11pt; color: #000 !important; background: #fff !important; } #vision-print * { color: #000 !important; background: transparent !important; } .no-print { display: none !important; } }`
+    document.head.appendChild(style)
+    window.print()
+    document.head.removeChild(style)
   }
 
   // ── Style helpers ──────────────────────────────────────────────
@@ -1300,111 +1322,165 @@ export default function MonAvenir() {
               </div>
             ) : (
               <div>
-                {/* Programme et pays sélectionnés */}
-                <div style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', marginBottom:24, padding:'14px 18px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:12 }}>
+                {/* Barre de contrôle */}
+                <div className="no-print" style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', marginBottom:24, padding:'14px 18px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:12 }}>
                   {(() => { const prog = PROGRAMMES.find(p => p.id === visionProg); return prog ? <><span style={{ fontSize:22 }}>{prog.emoji}</span><span style={{ fontSize:14, fontWeight:600, color:C.text }}>{prog.nom[lang]}</span></> : null })()}
                   <span style={{ color:C.border }}>·</span>
                   <span style={{ fontSize:14, color:C.muted }}>🌍 {visionPays}</span>
-                  {!vision && !visLoading && (
-                    <button onClick={genererVision} style={{ marginLeft:'auto', padding:'10px 22px', background:C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, cursor:'pointer' }}>
-                      ✨ {lang === 'fr' ? 'Générer ma vision' : 'Generate my vision'}
-                    </button>
-                  )}
-                  {vision && !visLoading && (
-                    <button onClick={genererVision} style={{ marginLeft:'auto', padding:'7px 14px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor:'pointer' }}>
-                      ↻ {lang === 'fr' ? 'Régénérer' : 'Regenerate'}
-                    </button>
-                  )}
+                  <div style={{ marginLeft:'auto', display:'flex', gap:8, flexWrap:'wrap' }}>
+                    {vision && !visLoading && (
+                      <button onClick={imprimerVision} style={{ padding:'8px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:8, color:C.accent2, fontWeight:600, fontSize:13, cursor:'pointer' }}>
+                        📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+                      </button>
+                    )}
+                    {!vision && !visLoading && (
+                      <button onClick={genererVision} style={{ padding:'10px 22px', background:C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, cursor:'pointer' }}>
+                        ✨ {lang === 'fr' ? 'Générer ma vision' : 'Generate my vision'}
+                      </button>
+                    )}
+                    {vision && !visLoading && (
+                      <button onClick={genererVision} style={{ padding:'8px 14px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor:'pointer' }}>
+                        🔄 {lang === 'fr' ? 'Régénérer ma vision' : 'Regenerate'}
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {visLoading && (
-                  <div style={{ textAlign:'center', padding:'48px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:16 }}>
-                    <p style={{ fontSize:14, color:C.muted }}>✨ {lang === 'fr' ? 'Génération de ta vision personnalisée...' : 'Generating your personalized vision...'}</p>
+                  <div style={{ textAlign:'center', padding:'60px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:16 }}>
+                    <p style={{ fontSize:32, marginBottom:16 }}>✨</p>
+                    <p style={{ fontSize:16, fontWeight:700, color:C.text, marginBottom:8 }}>{lang === 'fr' ? 'Génération de ta vision...' : 'Generating your vision...'}</p>
+                    <p style={{ fontSize:13, color:C.muted, marginBottom:28 }}>{lang === 'fr' ? 'L\'IA analyse ton profil en profondeur' : 'AI is analyzing your profile in depth'}</p>
+                    <div style={{ display:'flex', justifyContent:'center', gap:8 }}>
+                      {[0,1,2].map(i => <div key={i} style={{ width:10, height:10, borderRadius:'50%', background:C.accent2, animation:`novaDot 1.4s infinite ${i*0.2}s` }} />)}
+                    </div>
                   </div>
                 )}
 
                 {visError && <p style={{ color:C.error, fontSize:13, marginBottom:16 }}>⚠️ {visError}</p>}
 
                 {vision && (
-                  <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+                  <div id="vision-print" style={{ display:'flex', flexDirection:'column', gap:20 }}>
 
-                    {/* Message motivation */}
-                    {vision.message_motivation && (
-                      <div className="fade-up" style={{ padding:'20px 24px', background:'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius:14 }}>
-                        <p style={{ color:'#fff', fontSize:15, lineHeight:1.8, fontStyle:'italic', margin:0 }}>{vision.message_motivation}</p>
-                      </div>
-                    )}
-
-                    {/* BLOC 1 — Métiers d'avenir */}
-                    <div className="fade-up fade-up-1" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                      <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:14 }}>💼 {lang === 'fr' ? 'Mes métiers d\'avenir' : 'My future careers'}</p>
-
-                      <p style={{ fontSize:12, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.5, marginBottom:10 }}>{lang === 'fr' ? 'Aujourd\'hui' : 'Today'}</p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:18 }}>
-                        {(vision.metiers_actuels || []).map((m, i) => (
-                          <div key={i} style={{ padding:'12px 16px', background:C.surface2, borderRadius:10, display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12, flexWrap:'wrap' }}>
-                            <div style={{ flex:1 }}>
-                              <p style={{ fontWeight:600, fontSize:14, color:C.text, marginBottom:3 }}>{m.titre}</p>
-                              <p style={{ fontSize:13, color:C.muted }}>{m.description}</p>
-                            </div>
-                            {m.salaire_canada && <span style={{ fontSize:12, padding:'4px 10px', borderRadius:20, background:`${C.success}12`, color:C.success, border:`1px solid ${C.success}25`, whiteSpace:'nowrap', fontWeight:600 }}>{m.salaire_canada}</span>}
-                          </div>
-                        ))}
-                      </div>
-
-                      <p style={{ fontSize:12, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.5, marginBottom:10 }}>{lang === 'fr' ? 'Dans 10 ans' : 'In 10 years'}</p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:14 }}>
-                        {(vision.metiers_futur || []).map((m, i) => (
-                          <div key={i} style={{ padding:'12px 16px', background:'rgba(96,165,250,0.06)', borderRadius:10, border:'1px solid rgba(96,165,250,0.15)' }}>
-                            <p style={{ fontWeight:600, fontSize:14, color:'#60A5FA', marginBottom:4 }}>{m.titre}</p>
-                            <p style={{ fontSize:13, color:C.muted, marginBottom:6 }}>{m.description}</p>
-                            <p style={{ fontSize:12, color:'#60A5FA', fontStyle:'italic' }}>→ {m.pourquoi_emerge}</p>
-                          </div>
-                        ))}
-                      </div>
-
-                      {vision.impact_ia && (
-                        <div style={{ padding:'12px 16px', background:'rgba(251,191,36,0.07)', border:'1px solid rgba(251,191,36,0.2)', borderRadius:10 }}>
-                          <p style={{ fontSize:12, fontWeight:700, color:C.warning, marginBottom:4 }}>🤖 {lang === 'fr' ? 'Impact de l\'IA sur ce secteur' : 'AI impact on this sector'}</p>
-                          <p style={{ fontSize:13, color:C.muted, lineHeight:1.7 }}>{vision.impact_ia}</p>
-                        </div>
+                    {/* SECTION 1 — Profil + Message */}
+                    <div className="fade-up" style={{ padding:'22px 24px', background:'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius:16 }}>
+                      {vision.profil_resume && (
+                        <p style={{ color:'rgba(255,255,255,0.85)', fontSize:13, lineHeight:1.8, marginBottom:14, fontStyle:'italic' }}>{vision.profil_resume}</p>
+                      )}
+                      {vision.message_motivation && (
+                        <p style={{ color:'#fff', fontSize:15, lineHeight:1.8, fontWeight:600, margin:0 }}>💬 {vision.message_motivation}</p>
                       )}
                     </div>
 
-                    {/* BLOC 2 — Idées startup */}
-                    {(vision.startups || []).length > 0 && (
-                      <div className="fade-up fade-up-2" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:14 }}>🚀 {lang === 'fr' ? 'Mes idées de startup' : 'My startup ideas'}</p>
-                        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-                          {vision.startups.map((s, i) => (
-                            <div key={i} style={{ padding:'16px 18px', background:C.surface2, borderRadius:12, borderLeft:`3px solid ${i === 0 ? C.accent2 : i === 1 ? '#60A5FA' : C.rose}` }}>
-                              <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:6 }}>🏢 {s.nom}</p>
-                              <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Problème :' : 'Problem:'}</strong> {s.probleme}</p>
-                              <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Solution :' : 'Solution:'}</strong> {s.solution}</p>
-                              <p style={{ fontSize:13, color:C.accent2, marginBottom:4 }}>💡 {s.pourquoi_toi}</p>
-                              <p style={{ fontSize:12, color:C.muted, fontStyle:'italic' }}>Modèle : {s.exemple_mondial}</p>
+                    {/* SECTION 2 — Métiers actuels */}
+                    {(vision.metiers_actuels || []).length > 0 && (
+                      <div className="fade-up fade-up-1" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>💼 {lang === 'fr' ? 'Métiers accessibles aujourd\'hui' : 'Careers accessible today'}</p>
+                        <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+                          {vision.metiers_actuels.map((m, i) => (
+                            <div key={i} style={{ padding:'14px 16px', background:C.surface2, borderRadius:10 }}>
+                              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12, flexWrap:'wrap', marginBottom:8 }}>
+                                <p style={{ fontWeight:700, fontSize:14, color:C.text, margin:0 }}>{m.titre}</p>
+                                {m.salaire_canada && <span style={{ fontSize:12, padding:'4px 10px', borderRadius:20, background:`${C.success}12`, color:C.success, border:`1px solid ${C.success}25`, whiteSpace:'nowrap', fontWeight:600, flexShrink:0 }}>{m.salaire_canada}</span>}
+                              </div>
+                              <p style={{ fontSize:13, color:C.muted, lineHeight:1.6, marginBottom: (m.entreprises_types||[]).length > 0 ? 8 : 0 }}>{m.description}</p>
+                              {(m.entreprises_types||[]).length > 0 && (
+                                <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                                  {m.entreprises_types.map((e, j) => (
+                                    <span key={j} style={{ fontSize:11, padding:'3px 9px', borderRadius:20, background:`${C.accent}12`, color:C.accent2, border:`1px solid ${C.accent}25` }}>{e}</span>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
                       </div>
                     )}
 
-                    {/* BLOC 3 — Plan 5 ans */}
-                    {vision.plan_5ans && (
-                      <div className="fade-up fade-up-3" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🗺️ {lang === 'fr' ? 'Mon plan en 5 ans' : 'My 5-year plan'}</p>
-                        {[
-                          { label: lang === 'fr' ? 'Années 1-2' : 'Years 1-2', text:vision.plan_5ans.annee_1_2, color:C.accent2, bg:`${C.accent}10` },
-                          { label: lang === 'fr' ? 'Années 3-4' : 'Years 3-4', text:vision.plan_5ans.annee_3_4, color:'#60A5FA', bg:'rgba(96,165,250,0.08)' },
-                          { label: lang === 'fr' ? 'Année 5' : 'Year 5',    text:vision.plan_5ans.annee_5,   color:C.rose,    bg:`${C.rose}10` },
-                        ].map((row, i) => (
-                          <div key={i} style={{ display:'flex', gap:14, marginBottom: i < 2 ? 12 : 0 }}>
-                            <div style={{ width:80, flexShrink:0 }}>
-                              <span style={{ display:'inline-block', padding:'4px 10px', borderRadius:20, fontSize:11, fontWeight:700, background:row.bg, color:row.color }}>{row.label}</span>
+                    {/* SECTION 3 — Métiers futur + Impact IA */}
+                    {(vision.metiers_futur || []).length > 0 && (
+                      <div className="fade-up fade-up-2" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🔭 {lang === 'fr' ? 'Métiers d\'avenir (2030-2035)' : 'Future careers (2030-2035)'}</p>
+                        <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom: vision.impact_ia ? 16 : 0 }}>
+                          {vision.metiers_futur.map((m, i) => (
+                            <div key={i} style={{ padding:'14px 16px', background:'rgba(96,165,250,0.06)', borderRadius:10, border:'1px solid rgba(96,165,250,0.15)' }}>
+                              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+                                <p style={{ fontWeight:700, fontSize:14, color:'#60A5FA', margin:0 }}>{m.titre}</p>
+                                {m.horizon && <span style={{ fontSize:11, padding:'2px 8px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'#60A5FA' }}>{m.horizon}</span>}
+                              </div>
+                              <p style={{ fontSize:13, color:C.muted, lineHeight:1.6, marginBottom:6 }}>{m.pourquoi_emerge}</p>
+                              {m.comment_y_arriver && (
+                                <p style={{ fontSize:12, color:C.accent2, borderTop:`1px solid ${C.border}`, paddingTop:8, marginBottom:0 }}>
+                                  ✅ {m.comment_y_arriver}
+                                </p>
+                              )}
                             </div>
-                            <p style={{ fontSize:13, color:C.muted, lineHeight:1.7, paddingTop:2 }}>{row.text}</p>
+                          ))}
+                        </div>
+                        {vision.impact_ia && (
+                          <div style={{ padding:'14px 16px', background:'rgba(251,191,36,0.07)', border:'1px solid rgba(251,191,36,0.2)', borderRadius:10 }}>
+                            <p style={{ fontSize:12, fontWeight:700, color:'#F59E0B', marginBottom:6 }}>🤖 {lang === 'fr' ? 'Impact de l\'IA sur ce secteur' : 'AI impact on this sector'}</p>
+                            <p style={{ fontSize:13, color:C.muted, lineHeight:1.7, margin:0 }}>{vision.impact_ia}</p>
                           </div>
-                        ))}
+                        )}
+                      </div>
+                    )}
+
+                    {/* SECTION 4 — Startups */}
+                    {(vision.startups || []).length > 0 && (
+                      <div className="fade-up fade-up-3" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🚀 {lang === 'fr' ? 'Idées de startup pour toi' : 'Startup ideas for you'}</p>
+                        <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+                          {vision.startups.map((s, i) => (
+                            <div key={i} style={{ padding:'16px 18px', background:C.surface2, borderRadius:12, borderLeft:`3px solid ${i === 0 ? C.accent2 : i === 1 ? '#60A5FA' : '#F59E0B'}` }}>
+                              <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:8 }}>🏢 {s.nom}</p>
+                              <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Problème :' : 'Problem:'}</strong> {s.probleme}</p>
+                              <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Solution :' : 'Solution:'}</strong> {s.solution}</p>
+                              {s.marche && <p style={{ fontSize:13, color:C.muted, marginBottom:4 }}><strong style={{ color:C.text }}>{lang === 'fr' ? 'Marché :' : 'Market:'}</strong> {s.marche}</p>}
+                              <p style={{ fontSize:13, color:C.accent2, marginBottom:4 }}>💡 {s.pourquoi_toi}</p>
+                              <p style={{ fontSize:12, color:C.muted, fontStyle:'italic', marginBottom:0 }}>{lang === 'fr' ? 'Modèle mondial :' : 'Global model:'} {s.exemple_mondial}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* SECTION 5 — Plan 5 ans + Ressources clés */}
+                    {(vision.plan_5_ans || vision.plan_5ans) && (
+                      <div className="fade-up" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🗺️ {lang === 'fr' ? 'Mon plan en 5 ans' : 'My 5-year plan'}</p>
+                        {(() => {
+                          const plan = vision.plan_5_ans || vision.plan_5ans
+                          return [
+                            { label: lang === 'fr' ? 'Années 1-2' : 'Years 1-2', text: plan.annee_1_2, color: C.accent2, bg: `${C.accent}10` },
+                            { label: lang === 'fr' ? 'Années 3-4' : 'Years 3-4', text: plan.annee_3_4, color: '#60A5FA', bg: 'rgba(96,165,250,0.08)' },
+                            { label: lang === 'fr' ? 'Année 5' : 'Year 5', text: plan.annee_5, color: '#F59E0B', bg: 'rgba(245,158,11,0.08)' },
+                          ].map((row, i) => (
+                            <div key={i} style={{ display:'flex', gap:14, marginBottom: i < 2 ? 14 : 0, paddingBottom: i < 2 ? 14 : 0, borderBottom: i < 2 ? `1px solid ${C.border}` : 'none' }}>
+                              <div style={{ width:84, flexShrink:0, paddingTop:2 }}>
+                                <span style={{ display:'inline-block', padding:'4px 10px', borderRadius:20, fontSize:11, fontWeight:700, background:row.bg, color:row.color }}>{row.label}</span>
+                              </div>
+                              <p style={{ fontSize:13, color:C.muted, lineHeight:1.7, margin:0 }}>{row.text}</p>
+                            </div>
+                          ))
+                        })()}
+
+                        {(vision.ressources_cles || []).length > 0 && (
+                          <>
+                            <p style={{ fontSize:13, fontWeight:700, color:C.text, marginTop:20, marginBottom:12 }}>📚 {lang === 'fr' ? 'Ressources clés pour toi' : 'Key resources for you'}</p>
+                            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                              {vision.ressources_cles.map((r, i) => (
+                                <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'10px 14px', background:C.surface2, borderRadius:8 }}>
+                                  <span style={{ fontSize:11, padding:'3px 8px', borderRadius:20, background:`${C.accent}12`, color:C.accent2, border:`1px solid ${C.accent}25`, whiteSpace:'nowrap', flexShrink:0, marginTop:1 }}>{r.type}</span>
+                                  <div>
+                                    <p style={{ fontSize:13, fontWeight:600, color:C.text, margin:'0 0 2px' }}>{r.nom}</p>
+                                    <p style={{ fontSize:12, color:C.muted, margin:0 }}>{r.pourquoi}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
