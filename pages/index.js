@@ -60,35 +60,35 @@ const PILIERS = [
 ]
 
 const STATS = [
-  { numFr: '12 000+', numEn: '12,000+', labelFr: 'nouveaux arrivants aidés', labelEn: 'newcomers helped' },
-  { numFr: '47',      numEn: '47',       labelFr: 'pays représentés', labelEn: 'countries represented' },
-  { numFr: '94%',     numEn: '94%',      labelFr: 'satisfaction', labelEn: 'satisfaction rate' },
+  { numFr: '150+',  numEn: '150+',  labelFr: 'pays représentés',         labelEn: 'countries represented'  },
+  { numFr: '4',     numEn: '4',     labelFr: "piliers d'accompagnement", labelEn: 'pillars of support'     },
+  { numFr: '100%',  numEn: '100%',  labelFr: 'gratuit pour commencer',   labelEn: 'free to get started'    },
 ]
 
 const TESTIMONIALS = [
   {
     name: 'Amara Diallo',
-    origin: 'Dakar → Montréal',
+    origin: 'Dakar, Sénégal → Montréal',
     avatar: 'A',
-    textFr: 'Novae m\'a aidé à comprendre les démarches dès mon arrivée. En 2 semaines j\'avais mon NAS, mon compte bancaire et mes premiers contacts professionnels.',
-    textEn: 'Novae helped me understand the steps from day one. In 2 weeks I had my SIN, bank account and first professional contacts.',
+    textFr: 'Novae m\'a aidé à comprendre les démarches dès mon arrivée. En 2 semaines j\'avais mon NAS, mon compte bancaire et mes premiers contacts en informatique à l\'UdeM.',
+    textEn: 'Novae helped me from day one. In 2 weeks I had my SIN, bank account and first CS contacts at UdeM.',
     color: '#2D6A4F',
   },
   {
-    name: 'Fatou Mbaye',
-    origin: 'Abidjan → Toronto',
-    avatar: 'F',
-    textFr: 'La section "Mon Avenir" m\'a ouvert les yeux sur des métiers que je ne connaissais pas. Mon mentor m\'a aidée à décrocher mon premier stage en tech.',
-    textEn: 'The "My Future" section opened my eyes to careers I didn\'t know about. My mentor helped me land my first tech internship.',
-    color: '#1565C0',
+    name: 'Diego Vargas',
+    origin: 'Bogotá, Colombie → Ottawa',
+    avatar: 'D',
+    textFr: 'Novae m\'a guidé vers le génie civil à uOttawa. J\'ai trouvé mon stage en 3 semaines grâce aux outils de CV et aux recommandations de mentors.',
+    textEn: 'Novae guided me toward civil engineering at uOttawa. I found my internship in 3 weeks thanks to the resume tools and mentor matching.',
+    color: '#E65100',
   },
   {
-    name: 'Koffi Asante',
-    origin: 'Yaoundé → Québec',
-    avatar: 'K',
-    textFr: 'Le guide culturel m\'a évité beaucoup de malentendus. Je recommande Novae à tous les nouveaux arrivants au Canada.',
-    textEn: 'The cultural guide saved me from many misunderstandings. I recommend Novae to every newcomer in Canada.',
-    color: '#6A1B9A',
+    name: 'Mei Zhang',
+    origin: 'Shanghai, Chine → Toronto',
+    avatar: 'M',
+    textFr: 'L\'orientation IA m\'a recommandé Data Science à UToronto — exactement ce que je cherchais. Les modules sont précis et adaptés aux réalités canadiennes.',
+    textEn: 'The AI orientation recommended Data Science at UToronto — exactly what I needed. The modules are precise and tailored to Canadian realities.',
+    color: '#1565C0',
   },
 ]
 
@@ -174,10 +174,15 @@ export default function Home() {
           </h1>
 
           {/* Subtitle */}
-          <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: C.muted, lineHeight:1.7, maxWidth:560, margin:'0 auto 36px' }}>
+          <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: C.muted, lineHeight:1.7, maxWidth:580, margin:'0 auto 10px', fontWeight:500 }}>
             {isFr
-              ? 'De ton arrivée au Canada jusqu\'à ta première promotion — Novae t\'accompagne à chaque étape avec des outils IA, des mentors et une communauté.'
-              : 'From your arrival in Canada to your first promotion — Novae supports you at every step with AI tools, mentors and a community.'}
+              ? 'La plateforme qui accompagne les étudiants internationaux au Canada'
+              : 'The platform that supports international students in Canada'}
+          </p>
+          <p style={{ fontSize:'clamp(0.9rem,1.8vw,1rem)', color: C.muted, lineHeight:1.7, maxWidth:540, margin:'0 auto 36px' }}>
+            {isFr
+              ? "De l'orientation à la carrière — ton parcours complet, peu importe d'où tu viens."
+              : 'From orientation to career — your complete journey, wherever you come from.'}
           </p>
 
           {/* CTAs */}

@@ -5,41 +5,42 @@ import { useApp } from '../../context/AppContext'
 
 const PAYS = ['Canada','France','Belgique','Royaume-Uni','Allemagne','Autre']
 
-const PAYS_LISTE = [
-  'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie',
-  'Allemagne', 'Angola', 'Arabie Saoudite', 'Argentine',
-  'Australie', 'Autriche', 'Azerbaïdjan', 'Bahreïn',
-  'Bangladesh', 'Belgique', 'Bénin', 'Birmanie',
-  'Bolivie', 'Bosnie-Herzégovine', 'Brésil', 'Bulgarie',
-  'Burkina Faso', 'Burundi', 'Cambodge', 'Cameroun',
-  'Canada', 'Chili', 'Chine', 'Chypre', 'Colombie',
-  'Congo', 'Corée du Sud', 'Costa Rica', 'Côte d\'Ivoire',
-  'Croatie', 'Cuba', 'Danemark', 'Djibouti',
-  'Égypte', 'Émirats arabes unis', 'Équateur',
-  'Espagne', 'Éthiopie', 'États-Unis', 'Finlande',
-  'France', 'Gabon', 'Ghana', 'Grèce', 'Guatemala',
-  'Guinée', 'Guinée-Bissau', 'Haïti', 'Honduras',
-  'Hongrie', 'Inde', 'Indonésie', 'Irak', 'Iran',
-  'Irlande', 'Israël', 'Italie', 'Jamaïque', 'Japon',
-  'Jordanie', 'Kazakhstan', 'Kenya', 'Koweït', 'Laos',
-  'Liban', 'Libye', 'Luxembourg', 'Madagascar', 'Malaisie',
-  'Mali', 'Maroc', 'Mauritanie', 'Mexique', 'Moldavie',
-  'Mongolie', 'Mozambique', 'Namibie', 'Népal',
-  'Nicaragua', 'Niger', 'Nigeria', 'Norvège',
-  'Nouvelle-Zélande', 'Oman', 'Ouganda', 'Ouzbékistan',
-  'Pakistan', 'Panama', 'Paraguay', 'Pays-Bas',
-  'Pérou', 'Philippines', 'Pologne', 'Portugal',
-  'Qatar', 'République centrafricaine', 'République dominicaine',
-  'République tchèque', 'Roumanie', 'Royaume-Uni',
-  'Russie', 'Rwanda', 'Sénégal', 'Serbie',
-  'Sierra Leone', 'Singapour', 'Slovaquie', 'Slovénie',
-  'Somalie', 'Soudan', 'Sri Lanka', 'Suède',
-  'Suisse', 'Syrie', 'Taïwan', 'Tanzanie',
-  'Tchad', 'Thaïlande', 'Togo', 'Tunisie',
-  'Turkménistan', 'Turquie', 'Ukraine', 'Uruguay',
-  'Venezuela', 'Vietnam', 'Yémen', 'Zambie', 'Zimbabwe',
-  'Autre',
-]
+const PAYS_PAR_REGION = {
+  "🌍 Afrique": [
+    "Afrique du Sud","Algérie","Angola","Bénin","Botswana","Burkina Faso",
+    "Burundi","Cameroun","Cap-Vert","Centrafrique","Comores","Congo",
+    "Côte d'Ivoire","Djibouti","Égypte","Éthiopie","Gabon","Gambie","Ghana",
+    "Guinée","Guinée-Bissau","Kenya","Lesotho","Libéria","Libye",
+    "Madagascar","Malawi","Mali","Maroc","Maurice","Mauritanie","Mozambique",
+    "Namibie","Niger","Nigeria","Ouganda","Rwanda","Sénégal","Sierra Leone",
+    "Somalie","Soudan","Tanzanie","Tchad","Togo","Tunisie","Zambie","Zimbabwe",
+  ],
+  "🌏 Asie": [
+    "Afghanistan","Arabie Saoudite","Bangladesh","Birmanie","Cambodge",
+    "Chine","Corée du Sud","Émirats arabes unis","Inde","Indonésie","Irak",
+    "Iran","Israël","Japon","Jordanie","Kazakhstan","Koweït","Laos","Liban",
+    "Malaisie","Mongolie","Népal","Oman","Ouzbékistan","Pakistan","Philippines",
+    "Qatar","Singapour","Sri Lanka","Syrie","Taïwan","Thaïlande","Turquie",
+    "Viêt Nam","Yémen",
+  ],
+  "🌎 Amériques": [
+    "Argentine","Bolivie","Brésil","Chili","Colombie","Costa Rica","Cuba",
+    "Équateur","États-Unis","Guatemala","Haïti","Honduras","Jamaïque",
+    "Mexique","Nicaragua","Panama","Paraguay","Pérou",
+    "République dominicaine","Salvador","Suriname","Trinité-et-Tobago",
+    "Uruguay","Venezuela",
+  ],
+  "🌍 Europe": [
+    "Albanie","Allemagne","Autriche","Belgique","Biélorussie","Bulgarie",
+    "Croatie","Danemark","Espagne","Finlande","France","Grèce","Hongrie",
+    "Irlande","Italie","Moldavie","Norvège","Pays-Bas","Pologne","Portugal",
+    "République tchèque","Roumanie","Royaume-Uni","Russie","Serbie",
+    "Slovaquie","Slovénie","Suède","Suisse","Ukraine",
+  ],
+  "🌊 Océanie": [
+    "Australie","Fidji","Nouvelle-Zélande","Papouasie-Nouvelle-Guinée","Samoa",
+  ],
+}
 const VILLES = {
   Canada:       ['Montréal','Toronto','Vancouver','Québec','Ottawa','Gatineau','Calgary','Autre'],
   France:       ['Paris','Lyon','Marseille','Bordeaux','Toulouse','Autre'],
@@ -272,19 +273,31 @@ export default function Register() {
                 onChange={e => set('pays_origine', e.target.value)}
                 style={{
                   width: '100%', padding: '12px',
-                  borderRadius: '8px', border: '1px solid #ccc',
+                  borderRadius: '8px', border: '1px solid #2D6A4F40',
                   background: theme === 'dark' ? '#1a2a1e' : '#fff',
                   color: theme === 'dark' ? '#fff' : '#333',
                   fontSize: '0.95rem',
                   boxSizing: 'border-box',
                   outline: 'none',
+                  colorScheme: theme === 'dark' ? 'dark' : 'light',
                 }}
               >
-                <option value="">{lang === 'fr' ? '— Sélectionner ton pays —' : '— Select your country —'}</option>
-                {PAYS_LISTE.map(p => (
-                  <option key={p} value={p}>{p}</option>
+                <option value="">{lang === 'fr' ? '— Sélectionne ton pays —' : '— Select your country —'}</option>
+                {Object.entries(PAYS_PAR_REGION).map(([region, pays]) => (
+                  <optgroup key={region} label={region}>
+                    {pays.map(p => <option key={p} value={p}>{p}</option>)}
+                  </optgroup>
                 ))}
+                <option value="Autre">🌐 {lang === 'fr' ? 'Mon pays n\'est pas dans la liste' : 'My country is not listed'}</option>
               </select>
+              {form.pays_origine === 'Autre' && (
+                <input
+                  type="text"
+                  placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
+                  onChange={e => set('pays_origine', e.target.value)}
+                  style={{ marginTop:'8px', width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #2D6A4F', background:'transparent', color:'inherit', fontSize:'0.95rem', outline:'none', boxSizing:'border-box' }}
+                />
+              )}
 
               <label style={lbl}>{t.register_country_dest}</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 4 }}>

@@ -3,120 +3,77 @@ import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
-const PAYS_LISTE = [
-  "Afghanistan", "Afrique du Sud", "Albanie", 
-  "Algérie", "Allemagne", "Angola", 
-  "Arabie Saoudite", "Argentine", "Australie", 
-  "Autriche", "Azerbaïdjan", "Bahreïn",
-  "Bangladesh", "Belgique", "Bénin", "Birmanie",
-  "Bolivie", "Bosnie-Herzégovine", "Brésil", 
-  "Bulgarie", "Burkina Faso", "Burundi", 
-  "Cambodge", "Cameroun", "Canada", "Chili", 
-  "Chine", "Chypre", "Colombie", "Congo",
-  "Corée du Sud", "Costa Rica", "Côte d'Ivoire",
-  "Croatie", "Cuba", "Danemark", "Djibouti",
-  "Égypte", "Émirats arabes unis", "Équateur",
-  "Espagne", "Éthiopie", "États-Unis", 
-  "Finlande", "France", "Gabon", "Ghana", 
-  "Grèce", "Guatemala", "Guinée", 
-  "Guinée-Bissau", "Haïti", "Honduras",
-  "Hongrie", "Inde", "Indonésie", "Irak", 
-  "Iran", "Irlande", "Israël", "Italie", 
-  "Jamaïque", "Japon", "Jordanie", "Kazakhstan",
-  "Kenya", "Koweït", "Laos", "Liban", "Libye",
-  "Luxembourg", "Madagascar", "Malaisie", "Mali",
-  "Maroc", "Mauritanie", "Mexique", "Moldavie",
-  "Mongolie", "Mozambique", "Namibie", "Népal",
-  "Nicaragua", "Niger", "Nigeria", "Norvège",
-  "Nouvelle-Zélande", "Oman", "Ouganda", 
-  "Ouzbékistan", "Pakistan", "Panama", 
-  "Paraguay", "Pays-Bas", "Pérou", 
-  "Philippines", "Pologne", "Portugal",
-  "Qatar", "République centrafricaine", 
-  "République dominicaine", "République tchèque",
-  "Roumanie", "Royaume-Uni", "Russie", "Rwanda",
-  "Sénégal", "Serbie", "Sierra Leone", 
-  "Singapour", "Slovaquie", "Slovénie",
-  "Somalie", "Soudan", "Sri Lanka", "Suède",
-  "Suisse", "Syrie", "Taïwan", "Tanzanie",
-  "Tchad", "Thaïlande", "Togo", "Tunisie",
-  "Turkménistan", "Turquie", "Ukraine", 
-  "Uruguay", "Venezuela", "Vietnam", 
-  "Yémen", "Zambie", "Zimbabwe",
-  "Autre",
-]
+const PAYS_PAR_REGION = {
+  "🌍 Afrique": [
+    "Afrique du Sud","Algérie","Angola","Bénin","Botswana","Burkina Faso",
+    "Burundi","Cameroun","Cap-Vert","Centrafrique","Comores","Congo",
+    "Côte d'Ivoire","Djibouti","Égypte","Éthiopie","Gabon","Gambie","Ghana",
+    "Guinée","Guinée-Bissau","Kenya","Lesotho","Libéria","Libye",
+    "Madagascar","Malawi","Mali","Maroc","Maurice","Mauritanie","Mozambique",
+    "Namibie","Niger","Nigeria","Ouganda","Rwanda","Sénégal","Sierra Leone",
+    "Somalie","Soudan","Tanzanie","Tchad","Togo","Tunisie","Zambie","Zimbabwe",
+  ],
+  "🌏 Asie": [
+    "Afghanistan","Arabie Saoudite","Bangladesh","Birmanie","Cambodge",
+    "Chine","Corée du Sud","Émirats arabes unis","Inde","Indonésie","Irak",
+    "Iran","Israël","Japon","Jordanie","Kazakhstan","Koweït","Laos","Liban",
+    "Malaisie","Mongolie","Népal","Oman","Ouzbékistan","Pakistan","Philippines",
+    "Qatar","Singapour","Sri Lanka","Syrie","Taïwan","Thaïlande","Turquie",
+    "Viêt Nam","Yémen",
+  ],
+  "🌎 Amériques": [
+    "Argentine","Bolivie","Brésil","Chili","Colombie","Costa Rica","Cuba",
+    "Équateur","États-Unis","Guatemala","Haïti","Honduras","Jamaïque",
+    "Mexique","Nicaragua","Panama","Paraguay","Pérou",
+    "République dominicaine","Salvador","Suriname","Trinité-et-Tobago",
+    "Uruguay","Venezuela",
+  ],
+  "🌍 Europe": [
+    "Albanie","Allemagne","Autriche","Belgique","Biélorussie","Bulgarie",
+    "Croatie","Danemark","Espagne","Finlande","France","Grèce","Hongrie",
+    "Irlande","Italie","Moldavie","Norvège","Pays-Bas","Pologne","Portugal",
+    "République tchèque","Roumanie","Royaume-Uni","Russie","Serbie",
+    "Slovaquie","Slovénie","Suède","Suisse","Ukraine",
+  ],
+  "🌊 Océanie": [
+    "Australie","Fidji","Nouvelle-Zélande","Papouasie-Nouvelle-Guinée","Samoa",
+  ],
+}
 
-// ── QUIZ — Questions ─────────────────────────────────────────────
-const QUESTIONS = [
-  {
-    id: 'matieres',
-    fr: 'Quelles sont tes matières fortes ?', en: 'What are your strong subjects?',
-    sous_fr: 'Choisis jusqu\'à 3 matières', sous_en: 'Select up to 3 subjects',
-    type: 'multi',
-    options: [
-      { id: 'math',         fr: 'Mathématiques / Statistiques',    en: 'Mathematics / Statistics'    },
-      { id: 'sciences',     fr: 'Sciences (physique, chimie, bio)', en: 'Sciences (physics, chem, bio)'},
-      { id: 'informatique', fr: 'Informatique / Technologie',       en: 'Computer Science / Tech'     },
-      { id: 'langues',      fr: 'Langues / Communication',          en: 'Languages / Communication'   },
-      { id: 'sh',           fr: 'Sciences humaines / Histoire',     en: 'Humanities / History'        },
-      { id: 'arts',         fr: 'Arts / Créativité',                en: 'Arts / Creativity'           },
-      { id: 'economie',     fr: 'Économie / Commerce',              en: 'Economics / Business'        },
-    ],
-  },
-  {
-    id: 'activite',
-    fr: 'Ce que tu aimes vraiment faire', en: 'What you truly love doing',
-    sous_fr: 'Choix unique', sous_en: 'Single choice',
-    type: 'single',
-    options: [
-      { id: 'analyser',   fr: 'Analyser des données et résoudre des problèmes', en: 'Analyze data and solve problems' },
-      { id: 'construire', fr: 'Construire et concevoir des systèmes',            en: 'Build and design systems'       },
-      { id: 'aider',      fr: 'Aider et accompagner des personnes',              en: 'Help and support people'        },
-      { id: 'diriger',    fr: 'Diriger et organiser des équipes',                en: 'Lead and organize teams'        },
-      { id: 'innover',    fr: 'Créer et innover librement',                      en: 'Create and innovate freely'     },
-    ],
-  },
-  {
-    id: 'risque',
-    fr: 'Ton rapport au risque', en: 'Your relationship with risk',
-    sous_fr: 'Choix unique', sous_en: 'Single choice',
-    type: 'single',
-    options: [
-      { id: 'stabilite',    fr: 'Je préfère la stabilité (grand employeur, fonction publique)', en: 'I prefer stability (large employer, public sector)' },
-      { id: 'equilibre',    fr: "J'aime l'équilibre (PME, ONG, institutions)",                  en: 'I like balance (SME, NGO, institutions)'            },
-      { id: 'entreprendre', fr: 'Je veux entreprendre (startup, freelance, indépendant)',        en: 'I want to start my own (startup, freelance)'        },
-    ],
-  },
-  {
-    id: 'horizon',
-    fr: 'Ton horizon après les études', en: 'Your horizon after graduation',
-    sous_fr: 'Choix unique', sous_en: 'Single choice',
-    type: 'single',
-    options: [
-      { id: 'rester',  fr: 'Rester au Canada après mes études',  en: 'Stay in Canada after graduation' },
-      { id: 'retour',  fr: "Retourner dans mon pays d'origine",   en: 'Return to my home country'       },
-      { id: 'pont',    fr: 'Les deux — construire des ponts',      en: 'Both — build bridges'            },
-    ],
-  },
-  {
-    id: 'pays',
-    fr: "Ton pays d'origine", en: 'Your country of origin',
-    sous_fr: 'Sélectionne dans la liste', sous_en: 'Select from the list',
-    type: 'select',
-    options: PAYS_LISTE,
-  },
-  {
-    id: 'budget',
-    fr: 'Ton budget annuel estimé (études + vie)', en: 'Your estimated annual budget (studies + living)',
-    sous_fr: 'Choix unique', sous_en: 'Single choice',
-    type: 'single',
-    options: [
-      { id: 'moins15', fr: 'Moins de 15 000 $ CAD',  en: 'Under CAD 15,000'    },
-      { id: '15-25',   fr: '15 000 – 25 000 $ CAD',  en: 'CAD 15,000 – 25,000' },
-      { id: '25-40',   fr: '25 000 – 40 000 $ CAD',  en: 'CAD 25,000 – 40,000' },
-      { id: 'plus40',  fr: 'Plus de 40 000 $ CAD',    en: 'Over CAD 40,000'     },
-    ],
-  },
+// ── QUIZ — Données des questions ────────────────────────────────
+const MATIERES_CHIPS = [
+  { id:'math',         fr:'Mathématiques / Statistiques',     en:'Mathematics / Statistics'     },
+  { id:'sciences',     fr:'Sciences (physique, chimie, bio)', en:'Sciences (physics, chem, bio)' },
+  { id:'informatique', fr:'Informatique / Technologie',        en:'Computer Science / Tech'      },
+  { id:'langues',      fr:'Langues / Communication',           en:'Languages / Communication'    },
+  { id:'sh',           fr:'Sciences humaines / Histoire',      en:'Humanities / History'         },
+  { id:'arts',         fr:'Arts / Créativité',                 en:'Arts / Creativity'            },
+  { id:'economie',     fr:'Économie / Commerce',               en:'Economics / Business'         },
+]
+const ACTIVITE_OPTIONS = [
+  { id:'analyser',   fr:'Analyser des données et résoudre des problèmes', en:'Analyze data and solve problems' },
+  { id:'construire', fr:'Construire et concevoir des systèmes',            en:'Build and design systems'       },
+  { id:'aider',      fr:'Aider et accompagner des personnes',              en:'Help and support people'        },
+  { id:'diriger',    fr:'Diriger et organiser des équipes',                en:'Lead and organize teams'        },
+  { id:'innover',    fr:'Créer et innover librement',                      en:'Create and innovate freely'     },
+]
+const RISQUE_OPTIONS = [
+  { id:'stabilite',    fr:'Je préfère la stabilité (grand employeur, fonction publique)', en:'I prefer stability (large employer, public sector)' },
+  { id:'equilibre',    fr:"J'aime l'équilibre (PME, ONG, institutions)",                  en:'I like balance (SME, NGO, institutions)'            },
+  { id:'entreprendre', fr:'Je veux entreprendre (startup, freelance, indépendant)',        en:'I want to start my own (startup, freelance)'        },
+  { id:'autre',        fr:'Autre — décris ton rapport au risque',                          en:'Other — describe your relationship with risk'       },
+]
+const HORIZON_OPTIONS = [
+  { id:'rester', fr:'Rester au Canada après mes études',  en:'Stay in Canada after graduation' },
+  { id:'retour', fr:"Retourner dans mon pays d'origine",   en:'Return to my home country'       },
+  { id:'pont',   fr:'Les deux — construire des ponts',     en:'Both — build bridges'            },
+  { id:'autre',  fr:'Autre — décris ton projet',           en:'Other — describe your project'   },
+]
+const BUDGET_OPTIONS = [
+  { id:'moins15', fr:'Moins de 15 000 $ CAD',  en:'Under CAD 15,000'    },
+  { id:'15-25',   fr:'15 000 – 25 000 $ CAD',  en:'CAD 15,000 – 25,000' },
+  { id:'25-40',   fr:'25 000 – 40 000 $ CAD',  en:'CAD 25,000 – 40,000' },
+  { id:'plus40',  fr:'Plus de 40 000 $ CAD',    en:'Over CAD 40,000'     },
 ]
 
 // ── PROGRAMMES — 25 programmes groupés par domaine ──────────────
@@ -561,21 +518,6 @@ const LOAD_MSGS_EN = [
   'Searching for best matches...', 'Preparing your recommendations...', 'Finalizing your analysis...',
 ]
 
-const FORCES_CHIPS = [
-  { id:'maths', fr:'Les maths', en:'Math' }, { id:'parler', fr:'Parler aux gens', en:'Talking to people' },
-  { id:'construire', fr:'Construire des choses', en:'Building things' }, { id:'analyser', fr:'Analyser', en:'Analyzing' },
-  { id:'creer', fr:'Créer', en:'Creating' }, { id:'organiser', fr:'Organiser', en:'Organizing' },
-  { id:'apprendre', fr:'Apprendre vite', en:'Learning fast' }, { id:'aider', fr:'Aider les autres', en:'Helping others' },
-  { id:'convaincre', fr:'Convaincre', en:'Persuading' },
-]
-const CHANGEMENTS_CHIPS = [
-  { id:'sante', fr:'La santé dans mon pays', en:'Healthcare in my country' },
-  { id:'education', fr:"L'accès à l'éducation", en:'Access to education' },
-  { id:'tech', fr:'La technologie', en:'Technology' }, { id:'env', fr:"L'environnement", en:'The environment' },
-  { id:'finance', fr:"La finance et l'économie", en:'Finance & the economy' },
-  { id:'justice', fr:'La justice et le droit', en:'Justice & law' },
-  { id:'agri', fr:"L'agriculture", en:'Agriculture' }, { id:'infra', fr:'Les infrastructures', en:'Infrastructure' },
-]
 
 // ── COMPOSANT PRINCIPAL ──────────────────────────────────────────
 export default function MonAvenir() {
@@ -595,13 +537,16 @@ export default function MonAvenir() {
   const [orientErr,     setOrientErr]     = useState('')
   const [loadMsgIdx,    setLoadMsgIdx]    = useState(0)
   const [orientData,    setOrientData]    = useState({
-    quiTuEs: '', forces: [], forcesTexte: '',
-    journeeIdeale: '', changements: [], changementsTexte: '',
-    pays: '', paysAutre2: '', budget: '', horizon: '',
+    matieres: [], matieresTexte: '',
+    activite: '', activiteTexte: '',
+    risque: '', risqueTexte: '',
+    horizon: '', horizonTexte: '',
+    pays: '', paysAutre2: '',
+    budget: '',
   })
 
   useEffect(() => {
-    const saved = localStorage.getItem('novae_orientation_complete')
+    const saved = localStorage.getItem('novae_orientation_v2')
     if (saved) { try { const d = JSON.parse(saved); if (d.analyse) { setOrientAnalyse(d.analyse); setOrientData(d.reponses || {}); setOrientPhase('results') } } catch {} }
   }, [])
 
@@ -620,18 +565,22 @@ export default function MonAvenir() {
 
   // ── Orientation helpers ───────────────────────────────────────
   const setOD = (k, v) => setOrientData(d => ({ ...d, [k]: v }))
-  const toggleChip = (field, id) => setOrientData(d => {
+  const toggleChip = (field, id, max = Infinity) => setOrientData(d => {
     const cur = d[field] || []
-    return { ...d, [field]: cur.includes(id) ? cur.filter(x => x !== id) : [...cur, id] }
+    if (cur.includes(id)) return { ...d, [field]: cur.filter(x => x !== id) }
+    if (cur.length >= max) return d
+    return { ...d, [field]: [...cur, id] }
   })
 
-  const q0ok = orientData.quiTuEs.trim().length >= 30
-  const q1ok = orientData.forces.length > 0
-  const q2ok = orientData.journeeIdeale.trim().length >= 30
-  const q3ok = orientData.changements.length > 0
-  const q4ok = !!orientData.pays && !!orientData.budget && !!orientData.horizon
-
-  const stepOk = [q0ok, q1ok, q2ok, q3ok, q4ok][orientStep]
+  const stepOks = [
+    orientData.matieres.length > 0,
+    !!orientData.activite,
+    !!orientData.risque,
+    !!orientData.horizon,
+    !!(orientData.pays && (orientData.pays !== 'Autre' || orientData.paysAutre2.trim())),
+    !!orientData.budget,
+  ]
+  const stepOk = stepOks[orientStep] ?? false
 
   const analyserProfil = async () => {
     setOrientPhase('loading')
@@ -640,26 +589,25 @@ export default function MonAvenir() {
     try {
       msgTimer = setInterval(() => setLoadMsgIdx(i => (i + 1) % 5), 2000)
       const { data: { session } } = await sb.auth.getSession()
-      const token = session?.access_token || ''
-      if (!token) { setOrientPhase('questions'); setOrientErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+      if (!session?.access_token) { setOrientPhase('questions'); setOrientErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
       const res = await fetch('/api/analyser-profil', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
         body: JSON.stringify({ reponses: orientData }),
       })
       const json = await res.json()
       if (!res.ok || !json.success) { setOrientPhase('questions'); setOrientErr(json.error || 'Erreur'); return }
       setOrientAnalyse(json.analyse)
       setOrientPhase('results')
-      try { localStorage.setItem('novae_orientation_complete', JSON.stringify({ reponses: orientData, analyse: json.analyse, date: new Date().toISOString() })) } catch {}
+      try { localStorage.setItem('novae_orientation_v2', JSON.stringify({ reponses: orientData, analyse: json.analyse, date: new Date().toISOString() })) } catch {}
     } catch (e) { setOrientPhase('questions'); setOrientErr(e.message) }
     finally { clearInterval(msgTimer) }
   }
 
   const refaireOrientation = () => {
     setOrientPhase('questions'); setOrientStep(0); setOrientAnalyse(null); setOrientErr('')
-    setOrientData({ quiTuEs:'', forces:[], forcesTexte:'', journeeIdeale:'', changements:[], changementsTexte:'', pays: orientData.pays, paysAutre2:'', budget:'', horizon:'' })
-    try { localStorage.removeItem('novae_orientation_complete') } catch {}
+    setOrientData({ matieres:[], matieresTexte:'', activite:'', activiteTexte:'', risque:'', risqueTexte:'', horizon:'', horizonTexte:'', pays: orientData.pays, paysAutre2:'', budget:'' })
+    try { localStorage.removeItem('novae_orientation_v2') } catch {}
   }
 
   // ── Vision ────────────────────────────────────────────────────
@@ -671,17 +619,16 @@ export default function MonAvenir() {
     setVisLoading(true); setVisError(''); setVision(null)
     try {
       const { data: { session } } = await sb.auth.getSession()
-      const token = session?.access_token || ''
-      if (!token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
+      if (!session?.access_token) { setVisError(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
 
       const progInfo = PROGRAMMES.find(p => p.id === visionProg)
       const res = await fetch('/api/generer-vision', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization:  `Bearer ${token}`,
+          'Authorization': `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ programme: progInfo ? progInfo.nom[lang] : visionProg, pays_origine: visionPays, horizon: reponses.horizon || 'non renseigné', activites: reponses.activite || 'non renseigné' }),
+        body: JSON.stringify({ programme: progInfo ? progInfo.nom[lang] : visionProg, pays_origine: visionPays, horizon: orientData.horizon || 'non renseigné', activites: orientData.activite || 'non renseigné' }),
       })
       const data = await res.json()
       if (data.success) setVision(data.vision)
@@ -772,12 +719,12 @@ export default function MonAvenir() {
                 <div style={{ marginBottom:24 }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
                     <p style={{ fontSize:13, fontWeight:600, color:C.muted }}>
-                      {lang === 'fr' ? `Question ${orientStep + 1} sur 5` : `Question ${orientStep + 1} of 5`}
+                      {lang === 'fr' ? `Question ${orientStep + 1} sur 6` : `Question ${orientStep + 1} of 6`}
                     </p>
-                    <p style={{ fontSize:12, color:C.muted }}>{Math.round((orientStep / 5) * 100)}%</p>
+                    <p style={{ fontSize:12, color:C.muted }}>{Math.round((orientStep / 6) * 100)}%</p>
                   </div>
                   <div style={{ height:5, background:C.border, borderRadius:3, overflow:'hidden' }}>
-                    <div style={{ width:`${(orientStep / 5) * 100}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.4s ease' }} />
+                    <div style={{ width:`${(orientStep / 6) * 100}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.4s ease' }} />
                   </div>
                 </div>
 
@@ -787,172 +734,177 @@ export default function MonAvenir() {
                   </div>
                 )}
 
-                {/* ── Q0 : Qui tu es ── */}
+                {/* ── Q0 : Matières fortes ── */}
                 {orientStep === 0 && (
                   <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
                     <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
-                      {lang === 'fr' ? '👋 Parle-moi de toi' : '👋 Tell me about yourself'}
+                      {lang === 'fr' ? '📚 Tes matières fortes' : '📚 Your strong subjects'}
                     </p>
-                    <p style={{ fontSize:14, color:C.muted, marginBottom:20, lineHeight:1.6 }}>
-                      {lang === 'fr'
-                        ? "D'où tu viens ? Qu'est-ce qui te passionne ? Qu'est-ce que tu fais dans la vie en ce moment ?"
-                        : "Where are you from? What are you passionate about? What are you doing with your life right now?"}
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
+                      {lang === 'fr' ? 'Choisis jusqu\'à 3 matières' : 'Select up to 3 subjects'}
+                    </p>
+                    <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:22 }}>
+                      {MATIERES_CHIPS.map(m => {
+                        const sel = orientData.matieres.includes(m.id)
+                        const maxed = orientData.matieres.length >= 3 && !sel
+                        return (
+                          <button key={m.id} onClick={() => !maxed && toggleChip('matieres', m.id, 3)}
+                            style={{ ...chip(sel), padding:'9px 18px', opacity: maxed ? 0.4 : 1, cursor: maxed ? 'not-allowed' : 'pointer' }}>
+                            {lang === 'fr' ? m.fr : m.en}
+                          </button>
+                        )
+                      })}
+                    </div>
+                    <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
+                      {lang === 'fr' ? 'Tu peux aussi décrire ce que tu aimes en tes propres mots :' : 'You can also describe what you enjoy in your own words:'}
                     </p>
                     <textarea
-                      value={orientData.quiTuEs}
-                      onChange={e => setOD('quiTuEs', e.target.value)}
-                      placeholder={lang === 'fr' ? 'Écris librement — plus tu en dis, mieux je peux t\'aider...' : 'Write freely — the more you share, the better I can help...'}
-                      rows={6}
-                      style={{ width:'100%', padding:'14px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', lineHeight:1.6, fontFamily:'system-ui,sans-serif' }}
+                      value={orientData.matieresTexte}
+                      onChange={e => setOD('matieresTexte', e.target.value)}
+                      placeholder={lang === 'fr' ? "Ex: J'adore comprendre comment les systèmes fonctionnent, résoudre des énigmes..." : 'Ex: I love understanding how systems work, solving puzzles...'}
+                      rows={3}
+                      style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
                     />
-                    <p style={{ fontSize:12, color: q0ok ? C.accent2 : C.muted, marginTop:8 }}>
-                      {orientData.quiTuEs.length}/30 {lang === 'fr' ? 'caractères minimum' : 'characters minimum'}
-                    </p>
                   </div>
                 )}
 
-                {/* ── Q1 : Forces naturelles ── */}
+                {/* ── Q1 : Ce que tu aimes faire ── */}
                 {orientStep === 1 && (
                   <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
                     <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
-                      {lang === 'fr' ? '⚡ Ce qui te vient naturellement' : '⚡ What comes naturally to you'}
+                      {lang === 'fr' ? '⚡ Ce que tu aimes vraiment faire' : '⚡ What you truly love doing'}
                     </p>
                     <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
-                      {lang === 'fr' ? 'Sélectionne tout ce qui te ressemble' : 'Select everything that feels like you'}
+                      {lang === 'fr' ? 'Choix unique' : 'Single choice'}
                     </p>
-                    <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:20 }}>
-                      {FORCES_CHIPS.map(f => (
-                        <button key={f.id} onClick={() => toggleChip('forces', f.id)}
-                          style={{ ...chip(orientData.forces.includes(f.id)), padding:'9px 18px' }}>
-                          {lang === 'fr' ? f.fr : f.en}
+                    <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:22 }}>
+                      {ACTIVITE_OPTIONS.map(a => (
+                        <button key={a.id} onClick={() => setOD('activite', a.id)}
+                          style={{ padding:'13px 18px', borderRadius:11, border:`1px solid ${orientData.activite === a.id ? C.accent+'55' : C.border}`, background: orientData.activite === a.id ? `${C.accent}15` : 'transparent', color: orientData.activite === a.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.activite === a.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                          {lang === 'fr' ? a.fr : a.en}
                         </button>
                       ))}
                     </div>
-                    <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>{lang === 'fr' ? 'Autre chose ?' : 'Anything else?'}</p>
+                    <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
+                      {lang === 'fr' ? 'Décris une activité où tu perds la notion du temps :' : 'Describe an activity where you lose track of time:'}
+                    </p>
                     <textarea
-                      value={orientData.forcesTexte}
-                      onChange={e => setOD('forcesTexte', e.target.value)}
-                      placeholder={lang === 'fr' ? 'Une compétence ou qualité que tu veux ajouter...' : 'A skill or quality you want to add...'}
+                      value={orientData.activiteTexte}
+                      onChange={e => setOD('activiteTexte', e.target.value)}
+                      placeholder={lang === 'fr' ? "Ex: Quand je code, quand j'aide quelqu'un à résoudre un problème..." : 'Ex: When I code, when I help someone solve a problem...'}
                       rows={3}
                       style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
                     />
                   </div>
                 )}
 
-                {/* ── Q2 : Journée idéale ── */}
+                {/* ── Q2 : Rapport au risque ── */}
                 {orientStep === 2 && (
                   <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
                     <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
-                      {lang === 'fr' ? '🌅 Dans 10 ans, décris ta journée idéale' : '🌅 In 10 years, describe your ideal day'}
-                    </p>
-                    <p style={{ fontSize:14, color:C.muted, marginBottom:20, lineHeight:1.6 }}>
-                      {lang === 'fr'
-                        ? 'Tu travailles où ? Tu fais quoi exactement ? Avec qui ? Dans quel environnement ?'
-                        : 'Where do you work? What exactly do you do? With whom? In what environment?'}
-                    </p>
-                    <textarea
-                      value={orientData.journeeIdeale}
-                      onChange={e => setOD('journeeIdeale', e.target.value)}
-                      placeholder={lang === 'fr' ? 'Décris ta journée idéale avec le plus de détails possible...' : 'Describe your ideal day with as much detail as possible...'}
-                      rows={6}
-                      style={{ width:'100%', padding:'14px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', lineHeight:1.6, fontFamily:'system-ui,sans-serif' }}
-                    />
-                    <p style={{ fontSize:12, color: q2ok ? C.accent2 : C.muted, marginTop:8 }}>
-                      {orientData.journeeIdeale.length}/30 {lang === 'fr' ? 'caractères minimum' : 'characters minimum'}
-                    </p>
-                  </div>
-                )}
-
-                {/* ── Q3 : Ce que tu veux changer ── */}
-                {orientStep === 3 && (
-                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
-                      {lang === 'fr' ? '🌍 Qu\'est-ce que tu veux changer ?' : '🌍 What do you want to change?'}
+                      {lang === 'fr' ? '🎯 Ton rapport au risque' : '🎯 Your relationship with risk'}
                     </p>
                     <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
-                      {lang === 'fr' ? 'Dans quel domaine veux-tu avoir un impact ?' : 'In which domain do you want to have an impact?'}
+                      {lang === 'fr' ? 'Choix unique' : 'Single choice'}
                     </p>
-                    <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:20 }}>
-                      {CHANGEMENTS_CHIPS.map(c => (
-                        <button key={c.id} onClick={() => toggleChip('changements', c.id)}
-                          style={{ ...chip(orientData.changements.includes(c.id)), padding:'9px 18px' }}>
-                          {lang === 'fr' ? c.fr : c.en}
+                    <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom: orientData.risque === 'autre' ? 16 : 0 }}>
+                      {RISQUE_OPTIONS.map(r => (
+                        <button key={r.id} onClick={() => setOD('risque', r.id)}
+                          style={{ padding:'13px 18px', borderRadius:11, border:`1px solid ${orientData.risque === r.id ? C.accent+'55' : C.border}`, background: orientData.risque === r.id ? `${C.accent}15` : 'transparent', color: orientData.risque === r.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.risque === r.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                          {lang === 'fr' ? r.fr : r.en}
                         </button>
                       ))}
                     </div>
-                    <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>{lang === 'fr' ? 'Dis-nous en plus...' : 'Tell us more...'}</p>
-                    <textarea
-                      value={orientData.changementsTexte}
-                      onChange={e => setOD('changementsTexte', e.target.value)}
-                      placeholder={lang === 'fr' ? 'Pourquoi ce domaine te tient à cœur ?' : 'Why does this domain matter to you?'}
-                      rows={3}
-                      style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
-                    />
+                    {orientData.risque === 'autre' && (
+                      <textarea
+                        value={orientData.risqueTexte}
+                        onChange={e => setOD('risqueTexte', e.target.value)}
+                        placeholder={lang === 'fr' ? 'Décris ton rapport au risque...' : 'Describe your relationship with risk...'}
+                        rows={3}
+                        style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                      />
+                    )}
                   </div>
                 )}
 
-                {/* ── Q4 : Infos pratiques ── */}
-                {orientStep === 4 && (
-                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px', display:'flex', flexDirection:'column', gap:22 }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:C.text, margin:0 }}>
-                      {lang === 'fr' ? '📋 Quelques infos pratiques' : '📋 A few practical details'}
+                {/* ── Q3 : Horizon ── */}
+                {orientStep === 3 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '🌍 Ton horizon après les études' : '🌍 Your horizon after graduation'}
                     </p>
-
-                    {/* Pays */}
-                    <div>
-                      <p style={{ fontSize:13, fontWeight:600, color:C.muted, marginBottom:10 }}>
-                        {lang === 'fr' ? "Ton pays d'origine" : 'Your country of origin'}
-                      </p>
-                      <select value={orientData.pays} onChange={e => setOD('pays', e.target.value)}
-                        style={{ width:'100%', maxWidth:340, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: orientData.pays ? C.text : C.muted, fontSize:14, outline:'none', colorScheme:'dark' }}>
-                        <option value="">{lang === 'fr' ? '-- Sélectionne --' : '-- Select --'}</option>
-                        {PAYS_LISTE.map(p => <option key={p} value={p}>{p}</option>)}
-                      </select>
-                      {orientData.pays === 'Autre' && (
-                        <input type="text" placeholder={lang === 'fr' ? 'Écris ton pays...' : 'Write your country...'}
-                          value={orientData.paysAutre2}
-                          onChange={e => { setOD('paysAutre2', e.target.value); setOD('pays', e.target.value || 'Autre') }}
-                          style={{ marginTop:8, width:'100%', maxWidth:340, padding:'10px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:14, outline:'none' }} />
-                      )}
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
+                      {lang === 'fr' ? 'Choix unique' : 'Single choice'}
+                    </p>
+                    <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom: orientData.horizon === 'autre' ? 16 : 0 }}>
+                      {HORIZON_OPTIONS.map(h => (
+                        <button key={h.id} onClick={() => setOD('horizon', h.id)}
+                          style={{ padding:'13px 18px', borderRadius:11, border:`1px solid ${orientData.horizon === h.id ? C.accent+'55' : C.border}`, background: orientData.horizon === h.id ? `${C.accent}15` : 'transparent', color: orientData.horizon === h.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.horizon === h.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                          {lang === 'fr' ? h.fr : h.en}
+                        </button>
+                      ))}
                     </div>
+                    {orientData.horizon === 'autre' && (
+                      <textarea
+                        value={orientData.horizonTexte}
+                        onChange={e => setOD('horizonTexte', e.target.value)}
+                        placeholder={lang === 'fr' ? 'Ex: Je veux créer une entreprise entre le Canada et mon pays...' : 'Ex: I want to build a company bridging Canada and my home country...'}
+                        rows={3}
+                        style={{ width:'100%', padding:'12px', background:C.bg2, border:`1px solid ${C.border}`, borderRadius:12, color:C.text, fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                      />
+                    )}
+                  </div>
+                )}
 
-                    {/* Budget */}
-                    <div>
-                      <p style={{ fontSize:13, fontWeight:600, color:C.muted, marginBottom:10 }}>
-                        {lang === 'fr' ? 'Budget annuel estimé (études + vie)' : 'Estimated annual budget (studies + living)'}
-                      </p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                        {[
-                          { id:'moins15', fr:'Moins de 15 000 $ CAD', en:'Under CAD 15,000' },
-                          { id:'15-25',   fr:'15 000 – 25 000 $ CAD', en:'CAD 15,000 – 25,000' },
-                          { id:'25-40',   fr:'25 000 – 40 000 $ CAD', en:'CAD 25,000 – 40,000' },
-                          { id:'plus40',  fr:'Plus de 40 000 $ CAD',  en:'Over CAD 40,000' },
-                        ].map(b => (
-                          <button key={b.id} onClick={() => setOD('budget', b.id)}
-                            style={{ padding:'11px 16px', borderRadius:10, border:`1px solid ${orientData.budget === b.id ? C.accent+'55' : C.border}`, background: orientData.budget === b.id ? `${C.accent}15` : 'transparent', color: orientData.budget === b.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.budget === b.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
-                            {lang === 'fr' ? b.fr : b.en}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                {/* ── Q4 : Pays d'origine ── */}
+                {orientStep === 4 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '🌏 Ton pays d\'origine' : '🌏 Your country of origin'}
+                    </p>
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
+                      {lang === 'fr' ? 'Sélectionne dans la liste' : 'Select from the list'}
+                    </p>
+                    <select
+                      value={orientData.pays}
+                      onChange={e => { setOD('pays', e.target.value); if (e.target.value !== 'Autre') setOD('paysAutre2', '') }}
+                      style={{ width:'100%', maxWidth:380, padding:'12px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color: orientData.pays ? C.text : C.muted, fontSize:14, outline:'none', colorScheme:'dark' }}
+                    >
+                      <option value="">{lang === 'fr' ? '-- Sélectionne ton pays --' : '-- Select your country --'}</option>
+                      {Object.entries(PAYS_PAR_REGION).map(([region, pays]) => (
+                        <optgroup key={region} label={region}>
+                          {pays.map(p => <option key={p} value={p}>{p}</option>)}
+                        </optgroup>
+                      ))}
+                      <option value="Autre">🌐 {lang === 'fr' ? 'Mon pays n\'est pas dans la liste' : 'My country is not listed'}</option>
+                    </select>
+                    {orientData.pays === 'Autre' && (
+                      <input type="text"
+                        placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
+                        value={orientData.paysAutre2}
+                        onChange={e => setOD('paysAutre2', e.target.value)}
+                        style={{ marginTop:10, width:'100%', maxWidth:380, padding:'10px 14px', background:C.surface2, border:`1px solid ${C.border}`, borderRadius:10, color:C.text, fontSize:14, outline:'none', boxSizing:'border-box' }}
+                      />
+                    )}
+                  </div>
+                )}
 
-                    {/* Horizon */}
-                    <div>
-                      <p style={{ fontSize:13, fontWeight:600, color:C.muted, marginBottom:10 }}>
-                        {lang === 'fr' ? 'Ton horizon après les études' : 'Your horizon after graduation'}
-                      </p>
-                      <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                        {[
-                          { id:'rester', fr:'Rester au Canada après mes études', en:'Stay in Canada after graduation' },
-                          { id:'retour', fr:"Retourner dans mon pays d'origine",  en:'Return to my home country' },
-                          { id:'pont',   fr:'Les deux — construire des ponts',     en:'Both — build bridges' },
-                        ].map(h => (
-                          <button key={h.id} onClick={() => setOD('horizon', h.id)}
-                            style={{ padding:'11px 16px', borderRadius:10, border:`1px solid ${orientData.horizon === h.id ? C.accent+'55' : C.border}`, background: orientData.horizon === h.id ? `${C.accent}15` : 'transparent', color: orientData.horizon === h.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.horizon === h.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
-                            {lang === 'fr' ? h.fr : h.en}
-                          </button>
-                        ))}
-                      </div>
+                {/* ── Q5 : Budget ── */}
+                {orientStep === 5 && (
+                  <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:C.text, marginBottom:6 }}>
+                      {lang === 'fr' ? '💰 Ton budget annuel estimé' : '💰 Your estimated annual budget'}
+                    </p>
+                    <p style={{ fontSize:14, color:C.muted, marginBottom:20 }}>
+                      {lang === 'fr' ? 'Études + vie courante (CAD)' : 'Studies + living expenses (CAD)'}
+                    </p>
+                    <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                      {BUDGET_OPTIONS.map(b => (
+                        <button key={b.id} onClick={() => setOD('budget', b.id)}
+                          style={{ padding:'13px 18px', borderRadius:11, border:`1px solid ${orientData.budget === b.id ? C.accent+'55' : C.border}`, background: orientData.budget === b.id ? `${C.accent}15` : 'transparent', color: orientData.budget === b.id ? C.accent2 : C.text, fontSize:14, fontWeight: orientData.budget === b.id ? 600 : 400, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                          {lang === 'fr' ? b.fr : b.en}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -964,7 +916,7 @@ export default function MonAvenir() {
                     ← {lang === 'fr' ? 'Retour' : 'Back'}
                   </button>
 
-                  {orientStep < 4 ? (
+                  {orientStep < 5 ? (
                     <button onClick={() => setOrientStep(s => s + 1)} disabled={!stepOk}
                       style={{ padding:'11px 28px', borderRadius:10, border:'none', background: stepOk ? C.accent : C.border, color:'#fff', fontSize:14, fontWeight:600, cursor: stepOk ? 'pointer' : 'not-allowed', transition:'all 0.2s' }}>
                       {lang === 'fr' ? 'Suivant →' : 'Next →'}
