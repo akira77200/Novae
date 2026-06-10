@@ -646,6 +646,11 @@ export default function MonAvenir() {
         contexte: visionForm.contexte,
       }
 
+      // Diagnostic session
+      const { data: sessionCheck } = await sb.auth.getSession()
+      console.log('[vision-debug] user:', user?.email)
+      console.log('[vision-debug] session:', sessionCheck?.session ? 'présente' : 'ABSENTE')
+      console.log('[vision-debug] token début:', sessionCheck?.session?.access_token?.substring(0, 30) || 'AUCUN TOKEN')
       console.log('[vision] payload:', {
         programme: payload.programme,
         pays: payload.pays_origine,

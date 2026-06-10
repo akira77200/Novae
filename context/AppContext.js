@@ -220,10 +220,11 @@ export const T = {
 export function AppProvider({ children }) {
   const [lang,    setLangState]  = useState('fr')
   const [theme,   setThemeState] = useState('dark')
-  const [user,    setUser]       = useState(null)
-  const [profile, setProfile]    = useState(null)
-  const [loading, setLoading]    = useState(true)
-  const [mounted, setMounted]    = useState(false)
+  const [user,        setUser]        = useState(null)
+  const [accessToken, setAccessToken] = useState(null)
+  const [profile,     setProfile]     = useState(null)
+  const [loading,     setLoading]     = useState(true)
+  const [mounted,     setMounted]     = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -234,6 +235,7 @@ export function AppProvider({ children }) {
 
     const { data: { subscription } } = sb.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null)
+      setAccessToken(session?.access_token || null)
       if (session?.user) loadProfile(session.user.id)
       else { setProfile(null); setLoading(false) }
     })
@@ -270,7 +272,7 @@ export function AppProvider({ children }) {
   const planLimits = PLAN_LIMITS[userPlan] || PLAN_LIMITS.gratuit
 
   return (
-    <AppContext.Provider value={{ lang, setLang, theme, setTheme, C, t, user, profile, loading, mounted, sb, refreshProfile, userPlan, planLimits }}>
+    <AppContext.Provider value={{ lang, setLang, theme, setTheme, C, t, user, accessToken, profile, loading, mounted, sb, refreshProfile, userPlan, planLimits }}>
       {children}
     </AppContext.Provider>
   )
