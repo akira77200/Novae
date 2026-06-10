@@ -388,92 +388,103 @@ export default function Echeances() {
               </button>
             )}
           </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {filtrees.map(item => {
-              const jours   = joursRestants(item.date_echeance)
-              const urgence = getUrgence(jours ?? -1)
-              const isAuto  = !!item.auto
-              const done    = !!item.complete
+        ) : (() => {
+          // Tri intelligent avec sections "Cette semaine" / "À venir"
+          const showSections = filtre === 'actives' || filtre === 'tout'
+          const semaineItems = showSections ? filtrees.filter(e => { const j = joursRestants(e.date_echeance); return j !== null && j >= 0 && j <= 7 }) : []
+          const aVenirItems  = showSections ? filtrees.filter(e => { const j = joursRestants(e.date_echeance); return j === null || j > 7 }) : filtrees
 
-              return (
-                <div key={item.id} style={{
-                  display: 'flex', alignItems: 'flex-start', gap: 14,
-                  padding: '16px 18px',
-                  background: done ? C.surface : urgence.bg,
-                  border: `1px solid ${done ? C.border : urgence.dot + '30'}`,
-                  borderRadius: 14,
-                  opacity: done ? 0.55 : 1,
-                  transition: 'opacity 0.15s',
-                }}>
-                  {/* Dot urgence */}
-                  <div style={{ marginTop: 3, width: 10, height: 10, borderRadius: '50%', background: done ? C.muted : urgence.dot, flexShrink: 0 }} />
-
-                  {/* Contenu */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-                      <p style={{ fontSize: 15, fontWeight: 700, color: C.text, textDecoration: done ? 'line-through' : 'none' }}>
-                        {TYPE_ICONS[item.type] || 'ℹ️'} {item.titre}
-                      </p>
-                      {isAuto && (
-                        <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${C.accent}15`, color: C.accent2, letterSpacing: 0.4 }}>AUTO</span>
-                      )}
-                    </div>
-
-                    {/* Date + jours restants */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: item.message ? 8 : 0 }}>
-                      <span style={{ fontSize: 13, color: done ? C.muted : urgence.dot, fontWeight: 600 }}>
-                        {formatDate(item.date_echeance, lang)}
+          const renderItem = (item) => {
+            const jours   = joursRestants(item.date_echeance)
+            const urgence = getUrgence(jours ?? -1)
+            const isAuto  = !!item.auto
+            const done    = !!item.complete
+            return (
+              <div key={item.id} style={{
+                display: 'flex', alignItems: 'flex-start', gap: 14,
+                padding: '16px 18px',
+                background: done ? C.surface : urgence.bg,
+                border: `1px solid ${done ? C.border : urgence.dot + '30'}`,
+                borderRadius: 14,
+                opacity: done ? 0.55 : 1,
+                transition: 'opacity 0.15s',
+              }}>
+                <div style={{ marginTop: 3, width: 10, height: 10, borderRadius: '50%', background: done ? C.muted : urgence.dot, flexShrink: 0 }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: C.text, textDecoration: done ? 'line-through' : 'none' }}>
+                      {TYPE_ICONS[item.type] || 'ℹ️'} {item.titre}
+                    </p>
+                    {isAuto && (
+                      <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${C.accent}15`, color: C.accent2, letterSpacing: 0.4 }}>AUTO</span>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: item.message ? 8 : 0 }}>
+                    <span style={{ fontSize: 13, color: done ? C.muted : urgence.dot, fontWeight: 600 }}>
+                      {formatDate(item.date_echeance, lang)}
+                    </span>
+                    {jours !== null && !done && (
+                      <span style={{ fontSize: 12, padding: '2px 10px', borderRadius: 20, background: urgence.bg, color: urgence.dot, fontWeight: 600, border: `1px solid ${urgence.dot}25` }}>
+                        {jours === 0
+                          ? (lang === 'fr' ? "Aujourd'hui" : 'Today')
+                          : jours > 0
+                            ? `J-${jours}`
+                            : (lang === 'fr' ? `Il y a ${Math.abs(jours)}j` : `${Math.abs(jours)}d ago`)}
                       </span>
-                      {jours !== null && !done && (
-                        <span style={{ fontSize: 12, padding: '2px 10px', borderRadius: 20, background: urgence.bg, color: urgence.dot, fontWeight: 600, border: `1px solid ${urgence.dot}25` }}>
-                          {jours === 0
-                            ? (lang === 'fr' ? "Aujourd'hui" : 'Today')
-                            : jours > 0
-                              ? `J-${jours}`
-                              : (lang === 'fr' ? `Il y a ${Math.abs(jours)}j` : `${Math.abs(jours)}d ago`)}
-                        </span>
-                      )}
-                    </div>
-
-                    {item.message && (
-                      <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6, marginBottom: item.lien ? 8 : 0 }}>{item.message}</p>
-                    )}
-                    {item.lien && (
-                      <a href={item.lien} target="_blank" rel="noreferrer"
-                        style={{ fontSize: 12, color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
-                        {lang === 'fr' ? 'Agir →' : 'Take action →'}
-                      </a>
                     )}
                   </div>
-
-                  {/* Actions */}
-                  <div style={{ display: 'flex', gap: 7, flexShrink: 0 }}>
-                    {!isAuto && (
-                      <button onClick={() => toggleComplete(item)}
-                        title={done ? (lang === 'fr' ? 'Marquer à faire' : 'Mark as pending') : (lang === 'fr' ? 'Marquer fait' : 'Mark done')}
-                        style={{ width: 32, height: 32, borderRadius: 8, border: `1.5px solid ${done ? C.success : C.border}`, background: done ? C.success : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: done ? C.bg : C.muted, fontSize: 13, fontWeight: 800 }}>
-                        {done ? '✓' : '○'}
-                      </button>
-                    )}
-                    {!isAuto && (
-                      <>
-                        <button onClick={() => ouvrirEdition(item)}
-                          style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${C.border}`, background: 'transparent', cursor: 'pointer', color: C.muted, fontSize: 13 }}>
-                          ✏️
-                        </button>
-                        <button onClick={() => supprimer(item.id)} disabled={deleting === item.id}
-                          style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${C.error}25`, background: `${C.error}10`, cursor: deleting === item.id ? 'not-allowed' : 'pointer', color: C.error, fontSize: 13, opacity: deleting === item.id ? 0.5 : 1 }}>
-                          🗑
-                        </button>
-                      </>
-                    )}
-                  </div>
+                  {item.message && (
+                    <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6, marginBottom: item.lien ? 8 : 0 }}>{item.message}</p>
+                  )}
+                  {item.lien && (
+                    <a href={item.lien} target="_blank" rel="noreferrer"
+                      style={{ fontSize: 12, color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+                      {lang === 'fr' ? 'Agir →' : 'Take action →'}
+                    </a>
+                  )}
                 </div>
-              )
-            })}
-          </div>
-        )}
+                <div style={{ display: 'flex', gap: 7, flexShrink: 0 }}>
+                  {!isAuto && (
+                    <button onClick={() => toggleComplete(item)}
+                      title={done ? (lang === 'fr' ? 'Marquer à faire' : 'Mark as pending') : (lang === 'fr' ? 'Marquer fait' : 'Mark done')}
+                      style={{ width: 32, height: 32, borderRadius: 8, border: `1.5px solid ${done ? C.success : C.border}`, background: done ? C.success : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: done ? C.bg : C.muted, fontSize: 13, fontWeight: 800 }}>
+                      {done ? '✓' : '○'}
+                    </button>
+                  )}
+                  {!isAuto && (
+                    <>
+                      <button onClick={() => ouvrirEdition(item)}
+                        style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${C.border}`, background: 'transparent', cursor: 'pointer', color: C.muted, fontSize: 13 }}>
+                        ✏️
+                      </button>
+                      <button onClick={() => supprimer(item.id)} disabled={deleting === item.id}
+                        style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${C.error}25`, background: `${C.error}10`, cursor: deleting === item.id ? 'not-allowed' : 'pointer', color: C.error, fontSize: 13, opacity: deleting === item.id ? 0.5 : 1 }}>
+                        🗑
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )
+          }
+
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {showSections && semaineItems.length > 0 && (
+                <p style={{ fontSize: 11, fontWeight: 700, color: '#F87171', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 2 }}>
+                  🔴 {lang === 'fr' ? 'Cette semaine' : 'This week'}
+                </p>
+              )}
+              {(showSections ? semaineItems : []).map(renderItem)}
+              {showSections && aVenirItems.length > 0 && semaineItems.length > 0 && (
+                <p style={{ fontSize: 11, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginTop: 6, marginBottom: 2 }}>
+                  📅 {lang === 'fr' ? 'À venir' : 'Upcoming'}
+                </p>
+              )}
+              {(showSections ? aVenirItems : filtrees).map(renderItem)}
+            </div>
+          )
+        })()}
 
         {/* ── INFO auto ── */}
         {autoItems.length > 0 && (
