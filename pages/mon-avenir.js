@@ -700,12 +700,59 @@ export default function MonAvenir() {
     }
   }
 
-  const imprimerVision = () => {
-    const style = document.createElement('style')
-    style.innerHTML = `@media print { body > *:not(#vision-print) { display: none !important; } #vision-print { display: block !important; width: 210mm; padding: 12mm; font-size: 11pt; color: #000 !important; background: #fff !important; } #vision-print * { color: #000 !important; background: transparent !important; } .no-print { display: none !important; } }`
-    document.head.appendChild(style)
-    window.print()
-    document.head.removeChild(style)
+  const telechargerVisionPDF = () => {
+    const visionElement = document.getElementById('vision-print')
+    if (!visionElement) {
+      alert(lang === 'fr'
+        ? 'Génère d\'abord ta vision avant de télécharger.'
+        : 'Generate your vision first before downloading.')
+      return
+    }
+
+    const printWindow = window.open('', '_blank')
+    printWindow.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${lang === 'fr' ? 'Ma Vision' : 'My Vision'} - Novae</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; font-size: 10.5pt; line-height: 1.6; color: #1a1a1a; background: #fff; padding: 15mm; }
+    h1, h2, h3 { color: #1B4332; }
+    h2 { font-size: 13pt; border-bottom: 2px solid #2D6A4F; padding-bottom: 6px; margin: 20px 0 10px; }
+    h3 { font-size: 11pt; margin: 12px 0 6px; }
+    p { margin-bottom: 8px; color: #333; }
+    .badge { display: inline-block; background: #D8F3DC; color: #1B4332; padding: 3px 10px; border-radius: 99px; font-size: 9pt; font-weight: 600; margin: 4px 4px 4px 0; }
+    .card { border: 1px solid rgba(45,106,79,0.2); border-radius: 8px; padding: 12px; margin-bottom: 12px; page-break-inside: avoid; }
+    .italic { font-style: italic; color: #555; }
+    .green-box { background: #D8F3DC; padding: 10px; border-radius: 8px; margin: 10px 0; }
+    .orange-box { background: #FEF3E2; padding: 10px; border-radius: 8px; margin: 10px 0; }
+    .blue-box { background: #E3F2FD; padding: 10px; border-radius: 8px; margin: 10px 0; }
+    .no-print, button { display: none !important; }
+    /* Forcer fond blanc et texte foncé sur tous les éléments inline */
+    div, section, article { background: transparent !important; color: #1a1a1a !important; border-color: rgba(45,106,79,0.2) !important; }
+    span { color: #333 !important; }
+    strong { color: #111 !important; }
+    @page { size: A4; margin: 0; }
+    @media print { body { padding: 12mm; } }
+  </style>
+</head>
+<body>
+  <div style="border-bottom:2px solid #2D6A4F; padding-bottom:10px; margin-bottom:16px;">
+    <div style="color:#2D6A4F; font-size:18pt; font-weight:bold;">NOVAE</div>
+    <div style="color:#888; font-size:9pt;">${lang === 'fr' ? 'Ta vision personnalisée' : 'Your personalized vision'} · ${new Date().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA')}</div>
+  </div>
+  ${visionElement.innerHTML}
+</body>
+</html>`)
+
+    printWindow.document.close()
+    printWindow.onload = () => {
+      printWindow.document.querySelectorAll('.no-print, button').forEach(el => {
+        el.style.display = 'none'
+      })
+      setTimeout(() => printWindow.print(), 500)
+    }
   }
 
   // ── Style helpers ──────────────────────────────────────────────
@@ -1379,7 +1426,7 @@ export default function MonAvenir() {
                   <span style={{ fontSize:14, color:C.muted }}>🌍 {visionPays}</span>
                   {vision && !visLoading && (
                     <div style={{ marginLeft:'auto', display:'flex', gap:8, flexWrap:'wrap' }}>
-                      <button onClick={imprimerVision} style={{ padding:'8px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:8, color:C.accent2, fontWeight:600, fontSize:13, cursor:'pointer' }}>
+                      <button onClick={telechargerVisionPDF} style={{ padding:'8px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:8, color:C.accent2, fontWeight:600, fontSize:13, cursor:'pointer' }}>
                         📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
                       </button>
                     </div>
