@@ -1,5 +1,5 @@
 // pages/arrivee.js
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
@@ -55,6 +55,23 @@ const DATA = {
   }
 }
 
+const CHECKLIST_KEY = 'novae_arrivee_checklist'
+
+const CHECKLIST = [
+  { id: 'sim',     fr: 'Acheter une carte SIM',                              en: 'Buy a SIM card' },
+  { id: 'cash',    fr: 'Retirer du cash (100–200$)',                         en: 'Withdraw cash ($100–200)' },
+  { id: 'bank',    fr: 'Ouvrir un compte bancaire',                          en: 'Open a bank account' },
+  { id: 'nas',     fr: 'Obtenir ton NAS à Service Canada',                   en: 'Get your SIN at Service Canada' },
+  { id: 'ramq',    fr: 'S\'inscrire à la RAMQ (si Québec)',                  en: 'Register for RAMQ (if Quebec)' },
+  { id: 'campus',  fr: 'Visiter ton campus et récupérer ta carte étudiante', en: 'Visit campus and get your student card' },
+  { id: 'transpo', fr: 'Télécharger l\'app de transport en commun',          en: 'Download public transit app' },
+  { id: 'credit',  fr: 'Demander une carte de crédit sécurisée',             en: 'Apply for a secured credit card' },
+  { id: 'asso',    fr: 'Rejoindre une association étudiante',                en: 'Join a student association' },
+  { id: 'permis',  fr: 'Vérifier les conditions de ton permis de travail',   en: 'Check your work permit conditions' },
+  { id: 'cv',      fr: 'Mettre à jour ton CV au format canadien',            en: 'Update your CV to Canadian format' },
+  { id: 'budget',  fr: 'Faire le bilan de ton premier mois',                 en: 'Review your first month budget' },
+]
+
 const PHASES = [
   { id: 'h72',   fr: 'Les 72 premières heures', en: 'First 72 hours', icon: '⚡', color: '#52B788' },
   { id: 'week1', fr: 'La première semaine',     en: 'First week',     icon: '📅', color: '#60A5FA' },
@@ -64,6 +81,19 @@ const PHASES = [
 export default function Arrivee() {
   const { C, lang } = useApp()
   const [phase, setPhase] = useState('h72')
+  const [checked, setChecked] = useState({})
+
+  useEffect(() => {
+    try { setChecked(JSON.parse(localStorage.getItem(CHECKLIST_KEY) || '{}')) } catch {}
+  }, [])
+
+  const toggleCheck = (id) => {
+    const next = { ...checked, [id]: !checked[id] }
+    setChecked(next)
+    try { localStorage.setItem(CHECKLIST_KEY, JSON.stringify(next)) } catch {}
+  }
+
+  const nbDone = CHECKLIST.filter(c => checked[c.id]).length
 
   const data  = DATA[lang] || DATA.fr
   const items = data[phase] || []
@@ -87,6 +117,37 @@ export default function Arrivee() {
         <p style={{ fontSize: 15, color: C.muted, marginBottom: 32, lineHeight: 1.6 }}>
           {lang === 'fr' ? 'Ton plan d\'action étape par étape. Garde-le sur ton téléphone.' : 'Your step-by-step action plan. Keep it on your phone.'}
         </p>
+
+        {/* ── CHECKLIST 30 JOURS ── */}
+        <div style={{ marginBottom: 36, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '20px 22px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
+            <h2 style={{ fontSize: 17, fontWeight: 700, color: C.text, margin: 0 }}>
+              📋 {lang === 'fr' ? 'Checklist — 30 premiers jours' : 'Checklist — First 30 days'}
+            </h2>
+            <span style={{ fontSize: 13, fontWeight: 600, color: nbDone === CHECKLIST.length ? '#52B788' : C.muted }}>
+              {nbDone}/{CHECKLIST.length} {lang === 'fr' ? 'complétés' : 'completed'}
+            </span>
+          </div>
+          <div style={{ width: '100%', height: 6, background: C.border, borderRadius: 3, marginBottom: 16, overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: `${(nbDone / CHECKLIST.length) * 100}%`, background: '#52B788', borderRadius: 3, transition: 'width 0.3s' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {CHECKLIST.map(item => (
+              <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', userSelect: 'none' }}>
+                <div onClick={() => toggleCheck(item.id)} style={{
+                  width: 20, height: 20, borderRadius: 6, border: `2px solid ${checked[item.id] ? '#52B788' : C.border}`,
+                  background: checked[item.id] ? '#52B788' : 'transparent', flexShrink: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
+                }}>
+                  {checked[item.id] && <span style={{ color: '#fff', fontSize: 12, fontWeight: 800 }}>✓</span>}
+                </div>
+                <span style={{ fontSize: 14, color: checked[item.id] ? C.muted : C.text, textDecoration: checked[item.id] ? 'line-through' : 'none', lineHeight: 1.5 }}>
+                  {lang === 'fr' ? item.fr : item.en}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
 
         {/* Phase selector */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 32, flexWrap: 'wrap' }}>
@@ -174,13 +235,13 @@ export default function Arrivee() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 10 }}>
             {[
-              { label: 'Urgences', num: '911' },
-              { label: 'IRCC',     num: '1-888-242-2100' },
-              { label: 'RAMQ',     num: '1-800-561-9749' },
-              { label: 'Service Canada', num: '1-800-206-7218' },
+              { fr: 'Urgences',       en: 'Emergency',       num: '911' },
+              { fr: 'IRCC',          en: 'IRCC',            num: '1-888-242-2100' },
+              { fr: 'RAMQ',          en: 'RAMQ',            num: '1-800-561-9749' },
+              { fr: 'Service Canada', en: 'Service Canada',  num: '1-800-206-7218' },
             ].map((c, i) => (
               <div key={i} style={{ padding: '10px 14px', background: `${C.error}08`, borderRadius: 9 }}>
-                <p style={{ fontSize: 11, color: C.muted, marginBottom: 2 }}>{c.label}</p>
+                <p style={{ fontSize: 11, color: C.muted, marginBottom: 2 }}>{lang === 'fr' ? c.fr : c.en}</p>
                 <p style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{c.num}</p>
               </div>
             ))}
