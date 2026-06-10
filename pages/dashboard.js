@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 import FeedbackSection from '../components/FeedbackSection'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 // ── Widget Bien-être compact ──────────────────────────────────────
 const SCORE_EMOJIS_DB = ['😔', '😕', '😐', '🙂', '😊']
@@ -139,6 +140,17 @@ const TACHES_CANADA = [
   { id:10, titre:"Comprendre ton programme universitaire",         titre_en:"Understand your university program",          cat:'univ',    prio:'haute',    lien:null, icone:'🎓', provinces:null },
 ]
 
+const PRIO_ORDER = { critique: 0, haute: 1, normale: 2 }
+
+const WHY_MSG = {
+  admin:    { fr: "Tes droits légaux et ton accès aux services en dépendent.", en: "Your legal rights and access to services depend on it." },
+  banque:   { fr: "Sans compte bancaire tu ne peux pas recevoir de paiements ni payer en ligne.", en: "Without a bank account you cannot receive or make payments online." },
+  sante:    { fr: "La couverture santé est prioritaire — tout imprévu médical peut coûter très cher.", en: "Health coverage is a priority — any medical surprise can be very costly." },
+  logement: { fr: "Un logement stable te permettra de te concentrer sur tes études.", en: "Stable housing will let you focus on your studies." },
+  social:   { fr: "Ton réseau est ta force — commence à le bâtir maintenant.", en: "Your network is your strength — start building it now." },
+  univ:     { fr: "Comprendre ton programme dès le départ te donnera un avantage certain.", en: "Understanding your program from day one gives you a real edge." },
+}
+
 const CAT_STYLE = {
   admin:    { label:'Admin',      labelEn:'Admin',     color:'#52B788', bg:'rgba(82,183,136,0.12)'  },
   banque:   { label:'Banque',     labelEn:'Banking',   color:'#F59E0B', bg:'rgba(245,158,11,0.12)'  },
@@ -166,8 +178,10 @@ const filtrerTaches = (taches, province) => taches.filter(t => {
 
 export default function Dashboard() {
   const { C, t, lang, user, profile, loading: authLoading, sb, refreshProfile } = useApp()
+  const { authFetch } = useAuthFetch()
 
-  const hasFetched = useRef(false)
+  const hasFetched    = useRef(false)
+  const checklistRef  = useRef(null)
 
   const [tab,       setTab]       = useState('checklist')
   const [filtre,    setFiltre]    = useState('tous')
@@ -188,18 +202,10 @@ export default function Dashboard() {
     if (!profile || !user) return
     setGenLoading(true)
     try {
-      const { data: { session } } = await sb.auth.getSession()
-      const token = session?.access_token
-      if (!token) return
-
       const payload = { profile: { ...profile, id: user.id } }
-      const res = await fetch('/api/generate-recommendations', {
+      const res = await authFetch('/api/generate-recommendations', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:  `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       })
       const data = await res.json()
       if (data.success) refreshProfile()
@@ -226,9 +232,7 @@ export default function Dashboard() {
 
   const chargerScoreDoc = async () => {
     try {
-      const { data: { session } } = await sb.auth.getSession()
-      if (!session?.access_token) return
-      const res = await fetch('/api/documents', { headers: { Authorization: `Bearer ${session.access_token}` } })
+      const res = await authFetch('/api/documents')
       const json = await res.json()
       setScoreDoc((json.data || []).length)
     } catch {}
@@ -341,6 +345,10 @@ export default function Dashboard() {
   const alertes    = getAlertes(profile, lang)
   const prog       = taches.length > 0 ? Math.round((faites.length / taches.length) * 100) : 0
   const tF         = filtre === 'tous' ? taches : filtre === 'a_faire' ? taches.filter(t => !faites.includes(t.id)) : taches.filter(t => faites.includes(t.id))
+  const nextAction = ready
+    ? (taches.filter(t => !faites.includes(t.id))
+        .sort((a, b) => (PRIO_ORDER[a.prio] ?? 3) - (PRIO_ORDER[b.prio] ?? 3))[0] || null)
+    : null
 
   // ── Score préparation dossier ─────────────────────────────────
   const calcScore = () => {
@@ -492,6 +500,35 @@ export default function Dashboard() {
             {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:`${C.accent}18`, border:`1px solid ${C.accent}35`, borderRadius:7, color:C.accent2, fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>{lang === 'fr' ? 'Agir →' : 'Act →'}</a>}
           </div>
         ))}
+
+        {/* ── PROCHAINE ACTION RECOMMANDÉE ── */}
+        {user && nextAction && (
+          <div style={{ padding: '16px 20px', background: `${C.accent}0A`, border: `1.5px solid ${C.accent}30`, borderRadius: 14, marginBottom: 18 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: C.accent2, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 }}>
+              🎯 {lang === 'fr' ? 'Prochaine action recommandée' : 'Next recommended action'}
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 28 }}>{nextAction.icone}</span>
+              <div style={{ flex: 1, minWidth: 180 }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 4 }}>
+                  {lang === 'fr' ? nextAction.titre : (nextAction.titre_en || nextAction.titre)}
+                </p>
+                <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>
+                  {WHY_MSG[nextAction.cat]?.[lang] || ''}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setTab('checklist')
+                  setFiltre('a_faire')
+                  setTimeout(() => checklistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150)
+                }}
+                style={{ padding: '9px 18px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                {lang === 'fr' ? "Je m'en occupe →" : "I'll handle it →"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* ── SCORE PRÉPARATION DOSSIER ── */}
         {user && scoreItems && (
@@ -704,7 +741,7 @@ export default function Dashboard() {
 
         {/* ── CHECKLIST ── */}
         {tab === 'checklist' && (
-          <>
+          <div ref={checklistRef}>
             {province && (
               <p style={{ fontSize:12, color:C.muted, marginBottom:14 }}>
                 📍 {lang === 'fr' ? `Tâches adaptées pour ${profile?.ville_accueil} (${province === 'QC' ? 'Québec' : 'Ontario'})` : `Tasks adapted for ${profile?.ville_accueil} (${province === 'QC' ? 'Quebec' : 'Ontario'})`}
@@ -759,7 +796,7 @@ export default function Dashboard() {
                 )}
               </div>
             )}
-          </>
+          </div>
         )}
 
         {/* ── MENTORS ── */}
