@@ -5,29 +5,29 @@ import { useApp } from '../context/AppContext'
 
 // ── Documents requis selon statut ────────────────────────────────
 const DOCS_ETUDIANT = [
-  { type: 'passeport',        nom: 'Passeport',             icone: '🛂', critique: true  },
-  { type: 'visa',             nom: 'Visa étudiant',         icone: '📄', critique: true  },
-  { type: 'permis_etudes',    nom: "Permis d'études",       icone: '📋', critique: true  },
-  { type: 'caq',              nom: 'CAQ (Québec)',           icone: '🏛️', critique: true, qc_only: true },
-  { type: 'lettre_admission', nom: "Lettre d'admission",    icone: '🎓', critique: true  },
-  { type: 'releve_notes',     nom: 'Relevés de notes',      icone: '📊', critique: false },
-  { type: 'assurance',        nom: 'Assurance maladie',     icone: '🏥', critique: true  },
-  { type: 'nas',              nom: 'NAS (Assurance Sociale)',icone: '🪪', critique: true  },
+  { type: 'passeport',        nom: 'Passeport',             nom_en: 'Passport',             icone: '🛂', critique: true  },
+  { type: 'visa',             nom: 'Visa étudiant',         nom_en: 'Student Visa',         icone: '📄', critique: true  },
+  { type: 'permis_etudes',    nom: "Permis d'études",       nom_en: 'Study Permit',         icone: '📋', critique: true  },
+  { type: 'caq',              nom: 'CAQ (Québec)',           nom_en: 'CAQ (Quebec)',          icone: '🏛️', critique: true, qc_only: true },
+  { type: 'lettre_admission', nom: "Lettre d'admission",    nom_en: 'Admission Letter',     icone: '🎓', critique: true  },
+  { type: 'releve_notes',     nom: 'Relevés de notes',      nom_en: 'Transcripts',          icone: '📊', critique: false },
+  { type: 'assurance',        nom: 'Assurance maladie',     nom_en: 'Health Insurance',     icone: '🏥', critique: true  },
+  { type: 'nas',              nom: 'NAS (Assurance Sociale)',nom_en: 'SIN (Social Ins. No.)',icone: '🪪', critique: true  },
 ]
 
 const DOCS_TRAVAILLEUR = [
-  { type: 'passeport',        nom: 'Passeport',             icone: '🛂', critique: true  },
-  { type: 'visa',             nom: 'Visa de travail',       icone: '📄', critique: true  },
-  { type: 'permis_etudes',    nom: 'Permis de travail',     icone: '📋', critique: true  },
-  { type: 'nas',              nom: 'NAS (Assurance Sociale)',icone: '🪪', critique: true  },
-  { type: 'assurance',        nom: 'Assurance maladie',     icone: '🏥', critique: false },
+  { type: 'passeport',        nom: 'Passeport',             nom_en: 'Passport',             icone: '🛂', critique: true  },
+  { type: 'visa',             nom: 'Visa de travail',       nom_en: 'Work Visa',            icone: '📄', critique: true  },
+  { type: 'permis_etudes',    nom: 'Permis de travail',     nom_en: 'Work Permit',          icone: '📋', critique: true  },
+  { type: 'nas',              nom: 'NAS (Assurance Sociale)',nom_en: 'SIN (Social Ins. No.)',icone: '🪪', critique: true  },
+  { type: 'assurance',        nom: 'Assurance maladie',     nom_en: 'Health Insurance',     icone: '🏥', critique: false },
 ]
 
 const DOCS_FAMILLE = [
-  { type: 'passeport',        nom: 'Passeport',             icone: '🛂', critique: true  },
-  { type: 'visa',             nom: 'Visa / Résidence',      icone: '📄', critique: true  },
-  { type: 'nas',              nom: 'NAS (Assurance Sociale)',icone: '🪪', critique: true  },
-  { type: 'assurance',        nom: 'Assurance maladie',     icone: '🏥', critique: true  },
+  { type: 'passeport',        nom: 'Passeport',             nom_en: 'Passport',             icone: '🛂', critique: true  },
+  { type: 'visa',             nom: 'Visa / Résidence',      nom_en: 'Visa / Residency',     icone: '📄', critique: true  },
+  { type: 'nas',              nom: 'NAS (Assurance Sociale)',nom_en: 'SIN (Social Ins. No.)',icone: '🪪', critique: true  },
+  { type: 'assurance',        nom: 'Assurance maladie',     nom_en: 'Health Insurance',     icone: '🏥', critique: true  },
 ]
 
 const getDocsRequis = (statut, ville) => {
@@ -42,15 +42,15 @@ const getDocsRequis = (statut, ville) => {
 }
 
 const TYPES_OPTIONS = [
-  { value: 'passeport',        label: 'Passeport'              },
-  { value: 'visa',             label: 'Visa'                   },
-  { value: 'permis_etudes',    label: "Permis d'études/travail"},
-  { value: 'caq',              label: 'CAQ'                    },
-  { value: 'lettre_admission', label: "Lettre d'admission"     },
-  { value: 'releve_notes',     label: 'Relevés de notes'       },
-  { value: 'assurance',        label: 'Assurance maladie'      },
-  { value: 'nas',              label: 'NAS'                    },
-  { value: 'autre',            label: 'Autre'                  },
+  { value: 'passeport',        label: 'Passeport',              labelEn: 'Passport'             },
+  { value: 'visa',             label: 'Visa',                   labelEn: 'Visa'                 },
+  { value: 'permis_etudes',    label: "Permis d'études/travail",labelEn: 'Study/Work Permit'    },
+  { value: 'caq',              label: 'CAQ',                    labelEn: 'CAQ'                  },
+  { value: 'lettre_admission', label: "Lettre d'admission",     labelEn: 'Admission Letter'     },
+  { value: 'releve_notes',     label: 'Relevés de notes',       labelEn: 'Transcripts'          },
+  { value: 'assurance',        label: 'Assurance maladie',      labelEn: 'Health Insurance'     },
+  { value: 'nas',              label: 'NAS',                    labelEn: 'SIN'                  },
+  { value: 'autre',            label: 'Autre',                  labelEn: 'Other'                },
 ]
 
 const STATUT_CFG = {
@@ -163,9 +163,12 @@ export default function Documents() {
   const nbValides       = docs.filter(d => d.statut === 'valide').length
   const nbExpirentBient = docs.filter(d => {
     const j = jAvantExpiration(d.date_expiration)
-    return j !== null && j > 0 && j <= 60 && d.statut === 'valide'
+    return j !== null && j > 0 && j <= 30 && d.statut === 'valide'
   }).length
   const nbManquants     = docsRequis.filter(d => !docsParType[d.type] || docsParType[d.type].statut === 'manquant').length
+
+  // Suggestions : docs critiques non encore ajoutés
+  const suggestions = docsRequis.filter(d => d.critique && !docsParType[d.type])
 
   // ── Gate auth ─────────────────────────────────────────────────
   if (authLoading) return (
@@ -224,7 +227,7 @@ export default function Documents() {
               <label style={{ fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 6 }}>Type</label>
               <select value={form.type} onChange={e => setForm(p => ({ ...p, type: e.target.value }))}
                 style={{ width: '100%', padding: '10px 12px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 14, marginBottom: 14, boxSizing: 'border-box', outline: 'none' }}>
-                {TYPES_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                {TYPES_OPTIONS.map(o => <option key={o.value} value={o.value}>{lang === 'fr' ? o.label : (o.labelEn || o.label)}</option>)}
               </select>
 
               {/* Statut */}
@@ -308,6 +311,25 @@ export default function Documents() {
           ))}
         </div>
 
+        {/* ── SUGGESTIONS DOCUMENTS MANQUANTS ── */}
+        {ready && suggestions.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 }}>
+              {lang === 'fr' ? '➕ Documents à ajouter' : '➕ Documents to add'}
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {suggestions.map(d => (
+                <button key={d.type}
+                  onClick={() => ouvrirAjout({ nom: lang === 'fr' ? d.nom : (d.nom_en || d.nom), type: d.type })}
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', background: `${C.accent}10`, border: `1px dashed ${C.accent}40`, borderRadius: 20, color: C.accent2, fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                  <span>{d.icone}</span>
+                  + {lang === 'fr' ? d.nom : (d.nom_en || d.nom)}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* ── DOCUMENTS REQUIS ── */}
         {!ready ? (
           <p style={{ textAlign: 'center', color: C.muted, padding: '40px', fontSize: 14 }}>
@@ -321,21 +343,34 @@ export default function Documents() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 32 }}>
               {docsRequis.map(requis => {
-                const doc    = docsParType[requis.type]
-                const statut = doc?.statut || 'manquant'
-                const cfg    = STATUT_CFG[statut] || STATUT_CFG.manquant
-                const jExp   = doc ? jAvantExpiration(doc.date_expiration) : null
-                const alertExp = jExp !== null && jExp > 0 && jExp <= 60
+                const doc      = docsParType[requis.type]
+                const statut   = doc?.statut || 'manquant'
+                const cfg      = STATUT_CFG[statut] || STATUT_CFG.manquant
+                const jExp     = doc ? jAvantExpiration(doc.date_expiration) : null
+                const isExpired   = jExp !== null && jExp <= 0
+                const expireSoon  = jExp !== null && jExp > 0 && jExp <= 30
+                const expireWarn  = jExp !== null && jExp > 30 && jExp <= 60
+                const borderColor = isExpired ? C.error + '50' : expireSoon ? C.warning + '50' : expireWarn ? C.warning + '25' : C.border
 
                 return (
-                  <div key={requis.type} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: C.surface, border: `1px solid ${alertExp ? C.warning + '40' : C.border}`, borderRadius: 12, transition: 'border-color 0.15s' }}>
+                  <div key={requis.type} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: C.surface, border: `1px solid ${borderColor}`, borderRadius: 12, transition: 'border-color 0.15s' }}>
                     <span style={{ fontSize: 22, flexShrink: 0 }}>{requis.icone}</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3, flexWrap: 'wrap' }}>
-                        <p style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{doc?.nom || requis.nom}</p>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{lang === 'fr' ? (doc?.nom || requis.nom) : (doc?.nom || requis.nom_en || requis.nom)}</p>
                         {requis.critique && !doc && (
                           <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: 'rgba(248,113,113,0.12)', color: C.error, letterSpacing: 0.4 }}>
                             {lang === 'fr' ? 'REQUIS' : 'REQUIRED'}
+                          </span>
+                        )}
+                        {isExpired && (
+                          <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: 'rgba(248,113,113,0.15)', color: C.error, letterSpacing: 0.4 }}>
+                            ❌ {lang === 'fr' ? 'EXPIRÉ' : 'EXPIRED'}
+                          </span>
+                        )}
+                        {expireSoon && !isExpired && (
+                          <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: 'rgba(251,191,36,0.15)', color: C.warning, letterSpacing: 0.4 }}>
+                            ⚠️ {lang === 'fr' ? `EXPIRE DANS ${jExp}J` : `EXPIRES IN ${jExp}D`}
                           </span>
                         )}
                       </div>
@@ -344,10 +379,8 @@ export default function Documents() {
                           {cfg.icon} {lang === 'fr' ? cfg.label : cfg.labelEn}
                         </span>
                         {doc?.date_expiration && (
-                          <span style={{ fontSize: 12, color: alertExp ? C.warning : C.muted }}>
-                            {alertExp ? '⚠️ ' : ''}
+                          <span style={{ fontSize: 12, color: isExpired ? C.error : expireSoon ? C.warning : C.muted }}>
                             {lang === 'fr' ? 'Expire le' : 'Expires'} {new Date(doc.date_expiration).toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA')}
-                            {jExp !== null && jExp > 0 && ` · ${jExp}j`}
                           </span>
                         )}
                         {doc?.notes && <span style={{ fontSize: 12, color: C.muted }}>· {doc.notes}</span>}
