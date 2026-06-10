@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 // ── Helpers ───────────────────────────────────────────────────────
 const uid = () => Math.random().toString(36).slice(2, 9)
@@ -136,7 +137,8 @@ function CVPreview({ data, lang }) {
 
 // ── Page principale ───────────────────────────────────────────────
 export default function CV() {
-  const { C, lang, profile, loading: authLoading, mounted, sb, planLimits, userPlan } = useApp()
+  const { C, lang, profile, loading: authLoading, mounted, planLimits, userPlan } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const [etape,        setEtape]       = useState(1)
   const [generating,   setGenerating]  = useState(false)
@@ -203,49 +205,65 @@ export default function CV() {
 
   // ── Génération IA ────────────────────────────────────────────
   const generer = async () => {
-    // Vérifier les limites du plan
     try {
       const cvCount = parseInt(localStorage.getItem('novae_cv_count') || '0')
-      if (cvCount >= planLimits.cv) {
-        setLimitModal(true)
-        return
-      }
+      if (cvCount >= planLimits.cv) { setLimitModal(true); return }
     } catch {}
 
     setGenerating(true); setAiErr('')
     try {
-      const { data: { session } } = await sb.auth.getSession()
-      if (!session?.access_token) { setAiErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
-
-      const res = await fetch('/api/cv/generer', {
-        method:  'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:  `Bearer ${session.access_token}`,
-        },
+      const res = await authFetch('/api/cv/generer', {
+        method: 'POST',
         body: JSON.stringify({
-          profil:       { nom, email, ville, statut: profile?.statut },
-          poste_cible:  poste,
-          experiences:  experiences.filter(e => e.poste || e.entreprise),
+          profil:      { nom, email, ville, statut: profile?.statut },
+          poste_cible: poste,
+          experiences: experiences.filter(e => e.poste || e.entreprise),
           formation,
           competences,
           langues,
         }),
       })
+
       const json = await res.json()
-      if (!res.ok) { setAiErr(json.error || 'Erreur'); return }
+      if (!res.ok) {
+        setAiErr(json.error || (lang === 'fr' ? 'Erreur de génération.' : 'Generation error.'))
+        return
+      }
       setAiData(json.data)
       setCopied(null)
       setEtape(4)
-      // Flag pour le score dashboard
       try { localStorage.setItem('novae_cv_nom', nom || 'cv') } catch {}
-      // Incrémenter le compteur de CV
       try {
         const cvCount = parseInt(localStorage.getItem('novae_cv_count') || '0')
         localStorage.setItem('novae_cv_count', (cvCount + 1).toString())
       } catch {}
-    } catch (e) { setAiErr(e.message) }
-    finally { setGenerating(false) }
+    } catch (e) {
+      if (e.message === 'SESSION_MISSING' || e.message === 'SESSION_EXPIRED') {
+        setAiErr(lang === 'fr' ? 'Session expirée. Reconnecte-toi.' : 'Session expired. Please reconnect.')
+      } else {
+        setAiErr(e.message)
+      }
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  // ── Téléchargement PDF du CV ──────────────────────────────────
+  const telechargerPDF = () => {
+    const style = document.createElement('style')
+    style.innerHTML = `@media print {
+      body > div > *:not(#cv-print-wrapper) { display: none !important; }
+      #cv-print-wrapper { display: block !important; }
+      #cv-to-print { box-shadow: none !important; margin: 0 !important; }
+      .no-print { display: none !important; }
+      @page { size: A4; margin: 0; }
+    }`
+    document.head.appendChild(style)
+    const prev = document.title
+    document.title = (nom || 'CV') + ' — CV'
+    window.print()
+    document.head.removeChild(style)
+    setTimeout(() => { document.title = prev }, 500)
   }
 
   // ── Export PDF guide via print ────────────────────────────────
@@ -704,21 +722,55 @@ export default function CV() {
                 )}
               </div>
 
-              {/* ─ D — Canva template ─ */}
-              <div style={{ background: 'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius: 14, padding: '24px 22px', textAlign: 'center' }}>
-                <p style={{ fontSize: 22, marginBottom: 10 }}>🎨</p>
-                <p style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                  D — {lang === 'fr' ? 'Mets en forme avec Canva' : 'Format with Canva'}
-                </p>
-                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.82)', lineHeight: 1.7, marginBottom: 20, maxWidth: 480, margin: '0 auto 20px' }}>
-                  {lang === 'fr'
-                    ? 'Copie ton contenu optimisé ci-dessus, puis choisis un template Canva professionnel gratuit pour créer un CV visuellement parfait.'
-                    : 'Copy your optimized content above, then choose a free professional Canva template to create a visually perfect resume.'}
-                </p>
-                <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer"
-                  style={{ display: 'inline-block', padding: '13px 32px', background: '#fff', borderRadius: 10, color: '#2D6A4F', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
-                  {lang === 'fr' ? 'Ouvrir Canva Templates →' : 'Open Canva Templates →'}
-                </a>
+              {/* ─ D — Aperçu CV + Téléchargement PDF ─ */}
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '20px 22px' }}>
+                <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0 }}>
+                    D — {lang === 'fr' ? 'Ton CV — Aperçu' : 'Your Resume — Preview'}
+                  </p>
+                  <button onClick={telechargerPDF}
+                    style={{ padding: '9px 20px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+                    📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+                  </button>
+                </div>
+                <div id="cv-print-wrapper" style={{ overflowX: 'auto', borderRadius: 10, border: `1px solid ${C.border}` }}>
+                  <CVPreview
+                    data={{
+                      nom, email, telephone, ville, linkedin,
+                      poste_cible: poste,
+                      resume,
+                      experiences,
+                      formation,
+                      competences,
+                      langues,
+                      ai: {
+                        resume: aiData?.resume_professionnel,
+                        bullets: (aiData?.experiences_optimisees || []).map((exp, i) => ({
+                          index: i,
+                          points: exp.bullets || [],
+                        })),
+                        competences_triees: [
+                          ...(aiData?.competences_classees?.techniques || []),
+                          ...(aiData?.competences_classees?.soft_skills || []),
+                        ],
+                      },
+                    }}
+                    lang={lang}
+                  />
+                </div>
+                {/* Conseils canadiens (masqués à l'impression) */}
+                {(aiData?.conseils_canadiens || []).length > 0 && (
+                  <div className="no-print" style={{ marginTop: 14, padding: '12px 14px', background: `${C.accent}08`, border: `1px solid ${C.accent}18`, borderRadius: 10 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: C.accent2, marginBottom: 8 }}>
+                      💡 {lang === 'fr' ? 'Conseils pour le marché canadien' : 'Tips for the Canadian market'}
+                    </p>
+                    <ul style={{ margin: 0, paddingLeft: 18 }}>
+                      {aiData.conseils_canadiens.map((c, i) => (
+                        <li key={i} style={{ fontSize: 12, color: C.muted, lineHeight: 1.6, marginBottom: 4 }}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>

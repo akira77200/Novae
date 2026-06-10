@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 const PAYS_PAR_REGION = {
   "🌍 Afrique": [
@@ -523,6 +524,7 @@ const LOAD_MSGS_EN = [
 // ── COMPOSANT PRINCIPAL ──────────────────────────────────────────
 export default function MonAvenir() {
   const { C, lang, profile, loading: authLoading, sb } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const [tab,         setTab]         = useState('orientation')
   const [selectedProg,setSelectedProg]= useState(null)
@@ -592,11 +594,8 @@ export default function MonAvenir() {
     let msgTimer
     try {
       msgTimer = setInterval(() => setLoadMsgIdx(i => (i + 1) % 5), 2000)
-      const { data: { session } } = await sb.auth.getSession()
-      if (!session?.access_token) { setOrientPhase('questions'); setOrientErr(lang === 'fr' ? 'Connexion requise.' : 'Sign in required.'); return }
-      const res = await fetch('/api/analyser-profil', {
+      const res = await authFetch('/api/analyser-profil', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
         body: JSON.stringify({ reponses: orientData }),
       })
       const json = await res.json()
@@ -604,7 +603,14 @@ export default function MonAvenir() {
       setOrientAnalyse(json.analyse)
       setOrientPhase('results')
       try { localStorage.setItem('novae_orientation_v2', JSON.stringify({ reponses: orientData, analyse: json.analyse, date: new Date().toISOString() })) } catch {}
-    } catch (e) { setOrientPhase('questions'); setOrientErr(e.message) }
+    } catch (e) {
+      setOrientPhase('questions')
+      if (e.message === 'SESSION_MISSING' || e.message === 'SESSION_EXPIRED') {
+        setOrientErr(lang === 'fr' ? 'Session expirée. Reconnecte-toi.' : 'Session expired. Please reconnect.')
+      } else {
+        setOrientErr(e.message)
+      }
+    }
     finally { clearInterval(msgTimer) }
   }
 
@@ -623,16 +629,6 @@ export default function MonAvenir() {
     setVisLoading(true); setVisError(''); setVision(null)
 
     try {
-      // Session fraîche avec vérification d'erreur explicite
-      const { data: sessionData, error: sessionError } = await sb.auth.getSession()
-
-      if (sessionError || !sessionData?.session) {
-        setVisError(lang === 'fr' ? 'Tu dois être connecté.' : 'You must be signed in.')
-        return
-      }
-
-      const token = sessionData.session.access_token
-
       const progInfo = PROGRAMMES.find(p => p.id === visionProg)
       const payload = {
         programme: progInfo ? progInfo.nom[lang] : visionProg,
@@ -650,12 +646,8 @@ export default function MonAvenir() {
         contexte: visionForm.contexte,
       }
 
-      const res = await fetch('/api/generer-vision', {
+      const res = await authFetch('/api/generer-vision', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token,
-        },
         body: JSON.stringify(payload),
       })
 
@@ -676,7 +668,11 @@ export default function MonAvenir() {
         setVisError(data.error || (lang === 'fr' ? 'Erreur' : 'Error'))
       }
     } catch (err) {
-      setVisError(lang === 'fr' ? 'Erreur réseau. Réessaie.' : 'Network error. Please try again.')
+      if (err.message === 'SESSION_MISSING' || err.message === 'SESSION_EXPIRED') {
+        setVisError(lang === 'fr' ? 'Session expirée. Reconnecte-toi.' : 'Session expired. Please reconnect.')
+      } else {
+        setVisError(lang === 'fr' ? 'Erreur réseau. Réessaie.' : 'Network error. Please try again.')
+      }
     } finally {
       setVisLoading(false)
     }

@@ -26,17 +26,20 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url)
 
-  // Ne jamais intercepter les APIs et Supabase
-  if (
+  // Ne jamais intercepter : APIs, auth, services externes, non-GET, requêtes avec Authorization
+  const shouldBypass = (
     url.pathname.startsWith('/api/') ||
-    url.hostname.includes('supabase.co') ||
-    url.hostname.includes('anthropic.com') ||
-    url.hostname.includes('stripe.com') ||
-    event.request.method === 'POST' ||
-    event.request.headers.get('Authorization')
-  ) {
-    return // Laisse passer sans intercepter
-  }
+    url.pathname.startsWith('/auth/') ||
+    url.hostname.includes('supabase') ||
+    url.hostname.includes('anthropic') ||
+    url.hostname.includes('stripe') ||
+    url.hostname.includes('netlify') ||
+    event.request.method !== 'GET' ||
+    event.request.headers.has('Authorization') ||
+    event.request.headers.has('authorization')
+  )
+
+  if (shouldBypass) return
 
   // Seulement pour les pages statiques
   event.respondWith(
