@@ -648,7 +648,7 @@ export default function MonAvenir() {
 
       // Diagnostic session
       const { data: sessionCheck } = await sb.auth.getSession()
-      console.log('[vision-debug] user:', user?.email)
+      console.log('[vision-debug] user:', profile?.email)
       console.log('[vision-debug] session:', sessionCheck?.session ? 'présente' : 'ABSENTE')
       console.log('[vision-debug] token début:', sessionCheck?.session?.access_token?.substring(0, 30) || 'AUCUN TOKEN')
       console.log('[vision] payload:', {
@@ -662,7 +662,19 @@ export default function MonAvenir() {
         body: JSON.stringify(payload),
       })
 
-      const data = await res.json()
+      console.log('[vision] response status:', res.status)
+      console.log('[vision] response ok:', res.ok)
+
+      const rawText = await res.text()
+      console.log('[vision] response text (300 char):', rawText.substring(0, 300))
+
+      let data
+      try {
+        data = JSON.parse(rawText)
+      } catch (parseErr) {
+        setVisError(`[DEBUG] Réponse non-JSON: ${rawText.substring(0, 200)}`)
+        return
+      }
 
       if (!res.ok) {
         setVisError(data.error || (lang === 'fr' ? 'Erreur serveur' : 'Server error'))
@@ -679,24 +691,8 @@ export default function MonAvenir() {
         setVisError(data.error || (lang === 'fr' ? 'Erreur' : 'Error'))
       }
     } catch (err) {
-      console.error('[genererVision] erreur:', err)
-      if (err.message === 'SESSION_MISSING' || err.message === 'SESSION_EXPIRED') {
-        setVisError(lang === 'fr'
-          ? 'Session expirée. Déconnecte-toi et reconnecte-toi.'
-          : 'Session expired. Please log out and log back in.')
-      } else if (err.message?.includes('fetch') || err.message?.includes('network') || err.message?.toLowerCase().includes('failed')) {
-        setVisError(lang === 'fr'
-          ? 'Erreur réseau. Vérifie ta connexion internet.'
-          : 'Network error. Check your internet connection.')
-      } else if (err.message?.includes('JSON') || err.message?.includes('parse')) {
-        setVisError(lang === 'fr'
-          ? 'Erreur de génération IA. Réessaie dans quelques secondes.'
-          : 'AI generation error. Please retry in a few seconds.')
-      } else {
-        setVisError(lang === 'fr'
-          ? `Erreur : ${err.message}. Réessaie.`
-          : `Error: ${err.message}. Please try again.`)
-      }
+      console.error('[vision] ERREUR COMPLÈTE:', err)
+      setVisError(`[DEBUG] ${err.name}: ${err.message}`)
     } finally {
       setVisLoading(false)
     }
