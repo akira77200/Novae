@@ -646,6 +646,12 @@ export default function MonAvenir() {
         contexte: visionForm.contexte,
       }
 
+      console.log('[vision] payload:', {
+        programme: payload.programme,
+        pays: payload.pays_origine,
+        passion_length: payload.passion?.length,
+      })
+
       const res = await authFetch('/api/generer-vision', {
         method: 'POST',
         body: JSON.stringify(payload),
@@ -668,10 +674,23 @@ export default function MonAvenir() {
         setVisError(data.error || (lang === 'fr' ? 'Erreur' : 'Error'))
       }
     } catch (err) {
+      console.error('[genererVision] erreur:', err)
       if (err.message === 'SESSION_MISSING' || err.message === 'SESSION_EXPIRED') {
-        setVisError(lang === 'fr' ? 'Session expirée. Reconnecte-toi.' : 'Session expired. Please reconnect.')
+        setVisError(lang === 'fr'
+          ? 'Session expirée. Déconnecte-toi et reconnecte-toi.'
+          : 'Session expired. Please log out and log back in.')
+      } else if (err.message?.includes('fetch') || err.message?.includes('network') || err.message?.toLowerCase().includes('failed')) {
+        setVisError(lang === 'fr'
+          ? 'Erreur réseau. Vérifie ta connexion internet.'
+          : 'Network error. Check your internet connection.')
+      } else if (err.message?.includes('JSON') || err.message?.includes('parse')) {
+        setVisError(lang === 'fr'
+          ? 'Erreur de génération IA. Réessaie dans quelques secondes.'
+          : 'AI generation error. Please retry in a few seconds.')
       } else {
-        setVisError(lang === 'fr' ? 'Erreur réseau. Réessaie.' : 'Network error. Please try again.')
+        setVisError(lang === 'fr'
+          ? `Erreur : ${err.message}. Réessaie.`
+          : `Error: ${err.message}. Please try again.`)
       }
     } finally {
       setVisLoading(false)

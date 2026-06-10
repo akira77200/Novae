@@ -47,7 +47,7 @@ function CVPreview({ data, lang }) {
   const competencesFin = ai?.competences_triees?.length ? ai.competences_triees : competences
 
   return (
-    <div id="cv-print" style={{ background: '#fff', color: '#1a1a1a', fontFamily: 'Georgia, "Times New Roman", serif', padding: '40px 48px', maxWidth: 794, margin: '0 auto', minHeight: 1123, boxSizing: 'border-box', fontSize: 12, lineHeight: 1.5 }}>
+    <div id="cv-to-print" style={{ background: '#fff', color: '#1a1a1a', fontFamily: 'Georgia, "Times New Roman", serif', padding: '40px 48px', maxWidth: 794, margin: '0 auto', minHeight: 1123, boxSizing: 'border-box', fontSize: 12, lineHeight: 1.5 }}>
 
       {/* En-tête */}
       <div style={{ borderBottom: '2.5px solid #2D6A4F', paddingBottom: 16, marginBottom: 18 }}>
@@ -248,22 +248,58 @@ export default function CV() {
     }
   }
 
-  // ── Téléchargement PDF du CV ──────────────────────────────────
+  // ── Téléchargement PDF du CV via fenêtre dédiée ──────────────
   const telechargerPDF = () => {
-    const style = document.createElement('style')
-    style.innerHTML = `@media print {
-      body > div > *:not(#cv-print-wrapper) { display: none !important; }
-      #cv-print-wrapper { display: block !important; }
-      #cv-to-print { box-shadow: none !important; margin: 0 !important; }
-      .no-print { display: none !important; }
-      @page { size: A4; margin: 0; }
-    }`
-    document.head.appendChild(style)
-    const prev = document.title
-    document.title = (nom || 'CV') + ' — CV'
-    window.print()
-    document.head.removeChild(style)
-    setTimeout(() => { document.title = prev }, 500)
+    const cvElement = document.getElementById('cv-to-print')
+
+    if (!cvElement) {
+      alert(lang === 'fr'
+        ? "Génère d'abord ton CV avant de télécharger."
+        : 'Generate your CV first before downloading.')
+      return
+    }
+
+    const printWindow = window.open('', '_blank')
+
+    printWindow.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${nom || 'CV'} - Novae</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #000; background: #fff; padding: 15mm; }
+    h1 { font-size: 20pt; color: #1B2B1E; margin-bottom: 4px; }
+    h2 { font-size: 11pt; color: #2D6A4F; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #2D6A4F; padding-bottom: 3px; margin: 14px 0 8px; }
+    .poste { color: #2D6A4F; font-size: 12pt; font-weight: 600; }
+    .contact { display: flex; gap: 16px; font-size: 9pt; color: #555; flex-wrap: wrap; margin-top: 6px; }
+    .header { border-bottom: 2px solid #2D6A4F; padding-bottom: 12px; margin-bottom: 16px; }
+    .exp-header { display: flex; justify-content: space-between; }
+    .exp-titre { font-weight: bold; font-size: 10.5pt; }
+    .exp-duree { font-size: 9pt; color: #888; }
+    .exp-entreprise { color: #2D6A4F; font-size: 9.5pt; margin-bottom: 3px; }
+    .bullet { font-size: 9.5pt; color: #444; padding-left: 12px; margin-bottom: 2px; }
+    .competences-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 9.5pt; }
+    .comp-titre { color: #2D6A4F; font-weight: bold; }
+    .comp-liste { color: #444; }
+    .no-print { display: none !important; }
+    @page { size: A4; margin: 0; }
+  </style>
+</head>
+<body>${cvElement.innerHTML}</body>
+</html>`)
+
+    printWindow.document.close()
+
+    printWindow.onload = () => {
+      printWindow.document.querySelectorAll('.no-print').forEach(el => {
+        el.style.display = 'none'
+      })
+      setTimeout(() => {
+        printWindow.print()
+        printWindow.close()
+      }, 500)
+    }
   }
 
   // ── Export PDF guide via print ────────────────────────────────
