@@ -715,7 +715,7 @@ export default function CV() {
                     ? 'Copie ton contenu optimisé ci-dessus, puis choisis un template Canva professionnel gratuit pour créer un CV visuellement parfait.'
                     : 'Copy your optimized content above, then choose a free professional Canva template to create a visually perfect resume.'}
                 </p>
-                <a href="https://www.canva.com/resumes/templates/" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer"
                   style={{ display: 'inline-block', padding: '13px 32px', background: '#fff', borderRadius: 10, color: '#2D6A4F', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
                   {lang === 'fr' ? 'Ouvrir Canva Templates →' : 'Open Canva Templates →'}
                 </a>

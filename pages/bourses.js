@@ -38,7 +38,7 @@ const BOURSES = [
     pays_origine: ['Sénégal', 'Côte d\'Ivoire', 'Mali', 'Cameroun', 'Congo', 'Maroc', 'Tunisie', 'Algérie', 'Madagascar', 'Haiti'],
     description: 'Bourses de mobilité pour étudiants francophones du Sud. Couvre frais de scolarité, billet, allocation mensuelle.',
     description_en: 'Mobility scholarships for Southern Francophone students. Covers tuition, airfare, monthly allowance.',
-    lien: 'https://www.francophonie.org/bourses',
+    lien: 'https://www.francophonie.org',
     deadline: 'Février–Mars',
     icone: '🌍',
     new: false,
@@ -55,7 +55,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Conseil de recherches en sciences humaines du Canada. 17 500 $/an pour la maîtrise, 21 000 $/an pour le doctorat.',
     description_en: 'Social Sciences and Humanities Research Council. $17,500/yr for master\'s, $21,000/yr for doctoral.',
-    lien: 'https://www.sshrc-crsh.gc.ca/funding-financement/programs-programmes/fellowships',
+    lien: 'https://www.sshrc-crsh.gc.ca',
     deadline: 'Décembre',
     icone: '📚',
     new: false,
@@ -90,7 +90,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Pour étudiants étrangers avec moyenne ≥ 3.7/4.3. Réduction automatique des frais supplémentaires.',
     description_en: 'For international students with GPA ≥ 3.7/4.3. Automatic reduction of additional fees.',
-    lien: 'https://www.umontreal.ca/etudes/financer-ses-etudes/bourses',
+    lien: 'https://www.umontreal.ca',
     deadline: 'À l\'admission',
     icone: '🎓',
     new: false,
@@ -107,7 +107,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Pour étudiants internationaux admis en 1re année de baccalauréat. Renouvelable si GPA maintenu.',
     description_en: 'For international students admitted to 1st year bachelor\'s. Renewable if GPA maintained.',
-    lien: 'https://www.mcgill.ca/studentaid/scholarships-bursaries',
+    lien: 'https://www.mcgill.ca',
     deadline: 'Automatique à l\'admission',
     icone: '🏛️',
     new: false,
@@ -124,7 +124,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Couvre TOUT : frais de scolarité, logement, livres et frais accessoires pendant 4 ans. Extrêmement compétitive.',
     description_en: 'Covers EVERYTHING: tuition, accommodation, books and incidentals for 4 years. Extremely competitive.',
-    lien: 'https://future.utoronto.ca/pearson',
+    lien: 'https://www.utoronto.ca',
     deadline: 'Novembre',
     icone: '⭐',
     new: false,
@@ -141,7 +141,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Exemption partielle des frais majorés pour étudiants étrangers. Critères : excellence + implication.',
     description_en: 'Partial exemption from additional international fees. Criteria: excellence + involvement.',
-    lien: 'https://etudier.uqam.ca/bourses',
+    lien: 'https://www.uqam.ca',
     deadline: 'Avril',
     icone: '🎓',
     new: false,
@@ -193,7 +193,7 @@ const BOURSES = [
     pays_origine: ['Sénégal', 'Mali', 'Burkina Faso', 'Niger', 'Guinée'],
     description: 'Via Campus France. Orientation Afrique de l\'Ouest. Ouvert aux études au Canada dans certains cas.',
     description_en: 'Via Campus France. West Africa focus. Open to studies in Canada in certain cases.',
-    lien: 'https://www.campusfrance.org/bourses',
+    lien: 'https://www.campusfrance.org',
     deadline: 'Novembre–Janvier',
     icone: '🌱',
     new: false,
@@ -210,7 +210,7 @@ const BOURSES = [
     pays_origine: ['Sénégal', 'Ghana', 'Ouganda', 'Rwanda', 'Éthiopie', 'Kenya', 'Nigeria', 'Tanzanie'],
     description: 'Pour étudiants africains talentueux ayant un besoin financier. Couvre tout + mentorat + retour au pays.',
     description_en: 'For talented African students with financial need. Covers everything + mentoring + return home.',
-    lien: 'https://mastercardfdn.org/scholars',
+    lien: 'https://mastercardfdn.org',
     deadline: 'Novembre–Décembre',
     icone: '🃏',
     new: true,
@@ -453,8 +453,13 @@ export default function Bourses() {
                         </div>
                         <a href={b.lien} target="_blank" rel="noreferrer"
                           style={{ display: 'inline-block', padding: '9px 20px', background: C.accent, borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>
-                          {lang === 'fr' ? 'Postuler →' : 'Apply →'}
+                          {lang === 'fr' ? 'Voir les conditions →' : 'See eligibility →'}
                         </a>
+                        <p style={{ fontSize: 11, color: C.muted, marginTop: 8, fontStyle: 'italic' }}>
+                          ℹ️ {lang === 'fr'
+                            ? 'Ce lien mène vers la page d\'accueil du site officiel. Recherche le nom de la bourse une fois sur le site.'
+                            : 'This link leads to the official website homepage. Search for the scholarship name once on the site.'}
+                        </p>
                       </div>
                     )}
                   </div>
