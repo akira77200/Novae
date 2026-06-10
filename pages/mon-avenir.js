@@ -677,7 +677,9 @@ export default function MonAvenir() {
       }
 
       if (!res.ok) {
-        setVisError(data.error || (lang === 'fr' ? 'Erreur serveur' : 'Server error'))
+        if (data.raw) console.error('[vision] RAW reçu:', data.raw)
+        if (data.parseError) console.error('[vision] parseError:', data.parseError)
+        setVisError(`[DEBUG API] ${data.error || 'Erreur inconnue'}`)
         return
       }
 
