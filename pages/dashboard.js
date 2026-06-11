@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 import FeedbackSection from '../components/FeedbackSection'
 import { useAuthFetch } from '../lib/useAuthFetch'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ── Widget Bien-être compact ──────────────────────────────────────
 const SCORE_EMOJIS_DB = ['😔', '😕', '😐', '🙂', '😊']
@@ -114,26 +115,26 @@ const getAlertes = (profil, lang) => {
       const ecRAMQ = new Date(arrivee.getTime() + 84 * 86400000)
       const jRAMQ = Math.ceil((ecRAMQ - now) / 86400000)
       if (jRAMQ > 0 && jRAMQ <= 84)
-        alertes.push({ type: jRAMQ <= 14 ? 'urgent' : 'warning', titre: lang === 'fr' ? `RAMQ — ${jRAMQ} jour${jRAMQ > 1 ? 's' : ''} restant${jRAMQ > 1 ? 's' : ''}` : `RAMQ — ${jRAMQ} day${jRAMQ > 1 ? 's' : ''} left`, message: lang === 'fr' ? "Inscris-toi maintenant. Passeport + permis + preuve d'adresse." : 'Register now. Passport + permit + proof of address.', lien: 'https://www.ramq.gouv.qc.ca' })
+        alertes.push({ type: jRAMQ <= 14 ? 'urgent' : 'warning', titre: lang === 'fr' ? `RAMQ — ${jRAMQ} jour${jRAMQ > 1 ? 's' : ''} restant${jRAMQ > 1 ? 's' : ''}` : `RAMQ — ${jRAMQ} day${jRAMQ > 1 ? 's' : ''} left`, message: lang === 'fr' ? "Inscris-toi maintenant. Passeport + permis + preuve d'adresse." : 'Register now. Passport + permit + proof of address.', lien: SAFE_LINKS.ramq.url })
     }
 
     const annee = now.getFullYear()
     const ecImp = new Date(`${annee}-04-30`)
     const jImp = Math.ceil((ecImp - now) / 86400000)
     if (jImp > 0 && jImp <= 75)
-      alertes.push({ type: 'info', titre: lang === 'fr' ? `Impôts — ${jImp} jours avant le 30 avril` : `Taxes — ${jImp} days before April 30`, message: lang === 'fr' ? 'Tu as droit à des crédits. Ne rate pas ça.' : "You have tax credits available. Don't miss them.", lien: 'https://www.canada.ca/fr/agence-revenu.html' })
+      alertes.push({ type: 'info', titre: lang === 'fr' ? `Impôts — ${jImp} jours avant le 30 avril` : `Taxes — ${jImp} days before April 30`, message: lang === 'fr' ? 'Tu as droit à des crédits. Ne rate pas ça.' : "You have tax credits available. Don't miss them.", lien: SAFE_LINKS.arc.url })
   }
   return alertes
 }
 
 // ── Tâches adaptées selon province ───────────────────────────────
 const TACHES_CANADA = [
-  { id:1,  titre:"Obtenir ton NAS (Numéro d'Assurance Sociale)",   titre_en:"Get your SIN (Social Insurance Number)",      cat:'admin',   prio:'critique', lien:'https://www.canada.ca/fr/emploi-developpement-social/services/numero-assurance-sociale.html', icone:'🪪', provinces:null },
+  { id:1,  titre:"Obtenir ton NAS (Numéro d'Assurance Sociale)",   titre_en:"Get your SIN (Social Insurance Number)",      cat:'admin',   prio:'critique', lien:SAFE_LINKS.serviceCanada.url, icone:'🪪', provinces:null },
   { id:2,  titre:"Ouvrir un compte bancaire étudiant",             titre_en:"Open a student bank account",                 cat:'banque',  prio:'critique', lien:null, icone:'🏦', provinces:null },
-  { id:3,  titre:"S'inscrire à la RAMQ (Québec uniquement)",       titre_en:"Register for RAMQ (Quebec only)",             cat:'sante',   prio:'critique', lien:'https://www.ramq.gouv.qc.ca', icone:'🏥', provinces:['QC'] },
-  { id:4,  titre:"S'inscrire à OHIP (Ontario uniquement)",         titre_en:"Register for OHIP (Ontario only)",            cat:'sante',   prio:'critique', lien:'https://www.ontario.ca/fr/page/ohip', icone:'🏥', provinces:['ON'] },
+  { id:3,  titre:"S'inscrire à la RAMQ (Québec uniquement)",       titre_en:"Register for RAMQ (Quebec only)",             cat:'sante',   prio:'critique', lien:SAFE_LINKS.ramq.url, icone:'🏥', provinces:['QC'] },
+  { id:4,  titre:"S'inscrire à OHIP (Ontario uniquement)",         titre_en:"Register for OHIP (Ontario only)",            cat:'sante',   prio:'critique', lien:SAFE_LINKS.ohip.url, icone:'🏥', provinces:['ON'] },
   { id:5,  titre:"Demander une carte de crédit sécurisée",         titre_en:"Apply for a secured credit card",             cat:'banque',  prio:'haute',    lien:null, icone:'💳', provinces:null },
-  { id:6,  titre:"Activer le permis de travail hors campus",       titre_en:"Activate off-campus work permit",             cat:'admin',   prio:'haute',    lien:'https://www.canada.ca/fr/immigration-refugies-citoyennete/services/etudier-canada/permis-travail/hors-campus.html', icone:'📋', provinces:null },
+  { id:6,  titre:"Activer le permis de travail hors campus",       titre_en:"Activate off-campus work permit",             cat:'admin',   prio:'haute',    lien:SAFE_LINKS.ircc.url, icone:'📋', provinces:null },
   { id:7,  titre:"S'inscrire à l'assurance maladie universitaire", titre_en:"Register for university health insurance",     cat:'sante',   prio:'haute',    lien:null, icone:'🩺', provinces:null },
   { id:8,  titre:"Explorer les quartiers et le transport",         titre_en:"Explore neighborhoods and transit",           cat:'logement',prio:'normale',  lien:null, icone:'🗺️', provinces:null },
   { id:9,  titre:"Rejoindre un groupe de compatriotes",            titre_en:"Join a community group",                      cat:'social',  prio:'normale',  lien:null, icone:'🤝', provinces:null },
