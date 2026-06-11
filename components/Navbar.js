@@ -13,7 +13,7 @@ const PILIERS_NAV = [
     colorLight: '#42A5F5',
     paths: ['/dashboard', '/documents', '/echeances', '/arrivee'],
     links: [
-      { href: '/dashboard',  fr: 'Checklist',       en: 'Checklist'      },
+      { href: '/dashboard',  fr: 'Dashboard',       en: 'Dashboard'      },
       { href: '/documents',  fr: '📁 Documents',    en: '📁 Documents'   },
       { href: '/echeances',  fr: '📅 Échéances',    en: '📅 Deadlines'   },
       { href: '/arrivee',    fr: 'Guide d\'arrivée',en: 'Arrival guide'  },
