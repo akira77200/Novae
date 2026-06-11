@@ -79,9 +79,11 @@ export default function Documents() {
   const [ready,    setReady]    = useState(false)
   const [modal,    setModal]    = useState(null) // null | 'add' | doc_object (edit)
   const [form,     setForm]     = useState(FORM_VIDE)
-  const [saving,   setSaving]   = useState(false)
-  const [deleting, setDeleting] = useState(null)
-  const [err,      setErr]      = useState('')
+  const [saving,    setSaving]    = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [deleting,  setDeleting]  = useState(null)
+  const [err,       setErr]       = useState('')
+  const [fichier,   setFichier]   = useState(null)
 
   // ── Charge les documents ──────────────────────────────────────
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function Documents() {
 
   const ouvrirAjout = (prefill = null) => {
     setForm(prefill ? { ...FORM_VIDE, nom: prefill.nom, type: prefill.type } : FORM_VIDE)
-    setErr('')
+    setFichier(null); setErr('')
     setModal('add')
   }
 
@@ -115,33 +117,69 @@ export default function Documents() {
       statut:          doc.statut,
       notes:           doc.notes || '',
     })
-    setErr('')
+    setFichier(null); setErr('')
     setModal(doc)
+  }
+
+  // ── Visualisation via signed URL (Storage) ────────────────────
+  const ouvrirDocument = async (path) => {
+    if (path.startsWith('http')) { window.open(path, '_blank'); return }
+    const { data } = await sb.storage.from('documents').createSignedUrl(path, 3600)
+    if (data?.signedUrl) window.open(data.signedUrl, '_blank')
   }
 
   const sauvegarder = async () => {
     if (!form.nom.trim()) { setErr(lang === 'fr' ? 'Nom requis' : 'Name required'); return }
-    setSaving(true); setErr('')
+    setErr('')
+    const isEdit = modal && modal !== 'add'
+    let fichierPath = form.fichier_url || ''
+
+    // ── Upload fichier si sélectionné ──────────────────────────
+    if (fichier) {
+      if (fichier.size > 10 * 1024 * 1024) {
+        setErr(lang === 'fr' ? 'Fichier trop volumineux (max 10MB).' : 'File too large (max 10MB).')
+        return
+      }
+      setUploading(true); setSaving(true)
+      // Supprimer l'ancien fichier Storage si remplacement
+      if (isEdit && form.fichier_url && !form.fichier_url.startsWith('http')) {
+        await sb.storage.from('documents').remove([form.fichier_url])
+      }
+      const ext  = fichier.name.split('.').pop().toLowerCase()
+      const path = `${user.id}/${Date.now()}.${ext}`
+      const { error: uploadErr } = await sb.storage.from('documents').upload(path, fichier)
+      setUploading(false)
+      if (uploadErr) {
+        setErr(lang === 'fr' ? 'Erreur upload : ' + uploadErr.message : 'Upload error: ' + uploadErr.message)
+        setSaving(false); return
+      }
+      fichierPath = path
+    }
+
+    setSaving(true)
     try {
-      const isEdit = modal && modal !== 'add'
       const url    = isEdit ? `/api/documents/${modal.id}` : '/api/documents'
       const method = isEdit ? 'PATCH' : 'POST'
-      const res  = await authFetch(url, { method, body: JSON.stringify(form) })
+      const res  = await authFetch(url, { method, body: JSON.stringify({ ...form, fichier_url: fichierPath }) })
       const json = await res.json()
       if (!res.ok) { setErr(json.error || 'Erreur'); return }
       if (isEdit) setDocs(p => p.map(d => d.id === modal.id ? json.data : d))
       else        setDocs(p => [...p, json.data])
-      setModal(null)
+      setModal(null); setFichier(null)
     } catch (e) { setErr(e.message) }
     finally { setSaving(false) }
   }
 
-  const supprimer = async (id) => {
+  const supprimer = async (doc) => {
     if (!confirm(lang === 'fr' ? 'Supprimer ce document ?' : 'Delete this document?')) return
-    setDeleting(id)
+    setDeleting(doc.id)
     try {
-      await authFetch(`/api/documents/${id}`, { method: 'DELETE' })
-      setDocs(p => p.filter(d => d.id !== id))
+      // Supprimer le fichier Storage si c'est un path (pas une URL externe)
+      if (doc.fichier_url && !doc.fichier_url.startsWith('http')) {
+        await sb.storage.from('documents').remove([doc.fichier_url])
+      }
+      await authFetch(`/api/documents/${doc.id}`, { method: 'DELETE' })
+      setDocs(p => p.filter(d => d.id !== doc.id))
     } catch (e) { console.error(e) }
     finally { setDeleting(null) }
   }
@@ -238,13 +276,21 @@ export default function Documents() {
               <input type="date" value={form.date_expiration} onChange={e => setForm(p => ({ ...p, date_expiration: e.target.value }))}
                 style={{ width: '100%', padding: '10px 12px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 14, marginBottom: 14, boxSizing: 'border-box', outline: 'none', colorScheme: 'dark' }} />
 
-              {/* Lien fichier */}
+              {/* Fichier */}
               <label style={{ fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 6 }}>
-                {lang === 'fr' ? 'Lien vers le fichier (optionnel)' : 'File link (optional)'}
+                {lang === 'fr' ? 'Fichier (PDF, JPG, PNG — max 10MB)' : 'File (PDF, JPG, PNG — max 10MB)'}
               </label>
-              <input value={form.fichier_url} onChange={e => setForm(p => ({ ...p, fichier_url: e.target.value }))}
-                placeholder="https://drive.google.com/..."
-                style={{ width: '100%', padding: '10px 12px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 14, marginBottom: 14, boxSizing: 'border-box', outline: 'none' }} />
+              {modal !== 'add' && form.fichier_url && !fichier && (
+                <p style={{ fontSize: 12, color: C.success, marginBottom: 8 }}>
+                  📎 {lang === 'fr' ? 'Fichier existant — sélectionne un nouveau pour remplacer' : 'Existing file — select a new one to replace'}
+                </p>
+              )}
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                onChange={e => setFichier(e.target.files[0] || null)}
+                style={{ width: '100%', padding: '9px 12px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 13, marginBottom: 14, boxSizing: 'border-box', cursor: 'pointer' }}
+              />
 
               {/* Notes */}
               <label style={{ fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 6 }}>Notes</label>
@@ -261,7 +307,7 @@ export default function Documents() {
                 </button>
                 <button onClick={sauvegarder} disabled={saving}
                   style={{ flex: 2, padding: '11px', background: saving ? C.border : C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
-                  {saving ? '...' : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
+                  {uploading ? (lang === 'fr' ? '⬆️ Upload...' : '⬆️ Uploading...') : saving ? '...' : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
                 </button>
               </div>
             </div>
@@ -378,17 +424,17 @@ export default function Documents() {
                     </div>
                     <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
                       {doc?.fichier_url && (
-                        <a href={doc.fichier_url} target="_blank" rel="noreferrer"
-                          style={{ padding: '6px 12px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 8, color: C.accent2, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
-                          ↗ {lang === 'fr' ? 'Voir' : 'View'}
-                        </a>
+                        <button onClick={() => ouvrirDocument(doc.fichier_url)}
+                          style={{ padding: '6px 12px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 8, color: C.accent2, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                          📄 {lang === 'fr' ? 'Voir' : 'View'}
+                        </button>
                       )}
                       {doc ? (
                         <>
                           <button onClick={() => ouvrirEdition(doc)} style={{ padding: '6px 12px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 8, color: C.accent2, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                             ✏️
                           </button>
-                          <button onClick={() => supprimer(doc.id)} disabled={deleting === doc.id}
+                          <button onClick={() => supprimer(doc)} disabled={deleting === doc.id}
                             style={{ padding: '6px 10px', background: `${C.error}10`, border: `1px solid ${C.error}25`, borderRadius: 8, color: C.error, fontSize: 12, cursor: deleting === doc.id ? 'not-allowed' : 'pointer', opacity: deleting === doc.id ? 0.5 : 1 }}>
                             🗑
                           </button>
@@ -434,11 +480,13 @@ export default function Documents() {
                         </div>
                         <div style={{ display: 'flex', gap: 8 }}>
                           {doc.fichier_url && (
-                            <a href={doc.fichier_url} target="_blank" rel="noreferrer"
-                              style={{ padding: '6px 12px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 8, color: C.accent2, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>↗</a>
+                            <button onClick={() => ouvrirDocument(doc.fichier_url)}
+                              style={{ padding: '6px 12px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 8, color: C.accent2, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                              📄
+                            </button>
                           )}
                           <button onClick={() => ouvrirEdition(doc)} style={{ padding: '6px 12px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 8, color: C.accent2, fontSize: 12, cursor: 'pointer' }}>✏️</button>
-                          <button onClick={() => supprimer(doc.id)} disabled={deleting === doc.id}
+                          <button onClick={() => supprimer(doc)} disabled={deleting === doc.id}
                             style={{ padding: '6px 10px', background: `${C.error}10`, border: `1px solid ${C.error}25`, borderRadius: 8, color: C.error, fontSize: 12, cursor: deleting === doc.id ? 'not-allowed' : 'pointer', opacity: deleting === doc.id ? 0.5 : 1 }}>🗑</button>
                         </div>
                       </div>
