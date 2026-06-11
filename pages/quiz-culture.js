@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 // ─────────────────────────────────────────────────────────────────
 // DONNÉES DU QUIZ
@@ -233,7 +234,8 @@ const getResultat = (pct, lang) => {
 // PAGE
 // ─────────────────────────────────────────────────────────────────
 export default function QuizCulture() {
-  const { C, lang, user, sb } = useApp()
+  const { C, lang, user } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const [ecran,       setEcran]       = useState('selection') // 'selection'|'quiz'|'resultats'
   const [catId,       setCatId]       = useState(null)
@@ -288,16 +290,12 @@ export default function QuizCulture() {
     try { localStorage.setItem('novae_quiz_scores', JSON.stringify(newScores)) } catch {}
 
     // Sauvegarde Supabase si connecté
-    if (user && sb) {
+    if (user) {
       try {
-        const { data: { session } } = await sb.auth.getSession()
-        if (session?.access_token) {
-          await fetch('/api/quiz/sauvegarder', {
-            method:  'POST',
-            headers: { 'Content-Type':'application/json', Authorization:`Bearer ${session.access_token}` },
-            body:    JSON.stringify({ categorie: catId, score: finalScore, total }),
-          })
-        }
+        await authFetch('/api/quiz/sauvegarder', {
+          method: 'POST',
+          body:   JSON.stringify({ categorie: catId, score: finalScore, total }),
+        })
       } catch {}
     }
     setScore(finalScore)
@@ -360,6 +358,19 @@ export default function QuizCulture() {
             )
           })}
         </div>
+
+        {/* Badge Expert si toutes les catégories ≥ 60% */}
+        {Object.keys(QUIZ_DATA).every(k => (scores[k] || 0) >= 60) && (
+          <div style={{ marginTop:24, padding:'18px 22px', background:'linear-gradient(135deg,#34D39910,#52B78810)', border:'1px solid #34D39940', borderRadius:14, textAlign:'center' }}>
+            <p style={{ fontSize:28, marginBottom:8 }}>🏆</p>
+            <p style={{ fontSize:16, fontWeight:800, color:'#34D399', marginBottom:6 }}>
+              {lang==='fr'?'Expert culture canadienne !':'Canadian Culture Expert!'}
+            </p>
+            <p style={{ fontSize:13, color:C.muted }}>
+              {lang==='fr'?'Tu as complété les 4 catégories. Partage ce badge avec ta communauté !':'You completed all 4 categories. Share this badge with your community!'}
+            </p>
+          </div>
+        )}
 
         <p style={{ fontSize:12, color:C.muted, textAlign:'center', marginTop:24 }}>
           {lang==='fr'?'Tes scores sont sauvegardés automatiquement.':'Your scores are saved automatically.'}
