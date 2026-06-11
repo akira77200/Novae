@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ── Urgence selon jours restants ─────────────────────────────────
 const getUrgence = (jours) => {
@@ -46,7 +48,7 @@ const genererEcheancesAuto = (profile, lang) => {
       type: 'urgent',
       titre:   lang === 'fr' ? 'Inscription RAMQ' : 'RAMQ Registration',
       message: lang === 'fr' ? "Délai de 3 mois après l'arrivée. Ne pas rater cette fenêtre." : '3-month window after arrival. Do not miss it.',
-      lien: 'https://www.ramq.gouv.qc.ca',
+      lien: SAFE_LINKS.ramq.url,
       date_echeance: ramq.toISOString().split('T')[0],
       auto: true,
     })
@@ -59,7 +61,7 @@ const genererEcheancesAuto = (profile, lang) => {
     type: 'warning',
     titre:   lang === 'fr' ? 'Déclaration de revenus' : 'Tax Return',
     message: lang === 'fr' ? 'Date limite : 30 avril. Même sans revenus, déclare pour tes crédits.' : 'Deadline: April 30. File even without income to get your credits.',
-    lien: 'https://www.canada.ca/fr/agence-revenu/services/impot/particuliers/faire-impots.html',
+    lien: SAFE_LINKS.arc.url,
     date_echeance: impots.toISOString().split('T')[0],
     auto: true,
   })
@@ -74,7 +76,7 @@ const genererEcheancesAuto = (profile, lang) => {
         type: 'warning',
         titre:   lang === 'fr' ? "Renouvellement permis d'études" : 'Study Permit Renewal',
         message: lang === 'fr' ? 'Commence la demande de renouvellement 90 jours avant expiration.' : 'Start renewal application 90 days before expiry.',
-        lien: 'https://www.canada.ca/fr/immigration-refugies-citoyennete/services/etudier-canada/permis-etudes/prolonger.html',
+        lien: SAFE_LINKS.ircc.url,
         date_echeance: alertePermis.toISOString().split('T')[0],
         auto: true,
       })
@@ -89,7 +91,7 @@ const genererEcheancesAuto = (profile, lang) => {
       type: 'info',
       titre:   lang === 'fr' ? 'Obtenir ton NAS' : 'Get your SIN',
       message: lang === 'fr' ? 'Numéro d\'Assurance Sociale — nécessaire pour travailler et ouvrir un compte.' : 'Social Insurance Number — needed to work and open a bank account.',
-      lien: 'https://www.canada.ca/fr/emploi-developpement-social/services/numero-assurance-sociale.html',
+      lien: SAFE_LINKS.serviceCanada.url,
       date_echeance: nasDate.toISOString().split('T')[0],
       auto: true,
     })
@@ -111,6 +113,7 @@ const FILTRES = [
 
 export default function Echeances() {
   const { C, lang, user, profile, loading: authLoading, sb } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const hasFetched = useRef(false)
   const [echeances,  setEcheances]  = useState([])
@@ -129,15 +132,9 @@ export default function Echeances() {
     charger()
   }, [authLoading, user?.id])
 
-  const getToken = async () => {
-    const { data } = await sb.auth.getSession()
-    return data.session?.access_token
-  }
-
   const charger = async () => {
     try {
-      const token = await getToken()
-      const res   = await fetch('/api/echeances', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await authFetch('/api/echeances')
       const { data } = await res.json()
       setEcheances(data || [])
     } catch (e) { console.error(e) }
@@ -145,20 +142,15 @@ export default function Echeances() {
   }
 
   const sauvegarder = async () => {
-    if (!form.titre.trim())        { setErr(lang === 'fr' ? 'Titre requis' : 'Title required'); return }
-    if (!form.date_echeance)       { setErr(lang === 'fr' ? 'Date requise' : 'Date required');  return }
+    if (!form.titre.trim())  { setErr(lang === 'fr' ? 'Titre requis' : 'Title required'); return }
+    if (!form.date_echeance) { setErr(lang === 'fr' ? 'Date requise' : 'Date required');  return }
     setSaving(true); setErr('')
     try {
-      const token  = await getToken()
       const isEdit = modal && modal !== 'add'
       const url    = isEdit ? `/api/echeances/${modal.id}` : '/api/echeances'
       const method = isEdit ? 'PATCH' : 'POST'
-      const res    = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify(form),
-      })
-      const json = await res.json()
+      const res    = await authFetch(url, { method, body: JSON.stringify(form) })
+      const json   = await res.json()
       if (!res.ok) { setErr(json.error || 'Erreur'); return }
       if (isEdit) setEcheances(p => p.map(e => e.id === modal.id ? json.data : e))
       else        setEcheances(p => [...p, json.data].sort((a, b) => new Date(a.date_echeance) - new Date(b.date_echeance)))
@@ -168,14 +160,9 @@ export default function Echeances() {
   }
 
   const toggleComplete = async (item) => {
-    if (item.auto) return // les auto ne sont pas persistées
+    if (item.auto) return
     try {
-      const token = await getToken()
-      const res   = await fetch(`/api/echeances/${item.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ complete: !item.complete }),
-      })
+      const res  = await authFetch(`/api/echeances/${item.id}`, { method: 'PATCH', body: JSON.stringify({ complete: !item.complete }) })
       const json = await res.json()
       if (res.ok) setEcheances(p => p.map(e => e.id === item.id ? json.data : e))
     } catch (e) { console.error(e) }
@@ -185,8 +172,7 @@ export default function Echeances() {
     if (!confirm(lang === 'fr' ? 'Supprimer cette échéance ?' : 'Delete this deadline?')) return
     setDeleting(id)
     try {
-      const token = await getToken()
-      await fetch(`/api/echeances/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+      await authFetch(`/api/echeances/${id}`, { method: 'DELETE' })
       setEcheances(p => p.filter(e => e.id !== id))
     } catch (e) { console.error(e) }
     finally { setDeleting(null) }
