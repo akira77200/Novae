@@ -1,9 +1,10 @@
 // pages/day-to-day.js
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 import FeedbackSection from '../components/FeedbackSection'
+import SAFE_LINKS from '../lib/safeLinks'
 
 const MapView = dynamic(() => import('../components/MapView'), {
   ssr: false,
@@ -292,19 +293,49 @@ const CHECKLIST_BAIL = [
 ]
 
 const CATEGORIES = [
-  { id: 'halal',      fr: 'Épiceries halal',    en: 'Halal groceries',    icon: '🥩', color: '#52B788', query: (c) => `halal+grocery+${c}` },
+  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#F97316', query: null },
+  { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#34D399', query: null },
+  { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#A78BFA', query: null },
+  { id: 'halal',      fr: 'Épiceries halal',     en: 'Halal groceries',    icon: '🥩', color: '#52B788', query: (c) => `halal+grocery+${c}` },
   { id: 'hair',       fr: 'Coiffeurs afro',      en: 'Afro hairdressers',  icon: '💈', color: '#B5838D', query: (c) => `afro+hair+salon+${c}` },
   { id: 'exotic',     fr: 'Épiceries exotiques', en: 'Exotic stores',      icon: '🛒', color: '#FBBF24', query: (c) => `african+caribbean+grocery+${c}` },
   { id: 'prices',     fr: 'Prix comparés',       en: 'Price comparison',   icon: '💰', color: '#60A5FA', query: null },
-  { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#34D399', query: null },
-  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#F97316', query: null },
-  { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#A78BFA', query: null },
 ]
 
+const detectStudyCity = (universite) => {
+  if (!universite) return null
+  const u = universite.toLowerCase()
+  if (u.includes('montréal') || u.includes('montreal') || u.includes('udem') || u.includes('concordia') || u.includes('polytechnique') || u.includes('uqam')) return 'Montréal'
+  if (u.includes('toronto') || u.includes('ryerson') || u.includes('york') || u.includes('ocad')) return 'Toronto'
+  if (u.includes('british columbia') || u.includes('ubc') || u.includes('sfu') || u.includes('simon fraser')) return 'Vancouver'
+  if (u.includes('ottawa') || u.includes('carleton')) return 'Ottawa'
+  if (u.includes('calgary') || u.includes('mount royal')) return 'Calgary'
+  if (u.includes('laval') || u.includes('ulaval')) return 'Québec'
+  return null
+}
+
+const safeLien = (url) => {
+  if (url && url.startsWith('https://www.kijiji.ca'))
+    return SAFE_LINKS.kijiji.url + url.slice('https://www.kijiji.ca'.length)
+  return url
+}
+
 export default function DayToDay() {
-  const { C, lang, theme } = useApp()
+  const { C, lang, theme, profile } = useApp()
   const [city,    setCity]   = useState('Montreal')
-  const [active,  setActive] = useState('halal')
+  const [active,  setActive] = useState('logement')
+
+  const [studyCitySuggestion, setStudyCitySuggestion] = useState('')
+  useEffect(() => {
+    try {
+      const progId = localStorage.getItem('novae_programme_choisi')
+      if (!progId && !profile?.universite) return
+      const studyCity = detectStudyCity(profile?.universite || '')
+      const currentCity = (profile?.ville_accueil || '').split(',')[0].trim()
+      if (studyCity && currentCity && !currentCity.toLowerCase().includes(studyCity.toLowerCase()))
+        setStudyCitySuggestion(studyCity)
+    } catch {}
+  }, [profile])
   const cat    = CATEGORIES.find(c => c.id === active)
   const prices = PRICES[city] || PRICES.Montreal
 
@@ -344,9 +375,25 @@ export default function DayToDay() {
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
           🌆 {lang === 'fr' ? 'Vie quotidienne' : 'Daily Life'}
         </h1>
-        <p style={{ fontSize: 15, color: C.muted, marginBottom: 28, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 15, color: C.muted, marginBottom: studyCitySuggestion ? 16 : 28, lineHeight: 1.6 }}>
           {lang === 'fr' ? 'Trouve ce dont tu as besoin autour de toi.' : 'Find what you need around you.'}
         </p>
+
+        {/* Suggestion ville d'études */}
+        {studyCitySuggestion && (
+          <div style={{ padding: '11px 16px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 16 }}>📍</span>
+            <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0 }}>
+              {lang === 'fr'
+                ? `Tu étudies à ${studyCitySuggestion} ? Découvre le coût de la vie là-bas →`
+                : `Studying in ${studyCitySuggestion}? Discover the cost of living there →`}
+            </p>
+            <button onClick={() => { setBudgetVille(Object.keys(COUT_VILLES).find(k => COUT_VILLES[k].label === studyCitySuggestion) || 'Montreal'); setActive('budget') }}
+              style={{ fontSize: 12, color: C.accent2, fontWeight: 600, background: 'transparent', border: `1px solid ${C.accent}30`, borderRadius: 7, padding: '5px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              {lang === 'fr' ? 'Voir →' : 'View →'}
+            </button>
+          </div>
+        )}
 
         {/* City selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
@@ -627,7 +674,7 @@ export default function DayToDay() {
                           </p>
                         </div>
                         {/* CTA */}
-                        <a href={opt.lien} target="_blank" rel="noreferrer"
+                        <a href={safeLien(opt.lien)} target="_blank" rel="noreferrer"
                           style={{ display:'inline-block', padding:'8px 18px', background:'#F97316', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
                           {lang==='fr'?'Chercher →':'Search →'}
                         </a>
