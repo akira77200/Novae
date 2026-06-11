@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 import FeedbackSection from '../components/FeedbackSection'
 
 const TYPES = [
@@ -38,7 +39,8 @@ const CONSEILS = {
 }
 
 export default function Entrevue() {
-  const { C, lang, profile, sb, userPlan, planLimits } = useApp()
+  const { C, lang, profile, userPlan, planLimits } = useApp()
+  const { authFetch } = useAuthFetch()
 
   // ── Étape 1 : config ─────────────────────────────────────────
   const [etape,    setEtape]    = useState('config')  // 'config' | 'session'
@@ -56,6 +58,23 @@ export default function Entrevue() {
   const bottomRef = useRef(null)
   const inputRef  = useRef(null)
   const abortRef  = useRef(null)
+
+  // ── Programme choisi (Mon Avenir) ───────────────────────────────
+  const [progSujet, setProgSujet] = useState('')
+  useEffect(() => {
+    try {
+      const pid = localStorage.getItem('novae_programme_choisi')
+      if (!pid) return
+      const MAP = {
+        'genie-logiciel': 'informatique', 'dev-web': 'informatique', 'data-science': 'informatique',
+        'ia-machine-learning': 'informatique', 'design-ux': 'design', 'finance': 'finance',
+        'comptabilite': 'finance', 'sante': 'santé', 'medecine': 'santé', 'infirmier': 'santé',
+        'droit': 'droit', 'commerce': 'commerce', 'marketing': 'marketing', 'agriculture': 'agriculture',
+      }
+      const match = Object.entries(MAP).find(([k]) => pid.includes(k))
+      if (match) setProgSujet(match[1])
+    } catch {}
+  }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -92,24 +111,10 @@ export default function Entrevue() {
 
     abortRef.current = new AbortController()
     try {
-      const { data: { session } } = await sb.auth.getSession()
-      const token = session?.access_token
-      if (!token) {
-        setMessages(p => {
-          const copy = [...p]
-          copy[assistantIdx] = { role: 'assistant', content: lang === 'fr' ? 'Connecte-toi pour utiliser cette fonctionnalité.' : 'Sign in to use this feature.' }
-          return copy
-        })
-        return
-      }
-
-      const res = await fetch('/api/entrevue', {
-        method:  'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:  `Bearer ${token}`,
-        },
-        body: JSON.stringify({ messages: history, type: typeId, cible: cibleOverride || cible, lang }),
+      const res = await authFetch('/api/entrevue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history, type: typeId, cible: cibleOverride || cible, lang, ...(progSujet ? { secteur: progSujet } : {}) }),
         signal: abortRef.current.signal,
       })
       const reader  = res.body.getReader()
@@ -138,7 +143,14 @@ export default function Entrevue() {
       }
       const nb = (msgHistory || messages).filter(m => m.role === 'user').length + 1
       setNbEchanges(nb)
-      if (nb >= 6) setTermine(true)
+      if (nb >= 6) {
+        setTermine(true)
+        try {
+          const hist = JSON.parse(localStorage.getItem('novae_entrevue_historique') || '[]')
+          hist.unshift({ date: new Date().toISOString(), type: typeId, cible: cibleOverride || cible, echanges: nb })
+          localStorage.setItem('novae_entrevue_historique', JSON.stringify(hist.slice(0, 10)))
+        } catch {}
+      }
     } catch (e) {
       if (e.name !== 'AbortError') {
         setMessages(p => {
@@ -170,6 +182,21 @@ export default function Entrevue() {
             ? 'Entraîne-toi avec un recruteur IA avant ton vrai entretien. Feedback en temps réel.'
             : 'Practice with an AI interviewer before your real interview. Real-time feedback.'}
         </p>
+
+        {/* Bannière Mon Avenir */}
+        {!progSujet && (
+          <div style={{ padding: '12px 16px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 10, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 16 }}>💡</span>
+            <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0 }}>
+              {lang === 'fr'
+                ? 'Définis ton orientation pour obtenir des questions adaptées à ton secteur.'
+                : 'Set your orientation to get questions tailored to your sector.'}
+            </p>
+            <a href="/mon-avenir" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              {lang === 'fr' ? 'Mon Avenir →' : 'My Future →'}
+            </a>
+          </div>
+        )}
 
         {/* Message limite plan gratuit */}
         {userPlan === 'gratuit' && (
