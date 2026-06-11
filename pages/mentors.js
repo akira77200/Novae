@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Navbar from '../components/Navbar'
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 const VILLES_CHIPS = ['Toutes', 'Montréal', 'Ottawa', 'Toronto', 'Vancouver', 'Calgary', 'Québec', 'Edmonton', 'Winnipeg']
 const LANGUES_OPTS = [
@@ -22,6 +23,7 @@ const NIVEAUX = [
 
 export default function Mentors() {
   const { C, t, lang, user, profile, loading: authLoading, sb } = useApp()
+  const { authFetch } = useAuthFetch()
   const router = useRouter()
   const hasFetched = useRef(false)
 
@@ -45,6 +47,24 @@ export default function Mentors() {
 
   // ── Bio développée ──────────────────────────────────────────────
   const [expanded, setExpanded] = useState({})
+
+  // ── Programme choisi (Mon Avenir) ────────────────────────────────
+  const [progSujet, setProgSujet] = useState('')
+  useEffect(() => {
+    try {
+      const pid = localStorage.getItem('novae_programme_choisi')
+      if (!pid) return
+      const MAP = {
+        'genie-logiciel': 'Emploi', 'dev-web': 'Emploi', 'data-science': 'Emploi',
+        'ia-machine-learning': 'Emploi', 'marketing': 'Emploi', 'design-ux': 'Emploi',
+        'agriculture': 'Emploi', 'finance': 'Finance', 'comptabilite': 'Finance',
+        'sante': 'Santé', 'medecine': 'Santé', 'infirmier': 'Santé',
+        'droit': 'Administration', 'commerce': 'Administration',
+      }
+      const match = Object.entries(MAP).find(([k]) => pid.includes(k))
+      if (match) setProgSujet(match[1])
+    } catch {}
+  }, [])
 
   // ── Chargement ──────────────────────────────────────────────────
   useEffect(() => {
@@ -94,7 +114,7 @@ export default function Mentors() {
     try {
       const prix = duree === 30 ? (mentor.tarif_30min || 1499) / 100 : (mentor.tarif_45min || 1999) / 100
       const sujetFinal = sujet.trim() || (mentor.sujets?.[0] || 'Général')
-      const res  = await fetch('/api/sessions/creer', {
+      const res  = await authFetch('/api/sessions/creer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mentorId: mentor.id, mentorNom: mentor.full_name, sujet: sujetFinal, dureeMinutes: duree, montantCAD: prix }),
@@ -235,6 +255,21 @@ export default function Mentors() {
           </a>
         </div>
 
+        {/* ── BANNIÈRE MON AVENIR ── */}
+        {!progSujet && (
+          <div style={{ padding: '12px 16px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 10, marginBottom: 18, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 16 }}>💡</span>
+            <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0 }}>
+              {lang === 'fr'
+                ? 'Découvre ton orientation idéale pour trouver des mentors dans ton secteur.'
+                : 'Discover your ideal orientation to find mentors in your sector.'}
+            </p>
+            <a href="/mon-avenir" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              {lang === 'fr' ? 'Mon Avenir →' : 'My Future →'}
+            </a>
+          </div>
+        )}
+
         {/* ── FILTRES ── */}
         <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '16px 18px', marginBottom: 24 }}>
 
@@ -362,6 +397,17 @@ export default function Mentors() {
             <a href="/auth/register-mentor" style={{ padding: '11px 24px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
               {lang === 'fr' ? 'Devenir le premier mentor →' : 'Become the first mentor →'}
             </a>
+            {progSujet && (
+              <p style={{ fontSize: 13, color: C.muted, marginTop: 16 }}>
+                {lang === 'fr'
+                  ? `Pas encore de mentor en "${progSujet}". Tu veux devenir le premier ? →`
+                  : `No mentor in "${progSujet}" yet. Want to be the first? →`}
+                {' '}
+                <a href="/parrainage" style={{ color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+                  {lang === 'fr' ? 'Programme de parrainage' : 'Referral program'}
+                </a>
+              </p>
+            )}
           </div>
         )}
 
@@ -400,6 +446,11 @@ export default function Mentors() {
                         <p style={{ fontWeight: 700, fontSize: 16, color: C.text }}>{m.full_name}</p>
                         {m.note_moyenne > 0 && (
                           <span style={{ fontSize: 13, color: C.warning }}>★ {Number(m.note_moyenne).toFixed(1)}</span>
+                        )}
+                        {progSujet && (m.sujets || []).includes(progSujet) && (
+                          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#52B78820', color: '#52B788', border: '1px solid #52B78840', fontWeight: 600 }}>
+                            🎯 {lang === 'fr' ? 'Recommandé pour toi' : 'Recommended for you'}
+                          </span>
                         )}
                         {m.avis_count > 0 && (
                           <span style={{ fontSize: 12, color: C.muted }}>({m.avis_count} {lang === 'fr' ? 'avis' : 'reviews'})</span>
