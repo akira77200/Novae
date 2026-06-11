@@ -137,7 +137,7 @@ function CVPreview({ data, lang }) {
 
 // ── Page principale ───────────────────────────────────────────────
 export default function CV() {
-  const { C, lang, profile, loading: authLoading, mounted, planLimits, userPlan } = useApp()
+  const { C, lang, profile, sb, user, loading: authLoading, mounted, planLimits, userPlan } = useApp()
   const { authFetch } = useAuthFetch()
 
   const [etape,        setEtape]       = useState(1)
@@ -164,6 +164,12 @@ export default function CV() {
   const [experiences,  setExperiences] = useState([EXP_VIDE()])
   const [expModal,     setExpModal]    = useState(null) // null | 'new' | exp_id (edit)
   const [expForm,      setExpForm]     = useState(FORM_VIDE())
+
+  // ── Programme choisi (Mon Avenir) ───────────────────────────────
+  const [progChoisi, setProgChoisi] = useState(null)
+  useEffect(() => {
+    try { setProgChoisi(localStorage.getItem('novae_programme_choisi')) } catch {}
+  }, [])
 
   // Pré-remplir depuis le profil Novae
   useEffect(() => {
@@ -232,6 +238,9 @@ export default function CV() {
       setAiData(json.data)
       setCopied(null)
       setEtape(4)
+      if (sb && user) {
+        sb.from('profiles').update({ cv_data: json.data }).eq('id', user.id).catch(() => {})
+      }
       try { localStorage.setItem('novae_cv_nom', nom || 'cv') } catch {}
       try {
         const cvCount = parseInt(localStorage.getItem('novae_cv_count') || '0')
@@ -456,6 +465,21 @@ export default function CV() {
           )}
         </div>
 
+        {/* ── BANNIÈRE MON AVENIR ── */}
+        {!progChoisi && (
+          <div style={{ padding: '12px 16px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 16 }}>💡</span>
+            <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0 }}>
+              {lang === 'fr'
+                ? 'Définis ton orientation pour personnaliser ton CV selon ton secteur cible.'
+                : 'Set your orientation to tailor your resume to your target sector.'}
+            </p>
+            <a href="/mon-avenir" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              {lang === 'fr' ? 'Mon Avenir →' : 'My Future →'}
+            </a>
+          </div>
+        )}
+
         {/* ── STEPPER ── */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 32, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 4 }}>
           {ETAPES.map(e => (
@@ -638,6 +662,9 @@ export default function CV() {
 
             {/* Barre d'actions */}
             <div className="no-print" style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+              <button onClick={() => setEtape(1)} style={{ padding: '9px 16px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 9, color: C.muted, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                ✏️ {lang === 'fr' ? 'Modifier mes infos' : 'Edit my info'}
+              </button>
               <button onClick={() => setEtape(3)} style={{ padding: '9px 16px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 9, color: C.muted, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 ← {lang === 'fr' ? 'Modifier' : 'Edit'}
               </button>
