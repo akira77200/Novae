@@ -45,7 +45,7 @@ const PILIERS_NAV = [
       { href: '/mentors',  fr: 'Mentors',       en: 'Mentors'         },
       { href: '/cv',       fr: 'CV canadien',   en: 'Canadian Resume' },
       { href: '/entrevue', fr: 'Entrevue IA',   en: 'Mock Interview'  },
-      { href: '/reseau',   fr: 'Mon Réseau',    en: 'My Network'      },
+      { href: '/reseau',   fr: '🎯 Mon Réseau', en: '🎯 My Network'  },
     ],
   },
   {
