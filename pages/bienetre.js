@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ── Semaine courante (lundi) ─────────────────────────────────────
 const getSemaineLundi = () => {
@@ -47,7 +49,8 @@ const ENCOURAGEMENTS_EN = [
 ]
 
 export default function Bienetre() {
-  const { C, lang, user, loading: authLoading, sb } = useApp()
+  const { C, lang, user, loading: authLoading } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const hasFetched = useRef(false)
   const [historique,   setHistorique]   = useState([])
@@ -64,21 +67,15 @@ export default function Bienetre() {
   const semaineCourante = getSemaineLundi()
 
   useEffect(() => {
-    if (authLoading || !sb || !user) return
+    if (authLoading || !user) return
     if (hasFetched.current) return
     hasFetched.current = true
     charger()
   }, [authLoading, user?.id])
 
-  const getToken = async () => {
-    const { data } = await sb.auth.getSession()
-    return data.session?.access_token
-  }
-
   const charger = async () => {
     try {
-      const token = await getToken()
-      const res   = await fetch('/api/bienetre/historique', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await authFetch('/api/bienetre/historique')
       const { data } = await res.json()
       const hist = data || []
       setHistorique(hist)
@@ -98,12 +95,10 @@ export default function Bienetre() {
     if (score === null) return
     setSaving(true)
     try {
-      const token  = await getToken()
       const humStr = humeurs.join(' · ')
-      const res    = await fetch('/api/bienetre/creer', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ score, humeur: humStr, note }),
+      const res    = await authFetch('/api/bienetre/creer', {
+        method: 'POST',
+        body:   JSON.stringify({ score, humeur: humStr, note }),
       })
       const json = await res.json()
       if (res.ok) {
@@ -128,6 +123,9 @@ export default function Bienetre() {
     { txt_fr: "🤗 Les débuts sont difficiles — tu n'es pas seul(e)", txt_en: "🤗 Beginnings are hard — you're not alone", color: '#F87171' }
 
   const besoinRessources = score !== null && score <= 2
+
+  const derniers3        = historique.slice(-3)
+  const troisSemBas      = derniers3.length === 3 && derniers3.every(h => h.score <= 2)
 
   if (!user && !authLoading) return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'system-ui,sans-serif' }}>
@@ -215,7 +213,7 @@ export default function Bienetre() {
                   {lang === 'fr' ? '💙 Tu n\'es pas seul(e). Voici des ressources :' : '💙 You\'re not alone. Here are some resources:'}
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <a href="https://www.torontodistresscentre.com" target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>
+                  <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>
                     📞 Distress Centre Canada : 1-800-268-9688
                   </a>
                   <a href="/mentors" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>
@@ -264,7 +262,7 @@ export default function Bienetre() {
               {lang === 'fr' ? '💙 Tu n\'es pas seul(e). Des ressources pour toi :' : '💙 You\'re not alone. Resources for you:'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <a href="https://www.torontodistresscentre.com" target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
+              <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
               <a href="/mentors" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}</a>
             </div>
           </div>
@@ -317,11 +315,33 @@ export default function Bienetre() {
             </p>
             {moyenne !== null && moyenne < 3 && (
               <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 7 }}>
-                <a href="https://www.torontodistresscentre.com" target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
+                <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
                 <a href="/mentors" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}</a>
                 <a href="/parrainage" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Trouver un parrain →' : 'Find a peer mentor →'}</a>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ═══ Suggestion mentor si score bas 3 semaines consécutives ═══ */}
+        {troisSemBas && (
+          <div style={{ padding: '16px 18px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 14, marginBottom: 24 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 8 }}>
+              💚 {lang === 'fr' ? 'As-tu pensé à parler à quelqu\'un ?' : 'Have you thought about talking to someone?'}
+            </p>
+            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 14 }}>
+              {lang === 'fr'
+                ? 'Parfois, échanger avec quelqu\'un qui est passé par là aide énormément. Les mentors Novae sont là pour ça — gratuitement, et sans jugement.'
+                : 'Sometimes, talking to someone who\'s been through it helps a lot. Novae mentors are here for that — for free, without judgment.'}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <a href="/mentors" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+                🤝 {lang === 'fr' ? 'Parler à un mentor Novae →' : 'Talk to a Novae mentor →'}
+              </a>
+              <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.muted, textDecoration: 'none' }}>
+                📞 {lang === 'fr' ? 'Distress Centre Canada : 1-800-268-9688' : 'Distress Centre Canada: 1-800-268-9688'}
+              </a>
+            </div>
           </div>
         )}
 
