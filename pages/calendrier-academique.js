@@ -2,6 +2,8 @@
 import { useState, useMemo } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ─────────────────────────────────────────────────────────────────
 // DONNÉES
@@ -183,9 +185,12 @@ const detectUniv = (profile) => {
 // PAGE
 // ─────────────────────────────────────────────────────────────────
 export default function CalendrierAcademique() {
-  const { C, lang, user, profile, sb } = useApp()
+  const { C, lang, user, profile } = useApp()
+  const { authFetch } = useAuthFetch()
 
-  const defaultUniv  = detectUniv(profile) || 'uottawa'
+  const detectedUniv = detectUniv(profile)
+  const defaultUniv  = detectedUniv || 'uottawa'
+  const unknownUniv  = profile?.universite && !detectedUniv
   const [univId,     setUnivId]     = useState(defaultUniv)
   const [filtre,     setFiltre]     = useState('tous')
   const [ajouts,     setAjouts]     = useState(new Set())  // ids d'événements ajoutés
@@ -215,12 +220,8 @@ export default function CalendrierAcademique() {
     if (!user || ajouts.has(evt.date + evt.titre.fr)) return
     setAjoutEnCours(evt.date + evt.titre.fr)
     try {
-      const { data: { session } } = await sb.auth.getSession()
-      if (!session?.access_token) return
-      const cfg = TYPE_CFG[evt.type]
-      const res = await fetch('/api/echeances', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+      const res = await authFetch('/api/echeances', {
+        method: 'POST',
         body: JSON.stringify({
           type:          evt.type === 'examen' ? 'urgent' : evt.type === 'important' ? 'warning' : 'info',
           titre:         `${univ.nom} · ${evt.titre[lang] || evt.titre.fr}`,
@@ -264,6 +265,27 @@ export default function CalendrierAcademique() {
             ))}
           </div>
         </div>
+
+        {/* Université inconnue — calendrier générique Québec/Ontario */}
+        {unknownUniv && (
+          <div style={{ marginBottom:20, padding:'12px 16px', background:`${C.accent}08`, border:`1px solid ${C.accent}25`, borderRadius:12, display:'flex', alignItems:'flex-start', gap:12, flexWrap:'wrap' }}>
+            <div style={{ flex:1 }}>
+              <p style={{ fontSize:13, fontWeight:700, color:C.accent2, marginBottom:4 }}>
+                🏫 {lang==='fr' ? `"${profile.universite}" non reconnue` : `"${profile.universite}" not recognized`}
+              </p>
+              <p style={{ fontSize:12, color:C.muted, lineHeight:1.6 }}>
+                {lang==='fr'
+                  ? 'Nous affichons le calendrier générique. Sélectionne l\'université la plus proche ci-dessus ou consulte le site officiel.'
+                  : 'We\'re showing the closest calendar. Select the nearest university above or check the official website.'}
+              </p>
+            </div>
+            <a href={`https://www.google.com/search?q=${encodeURIComponent((profile.universite || '') + ' calendrier académique')}`}
+              target="_blank" rel="noreferrer"
+              style={{ padding:'7px 14px', background:C.accent, borderRadius:8, color:'#fff', fontWeight:600, fontSize:12, textDecoration:'none', flexShrink:0 }}>
+              {lang==='fr' ? 'Chercher →' : 'Search →'}
+            </a>
+          </div>
+        )}
 
         {/* Compte à rebours prochain événement */}
         {prochainImportant && (
