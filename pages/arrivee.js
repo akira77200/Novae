@@ -100,7 +100,10 @@ export default function Arrivee() {
   const col   = PHASES.find(p => p.id === phase)?.color || C.accent2
   const isFr  = lang === 'fr'
 
+  const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
+
   const telechargerGuide = (type) => {
+    // window.open synchrone — premier appel, compatible Safari/iOS
     const url = `/api/guides/generer?type=${type}&lang=${lang}&print=1`
     window.open(url, '_blank')
   }
@@ -218,6 +221,13 @@ export default function Arrivee() {
                 >
                   📄 {isFr ? 'Ouvrir le guide PDF' : 'Open PDF guide'}
                 </button>
+                {isIOS && (
+                  <p style={{ fontSize: 11, color: C.muted, marginTop: 6, lineHeight: 1.5 }}>
+                    💡 {isFr
+                      ? 'Sur iPhone : autorise les popups si demandé (Réglages → Safari → Bloquer les fenêtres publicitaires → Désactiver pour ce site)'
+                      : 'On iPhone: allow popups if prompted (Settings → Safari → Block Pop-ups → Disable for this site)'}
+                  </p>
+                )}
               </div>
             ))}
           </div>

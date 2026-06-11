@@ -259,17 +259,30 @@ export default function CV() {
 
   // ── Téléchargement PDF du CV via fenêtre dédiée ──────────────
   const telechargerPDF = () => {
-    const cvElement = document.getElementById('cv-to-print')
-
-    if (!cvElement) {
+    // 1. Ouvrir immédiatement (synchrone — requis par Safari/iOS)
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) {
       alert(lang === 'fr'
-        ? "Génère d'abord ton CV avant de télécharger."
-        : 'Generate your CV first before downloading.')
+        ? "Ton navigateur a bloqué l'ouverture. Autorise les popups pour ce site."
+        : 'Your browser blocked the popup. Allow popups for this site.')
       return
     }
 
-    const printWindow = window.open('', '_blank')
+    // 2. Loader temporaire
+    printWindow.document.write(
+      '<html><body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;"><p>Génération en cours...</p></body></html>'
+    )
 
+    // 3. Vérifier l'élément (synchrone)
+    const cvElement = document.getElementById('cv-to-print')
+    if (!cvElement) {
+      printWindow.close()
+      alert(lang === 'fr' ? "Génère d'abord ton CV." : 'Generate your CV first.')
+      return
+    }
+
+    // 4. Réécrire le contenu final
+    printWindow.document.open()
     printWindow.document.write(`<!DOCTYPE html>
 <html>
 <head>
@@ -310,6 +323,8 @@ export default function CV() {
       }, 500)
     }
   }
+
+  const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   // ── Export PDF guide via print ────────────────────────────────
   const imprimerGuide = () => {
@@ -791,10 +806,19 @@ export default function CV() {
                   <p style={{ fontSize: 14, fontWeight: 700, color: C.text, margin: 0 }}>
                     D — {lang === 'fr' ? 'Ton CV — Aperçu' : 'Your Resume — Preview'}
                   </p>
-                  <button onClick={telechargerPDF}
-                    style={{ padding: '9px 20px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
-                    📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
-                  </button>
+                  <div>
+                    <button onClick={telechargerPDF}
+                      style={{ padding: '9px 20px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+                      📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+                    </button>
+                    {isIOS && (
+                      <p style={{ fontSize: 11, color: C.muted, marginTop: 6, lineHeight: 1.5, maxWidth: 260 }}>
+                        💡 {lang === 'fr'
+                          ? 'Sur iPhone : autorise les popups si demandé (Réglages → Safari → Bloquer les fenêtres publicitaires → Désactiver pour ce site)'
+                          : 'On iPhone: allow popups if prompted (Settings → Safari → Block Pop-ups → Disable for this site)'}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <div id="cv-print-wrapper" style={{ overflowX: 'auto', borderRadius: 10, border: `1px solid ${C.border}` }}>
                   <CVPreview

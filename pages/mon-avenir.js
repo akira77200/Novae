@@ -692,16 +692,35 @@ export default function MonAvenir() {
     }
   }
 
+  const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
+
   const telechargerVisionPDF = () => {
+    // 1. Ouvrir immédiatement (synchrone — requis par Safari/iOS)
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) {
+      alert(lang === 'fr'
+        ? "Ton navigateur a bloqué l'ouverture. Autorise les popups pour ce site."
+        : 'Your browser blocked the popup. Allow popups for this site.')
+      return
+    }
+
+    // 2. Loader temporaire
+    printWindow.document.write(
+      '<html><body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;"><p>Génération en cours...</p></body></html>'
+    )
+
+    // 3. Vérifier l'élément (synchrone)
     const visionElement = document.getElementById('vision-print')
     if (!visionElement) {
+      printWindow.close()
       alert(lang === 'fr'
-        ? 'Génère d\'abord ta vision avant de télécharger.'
+        ? "Génère d'abord ta vision avant de télécharger."
         : 'Generate your vision first before downloading.')
       return
     }
 
-    const printWindow = window.open('', '_blank')
+    // 4. Réécrire le contenu final
+    printWindow.document.open()
     printWindow.document.write(`<!DOCTYPE html>
 <html>
 <head>
@@ -746,6 +765,7 @@ export default function MonAvenir() {
       setTimeout(() => printWindow.print(), 500)
     }
   }
+
 
   // ── Style helpers ──────────────────────────────────────────────
   const chip = (active, color = C.accent) => ({
@@ -1440,10 +1460,17 @@ export default function MonAvenir() {
                   <span style={{ color:C.border }}>·</span>
                   <span style={{ fontSize:14, color:C.muted }}>🌍 {visionPays}</span>
                   {vision && !visLoading && (
-                    <div style={{ marginLeft:'auto', display:'flex', gap:8, flexWrap:'wrap' }}>
+                    <div style={{ marginLeft:'auto', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:4 }}>
                       <button onClick={telechargerVisionPDF} style={{ padding:'8px 16px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:8, color:C.accent2, fontWeight:600, fontSize:13, cursor:'pointer' }}>
                         📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
                       </button>
+                      {isIOS && (
+                        <p style={{ fontSize:11, color:C.muted, lineHeight:1.5, maxWidth:260, textAlign:'right' }}>
+                          💡 {lang === 'fr'
+                            ? 'Sur iPhone : autorise les popups si demandé (Réglages → Safari → Bloquer les fenêtres publicitaires → Désactiver pour ce site)'
+                            : 'On iPhone: allow popups if prompted (Settings → Safari → Block Pop-ups → Disable for this site)'}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
