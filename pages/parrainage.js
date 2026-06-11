@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 // ── Helpers ───────────────────────────────────────────────────────
 const moisDepuis = (dateStr) => {
@@ -32,6 +33,7 @@ const DISPOS = [
 // ── Page ──────────────────────────────────────────────────────────
 export default function Parrainage() {
   const { C, lang, user, profile, loading: authLoading, sb } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const hasFetched = useRef(false)
   const [onglet,     setOnglet]     = useState('trouver')
@@ -54,17 +56,22 @@ export default function Parrainage() {
 
   const moisArriv = moisDepuis(profile?.date_arrivee)
 
+  const [premiereVisite, setPremiereVisite] = useState(false)
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem('novae_parrainage_visite')) {
+        setPremiereVisite(true)
+        localStorage.setItem('novae_parrainage_visite', '1')
+      }
+    } catch {}
+  }, [])
+
   useEffect(() => {
     if (authLoading || !sb) return
     if (hasFetched.current) return
     hasFetched.current = true
     charger()
   }, [authLoading, user?.id])
-
-  const getToken = async () => {
-    const { data } = await sb.auth.getSession()
-    return data.session?.access_token
-  }
 
   const charger = async () => {
     try {
@@ -107,11 +114,9 @@ export default function Parrainage() {
     if (!modalParrain || sending) return
     setSending(true)
     try {
-      const token = await getToken()
-      const res   = await fetch('/api/parrainages/demander', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ parrain_id: modalParrain.user_id, message: msgModal }),
+      const res = await authFetch('/api/parrainages/demander', {
+        method: 'POST',
+        body:   JSON.stringify({ parrain_id: modalParrain.user_id, message: msgModal }),
       })
       if (res.ok) {
         setSentTo(p => new Set([...p, modalParrain.id]))
@@ -126,11 +131,9 @@ export default function Parrainage() {
     if (!sujets.length || saving) return
     setSaving(true)
     try {
-      const token = await getToken()
-      const res   = await fetch('/api/parrainages/devenir', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body:    JSON.stringify({ sujets, disponibilite: dispo }),
+      const res = await authFetch('/api/parrainages/devenir', {
+        method: 'POST',
+        body:   JSON.stringify({ sujets, disponibilite: dispo }),
       })
       if (res.ok) { setSavedOk(true); setDejaParrain(true) }
     } catch (e) { console.error(e) }
@@ -204,6 +207,30 @@ export default function Parrainage() {
             ? 'Des nouveaux arrivants qui ont vécu ce que tu vis, prêts à t\'aider gratuitement.'
             : 'Newcomers who lived what you\'re living, ready to help you for free.'}
         </p>
+
+        {/* ── Comment ça marche (première visite) ── */}
+        {premiereVisite && (
+          <div style={{ padding: '20px 22px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 14, marginBottom: 24 }}>
+            <p style={{ fontSize: 15, fontWeight: 800, color: C.text, marginBottom: 16 }}>
+              {lang === 'fr' ? '💡 Comment ça marche ?' : '💡 How does it work?'}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { n: '1', fr: 'Trouve un parrain qui vit dans ta ville ou a étudié dans ton université.', en: 'Find a peer mentor who lives in your city or studied at your university.' },
+                { n: '2', fr: 'Envoie-lui un message de présentation — explique ton projet et tes besoins.', en: 'Send them an intro message — explain your project and needs.' },
+                { n: '3', fr: 'Échangez en ligne ou en personne. C\'est gratuit, bénévole, sans engagement.', en: 'Connect online or in person. Free, volunteer-based, no commitment.' },
+              ].map(s => (
+                <div key={s.n} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>{s.n}</div>
+                  <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6, margin: 0, paddingTop: 4 }}>{lang === 'fr' ? s.fr : s.en}</p>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setPremiereVisite(false)} style={{ marginTop: 14, background: 'transparent', border: 'none', color: C.muted, fontSize: 12, cursor: 'pointer', padding: 0 }}>
+              {lang === 'fr' ? 'Masquer' : 'Hide'}
+            </button>
+          </div>
+        )}
 
         {/* Onglets */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: 4 }}>
