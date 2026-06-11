@@ -11,22 +11,8 @@ export default async function handler(req, res) {
   const ip = getIP(req)
   if (!checkRateLimit(ip, 10)) return res.status(429).json({ error: 'Trop de requêtes.' })
 
-  // Auth avec fallback referer (même pattern que generer-vision)
-  const referer = req.headers.referer || req.headers.origin || ''
-  const isFromNovae = (
-    referer.includes('netlify.app') ||
-    referer.includes('localhost') ||
-    referer.includes('novae')
-  )
-
   const authResult = await requireAuth(req)
-
-  if (!authResult.ok && !isFromNovae) {
-    console.log('[cv/generer] accès refusé — pas de token ni de referer valide')
-    return res.status(403).json({ error: 'Accès refusé.' })
-  }
-
-  console.log('[cv/generer] accès:', authResult.ok ? `user ${authResult.user?.id}` : `referer fallback`)
+  if (!authResult.ok) return res.status(401).json({ error: authResult.error })
 
   const { profil, experiences, formation, competences, langues, poste_cible } = req.body
   if (!profil?.nom) return res.status(400).json({ error: 'profil.nom requis' })
