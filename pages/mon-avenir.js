@@ -533,6 +533,7 @@ export default function MonAvenir() {
   const [visError,    setVisError]    = useState('')
   const [reponses,    setReponses]    = useState({}) // kept for vision tab
   const [visionForm,  setVisionForm]  = useState({ passion:'', defi:'', impact:'', contexte:'' })
+  const [visionCache, setVisionCache] = useState(null)
 
   // ── Orientation conversationnelle (T7) ────────────────────────
   const [orientStep,    setOrientStep]    = useState(0)  // 0-4
@@ -614,6 +615,15 @@ export default function MonAvenir() {
     finally { clearInterval(msgTimer) }
   }
 
+  useEffect(() => {
+    if (tab === 'vision' && !vision) {
+      try {
+        const raw = localStorage.getItem('novae_vision_complete')
+        if (raw) setVisionCache(JSON.parse(raw))
+      } catch {}
+    }
+  }, [tab])
+
   const refaireOrientation = () => {
     setOrientPhase('questions'); setOrientStep(0); setOrientAnalyse(null); setOrientErr('')
     setOrientData({ matieres:[], matieresTexte:'', activite:'', activiteTexte:'', risque:'', risqueTexte:'', horizon:'', horizonTexte:'', pays: orientData.pays, paysAutre2:'', budget:'' })
@@ -646,40 +656,23 @@ export default function MonAvenir() {
         contexte: visionForm.contexte,
       }
 
-      // Diagnostic session
-      const { data: sessionCheck } = await sb.auth.getSession()
-      console.log('[vision-debug] user:', profile?.email)
-      console.log('[vision-debug] session:', sessionCheck?.session ? 'présente' : 'ABSENTE')
-      console.log('[vision-debug] token début:', sessionCheck?.session?.access_token?.substring(0, 30) || 'AUCUN TOKEN')
-      console.log('[vision] payload:', {
-        programme: payload.programme,
-        pays: payload.pays_origine,
-        passion_length: payload.passion?.length,
-      })
-
       const res = await authFetch('/api/generer-vision', {
         method: 'POST',
         body: JSON.stringify(payload),
       })
 
-      console.log('[vision] response status:', res.status)
-      console.log('[vision] response ok:', res.ok)
-
       const rawText = await res.text()
-      console.log('[vision] response text (300 char):', rawText.substring(0, 300))
 
       let data
       try {
         data = JSON.parse(rawText)
       } catch (parseErr) {
-        setVisError(`[DEBUG] Réponse non-JSON: ${rawText.substring(0, 200)}`)
+        setVisError(lang === 'fr' ? `Réponse inattendue: ${rawText.substring(0, 200)}` : `Unexpected response: ${rawText.substring(0, 200)}`)
         return
       }
 
       if (!res.ok) {
-        if (data.raw) console.error('[vision] RAW reçu:', data.raw)
-        if (data.parseError) console.error('[vision] parseError:', data.parseError)
-        setVisError(`[DEBUG API] ${data.error || 'Erreur inconnue'}`)
+        setVisError(data.error || (lang === 'fr' ? 'Erreur inconnue' : 'Unknown error'))
         return
       }
 
@@ -693,8 +686,7 @@ export default function MonAvenir() {
         setVisError(data.error || (lang === 'fr' ? 'Erreur' : 'Error'))
       }
     } catch (err) {
-      console.error('[vision] ERREUR COMPLÈTE:', err)
-      setVisError(`[DEBUG] ${err.name}: ${err.message}`)
+      setVisError(`${err.name}: ${err.message}`)
     } finally {
       setVisLoading(false)
     }
@@ -762,6 +754,11 @@ export default function MonAvenir() {
     fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.15s',
   })
 
+  const selectProg = (id) => {
+    setSelectedProg(id)
+    try { localStorage.setItem('novae_programme_choisi', id) } catch {}
+  }
+
   const TABS = [
     { id:'orientation', fr:'🎯 Mon orientation', en:'🎯 My Path'    },
     { id:'secteur',     fr:'📚 Mon secteur',     en:'📚 My Sector'  },
@@ -796,6 +793,24 @@ export default function MonAvenir() {
         <p style={{ fontSize:15, color:C.muted, marginBottom:28, lineHeight:1.6 }}>
           {lang === 'fr' ? 'Découvre les programmes qui te correspondent et construis ta vision.' : 'Discover the programs that match you and build your vision.'}
         </p>
+
+        {/* Stepper de progression */}
+        <div style={{ display:'flex', alignItems:'center', gap:4, marginBottom:16, flexWrap:'nowrap', overflowX:'auto' }}>
+          {TABS.map((tb, i) => {
+            const done = tb.id === 'orientation' ? orientPhase === 'results' : tb.id === 'secteur' ? !!selectedProg : !!vision
+            const active = tab === tb.id
+            return [
+              i > 0 && <div key={`sep${i}`} style={{ flex:1, minWidth:16, height:2, background: done ? C.accent+'50' : C.border, borderRadius:2 }} />,
+              <button key={tb.id} onClick={() => setTab(tb.id)}
+                style={{ display:'flex', alignItems:'center', gap:5, padding:'5px 11px', borderRadius:20, border:`1px solid ${active ? C.accent+'60' : done ? C.accent+'30' : C.border}`, background: active ? `${C.accent}15` : done ? `${C.accent}08` : 'transparent', color: active ? C.accent2 : done ? C.accent2 : C.muted, fontSize:12, fontWeight: active ? 700 : 500, cursor:'pointer', whiteSpace:'nowrap', transition:'all 0.15s', flexShrink:0 }}>
+                <span style={{ width:16, height:16, borderRadius:'50%', border:`1.5px solid ${active ? C.accent : done ? C.accent+'60' : C.border}`, display:'flex', alignItems:'center', justifyContent:'center', background: done ? `${C.accent}15` : 'transparent', fontSize:9, flexShrink:0 }}>
+                  {done ? '✓' : i + 1}
+                </span>
+                {lang === 'fr' ? tb.fr : tb.en}
+              </button>
+            ]
+          })}
+        </div>
 
         {/* Tabs — style identique dashboard.js */}
         <div style={{ display:'flex', gap:4, marginBottom:28, background:C.surface, border:`1px solid ${C.border}`, borderRadius:12, padding:4 }}>
@@ -1254,7 +1269,7 @@ export default function MonAvenir() {
                     <p style={{ fontSize:12, fontWeight:700, color:C.muted, marginBottom:8 }}>{lang === 'fr' ? label.fr : label.en}</p>
                     <div style={{ display:'flex', gap:7, flexWrap:'wrap' }}>
                       {progs.map(p => (
-                        <button key={p.id} onClick={() => setSelectedProg(p.id)} style={{ ...chip(selectedProg === p.id), padding:'6px 13px', fontSize:12 }}>
+                        <button key={p.id} onClick={() => selectProg(p.id)} style={{ ...chip(selectedProg === p.id), padding:'6px 13px', fontSize:12 }}>
                           {p.emoji} {p.nom[lang]}
                         </button>
                       ))}
@@ -1432,6 +1447,30 @@ export default function MonAvenir() {
                     </div>
                   )}
                 </div>
+
+                {/* Cache recovery banner */}
+                {visionCache && !vision && !visLoading && (
+                  <div style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', padding:'14px 18px', background:`${C.accent}10`, border:`1px solid ${C.accent}30`, borderRadius:12, marginBottom:16 }}>
+                    <div style={{ flex:1, minWidth:180 }}>
+                      <p style={{ fontSize:13, fontWeight:700, color:C.accent2, marginBottom:2 }}>
+                        💾 {lang === 'fr' ? 'Vision précédente disponible' : 'Previous vision available'}
+                      </p>
+                      <p style={{ fontSize:12, color:C.muted }}>
+                        {lang === 'fr' ? `Générée le ${new Date(visionCache.date).toLocaleDateString('fr-CA')}` : `Generated on ${new Date(visionCache.date).toLocaleDateString('en-CA')}`}
+                      </p>
+                    </div>
+                    <div style={{ display:'flex', gap:8 }}>
+                      <button onClick={() => { setVision(visionCache.vision); setVisionCache(null) }}
+                        style={{ padding:'8px 16px', background:C.accent, border:'none', borderRadius:8, color:'#fff', fontWeight:600, fontSize:12, cursor:'pointer' }}>
+                        {lang === 'fr' ? '↺ Reprendre' : '↺ Restore'}
+                      </button>
+                      <button onClick={() => { setVisionCache(null); try { localStorage.removeItem('novae_vision_complete') } catch {} }}
+                        style={{ padding:'7px 11px', background:'transparent', border:`1px solid ${C.border}`, borderRadius:8, color:C.muted, fontSize:12, cursor:'pointer' }}>
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* ── FORMULAIRE (si pas de vision et pas en chargement) ── */}
                 {!vision && !visLoading && (
