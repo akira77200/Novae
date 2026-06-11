@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ─────────────────────────────────────────────────────────────────
 // DONNÉES COMPARATIF
@@ -113,7 +114,7 @@ const PASSERELLES = [
     emoji: '🔄',
     desc:  { fr: 'Tu peux faire 2 ans au cégep + 2 ans à l\'université = baccalauréat complet en 4 ans. Économise 1 an et réduit les frais.', en: 'You can do 2 years at CEGEP + 2 years at university = full bachelor\'s in 4 years. Saves 1 year and reduces costs.' },
     exemples: ['Techniques informatiques → Génie logiciel UdeM', 'Techniques de gestion → Commerce HEC', 'Soins infirmiers → Sciences infirmières Laval'],
-    lien: { fr: 'https://www.fedecegeps.qc.ca/dec-bac', en: 'https://www.fedecegeps.qc.ca/dec-bac' },
+    lien: { fr: SAFE_LINKS.fedecegeps.url, en: SAFE_LINKS.fedecegeps.url },
     couleur: '#60A5FA',
   },
   {
@@ -121,7 +122,7 @@ const PASSERELLES = [
     emoji: '🎓',
     desc:  { fr: 'La plupart des universités ontariennes acceptent les étudiants des collèges avec une bonne moyenne. 1–2 années de crédit reconnues.', en: 'Most Ontario universities accept college students with good grades. 1–2 years of credits recognized.' },
     exemples: ['Seneca College → York University (Business)', 'Humber College → Guelph University', 'George Brown → Ryerson (maintenant Toronto Metropolitan)'],
-    lien: { fr: 'https://ontransfer.ca', en: 'https://ontransfer.ca' },
+    lien: { fr: SAFE_LINKS.ontransfer.url, en: SAFE_LINKS.ontransfer.url },
     couleur: '#52B788',
   },
   {
@@ -129,7 +130,7 @@ const PASSERELLES = [
     emoji: '⚡',
     desc:  { fr: 'L\'Attestation d\'Études Collégiales (AEC) est une formation courte (6–18 mois) très ciblée. Parfaite si tu as déjà un diplôme et veux te reconvertir rapidement au Canada.', en: 'The AEC is a short program (6–18 months) highly targeted to the job market. Perfect if you already have a degree and want to quickly pivot in Canada.' },
     exemples: ['AEC en développement web (6 mois)', 'AEC en soins de santé (12 mois)', 'AEC en comptabilité et gestion (18 mois)'],
-    lien: { fr: 'https://www.inforoutefpt.org/prog', en: 'https://www.inforoutefpt.org/prog' },
+    lien: { fr: SAFE_LINKS.inforoutefpt.url, en: SAFE_LINKS.inforoutefpt.url },
     couleur: '#F97316',
   },
 ]
@@ -444,6 +445,49 @@ export default function OrientationType() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Tableau comparatif des coûts */}
+            <div style={{ marginTop: 24, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, overflow: 'hidden' }}>
+              <div style={{ padding: '14px 18px', borderBottom: `1px solid ${C.border}` }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: C.text }}>
+                  💰 {lang === 'fr' ? 'Comparaison des coûts : université directe vs passerelle' : 'Cost comparison: direct university vs bridge path'}
+                </p>
+              </div>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                  <thead>
+                    <tr>
+                      {[
+                        { label: lang === 'fr' ? 'Parcours' : 'Path', align: 'left' },
+                        { label: lang === 'fr' ? 'Durée' : 'Duration', align: 'center' },
+                        { label: lang === 'fr' ? 'Frais de scolarité' : 'Tuition', align: 'center', color: '#60A5FA' },
+                        { label: lang === 'fr' ? 'Économie estimée' : 'Est. savings', align: 'center', color: '#34D399' },
+                      ].map((h, i) => (
+                        <th key={i} style={{ padding: '10px 14px', background: C.surface2, border: `1px solid ${C.border}`, textAlign: h.align, color: h.color || C.muted, fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                          {h.label}
+                        </th>
+                      ))}
+                    </tr>
+                    {[
+                      { path: { fr: '🏛️ Université directe (baccalauréat 4 ans)', en: '🏛️ Direct university (4-year bachelor\'s)' }, duree: '4 ans', frais: '25 000–50 000 $/an', savings: '—', highlight: false },
+                      { path: { fr: '🔄 DEC-BAC Québec (cégep 2 ans + univ. 2 ans)', en: '🔄 DEC-BAC Quebec (CEGEP 2yr + univ. 2yr)' }, duree: '4 ans', frais: '8 000 + 22 000 $/an', savings: lang === 'fr' ? '~30 000 $ sur 4 ans' : '~$30,000 over 4 years', highlight: true },
+                      { path: { fr: '🎓 Collège → Transfert (Ontario)', en: '🎓 College → Transfer (Ontario)' }, duree: '3–4 ans', frais: '12 000 + 35 000 $/an', savings: lang === 'fr' ? '~15 000 $ sur le parcours' : '~$15,000 over the path', highlight: true },
+                      { path: { fr: '⚡ AEC seule (6–18 mois)', en: '⚡ AEC only (6–18 months)' }, duree: '6–18 mois', frais: '5 000–12 000 $ total', savings: lang === 'fr' ? '~80 000 $ vs univ. 4 ans' : '~$80,000 vs 4yr univ.', highlight: false },
+                    ].map((r, i) => (
+                      <tr key={i} style={{ background: r.highlight ? `${C.accent}05` : 'transparent' }}>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, color: C.text, fontWeight: r.highlight ? 600 : 400 }}>{r.path[lang] || r.path.fr}</td>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center', color: C.muted }}>{r.duree}</td>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center', color: '#60A5FA', fontWeight: 500 }}>{r.frais}</td>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center', color: r.savings === '—' ? C.muted : '#34D399', fontWeight: r.savings !== '—' ? 600 : 400 }}>{r.savings}</td>
+                      </tr>
+                    ))}
+                  </thead>
+                </table>
+              </div>
+              <p style={{ fontSize: 11, color: C.muted, padding: '10px 14px', fontStyle: 'italic' }}>
+                * {lang === 'fr' ? 'Estimations 2025 pour étudiants internationaux. Varie selon l\'université et le programme.' : '* 2025 estimates for international students. Varies by university and program.'}
+              </p>
             </div>
 
             {/* Conseil final */}
