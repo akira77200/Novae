@@ -61,7 +61,16 @@ export default function Todo() {
       <main style={{ maxWidth: 660, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>📋 {t.todo_title}</h1>
-        {!user && <p style={{ fontSize: 13, color: C.muted, marginBottom: 24 }}>
+        <p style={{ fontSize: 13, color: C.muted, marginBottom: 4, lineHeight: 1.6 }}>
+          {lang === 'fr'
+            ? 'Tes tâches personnelles libres — pour le suivi officiel d\'immigration, consulte ton'
+            : 'Your personal free-form tasks — for official immigration tracking, check your'}
+          {' '}
+          <a href="/dashboard" style={{ color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+            {lang === 'fr' ? 'Dashboard' : 'Dashboard'}
+          </a>.
+        </p>
+        {!user && <p style={{ fontSize: 13, color: C.muted, marginBottom: 24, marginTop: 8 }}>
           {lang === 'fr' ? 'Connecte-toi pour sauvegarder tes tâches.' : 'Sign in to save your tasks.'}
         </p>}
 
