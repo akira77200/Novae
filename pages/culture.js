@@ -153,6 +153,19 @@ export default function Culture() {
           </a>
         </div>
 
+        {/* ── Intégration communautaire ── */}
+        <div style={{ marginTop: 24, padding: '14px 18px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 20 }}>🤝</span>
+          <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0, lineHeight: 1.6 }}>
+            {lang === 'fr'
+              ? 'Tu veux approfondir ton intégration avec quelqu\'un qui a vécu ce que tu vis ?'
+              : 'Want to deepen your integration with someone who\'s been through it?'}
+          </p>
+          <a href="/parrainage" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            {lang === 'fr' ? 'Trouver un parrain →' : 'Find a peer mentor →'}
+          </a>
+        </div>
+
         <FeedbackSection page="culture" />
       </main>
     </div>
