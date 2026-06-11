@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react'
 import Navbar from '../components/Navbar'
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ─────────────────────────────────────────────────────────────────
 // DONNÉES BOURSES
@@ -21,7 +22,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Pour les étudiants au doctorat d\'exception. Critères : leadership, excellence académique, potentiel de recherche.',
     description_en: 'For exceptional doctoral students. Criteria: leadership, academic excellence, research potential.',
-    lien: 'https://vanier.gc.ca',
+    lien: SAFE_LINKS.vanier.url,
     deadline: 'Novembre (variable)',
     icone: '🍁',
     new: false,
@@ -38,7 +39,7 @@ const BOURSES = [
     pays_origine: ['Sénégal', 'Côte d\'Ivoire', 'Mali', 'Cameroun', 'Congo', 'Maroc', 'Tunisie', 'Algérie', 'Madagascar', 'Haiti'],
     description: 'Bourses de mobilité pour étudiants francophones du Sud. Couvre frais de scolarité, billet, allocation mensuelle.',
     description_en: 'Mobility scholarships for Southern Francophone students. Covers tuition, airfare, monthly allowance.',
-    lien: 'https://www.francophonie.org',
+    lien: SAFE_LINKS.oif.url,
     deadline: 'Février–Mars',
     icone: '🌍',
     new: false,
@@ -55,7 +56,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Conseil de recherches en sciences humaines du Canada. 17 500 $/an pour la maîtrise, 21 000 $/an pour le doctorat.',
     description_en: 'Social Sciences and Humanities Research Council. $17,500/yr for master\'s, $21,000/yr for doctoral.',
-    lien: 'https://www.sshrc-crsh.gc.ca',
+    lien: SAFE_LINKS.crsh.url,
     deadline: 'Décembre',
     icone: '📚',
     new: false,
@@ -72,7 +73,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Pour les sciences naturelles et génie. BESC-M : 17 300 $/an. BESC-D : 21 000 $/an.',
     description_en: 'For natural sciences and engineering. CGSD-M: $17,300/yr. CGSD-D: $21,000/yr.',
-    lien: 'https://www.nserc-crsng.gc.ca',
+    lien: SAFE_LINKS.crsng.url,
     deadline: 'Décembre',
     icone: '🔬',
     new: false,
@@ -90,7 +91,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Pour étudiants étrangers avec moyenne ≥ 3.7/4.3. Réduction automatique des frais supplémentaires.',
     description_en: 'For international students with GPA ≥ 3.7/4.3. Automatic reduction of additional fees.',
-    lien: 'https://www.umontreal.ca',
+    lien: SAFE_LINKS.udem.url,
     deadline: 'À l\'admission',
     icone: '🎓',
     new: false,
@@ -107,7 +108,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Pour étudiants internationaux admis en 1re année de baccalauréat. Renouvelable si GPA maintenu.',
     description_en: 'For international students admitted to 1st year bachelor\'s. Renewable if GPA maintained.',
-    lien: 'https://www.mcgill.ca',
+    lien: SAFE_LINKS.mcgill.url,
     deadline: 'Automatique à l\'admission',
     icone: '🏛️',
     new: false,
@@ -124,7 +125,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Couvre TOUT : frais de scolarité, logement, livres et frais accessoires pendant 4 ans. Extrêmement compétitive.',
     description_en: 'Covers EVERYTHING: tuition, accommodation, books and incidentals for 4 years. Extremely competitive.',
-    lien: 'https://www.utoronto.ca',
+    lien: SAFE_LINKS.utoronto.url,
     deadline: 'Novembre',
     icone: '⭐',
     new: false,
@@ -141,7 +142,7 @@ const BOURSES = [
     pays_origine: null,
     description: 'Exemption partielle des frais majorés pour étudiants étrangers. Critères : excellence + implication.',
     description_en: 'Partial exemption from additional international fees. Criteria: excellence + involvement.',
-    lien: 'https://www.uqam.ca',
+    lien: SAFE_LINKS.uqam.url,
     deadline: 'Avril',
     icone: '🎓',
     new: false,
@@ -159,7 +160,7 @@ const BOURSES = [
     pays_origine: ['Maroc'],
     description: 'Bourses pour Marocains souhaitant se spécialiser à l\'étranger. Couvre frais et allocation.',
     description_en: 'Scholarships for Moroccans pursuing specialization abroad. Covers fees and allowance.',
-    lien: 'https://www.amci.ma',
+    lien: SAFE_LINKS.amci.url,
     deadline: 'Variable selon pays',
     icone: '🇲🇦',
     new: false,
@@ -176,7 +177,7 @@ const BOURSES = [
     pays_origine: ['Algérie'],
     description: 'Programme national d\'excellence pour les meilleurs diplômés algériens. Formation à l\'étranger prise en charge.',
     description_en: 'National excellence program for top Algerian graduates. Full study abroad funding.',
-    lien: 'https://www.mesrs.dz',
+    lien: SAFE_LINKS.mesrs.url,
     deadline: 'Mars–Avril',
     icone: '🇩🇿',
     new: false,
@@ -193,7 +194,7 @@ const BOURSES = [
     pays_origine: ['Sénégal', 'Mali', 'Burkina Faso', 'Niger', 'Guinée'],
     description: 'Via Campus France. Orientation Afrique de l\'Ouest. Ouvert aux études au Canada dans certains cas.',
     description_en: 'Via Campus France. West Africa focus. Open to studies in Canada in certain cases.',
-    lien: 'https://www.campusfrance.org',
+    lien: SAFE_LINKS.campusFrance.url,
     deadline: 'Novembre–Janvier',
     icone: '🌱',
     new: false,
@@ -210,7 +211,7 @@ const BOURSES = [
     pays_origine: ['Sénégal', 'Ghana', 'Ouganda', 'Rwanda', 'Éthiopie', 'Kenya', 'Nigeria', 'Tanzanie'],
     description: 'Pour étudiants africains talentueux ayant un besoin financier. Couvre tout + mentorat + retour au pays.',
     description_en: 'For talented African students with financial need. Covers everything + mentoring + return home.',
-    lien: 'https://mastercardfdn.org',
+    lien: SAFE_LINKS.mastercardFoundation.url,
     deadline: 'Novembre–Décembre',
     icone: '🃏',
     new: true,
@@ -224,22 +225,22 @@ const UNIVERSITES = [
   // QC
   { id: 1,  nom: 'Université de Montréal',     sigle: 'UdeM', ville: 'Montréal', province: 'QC', langue: 'fr', rang_qs: 141, type: 'public', frais_intl: 22000, programmes: ['Médecine','Droit','Informatique','Gestion','Sciences','Architecture'], lien: 'https://www.umontreal.ca', logo: '🔵' },
   { id: 2,  nom: 'Université McGill',           sigle: 'McGill', ville: 'Montréal', province: 'QC', langue: 'en', rang_qs: 46,  type: 'public', frais_intl: 25000, programmes: ['Médecine','Droit','Ingénierie','Gestion','Sciences','Architecture'], lien: 'https://www.mcgill.ca', logo: '🔴' },
-  { id: 3,  nom: 'Université Concordia',        sigle: 'Concordia', ville: 'Montréal', province: 'QC', langue: 'en', rang_qs: 521, type: 'public', frais_intl: 20000, programmes: ['Commerce','Arts','Informatique','Design','Ingénierie','Communication'], lien: 'https://www.concordia.ca', logo: '🟡' },
+  { id: 3,  nom: 'Université Concordia',        sigle: 'Concordia', ville: 'Montréal', province: 'QC', langue: 'en', rang_qs: 521, type: 'public', frais_intl: 20000, programmes: ['Commerce','Arts','Informatique','Design','Ingénierie','Communication'], lien: SAFE_LINKS.concordia.url, logo: '🟡' },
   { id: 4,  nom: 'Université du Québec à Montréal', sigle: 'UQAM', ville: 'Montréal', province: 'QC', langue: 'fr', rang_qs: null, type: 'public', frais_intl: 16000, programmes: ['Communication','Sciences sociales','Arts','Gestion','Environnement'], lien: 'https://www.uqam.ca', logo: '🟢' },
-  { id: 5,  nom: 'Université Laval',             sigle: 'Laval', ville: 'Québec', province: 'QC', langue: 'fr', rang_qs: 412, type: 'public', frais_intl: 17000, programmes: ['Médecine','Droit','Ingénierie','Sciences','Agriculture'], lien: 'https://www.ulaval.ca', logo: '🔵' },
-  { id: 6,  nom: 'Université de Sherbrooke',     sigle: 'UdeS', ville: 'Sherbrooke', province: 'QC', langue: 'fr', rang_qs: null, type: 'public', frais_intl: 16500, programmes: ['Médecine','Ingénierie','Droit','Gestion','Éducation'], lien: 'https://www.usherbrooke.ca', logo: '🟣' },
+  { id: 5,  nom: 'Université Laval',             sigle: 'Laval', ville: 'Québec', province: 'QC', langue: 'fr', rang_qs: 412, type: 'public', frais_intl: 17000, programmes: ['Médecine','Droit','Ingénierie','Sciences','Agriculture'], lien: SAFE_LINKS.laval.url, logo: '🔵' },
+  { id: 6,  nom: 'Université de Sherbrooke',     sigle: 'UdeS', ville: 'Sherbrooke', province: 'QC', langue: 'fr', rang_qs: null, type: 'public', frais_intl: 16500, programmes: ['Médecine','Ingénierie','Droit','Gestion','Éducation'], lien: SAFE_LINKS.sherbrooke.url, logo: '🟣' },
   // ON
   { id: 7,  nom: 'Université de Toronto',        sigle: 'UofT', ville: 'Toronto', province: 'ON', langue: 'en', rang_qs: 21,  type: 'public', frais_intl: 55000, programmes: ['Médecine','Droit','Ingénierie','Commerce','Sciences','Arts'], lien: 'https://www.utoronto.ca', logo: '🔵' },
-  { id: 8,  nom: 'Université McMaster',          sigle: 'McMaster', ville: 'Hamilton', province: 'ON', langue: 'en', rang_qs: 189, type: 'public', frais_intl: 35000, programmes: ['Médecine','Ingénierie','Commerce','Sciences','Arts'], lien: 'https://www.mcmaster.ca', logo: '🟠' },
-  { id: 9,  nom: 'Université d\'Ottawa',         sigle: 'uOttawa', ville: 'Ottawa', province: 'ON', langue: 'bi', rang_qs: 291, type: 'public', frais_intl: 30000, programmes: ['Droit','Médecine','Sciences sociales','Génie','Gestion'], lien: 'https://www.uottawa.ca', logo: '🔴' },
-  { id: 10, nom: 'Université Queen\'s',          sigle: 'Queen\'s', ville: 'Kingston', province: 'ON', langue: 'en', rang_qs: 209, type: 'public', frais_intl: 45000, programmes: ['Commerce','Ingénierie','Médecine','Droit','Arts'], lien: 'https://www.queensu.ca', logo: '🔵' },
-  { id: 11, nom: 'Université de Waterloo',       sigle: 'Waterloo', ville: 'Waterloo', province: 'ON', langue: 'en', rang_qs: 154, type: 'public', frais_intl: 40000, programmes: ['Informatique','Ingénierie','Mathématiques','Commerce','Arts'], lien: 'https://uwaterloo.ca', logo: '🟡' },
+  { id: 8,  nom: 'Université McMaster',          sigle: 'McMaster', ville: 'Hamilton', province: 'ON', langue: 'en', rang_qs: 189, type: 'public', frais_intl: 35000, programmes: ['Médecine','Ingénierie','Commerce','Sciences','Arts'], lien: SAFE_LINKS.mcmaster.url, logo: '🟠' },
+  { id: 9,  nom: 'Université d\'Ottawa',         sigle: 'uOttawa', ville: 'Ottawa', province: 'ON', langue: 'bi', rang_qs: 291, type: 'public', frais_intl: 30000, programmes: ['Droit','Médecine','Sciences sociales','Génie','Gestion'], lien: SAFE_LINKS.uottawa.url, logo: '🔴' },
+  { id: 10, nom: 'Université Queen\'s',          sigle: 'Queen\'s', ville: 'Kingston', province: 'ON', langue: 'en', rang_qs: 209, type: 'public', frais_intl: 45000, programmes: ['Commerce','Ingénierie','Médecine','Droit','Arts'], lien: SAFE_LINKS.queens.url, logo: '🔵' },
+  { id: 11, nom: 'Université de Waterloo',       sigle: 'Waterloo', ville: 'Waterloo', province: 'ON', langue: 'en', rang_qs: 154, type: 'public', frais_intl: 40000, programmes: ['Informatique','Ingénierie','Mathématiques','Commerce','Arts'], lien: SAFE_LINKS.waterloo.url, logo: '🟡' },
   // BC
-  { id: 12, nom: 'Université de la Colombie-Britannique', sigle: 'UBC', ville: 'Vancouver', province: 'BC', langue: 'en', rang_qs: 34,  type: 'public', frais_intl: 40000, programmes: ['Médecine','Droit','Ingénierie','Commerce','Sciences','Arts'], lien: 'https://www.ubc.ca', logo: '🔵' },
-  { id: 13, nom: 'Université Simon Fraser',      sigle: 'SFU', ville: 'Burnaby', province: 'BC', langue: 'en', rang_qs: 321, type: 'public', frais_intl: 26000, programmes: ['Sciences','Informatique','Commerce','Arts','Communication'], lien: 'https://www.sfu.ca', logo: '🔴' },
+  { id: 12, nom: 'Université de la Colombie-Britannique', sigle: 'UBC', ville: 'Vancouver', province: 'BC', langue: 'en', rang_qs: 34,  type: 'public', frais_intl: 40000, programmes: ['Médecine','Droit','Ingénierie','Commerce','Sciences','Arts'], lien: SAFE_LINKS.ubc.url, logo: '🔵' },
+  { id: 13, nom: 'Université Simon Fraser',      sigle: 'SFU', ville: 'Burnaby', province: 'BC', langue: 'en', rang_qs: 321, type: 'public', frais_intl: 26000, programmes: ['Sciences','Informatique','Commerce','Arts','Communication'], lien: SAFE_LINKS.sfu.url, logo: '🔴' },
   // AB
-  { id: 14, nom: 'Université de l\'Alberta',     sigle: 'UAlberta', ville: 'Edmonton', province: 'AB', langue: 'en', rang_qs: 111, type: 'public', frais_intl: 28000, programmes: ['Ingénierie','Médecine','Agriculture','Droit','Sciences'], lien: 'https://www.ualberta.ca', logo: '🟢' },
-  { id: 15, nom: 'Université de Calgary',        sigle: 'UCalgary', ville: 'Calgary', province: 'AB', langue: 'en', rang_qs: 182, type: 'public', frais_intl: 25000, programmes: ['Ingénierie','Médecine','Droit','Commerce','Sciences'], lien: 'https://www.ucalgary.ca', logo: '🔴' },
+  { id: 14, nom: 'Université de l\'Alberta',     sigle: 'UAlberta', ville: 'Edmonton', province: 'AB', langue: 'en', rang_qs: 111, type: 'public', frais_intl: 28000, programmes: ['Ingénierie','Médecine','Agriculture','Droit','Sciences'], lien: SAFE_LINKS.ualberta.url, logo: '🟢' },
+  { id: 15, nom: 'Université de Calgary',        sigle: 'UCalgary', ville: 'Calgary', province: 'AB', langue: 'en', rang_qs: 182, type: 'public', frais_intl: 25000, programmes: ['Ingénierie','Médecine','Droit','Commerce','Sciences'], lien: SAFE_LINKS.ucalgary.url, logo: '🔴' },
 ]
 
 const ALL_DOMAINES_BOURSES = ['Tous', ...new Set(BOURSES.flatMap(b => b.domaines))]
@@ -279,6 +280,16 @@ export default function Bourses() {
   const [fNiveau,   setFNiveau]   = useState('Tous')
   const [fDomaine,  setFDomaine]  = useState('Tous')
   const [expanded,  setExpanded]  = useState(null)
+  const [favorites, setFavorites] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('novae_bourses_favorites') || '[]') } catch { return [] }
+  })
+
+  const toggleFav = (id, e) => {
+    e.stopPropagation()
+    const next = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id]
+    setFavorites(next)
+    try { localStorage.setItem('novae_bourses_favorites', JSON.stringify(next)) } catch {}
+  }
 
   // ── Filtres universités ───────────────────────────────────────
   const [rechercheU,  setRechercheU]  = useState('')
@@ -353,6 +364,26 @@ export default function Bourses() {
             ════════════════════════════════════════════════════════ */}
         {onglet === 'bourses' && (
           <>
+            {/* Mes bourses suivies */}
+            {favorites.length > 0 && (
+              <div style={{ marginBottom: 24, padding: '16px 18px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 14 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: C.accent2, marginBottom: 12 }}>
+                  ⭐ {lang === 'fr' ? `Mes bourses suivies (${favorites.length})` : `My tracked scholarships (${favorites.length})`}
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {BOURSES.filter(b => favorites.includes(b.id)).map(b => (
+                    <div key={b.id} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 20 }}>
+                      <span>{b.icone}</span>
+                      <span style={{ fontSize: 12, color: C.text, fontWeight: 500 }}>{lang === 'fr' ? b.nom : (b.nom_en || b.nom)}</span>
+                      <span style={{ fontSize: 11, color: C.warning }}>⏰ {b.deadline}</span>
+                      <button onClick={(e) => toggleFav(b.id, e)}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: C.muted, fontSize: 12, padding: '0 2px' }}>✕</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Filtres */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 22 }}>
               <input value={recherche} onChange={e => setRecherche(e.target.value)}
@@ -389,6 +420,7 @@ export default function Bourses() {
                 const tc      = TYPE_COLOR[b.type] || TYPE_COLOR.gouvernement
                 const isOpen  = expanded === b.id
                 const matchPO = paysOrigineProfil && b.pays_origine?.some(p => paysOrigineProfil.toLowerCase().includes(p.toLowerCase()))
+                const isFav   = favorites.includes(b.id)
 
                 return (
                   <div key={b.id} style={{ background: C.surface, border: `1px solid ${matchPO ? C.accent + '40' : C.border}`, borderRadius: 14, overflow: 'hidden', transition: 'border-color 0.15s' }}>
@@ -417,8 +449,16 @@ export default function Bourses() {
                                 {b.montant.toLocaleString()} $ {b.montant_devise}/{b.duree}
                               </span>
                             )}
+                            <span style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(251,191,36,0.10)', color: C.warning, fontWeight: 500 }}>
+                              ⏰ {b.deadline}
+                            </span>
                           </div>
                         </div>
+                        <button onClick={(e) => toggleFav(b.id, e)}
+                          title={isFav ? (lang === 'fr' ? 'Retirer des suivis' : 'Remove from tracked') : (lang === 'fr' ? 'Suivre cette bourse' : 'Track this scholarship')}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, flexShrink: 0, marginTop: 2, opacity: isFav ? 1 : 0.35, transition: 'opacity 0.15s' }}>
+                          ⭐
+                        </button>
                         <span style={{ color: C.muted, fontSize: 14, flexShrink: 0, marginTop: 4 }}>{isOpen ? '▲' : '▼'}</span>
                       </div>
                     </div>
