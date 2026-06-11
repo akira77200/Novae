@@ -1,5 +1,5 @@
 // pages/simulateur-budget.js — NOVAE v5 — Simulateur budget annuel étudiant
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 
@@ -97,9 +97,23 @@ const VILLES = Object.keys(VIE_MENSUELLE)
 export default function SimulateurBudget() {
   const { C, lang, profile } = useApp()
 
+  const defaultType = () => {
+    try {
+      const progId = localStorage.getItem('novae_programme_choisi')
+      if (!progId) return 'universite'
+      const college = ['technique', 'sante', 'design-ux', 'agriculture']
+      return college.some(id => progId.includes(id)) ? 'college' : 'universite'
+    } catch { return 'universite' }
+  }
+
+  const [scenarios, setScenarios] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('novae_budget_scenarios') || '[]') } catch { return [] }
+  })
+  const [scenarioMsg, setScenarioMsg] = useState('')
+
   // Scénario A
   const [villeA,   setVilleA]   = useState(profile?.ville_accueil?.includes('Toronto') ? 'Toronto' : 'Montreal')
-  const [typeA,    setTypeA]    = useState('universite')
+  const [typeA,    setTypeA]    = useState(defaultType)
   const [logA,     setLogA]     = useState('coloc')
   const [heuresA,  setHeuresA]  = useState(10)
 
@@ -361,6 +375,61 @@ export default function SimulateurBudget() {
                       </p>
                     ))}
                   </div>
+                </div>
+              )
+            })()}
+
+            {/* Sauvegarder scénario */}
+            {budgetA && (() => {
+              const saveScenario = () => {
+                if (scenarios.length >= 3) {
+                  setScenarioMsg(lang === 'fr' ? '⚠️ Maximum 3 scénarios. Supprime-en un d\'abord.' : '⚠️ Max 3 scenarios. Delete one first.')
+                  return
+                }
+                const s = { id: Date.now(), ville: villeA, type: typeA, logement: logA, heures: heuresA, besoin: budgetA.besoin_reel, date: new Date().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA') }
+                const next = [...scenarios, s]
+                setScenarios(next)
+                try { localStorage.setItem('novae_budget_scenarios', JSON.stringify(next)) } catch {}
+                setScenarioMsg(lang === 'fr' ? '✓ Scénario sauvegardé !' : '✓ Scenario saved!')
+                setTimeout(() => setScenarioMsg(''), 3000)
+              }
+              const removeScenario = (id) => {
+                const next = scenarios.filter(s => s.id !== id)
+                setScenarios(next)
+                try { localStorage.setItem('novae_budget_scenarios', JSON.stringify(next)) } catch {}
+              }
+              return (
+                <div style={{ marginTop: 14, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '16px 18px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: scenarios.length > 0 ? 14 : 0 }}>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: C.text }}>
+                      📊 {lang === 'fr' ? `Scénarios sauvegardés (${scenarios.length}/3)` : `Saved scenarios (${scenarios.length}/3)`}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      {scenarioMsg && <span style={{ fontSize: 12, color: scenarioMsg.startsWith('⚠️') ? C.warning : C.success }}>{scenarioMsg}</span>}
+                      <button onClick={saveScenario} disabled={scenarios.length >= 3}
+                        style={{ padding: '8px 16px', background: scenarios.length >= 3 ? C.border : C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 12, cursor: scenarios.length >= 3 ? 'not-allowed' : 'pointer', opacity: scenarios.length >= 3 ? 0.6 : 1 }}>
+                        {lang === 'fr' ? '📊 Sauvegarder ce scénario' : '📊 Save this scenario'}
+                      </button>
+                    </div>
+                  </div>
+                  {scenarios.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {scenarios.map(s => (
+                        <div key={s.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: C.surface2, borderRadius: 10, gap: 10, flexWrap: 'wrap' }}>
+                          <div>
+                            <p style={{ fontSize: 13, fontWeight: 600, color: C.text }}>
+                              {s.ville} · {s.type === 'universite' ? (lang === 'fr' ? 'Université' : 'University') : (lang === 'fr' ? 'Collège' : 'College')}
+                            </p>
+                            <p style={{ fontSize: 11, color: C.muted }}>{s.date} · {lang === 'fr' ? 'Besoin' : 'Need'}: <strong style={{ color: C.accent2 }}>{s.besoin.toLocaleString()} $</strong></p>
+                          </div>
+                          <button onClick={() => removeScenario(s.id)}
+                            style={{ background: 'none', border: `1px solid ${C.border}`, borderRadius: 8, padding: '4px 10px', color: C.muted, fontSize: 12, cursor: 'pointer' }}>
+                            {lang === 'fr' ? 'Supprimer' : 'Delete'}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )
             })()}
