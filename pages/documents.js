@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
 
 // ── Documents requis selon statut ────────────────────────────────
 const DOCS_ETUDIANT = [
@@ -71,6 +72,7 @@ const FORM_VIDE = { nom: '', type: 'passeport', fichier_url: '', date_expiration
 
 export default function Documents() {
   const { C, lang, user, profile, loading: authLoading, sb } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const hasFetched = useRef(false)
   const [docs,     setDocs]     = useState([])
@@ -89,15 +91,9 @@ export default function Documents() {
     charger()
   }, [authLoading, user?.id])
 
-  const getToken = async () => {
-    const { data } = await sb.auth.getSession()
-    return data.session?.access_token
-  }
-
   const charger = async () => {
     try {
-      const token = await getToken()
-      const res = await fetch('/api/documents', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await authFetch('/api/documents')
       const { data } = await res.json()
       setDocs(data || [])
     } catch (e) { console.error(e) }
@@ -127,15 +123,10 @@ export default function Documents() {
     if (!form.nom.trim()) { setErr(lang === 'fr' ? 'Nom requis' : 'Name required'); return }
     setSaving(true); setErr('')
     try {
-      const token  = await getToken()
       const isEdit = modal && modal !== 'add'
       const url    = isEdit ? `/api/documents/${modal.id}` : '/api/documents'
       const method = isEdit ? 'PATCH' : 'POST'
-      const res  = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify(form),
-      })
+      const res  = await authFetch(url, { method, body: JSON.stringify(form) })
       const json = await res.json()
       if (!res.ok) { setErr(json.error || 'Erreur'); return }
       if (isEdit) setDocs(p => p.map(d => d.id === modal.id ? json.data : d))
@@ -149,8 +140,7 @@ export default function Documents() {
     if (!confirm(lang === 'fr' ? 'Supprimer ce document ?' : 'Delete this document?')) return
     setDeleting(id)
     try {
-      const token = await getToken()
-      await fetch(`/api/documents/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+      await authFetch(`/api/documents/${id}`, { method: 'DELETE' })
       setDocs(p => p.filter(d => d.id !== id))
     } catch (e) { console.error(e) }
     finally { setDeleting(null) }
