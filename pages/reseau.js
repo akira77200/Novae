@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
+import { useAuthFetch } from '../lib/useAuthFetch'
+import SAFE_LINKS from '../lib/safeLinks'
 
 // ── Données statiques ─────────────────────────────────────────────
 const SECTEURS = [
@@ -25,12 +27,13 @@ const RAPPELS = [
   { val: null,fr: 'Pas de rappel',   en: 'No reminder' },
 ]
 
+const EB = SAFE_LINKS.eventbrite.url
 const EVENTBRITE = {
-  Montreal: 'https://www.eventbrite.ca/d/canada--montreal/networking/',
-  Toronto:  'https://www.eventbrite.ca/d/canada--toronto/networking/',
-  Ottawa:   'https://www.eventbrite.ca/d/canada--ottawa/networking/',
-  Vancouver:'https://www.eventbrite.ca/d/canada--vancouver/networking/',
-  default:  'https://www.eventbrite.ca/d/canada/networking/',
+  Montreal: `${EB}/d/canada--montreal/networking/`,
+  Toronto:  `${EB}/d/canada--toronto/networking/`,
+  Ottawa:   `${EB}/d/canada--ottawa/networking/`,
+  Vancouver:`${EB}/d/canada--vancouver/networking/`,
+  default:  `${EB}/d/canada/networking/`,
 }
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -81,7 +84,8 @@ function Field({ C, label, value, onChange, placeholder, type='text', rows, requ
 
 // ── Page principale ───────────────────────────────────────────────
 export default function Reseau() {
-  const { C, lang, user, profile, loading: authLoading, sb } = useApp()
+  const { C, lang, user, profile, loading: authLoading } = useApp()
+  const { authFetch } = useAuthFetch()
 
   const hasFetched = useRef(false)
   const [contacts,  setContacts]  = useState([])
@@ -95,22 +99,35 @@ export default function Reseau() {
   const [err,       setErr]       = useState('')
   const [contacte,  setContacte]  = useState(null)       // id du contact marqué contacté
 
+  // ── Programme choisi (Mon Avenir) ───────────────────────────────
+  const [progSecteur, setProgSecteur] = useState('')
   useEffect(() => {
-    if (authLoading || !sb || !user) return
+    try {
+      const pid = localStorage.getItem('novae_programme_choisi')
+      if (!pid) return
+      const MAP = {
+        'genie-logiciel': 'Technologie', 'dev-web': 'Technologie', 'data-science': 'Technologie',
+        'ia-machine-learning': 'Technologie', 'design-ux': 'Technologie',
+        'finance': 'Finance', 'comptabilite': 'Finance',
+        'sante': 'Santé', 'medecine': 'Santé', 'infirmier': 'Santé',
+        'droit': 'Gouvernement', 'commerce': 'Commerce', 'marketing': 'Commerce',
+        'agriculture': 'Autre',
+      }
+      const match = Object.entries(MAP).find(([k]) => pid.includes(k))
+      if (match) setProgSecteur(match[1])
+    } catch {}
+  }, [])
+
+  useEffect(() => {
+    if (authLoading || !user) return
     if (hasFetched.current) return
     hasFetched.current = true
     charger()
   }, [authLoading, user?.id])
 
-  const getToken = async () => {
-    const { data } = await sb.auth.getSession()
-    return data.session?.access_token
-  }
-
   const charger = async () => {
     try {
-      const token = await getToken()
-      const res   = await fetch('/api/reseau', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await authFetch('/api/reseau')
       const { data } = await res.json()
       setContacts(data || [])
     } catch (e) { console.error(e) }
@@ -135,14 +152,10 @@ export default function Reseau() {
     if (!form.prenom.trim()) { setErr(lang === 'fr' ? 'Prénom requis' : 'First name required'); return }
     setSaving(true); setErr('')
     try {
-      const token  = await getToken()
       const isEdit = modal && modal !== 'new'
       const url    = isEdit ? `/api/reseau/${modal.id}` : '/api/reseau'
       const method = isEdit ? 'PATCH' : 'POST'
-      const res    = await fetch(url, {
-        method, headers: { 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
-        body: JSON.stringify(form),
-      })
+      const res    = await authFetch(url, { method, body: JSON.stringify(form) })
       const json = await res.json()
       if (!res.ok) { setErr(json.error || 'Erreur'); return }
       if (isEdit) setContacts(p => p.map(c => c.id === modal.id ? json.data : c))
@@ -156,8 +169,7 @@ export default function Reseau() {
     if (!confirm(lang === 'fr' ? 'Supprimer ce contact ?' : 'Delete this contact?')) return
     setDeleting(id)
     try {
-      const token = await getToken()
-      await fetch(`/api/reseau/${id}`, { method:'DELETE', headers:{ Authorization:`Bearer ${token}` } })
+      await authFetch(`/api/reseau/${id}`, { method: 'DELETE' })
       setContacts(p => p.filter(c => c.id !== id))
     } catch (e) { console.error(e) }
     finally { setDeleting(null) }
@@ -166,9 +178,8 @@ export default function Reseau() {
   const marquerContacte = async (c) => {
     setContacte(c.id)
     try {
-      const token = await getToken()
-      const res   = await fetch(`/api/reseau/${c.id}`, {
-        method:'PATCH', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${token}` },
+      const res  = await authFetch(`/api/reseau/${c.id}`, {
+        method: 'PATCH',
         body: JSON.stringify({ derniere_interaction: today() }),
       })
       const json = await res.json()
@@ -347,11 +358,41 @@ export default function Reseau() {
         </div>
 
         {/* Sous-titre */}
-        <p style={{ fontSize:13, color:C.muted, marginBottom:28, lineHeight:1.6 }}>
+        <p style={{ fontSize:13, color:C.muted, marginBottom:16, lineHeight:1.6 }}>
           {lang==='fr'
             ? 'Les connexions que tu fais au Canada peuvent changer ta carrière.'
             : 'The connections you make in Canada can change your career.'}
         </p>
+
+        {/* ── Bannière Mon Avenir / stats secteur ── */}
+        {!progSecteur ? (
+          <div style={{ padding:'12px 16px', background:`${C.accent}08`, border:`1px solid ${C.accent}25`, borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
+            <span style={{ fontSize:16 }}>💡</span>
+            <p style={{ fontSize:13, color:C.muted, flex:1, margin:0 }}>
+              {lang==='fr'
+                ? 'Découvre ton orientation idéale pour voir tes connexions dans ton secteur cible.'
+                : 'Discover your ideal orientation to see connections in your target sector.'}
+            </p>
+            <a href="/mon-avenir" style={{ fontSize:13, color:C.accent2, fontWeight:600, textDecoration:'none', whiteSpace:'nowrap' }}>
+              {lang==='fr' ? 'Mon Avenir →' : 'My Future →'}
+            </a>
+          </div>
+        ) : (() => {
+          const nbSecteur = contacts.filter(c => c.secteur === progSecteur).length
+          return (
+            <div style={{ padding:'12px 16px', background:`${C.accent}08`, border:`1px solid ${C.accent}25`, borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
+              <span style={{ fontSize:16 }}>🎯</span>
+              <p style={{ fontSize:13, color:C.muted, flex:1, margin:0 }}>
+                {lang==='fr'
+                  ? `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} dans ton secteur cible (${progSecteur}) sur ${contacts.length} au total.`
+                  : `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} in your target sector (${progSecteur}) out of ${contacts.length} total.`}
+                {nbSecteur === 0 && (
+                  <span> {lang==='fr' ? 'Ajoute des contacts dans ce secteur pour développer ton réseau.' : 'Add contacts in this sector to grow your network.'}</span>
+                )}
+              </p>
+            </div>
+          )
+        })()}
 
         {/* ── Alertes rappels ── */}
         {rappelsUrgents.map(c => {
