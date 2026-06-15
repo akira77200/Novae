@@ -1,5 +1,5 @@
 const COLORS = {
-  green:  { bg: '#D8F3DC', text: '#1B4332' },
+  green:  { bg: '#DBEAFE', text: '#1E3A5F' },
   orange: { bg: '#FFF3CD', text: '#856404' },
   red:    { bg: '#F8D7DA', text: '#721C24' },
   blue:   { bg: '#D1ECF1', text: '#0C5460' },

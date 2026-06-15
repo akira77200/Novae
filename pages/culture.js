@@ -60,7 +60,7 @@ const DATA = {
 }
 
 const SECTIONS = [
-  { id: 'communication', fr: 'Communication', en: 'Communication', icon: '🗣️', color: '#52B788' },
+  { id: 'communication', fr: 'Communication', en: 'Communication', icon: '🗣️', color: '#3B82F6' },
   { id: 'university',    fr: 'Université',    en: 'University',    icon: '🎓', color: '#60A5FA' },
   { id: 'work',          fr: 'Travail',       en: 'Work',          icon: '💼', color: '#FBBF24' },
   { id: 'social',        fr: 'Social',        en: 'Social',        icon: '👥', color: '#B5838D' },
@@ -135,7 +135,7 @@ export default function Culture() {
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 20 }}>
             {[
-              { id:'codes_sociaux', emoji:'🤝', fr:'Codes sociaux',    en:'Social Codes',    color:'#52B788' },
+              { id:'codes_sociaux', emoji:'🤝', fr:'Codes sociaux',    en:'Social Codes',    color:'#3B82F6' },
               { id:'hiver',         emoji:'❄️', fr:"Survivre à l'hiver", en:'Surviving Winter', color:'#60A5FA' },
               { id:'travail',       emoji:'💼', fr:'Culture du travail',en:'Work Culture',    color:'#FBBF24' },
               { id:'finances',      emoji:'💳', fr:'Finances & banque', en:'Finance & Banking',color:'#F97316' },

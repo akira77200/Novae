@@ -87,7 +87,7 @@ const PLANS = [
     price: 19.99,
     periodFr: 'mois',
     periodEn: 'mo',
-    color: '#2D6A4F',
+    color: '#1E3A5F',
     badge: '⭐ Premium',
     featuresFr: [
       'Tout le plan Starter',

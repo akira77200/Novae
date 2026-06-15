@@ -260,7 +260,7 @@ const ALL_PROGRAMMES_UNIV = ['Tous', 'Informatique', 'Ingénierie', 'Médecine',
 
 const NIVEAU_LABEL = { licence: 'Licence / Baccalauréat', master: 'Master / Maîtrise', doctorat: 'Doctorat / PhD' }
 const TYPE_COLOR   = {
-  gouvernement: { color: '#52B788', bg: 'rgba(82,183,136,0.12)'   },
+  gouvernement: { color: '#3B82F6', bg: 'rgba(59,130,246,0.12)'   },
   universite:   { color: '#60A5FA', bg: 'rgba(96,165,250,0.12)'   },
   international:{ color: '#FBBF24', bg: 'rgba(251,191,36,0.12)'   },
   fondation:    { color: '#F97316', bg: 'rgba(249,115,22,0.12)'   },

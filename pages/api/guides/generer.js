@@ -923,23 +923,23 @@ export default async function handler(req, res) {
       margin: 0 auto;
     }
     .header {
-      border-bottom: 3px solid #2D6A4F;
+      border-bottom: 3px solid #1E3A5F;
       padding-bottom: 14px;
       margin-bottom: 26px;
     }
     .logo {
-      color: #2D6A4F;
+      color: #1E3A5F;
       font-size: 22pt;
       font-weight: 900;
       letter-spacing: -0.5px;
     }
     .logo span {
-      color: #52B788;
+      color: #3B82F6;
     }
     .titre-guide {
       font-size: 15pt;
       font-weight: 700;
-      color: #1B4332;
+      color: #1E3A5F;
       margin-top: 6px;
       line-height: 1.3;
     }
@@ -969,7 +969,7 @@ export default async function handler(req, res) {
       display: inline-block;
       margin: 0 0 24px;
       padding: 10px 22px;
-      background: #2D6A4F;
+      background: #1E3A5F;
       color: white;
       border: none;
       border-radius: 8px;
@@ -978,7 +978,7 @@ export default async function handler(req, res) {
       cursor: pointer;
       text-decoration: none;
     }
-    .btn-print:hover { background: #1B4332; }
+    .btn-print:hover { background: #1E3A5F; }
     @media print {
       .no-print { display: none !important; }
       body { padding: 10mm 12mm; }

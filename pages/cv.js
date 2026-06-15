@@ -50,21 +50,21 @@ function CVPreview({ data, lang }) {
     <div id="cv-to-print" style={{ background: '#fff', color: '#1a1a1a', fontFamily: 'Georgia, "Times New Roman", serif', padding: '40px 48px', maxWidth: 794, margin: '0 auto', minHeight: 1123, boxSizing: 'border-box', fontSize: 12, lineHeight: 1.5 }}>
 
       {/* En-tête */}
-      <div style={{ borderBottom: '2.5px solid #2D6A4F', paddingBottom: 16, marginBottom: 18 }}>
+      <div style={{ borderBottom: '2.5px solid #1E3A5F', paddingBottom: 16, marginBottom: 18 }}>
         <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1a1a1a', margin: 0, letterSpacing: -0.5, fontFamily: 'system-ui, sans-serif' }}>{nom || (lang === 'fr' ? 'Votre Nom' : 'Your Name')}</h1>
-        {poste_cible && <p style={{ fontSize: 14, color: '#2D6A4F', fontWeight: 600, marginTop: 3, fontFamily: 'system-ui, sans-serif' }}>{poste_cible}</p>}
+        {poste_cible && <p style={{ fontSize: 14, color: '#1E3A5F', fontWeight: 600, marginTop: 3, fontFamily: 'system-ui, sans-serif' }}>{poste_cible}</p>}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 18px', marginTop: 8 }}>
           {email     && <span style={{ fontSize: 11, color: '#444' }}>✉ {email}</span>}
           {telephone && <span style={{ fontSize: 11, color: '#444' }}>📞 {telephone}</span>}
           {ville     && <span style={{ fontSize: 11, color: '#444' }}>📍 {ville}</span>}
-          {linkedin  && <span style={{ fontSize: 11, color: '#2D6A4F' }}>🔗 {linkedin}</span>}
+          {linkedin  && <span style={{ fontSize: 11, color: '#1E3A5F' }}>🔗 {linkedin}</span>}
         </div>
       </div>
 
       {/* Résumé professionnel */}
       {(resume || ai?.resume) && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#2D6A4F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#1E3A5F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Résumé professionnel' : 'Professional Summary'}
           </h2>
           <p style={{ fontSize: 12, color: '#333', lineHeight: 1.65 }}>{ai?.resume || resume}</p>
@@ -74,7 +74,7 @@ function CVPreview({ data, lang }) {
       {/* Expériences */}
       {experiences?.length > 0 && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#2D6A4F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 10, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#1E3A5F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 10, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Expériences professionnelles' : 'Work Experience'}
           </h2>
           {experiences.map((e, i) => {
@@ -85,7 +85,7 @@ function CVPreview({ data, lang }) {
                   <p style={{ fontWeight: 700, fontSize: 13, color: '#1a1a1a', fontFamily: 'system-ui, sans-serif' }}>{e.poste || '—'}</p>
                   <p style={{ fontSize: 11, color: '#666', fontStyle: 'italic' }}>{e.debut}{(e.debut || e.fin) ? ' – ' : ''}{e.actuel ? (lang === 'fr' ? 'Présent' : 'Present') : e.fin}</p>
                 </div>
-                <p style={{ fontSize: 12, color: '#2D6A4F', fontWeight: 600, marginBottom: bul.length ? 5 : 0 }}>{e.entreprise}</p>
+                <p style={{ fontSize: 12, color: '#1E3A5F', fontWeight: 600, marginBottom: bul.length ? 5 : 0 }}>{e.entreprise}</p>
                 {bul.length > 0
                   ? <ul style={{ paddingLeft: 18, margin: 0 }}>{bul.map((b, j) => <li key={j} style={{ fontSize: 12, color: '#333', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>)}</ul>
                   : e.description && <p style={{ fontSize: 12, color: '#444', lineHeight: 1.6, paddingLeft: 4 }}>{e.description}</p>
@@ -99,7 +99,7 @@ function CVPreview({ data, lang }) {
       {/* Formation */}
       {formation && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#2D6A4F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#1E3A5F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Formation' : 'Education'}
           </h2>
           <p style={{ fontSize: 12, color: '#333', lineHeight: 1.65, whiteSpace: 'pre-line' }}>{formation}</p>
@@ -109,7 +109,7 @@ function CVPreview({ data, lang }) {
       {/* Compétences */}
       {competencesFin?.length > 0 && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#2D6A4F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 8, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#1E3A5F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 8, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Compétences' : 'Skills'}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 12px' }}>
@@ -123,7 +123,7 @@ function CVPreview({ data, lang }) {
       {/* Langues */}
       {langues?.length > 0 && (
         <div>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#2D6A4F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#1E3A5F', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Langues' : 'Languages'}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 16px' }}>
@@ -292,17 +292,17 @@ export default function CV() {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #000; background: #fff; padding: 15mm; }
     h1 { font-size: 20pt; color: #1B2B1E; margin-bottom: 4px; }
-    h2 { font-size: 11pt; color: #2D6A4F; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #2D6A4F; padding-bottom: 3px; margin: 14px 0 8px; }
-    .poste { color: #2D6A4F; font-size: 12pt; font-weight: 600; }
+    h2 { font-size: 11pt; color: #1E3A5F; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #1E3A5F; padding-bottom: 3px; margin: 14px 0 8px; }
+    .poste { color: #1E3A5F; font-size: 12pt; font-weight: 600; }
     .contact { display: flex; gap: 16px; font-size: 9pt; color: #555; flex-wrap: wrap; margin-top: 6px; }
-    .header { border-bottom: 2px solid #2D6A4F; padding-bottom: 12px; margin-bottom: 16px; }
+    .header { border-bottom: 2px solid #1E3A5F; padding-bottom: 12px; margin-bottom: 16px; }
     .exp-header { display: flex; justify-content: space-between; }
     .exp-titre { font-weight: bold; font-size: 10.5pt; }
     .exp-duree { font-size: 9pt; color: #888; }
-    .exp-entreprise { color: #2D6A4F; font-size: 9.5pt; margin-bottom: 3px; }
+    .exp-entreprise { color: #1E3A5F; font-size: 9.5pt; margin-bottom: 3px; }
     .bullet { font-size: 9.5pt; color: #444; padding-left: 12px; margin-bottom: 2px; }
     .competences-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 9.5pt; }
-    .comp-titre { color: #2D6A4F; font-weight: bold; }
+    .comp-titre { color: #1E3A5F; font-weight: bold; }
     .comp-liste { color: #444; }
     .no-print { display: none !important; }
     @page { size: A4; margin: 0; }

@@ -234,7 +234,7 @@ export default function MapView({ city, query }) {
                 href={`https://www.google.com/maps/search/${encodeURIComponent(p.name + ' ' + city)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: '#2D6A4F', fontSize: '0.78rem', display: 'block', marginTop: 6, fontWeight: 600 }}
+                style={{ color: '#1E3A5F', fontSize: '0.78rem', display: 'block', marginTop: 6, fontWeight: 600 }}
               >
                 {isFr ? 'Voir sur Google Maps →' : 'View on Google Maps →'}
               </a>
@@ -294,7 +294,7 @@ export default function MapView({ city, query }) {
         rel="noopener noreferrer"
         style={{
           position: 'absolute', bottom: 10, right: 10,
-          zIndex: 1000, background: '#2D6A4F', color: '#fff',
+          zIndex: 1000, background: '#1E3A5F', color: '#fff',
           padding: '6px 12px', borderRadius: 8,
           fontSize: '0.78rem', textDecoration: 'none', fontWeight: 600,
         }}

@@ -73,7 +73,7 @@ const CHECKLIST = [
 ]
 
 const PHASES = [
-  { id: 'h72',   fr: 'Les 72 premières heures', en: 'First 72 hours', icon: '⚡', color: '#52B788' },
+  { id: 'h72',   fr: 'Les 72 premières heures', en: 'First 72 hours', icon: '⚡', color: '#3B82F6' },
   { id: 'week1', fr: 'La première semaine',     en: 'First week',     icon: '📅', color: '#60A5FA' },
   { id: 'month1',fr: 'Le premier mois',         en: 'First month',    icon: '🗓️', color: '#FBBF24' },
 ]
@@ -127,19 +127,19 @@ export default function Arrivee() {
             <h2 style={{ fontSize: 17, fontWeight: 700, color: C.text, margin: 0 }}>
               📋 {lang === 'fr' ? 'Checklist — 30 premiers jours' : 'Checklist — First 30 days'}
             </h2>
-            <span style={{ fontSize: 13, fontWeight: 600, color: nbDone === CHECKLIST.length ? '#52B788' : C.muted }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: nbDone === CHECKLIST.length ? '#3B82F6' : C.muted }}>
               {nbDone}/{CHECKLIST.length} {lang === 'fr' ? 'complétés' : 'completed'}
             </span>
           </div>
           <div style={{ width: '100%', height: 6, background: C.border, borderRadius: 3, marginBottom: 16, overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${(nbDone / CHECKLIST.length) * 100}%`, background: '#52B788', borderRadius: 3, transition: 'width 0.3s' }} />
+            <div style={{ height: '100%', width: `${(nbDone / CHECKLIST.length) * 100}%`, background: '#3B82F6', borderRadius: 3, transition: 'width 0.3s' }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {CHECKLIST.map(item => (
               <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', userSelect: 'none' }}>
                 <div onClick={() => toggleCheck(item.id)} style={{
-                  width: 20, height: 20, borderRadius: 6, border: `2px solid ${checked[item.id] ? '#52B788' : C.border}`,
-                  background: checked[item.id] ? '#52B788' : 'transparent', flexShrink: 0,
+                  width: 20, height: 20, borderRadius: 6, border: `2px solid ${checked[item.id] ? '#3B82F6' : C.border}`,
+                  background: checked[item.id] ? '#3B82F6' : 'transparent', flexShrink: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s',
                 }}>
                   {checked[item.id] && <span style={{ color: '#fff', fontSize: 12, fontWeight: 800 }}>✓</span>}
@@ -211,13 +211,13 @@ export default function Arrivee() {
                   onClick={() => telechargerGuide(g.type)}
                   style={{
                     width: '100%', padding: '9px 12px',
-                    background: '#2D6A4F',
+                    background: '#1E3A5F',
                     border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13,
                     cursor: 'pointer', display: 'flex', alignItems: 'center',
                     justifyContent: 'center', gap: 6,
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = '#1B4332'}
-                  onMouseLeave={e => e.currentTarget.style.background = '#2D6A4F'}
+                  onMouseEnter={e => e.currentTarget.style.background = '#1E3A5F'}
+                  onMouseLeave={e => e.currentTarget.style.background = '#1E3A5F'}
                 >
                   📄 {isFr ? 'Ouvrir le guide PDF' : 'Open PDF guide'}
                 </button>

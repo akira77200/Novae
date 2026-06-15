@@ -75,7 +75,7 @@ const COUT_VILLES = {
 }
 
 const POSTES_BUDGET = [
-  { id: 'loyer',     fr: 'Loyer',      en: 'Rent',      icon: '🏠', color: '#52B788' },
+  { id: 'loyer',     fr: 'Loyer',      en: 'Rent',      icon: '🏠', color: '#3B82F6' },
   { id: 'epicerie',  fr: 'Épicerie',   en: 'Groceries', icon: '🛒', color: '#FBBF24' },
   { id: 'transport', fr: 'Transport',  en: 'Transit',   icon: '🚇', color: '#60A5FA' },
   { id: 'telephone', fr: 'Téléphone',  en: 'Phone',     icon: '📱', color: '#B5838D' },
@@ -296,7 +296,7 @@ const CATEGORIES = [
   { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#F97316', query: null },
   { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#34D399', query: null },
   { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#A78BFA', query: null },
-  { id: 'halal',      fr: 'Épiceries halal',     en: 'Halal groceries',    icon: '🥩', color: '#52B788', query: (c) => `halal+grocery+${c}` },
+  { id: 'halal',      fr: 'Épiceries halal',     en: 'Halal groceries',    icon: '🥩', color: '#3B82F6', query: (c) => `halal+grocery+${c}` },
   { id: 'hair',       fr: 'Coiffeurs afro',      en: 'Afro hairdressers',  icon: '💈', color: '#B5838D', query: (c) => `afro+hair+salon+${c}` },
   { id: 'exotic',     fr: 'Épiceries exotiques', en: 'Exotic stores',      icon: '🛒', color: '#FBBF24', query: (c) => `african+caribbean+grocery+${c}` },
   { id: 'prices',     fr: 'Prix comparés',       en: 'Price comparison',   icon: '💰', color: '#60A5FA', query: null },
@@ -439,7 +439,7 @@ export default function DayToDay() {
             padding: '40px 20px',
             background: theme === 'dark' ? '#1a2a1e' : '#f9fafb',
             borderRadius: '16px',
-            border: '2px dashed #2D6A4F40',
+            border: '2px dashed #1E3A5F40',
           }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🚧</div>
             <div style={{
@@ -474,7 +474,7 @@ export default function DayToDay() {
                 ? 'Nous travaillons à valider les prix avec des sources fiables. Cette section sera disponible prochainement avec des données vérifiées.'
                 : 'We are working to validate prices with reliable sources. This section will be available soon with verified data.'}
             </p>
-            <p style={{ color: '#2D6A4F', fontSize: '0.85rem', fontWeight: 600 }}>
+            <p style={{ color: '#1E3A5F', fontSize: '0.85rem', fontWeight: 600 }}>
               {lang === 'fr'
                 ? '💡 Tu connais les prix dans ta ville ? Partage-les avec nous →'
                 : '💡 Do you know prices in your city? Share them with us →'}

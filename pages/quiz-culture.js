@@ -11,7 +11,7 @@ const QUIZ_DATA = {
   codes_sociaux: {
     titre: { fr: 'Codes sociaux', en: 'Social Codes' },
     emoji: '🤝',
-    color: '#52B788',
+    color: '#3B82F6',
     questions: [
       {
         q: { fr: "Au Canada, quand quelqu'un te tient la porte, tu dois :", en: "In Canada, when someone holds the door for you, you should:" },
@@ -361,7 +361,7 @@ export default function QuizCulture() {
 
         {/* Badge Expert si toutes les catégories ≥ 60% */}
         {Object.keys(QUIZ_DATA).every(k => (scores[k] || 0) >= 60) && (
-          <div style={{ marginTop:24, padding:'18px 22px', background:'linear-gradient(135deg,#34D39910,#52B78810)', border:'1px solid #34D39940', borderRadius:14, textAlign:'center' }}>
+          <div style={{ marginTop:24, padding:'18px 22px', background:'linear-gradient(135deg,#34D39910,#3B82F610)', border:'1px solid #34D39940', borderRadius:14, textAlign:'center' }}>
             <p style={{ fontSize:28, marginBottom:8 }}>🏆</p>
             <p style={{ fontSize:16, fontWeight:800, color:'#34D399', marginBottom:6 }}>
               {lang==='fr'?'Expert culture canadienne !':'Canadian Culture Expert!'}

@@ -729,14 +729,14 @@ export default function MonAvenir() {
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; font-size: 10.5pt; line-height: 1.6; color: #1a1a1a; background: #fff; padding: 15mm; }
-    h1, h2, h3 { color: #1B4332; }
-    h2 { font-size: 13pt; border-bottom: 2px solid #2D6A4F; padding-bottom: 6px; margin: 20px 0 10px; }
+    h1, h2, h3 { color: #1E3A5F; }
+    h2 { font-size: 13pt; border-bottom: 2px solid #1E3A5F; padding-bottom: 6px; margin: 20px 0 10px; }
     h3 { font-size: 11pt; margin: 12px 0 6px; }
     p { margin-bottom: 8px; color: #333; }
-    .badge { display: inline-block; background: #D8F3DC; color: #1B4332; padding: 3px 10px; border-radius: 99px; font-size: 9pt; font-weight: 600; margin: 4px 4px 4px 0; }
+    .badge { display: inline-block; background: #DBEAFE; color: #1E3A5F; padding: 3px 10px; border-radius: 99px; font-size: 9pt; font-weight: 600; margin: 4px 4px 4px 0; }
     .card { border: 1px solid rgba(45,106,79,0.2); border-radius: 8px; padding: 12px; margin-bottom: 12px; page-break-inside: avoid; }
     .italic { font-style: italic; color: #555; }
-    .green-box { background: #D8F3DC; padding: 10px; border-radius: 8px; margin: 10px 0; }
+    .green-box { background: #DBEAFE; padding: 10px; border-radius: 8px; margin: 10px 0; }
     .orange-box { background: #FEF3E2; padding: 10px; border-radius: 8px; margin: 10px 0; }
     .blue-box { background: #E3F2FD; padding: 10px; border-radius: 8px; margin: 10px 0; }
     .no-print, button { display: none !important; }
@@ -749,8 +749,8 @@ export default function MonAvenir() {
   </style>
 </head>
 <body>
-  <div style="border-bottom:2px solid #2D6A4F; padding-bottom:10px; margin-bottom:16px;">
-    <div style="color:#2D6A4F; font-size:18pt; font-weight:bold;">NOVAE</div>
+  <div style="border-bottom:2px solid #1E3A5F; padding-bottom:10px; margin-bottom:16px;">
+    <div style="color:#1E3A5F; font-size:18pt; font-weight:bold;">NOVAE</div>
     <div style="color:#888; font-size:9pt;">${lang === 'fr' ? 'Ta vision personnalisée' : 'Your personalized vision'} · ${new Date().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA')}</div>
   </div>
   ${visionElement.innerHTML}
@@ -1365,7 +1365,7 @@ export default function MonAvenir() {
                     {/* Métiers actuels */}
                     <p style={{ fontSize:12, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Métiers actuels' : 'Current jobs'}</p>
                     <div style={{ display:'flex', flexWrap:'wrap', gap:7, marginBottom:16 }}>
-                      {info.metiers_now.map(m => <span key={m} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(82,183,136,0.12)', color:C.accent2, border:`1px solid ${C.accent}25` }}>{m}</span>)}
+                      {info.metiers_now.map(m => <span key={m} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(59,130,246,0.12)', color:C.accent2, border:`1px solid ${C.accent}25` }}>{m}</span>)}
                     </div>
 
                     {/* Métiers futurs */}
@@ -1622,7 +1622,7 @@ export default function MonAvenir() {
                   <div id="vision-print" style={{ display:'flex', flexDirection:'column', gap:20 }}>
 
                     {/* SECTION 0 — "Ce qu'on a compris de toi" */}
-                    <div className="fade-up" style={{ padding:'22px 24px', background:'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius:16 }}>
+                    <div className="fade-up" style={{ padding:'22px 24px', background:'linear-gradient(135deg, #1E3A5F 0%, #25487A 100%)', borderRadius:16 }}>
                       <p style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.6)', textTransform:'uppercase', letterSpacing:1, marginBottom:12 }}>
                         💎 {lang === 'fr' ? 'Ce qu\'on a compris de toi' : 'What we understood about you'}
                       </p>
@@ -1779,7 +1779,7 @@ export default function MonAvenir() {
 
                     {/* SECTION 6 — Message final */}
                     {(vision.message_final || vision.message_motivation) && (
-                      <div className="fade-up" style={{ padding:'24px 26px', background:'linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%)', borderRadius:16, textAlign:'center' }}>
+                      <div className="fade-up" style={{ padding:'24px 26px', background:'linear-gradient(135deg, #1E3A5F 0%, #25487A 100%)', borderRadius:16, textAlign:'center' }}>
                         <p style={{ fontSize:22, marginBottom:12 }}>💬</p>
                         <p style={{ color:'#fff', fontSize:15, lineHeight:1.9, fontStyle:'italic', margin:0 }}>
                           {vision.message_final || vision.message_motivation}

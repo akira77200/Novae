@@ -168,7 +168,7 @@ export default function SimulateurBudget() {
     const postes = [
       { label: lang==='fr'?'Frais de scolarité (moy.)':'Tuition (avg.)', val: budget.frais_scolarite, color: '#60A5FA' },
       { label: lang==='fr'?'Loyer (12 mois)':'Rent (12 months)',          val: budget.loyer,           color: '#F97316' },
-      { label: lang==='fr'?'Épicerie + transport':'Groceries + transit',   val: budget.epicerie_transport, color: '#52B788' },
+      { label: lang==='fr'?'Épicerie + transport':'Groceries + transit',   val: budget.epicerie_transport, color: '#3B82F6' },
       { label: lang==='fr'?'Téléphone + internet':'Phone + internet',      val: budget.telephone_internet, color: '#A78BFA' },
       { label: lang==='fr'?'Loisirs':'Leisure',                            val: budget.loisirs,         color: '#B5838D' },
       { label: lang==='fr'?'Divers + imprévus (10%)':'Misc + unexpected (10%)', val: budget.divers,    color: '#9CA3AF' },

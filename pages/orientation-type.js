@@ -123,7 +123,7 @@ const PASSERELLES = [
     desc:  { fr: 'La plupart des universités ontariennes acceptent les étudiants des collèges avec une bonne moyenne. 1–2 années de crédit reconnues.', en: 'Most Ontario universities accept college students with good grades. 1–2 years of credits recognized.' },
     exemples: ['Seneca College → York University (Business)', 'Humber College → Guelph University', 'George Brown → Ryerson (maintenant Toronto Metropolitan)'],
     lien: { fr: SAFE_LINKS.ontransfer.url, en: SAFE_LINKS.ontransfer.url },
-    couleur: '#52B788',
+    couleur: '#3B82F6',
   },
   {
     titre: { fr: 'AEC → Marché du travail rapide', en: 'AEC → Fast track to employment' },
@@ -207,7 +207,7 @@ export default function OrientationType() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
               {[
                 { emoji:'🏛️', titre:'Université', titre_en:'University', desc: lang==='fr'?'Formation théorique et scientifique. Nécessaire pour les professions libérales.':'Theoretical and scientific training. Required for liberal professions.', color:'#60A5FA' },
-                { emoji:'🔧', titre:'Collège / Cégep', titre_en:'College / CEGEP', desc: lang==='fr'?'Formation technique et pratique. Directement orienté emploi ou passerelle univ.':'Technical and practical training. Employment-focused or university bridge.', color:'#52B788' },
+                { emoji:'🔧', titre:'Collège / Cégep', titre_en:'College / CEGEP', desc: lang==='fr'?'Formation technique et pratique. Directement orienté emploi ou passerelle univ.':'Technical and practical training. Employment-focused or university bridge.', color:'#3B82F6' },
               ].map((c, i) => (
                 <div key={i} style={{ padding: '16px', background: C.surface, border: `1px solid ${c.color}30`, borderRadius: 14 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
@@ -227,7 +227,7 @@ export default function OrientationType() {
                     {[
                       { label: lang==='fr'?'Critère':'Criterion', align:'left' },
                       { label: '🏛️ ' + (lang==='fr'?'Université':'University'), align:'center', color:'#60A5FA' },
-                      { label: '🔧 ' + (lang==='fr'?'Collège':'College'), align:'center', color:'#52B788' },
+                      { label: '🔧 ' + (lang==='fr'?'Collège':'College'), align:'center', color:'#3B82F6' },
                     ].map((h, i) => (
                       <th key={i} style={{ padding: '11px 14px', background: C.surface, border: `1px solid ${C.border}`, textAlign: h.align, color: h.color || C.muted, fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                         {h.label}
@@ -244,7 +244,7 @@ export default function OrientationType() {
                       <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center', color: '#60A5FA', fontWeight: row.highlight ? 600 : 400 }}>
                         {row.univ[lang] || row.univ.fr}
                       </td>
-                      <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center', color: '#52B788', fontWeight: row.highlight ? 600 : 400 }}>
+                      <td style={{ padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center', color: '#3B82F6', fontWeight: row.highlight ? 600 : 400 }}>
                         {row.college[lang] || row.college.fr}
                       </td>
                     </tr>
@@ -345,7 +345,7 @@ export default function OrientationType() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 400, margin: '0 auto 24px' }}>
                     {[
                       { label: lang === 'fr' ? '🏛️ Université' : '🏛️ University', pct: resultat.pctUniv,   color: '#60A5FA' },
-                      { label: lang === 'fr' ? '🔧 Collège'    : '🔧 College',    pct: resultat.pctCol,    color: '#52B788' },
+                      { label: lang === 'fr' ? '🔧 Collège'    : '🔧 College',    pct: resultat.pctCol,    color: '#3B82F6' },
                     ].map((b, i) => (
                       <div key={i}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>

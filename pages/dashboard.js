@@ -152,7 +152,7 @@ const WHY_MSG = {
 }
 
 const CAT_STYLE = {
-  admin:    { label:'Admin',      labelEn:'Admin',     color:'#52B788', bg:'rgba(82,183,136,0.12)'  },
+  admin:    { label:'Admin',      labelEn:'Admin',     color:'#3B82F6', bg:'rgba(59,130,246,0.12)'  },
   banque:   { label:'Banque',     labelEn:'Banking',   color:'#F59E0B', bg:'rgba(245,158,11,0.12)'  },
   sante:    { label:'Santé',      labelEn:'Health',    color:'#60A5FA', bg:'rgba(96,165,250,0.12)'  },
   logement: { label:'Logement',   labelEn:'Housing',   color:'#B5838D', bg:'rgba(181,131,141,0.12)' },
@@ -355,7 +355,7 @@ export default function Dashboard() {
     if (!user) return null
     const pts = []
     // 1. Profil (30 pts)
-    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: '#52B788', href: '/profile_1' })
+    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: '#3B82F6', href: '/profile_1' })
     // 2. Checklist (25 pts)
     const pctCheck = taches.length > 0 ? faites.length / taches.length : 0
     pts.push({ label: lang === 'fr' ? 'Tâches checklist' : 'Checklist',  labelEn: 'Checklist',  pts: Math.round(pctCheck * 25),          max: 25, color: '#60A5FA', href: null })
@@ -665,7 +665,7 @@ export default function Dashboard() {
 
                   {/* BLOC 1 — Message de bienvenue */}
                   {rec.welcome_message && (
-                    <div style={{ padding:'20px 24px', background:'linear-gradient(135deg, #2D6A4F 0%, #40916C 100%)', borderRadius:14, marginBottom:16 }}>
+                    <div style={{ padding:'20px 24px', background:'linear-gradient(135deg, #1E3A5F 0%, #25487A 100%)', borderRadius:14, marginBottom:16 }}>
                       <p style={{ color:'#fff', fontSize:15, lineHeight:1.75, fontStyle:'italic', margin:0 }}>{rec.welcome_message}</p>
                     </div>
                   )}
@@ -698,7 +698,7 @@ export default function Dashboard() {
                       <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
                         {rec.tips.map((tip, i) => {
                           const bs =
-                            tip.category === 'finance'    ? { bg:`rgba(45,106,79,0.18)`,   color:C.accent2   } :
+                            tip.category === 'finance'    ? { bg:`rgba(30,58,95,0.18)`,   color:C.accent2   } :
                             tip.category === 'social'     ? { bg:`rgba(96,165,250,0.18)`,  color:'#60A5FA'   } :
                             tip.category === 'academique' ? { bg:`rgba(251,191,36,0.18)`,  color:C.warning   } :
                             tip.category === 'sante'      ? { bg:`rgba(248,113,113,0.18)`, color:C.error     } :

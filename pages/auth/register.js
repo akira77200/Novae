@@ -273,7 +273,7 @@ export default function Register() {
                 onChange={e => set('pays_origine', e.target.value)}
                 style={{
                   width: '100%', padding: '12px',
-                  borderRadius: '8px', border: '1px solid #2D6A4F40',
+                  borderRadius: '8px', border: '1px solid #1E3A5F40',
                   background: theme === 'dark' ? '#1a2a1e' : '#fff',
                   color: theme === 'dark' ? '#fff' : '#333',
                   fontSize: '0.95rem',
@@ -295,7 +295,7 @@ export default function Register() {
                   type="text"
                   placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
                   onChange={e => set('pays_origine', e.target.value)}
-                  style={{ marginTop:'8px', width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #2D6A4F', background:'transparent', color:'inherit', fontSize:'0.95rem', outline:'none', boxSizing:'border-box' }}
+                  style={{ marginTop:'8px', width:'100%', padding:'10px', borderRadius:'8px', border:'1px solid #1E3A5F', background:'transparent', color:'inherit', fontSize:'0.95rem', outline:'none', boxSizing:'border-box' }}
                 />
               )}
 

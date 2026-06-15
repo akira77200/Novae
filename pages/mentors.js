@@ -448,7 +448,7 @@ export default function Mentors() {
                           <span style={{ fontSize: 13, color: C.warning }}>★ {Number(m.note_moyenne).toFixed(1)}</span>
                         )}
                         {progSujet && (m.sujets || []).includes(progSujet) && (
-                          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#52B78820', color: '#52B788', border: '1px solid #52B78840', fontWeight: 600 }}>
+                          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#3B82F620', color: '#3B82F6', border: '1px solid #3B82F640', fontWeight: 600 }}>
                             🎯 {lang === 'fr' ? 'Recommandé pour toi' : 'Recommended for you'}
                           </span>
                         )}

@@ -191,7 +191,7 @@ export default function NovaChat() {
 
           {/* Header */}
           <div style={{ padding: '14px 16px', borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg, #2D6A4F 0%, #52B788 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>✨</div>
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg, #1E3A5F 0%, #3B82F6 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>✨</div>
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 14, fontWeight: 700, color: C.text }}>Nova</p>
               <p style={{ fontSize: 11, color: C.accent2 }}>{lang === 'fr' ? 'Assistante immigration · En ligne' : 'Immigration assistant · Online'}</p>
@@ -302,7 +302,7 @@ export default function NovaChat() {
         style={{
           position: 'fixed', bottom: 24, right: 20, zIndex: 200,
           width: 56, height: 56, borderRadius: '50%',
-          background: open ? C.surface : 'linear-gradient(135deg, #2D6A4F 0%, #52B788 100%)',
+          background: open ? C.surface : 'linear-gradient(135deg, #1E3A5F 0%, #3B82F6 100%)',
           border: open ? `1.5px solid ${C.border2}` : 'none',
           boxShadow: '0 8px 24px rgba(45,106,79,0.40)',
           cursor: 'pointer',

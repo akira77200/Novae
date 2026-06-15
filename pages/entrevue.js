@@ -6,7 +6,7 @@ import { useAuthFetch } from '../lib/useAuthFetch'
 import FeedbackSection from '../components/FeedbackSection'
 
 const TYPES = [
-  { id: 'emploi',    fr: "💼 Entrevue d'emploi",       en: '💼 Job Interview',           color: '#52B788', desc_fr: 'Prépare-toi pour un poste au Canada', desc_en: 'Prepare for a Canadian job position' },
+  { id: 'emploi',    fr: "💼 Entrevue d'emploi",       en: '💼 Job Interview',           color: '#3B82F6', desc_fr: 'Prépare-toi pour un poste au Canada', desc_en: 'Prepare for a Canadian job position' },
   { id: 'admission', fr: '🎓 Admission universitaire',  en: '🎓 University Admission',     color: '#60A5FA', desc_fr: 'Entretien de motivation pour un programme', desc_en: 'Motivation interview for a program' },
   { id: 'visa',      fr: '🛂 Entrevue visa / immigration', en: '🛂 Visa / Immigration',    color: '#FBBF24', desc_fr: 'Prépare-toi à l\'entretien consulaire', desc_en: 'Prepare for a consular interview' },
 ]

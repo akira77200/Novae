@@ -120,7 +120,7 @@ function AppContent({ Component, pageProps }) {
     <AppProvider>
       <Head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#1B4332" />
+        <meta name="theme-color" content="#1E3A5F" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Novae" />
@@ -149,7 +149,7 @@ function AppContent({ Component, pageProps }) {
           /* ── Couleurs ── */
           --color-primary: #3B82F6;
           --color-primary-light: #DBEAFE;
-          --color-success: #2D6A4F;
+          --color-success: #1E3A5F;
           --color-success-light: #D1FAE5;
           --color-warning: #F59E0B;
           --color-danger: #EF4444;
@@ -219,7 +219,7 @@ function AppContent({ Component, pageProps }) {
         button { cursor: pointer; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.35); border-radius: 3px; }
-        ::selection { background: rgba(45,106,79,0.25); }
+        ::selection { background: rgba(59,130,246,0.25); }
       `}</style>
 
       <AppLayout Component={Component} pageProps={pageProps} />

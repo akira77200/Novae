@@ -51,9 +51,9 @@ const PILIERS = [
     descFr: 'Vie quotidienne · Mes tâches · Bien-être · Parrainage · Culture canadienne · Quiz culture.',
     descEn: 'Daily life · My tasks · Wellbeing · Peer mentoring · Canadian culture · Culture quiz.',
     href: '/day-to-day',
-    color: '#2D6A4F',
-    colorLight: '#52B788',
-    bg: 'rgba(45,106,79,0.12)',
+    color: '#1E3A5F',
+    colorLight: '#3B82F6',
+    bg: 'rgba(30,58,95,0.12)',
     border: 'rgba(45,106,79,0.30)',
     items: ['Vie quotidienne', 'Mes tâches', '🌱 Bien-être', '🤝 Parrainage', 'Culture', '🎮 Quiz'],
   },
@@ -105,7 +105,7 @@ export default function Home() {
     return (
       <div style={{ minHeight:'100vh', background:'#0F0F0F', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
         <div style={{ textAlign:'center' }}>
-          <div style={{ width:48, height:48, borderRadius:14, background:'#2D6A4F', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, fontWeight:800, color:'#fff', margin:'0 auto 16px' }}>N</div>
+          <div style={{ width:48, height:48, borderRadius:14, background:'#1E3A5F', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, fontWeight:800, color:'#fff', margin:'0 auto 16px' }}>N</div>
           <p style={{ color:'#6B7280', fontSize:14 }}>Connexion en cours…</p>
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function Home() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section style={{ position:'relative', overflow:'hidden', padding:'100px 24px 80px' }}>
         {/* Gradient orbs */}
-        <div style={{ position:'absolute', top:-120, left:'50%', transform:'translateX(-50%)', width:700, height:700, borderRadius:'50%', background:'radial-gradient(circle, rgba(45,106,79,0.18) 0%, transparent 65%)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', top:-120, left:'50%', transform:'translateX(-50%)', width:700, height:700, borderRadius:'50%', background:'radial-gradient(circle, rgba(30,58,95,0.18) 0%, transparent 65%)', pointerEvents:'none' }} />
         <div style={{ position:'absolute', top:60, right:'5%', width:320, height:320, borderRadius:'50%', background:'radial-gradient(circle, rgba(82,183,136,0.10) 0%, transparent 70%)', pointerEvents:'none' }} />
 
         <div style={{ maxWidth:780, margin:'0 auto', textAlign:'center', position:'relative' }}>
@@ -386,7 +386,7 @@ export default function Home() {
           {/* PLAN PREMIUM */}
           <div className="plan-card" style={{
             background: isDark ? '#162820' : '#fff',
-            borderLeft: '4px solid #2D6A4F',
+            borderLeft: '4px solid #1E3A5F',
             borderRadius: 16,
             padding: '28px 24px',
             boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
@@ -397,7 +397,7 @@ export default function Home() {
             <div style={{
               position:'absolute', top:-12, left:20,
               padding:'4px 12px', borderRadius:20,
-              background:'#2D6A4F', color:'#fff',
+              background:'#1E3A5F', color:'#fff',
               fontSize:11, fontWeight:700,
             }}>
               ⭐ Premium
@@ -427,7 +427,7 @@ export default function Home() {
             </div>
             <Link href="/abonnement" style={{
               display:'block', padding:'12px', borderRadius:10,
-              border:'none', background:'#2D6A4F',
+              border:'none', background:'#1E3A5F',
               color:'#fff', fontWeight:600, fontSize:14,
               textDecoration:'none', textAlign:'center',
             }}>
