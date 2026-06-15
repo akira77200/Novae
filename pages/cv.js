@@ -1,6 +1,6 @@
 // pages/cv.js — NOVAE v5 — Créateur de CV canadien
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
+
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
@@ -365,7 +365,7 @@ export default function CV() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
 
       {/* ── Modal limite atteinte ── */}
       {limitModal && (

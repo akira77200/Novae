@@ -1,6 +1,6 @@
 // pages/abonnement.js — NOVAE v5 — Page abonnements
 import { useState } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 
 const PLANS = [
@@ -169,7 +169,7 @@ export default function Abonnement() {
 
   return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+      
 
       <main style={{ maxWidth:1100, margin:'0 auto', padding:'40px 20px 80px' }}>
 

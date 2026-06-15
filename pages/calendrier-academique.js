@@ -1,6 +1,6 @@
 // pages/calendrier-academique.js — NOVAE v5 — Calendrier académique par université
 import { useState, useMemo } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
 import SAFE_LINKS from '../lib/safeLinks'
@@ -237,7 +237,7 @@ export default function CalendrierAcademique() {
 
   return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth:820, margin:'0 auto', padding:'32px 20px 80px' }}>
 
         {/* Header */}

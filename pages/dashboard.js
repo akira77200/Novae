@@ -391,17 +391,18 @@ export default function Dashboard() {
     { id:'todo',      label: t.nav_todo      },
   ]
 
+  const isDark = theme === 'dark'
   const cardStyle = {
-    background: theme === 'dark' ? 'var(--novae-surface-dark)' : 'var(--novae-surface)',
+    background: isDark ? 'var(--novae-surface-dark)' : '#FFFFFF',
     borderRadius: 'var(--border-radius)',
-    border: `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}`,
-    boxShadow: 'var(--shadow-sm)',
-    padding: '20px',
+    border: `1px solid ${isDark ? 'var(--novae-border-dark)' : '#E8ECF0'}`,
+    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+    padding: '20px 24px',
     marginBottom: '16px',
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: theme === 'dark' ? 'var(--novae-bg-dark)' : 'var(--novae-bg)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', fontFamily: 'var(--font-display)' }}>
+    <div style={{ color: isDark ? 'var(--novae-text-dark)' : '#1A202C', fontFamily: 'var(--font-display)' }}>
 
       {paying && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', backdropFilter:'blur(4px)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -445,7 +446,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '24px', padding: '32px', maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: '24px', maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
 
         {/* ── COLONNE PRINCIPALE ── */}
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -453,10 +454,10 @@ export default function Dashboard() {
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
           <div style={{ marginBottom:28 }}>
-            <h1 style={{ fontSize: 'var(--font-size-3xl)', fontWeight: 800, color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', letterSpacing: -0.5, marginBottom: 4 }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: isDark ? 'var(--novae-text-dark)' : '#1A202C', letterSpacing: -0.5, marginBottom: 4 }}>
               {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
             </h1>
-            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--novae-text-secondary)', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '0.9rem', color: '#718096', lineHeight: 1.7 }}>
               {[
                 profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
                 profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
@@ -534,7 +535,7 @@ export default function Dashboard() {
                   setFiltre('a_faire')
                   setTimeout(() => checklistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150)
                 }}
-                style={{ padding: '9px 18px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                style={{ padding: '10px 20px', background: '#1B4332', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {lang === 'fr' ? "Je m'en occupe →" : "I'll handle it →"}
               </button>
             </div>
@@ -554,7 +555,7 @@ export default function Dashboard() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontSize: 36, fontWeight: 900, color: scoreColor, letterSpacing: -1, lineHeight: 1 }}>{scoreTotal}<span style={{ fontSize: 16, fontWeight: 500, color: C.muted }}>/100</span></p>
-                <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: scoreColor + '18', color: scoreColor }}>{scoreBadge}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 99, background: scoreTotal >= 50 ? '#DCFCE7' : '#FEF9C3', color: scoreTotal >= 50 ? '#166534' : '#854D0E' }}>{scoreBadge}</span>
               </div>
             </div>
 
@@ -733,9 +734,9 @@ export default function Dashboard() {
             { val:taches.length - faites.length, label: t.dash_remaining, color:C.warning },
             { val:jouDisplayVal,    label: jouDisplayLabel,  color:jouDisplayColor },
           ].map((s, i) => (
-            <div key={i} style={{ background: theme === 'dark' ? 'var(--novae-surface-dark)' : 'var(--novae-surface)', border: `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}`, borderRadius: 'var(--border-radius)', padding:'14px 16px', boxShadow: 'var(--shadow-sm)' }}>
+            <div key={i} style={{ background: isDark ? 'var(--novae-surface-dark)' : '#FFFFFF', border: `1px solid ${isDark ? 'var(--novae-border-dark)' : '#E8ECF0'}`, borderRadius: 'var(--border-radius)', padding:'14px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
               <p style={{ fontSize:24, fontWeight:700, color:s.color, marginBottom:3 }}>{s.val}</p>
-              <p style={{ fontSize:11, color:'var(--novae-text-secondary)', textTransform:'uppercase', letterSpacing:0.6, fontWeight:500 }}>{s.label}</p>
+              <p style={{ fontSize:11, color:'#718096', textTransform:'uppercase', letterSpacing:0.6, fontWeight:500 }}>{s.label}</p>
               {s.bar != null && <div style={{ height:3, background:C.border, borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.5s' }} /></div>}
             </div>
           ))}
@@ -951,7 +952,7 @@ export default function Dashboard() {
           {/* Vue d'ensemble */}
           <div style={cardStyle}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ fontWeight: 700, fontSize: 'var(--font-size-base)', margin: 0, color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)' }}>
+              <h3 style={{ fontWeight: 700, fontSize: 'var(--font-size-base)', margin: 0, color: isDark ? 'var(--novae-text-dark)' : '#1A202C' }}>
                 {lang === 'fr' ? "Vue d'ensemble" : 'Overview'}
               </h3>
               <span style={{ fontSize: '1.2rem' }}>📈</span>
@@ -968,18 +969,18 @@ export default function Dashboard() {
                 padding: '8px 0',
                 borderBottom: i < arr.length - 1 ? `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}` : 'none',
               }}>
-                <span style={{ color: 'var(--novae-text-secondary)', fontSize: 'var(--font-size-sm)' }}>{stat.label}</span>
-                <span style={{ fontWeight: 600, fontSize: 'var(--font-size-sm)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)' }}>{stat.value}</span>
+                <span style={{ color: '#718096', fontSize: '0.85rem' }}>{stat.label}</span>
+                <span style={{ fontWeight: 600, fontSize: '0.85rem', color: isDark ? 'var(--novae-text-dark)' : '#1A202C' }}>{stat.value}</span>
               </div>
             ))}
           </div>
 
           {/* Conseil du jour */}
-          <div style={{ ...cardStyle, background: 'linear-gradient(135deg, var(--novae-primary) 0%, var(--novae-primary-light) 100%)', border: 'none' }}>
-            <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: '#fff', marginBottom: '8px' }}>
+          <div style={{ ...cardStyle, background: '#F0FDF4', border: '1px solid #BBF7D0' }}>
+            <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: '#166534', marginBottom: '8px' }}>
               💡 {lang === 'fr' ? 'Conseil du jour' : "Today's tip"}
             </p>
-            <p style={{ fontSize: 'var(--font-size-xs)', color: 'rgba(255,255,255,0.88)', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 'var(--font-size-xs)', color: '#166534', lineHeight: 1.6, opacity: 0.85 }}>
               {lang === 'fr'
                 ? "Complète ton profil pour obtenir des recommandations personnalisées adaptées à ta situation."
                 : "Complete your profile to get personalized recommendations tailored to your situation."}

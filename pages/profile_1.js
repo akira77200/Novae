@@ -1,7 +1,7 @@
 // pages/profile.js
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 
 const PAYS = ['Canada','France','Belgique','Royaume-Uni','Allemagne','Autre']
@@ -95,7 +95,7 @@ export default function Profile() {
 
   return (
     <div style={{minHeight:'100vh',background:C.bg,color:C.text,fontFamily:'system-ui,sans-serif'}}>
-      <Navbar />
+      
       <main style={{maxWidth:640,margin:'0 auto',padding:'36px 20px 80px'}}>
         <div style={{display:'flex',alignItems:'center',gap:18,marginBottom:32}}>
           <div style={{width:60,height:60,borderRadius:'50%',background:`${C.accent}20`,border:`2px solid ${C.accent}40`,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:22,color:C.accent2,flexShrink:0}}>

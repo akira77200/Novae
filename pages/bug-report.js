@@ -1,7 +1,7 @@
 // pages/bug-report.js — Signaler un bug
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 
 const PAGES_LIST = [
@@ -76,7 +76,7 @@ export default function BugReport() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 520, margin: '0 auto', padding: '36px 20px 80px' }}>
         <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>
           🐛 {isFr ? 'Signaler un bug' : 'Report a bug'}

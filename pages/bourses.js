@@ -1,6 +1,6 @@
 // pages/bourses.js — NOVAE v5 — Bourses d'études + Recherche universités
 import { useState, useMemo } from 'react'
-import Navbar from '../components/Navbar'
+
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 import SAFE_LINKS from '../lib/safeLinks'
@@ -331,7 +331,7 @@ export default function Bourses() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 860, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         {/* ── Header ── */}

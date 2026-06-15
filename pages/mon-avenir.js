@@ -1,6 +1,6 @@
 // pages/mon-avenir.js — NOVAE v5 — Orientation · Secteur · Vision
 import { useState, useEffect } from 'react'
-import Navbar from '../components/Navbar'
+
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
@@ -793,7 +793,7 @@ export default function MonAvenir() {
 
   return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+
 
       <style>{`
         @keyframes fadeSlideUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }

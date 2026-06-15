@@ -1,7 +1,7 @@
 // pages/abonnement/succes.js — NOVAE v5 — Succès paiement Stripe
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Navbar from '../../components/Navbar'
+
 import { useApp } from '../../context/AppContext'
 
 export default function AbonnementSucces() {
@@ -90,7 +90,7 @@ export default function AbonnementSucces() {
 
   return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+      
 
       <main style={{ maxWidth:560, margin:'0 auto', padding:'80px 20px', textAlign:'center' }}>
 

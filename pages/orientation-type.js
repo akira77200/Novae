@@ -1,6 +1,6 @@
 // pages/orientation-type.js — NOVAE v5 — Comparateur Université vs Collège
 import { useState } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 import SAFE_LINKS from '../lib/safeLinks'
 
@@ -177,7 +177,7 @@ export default function OrientationType() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+
       <main style={{ maxWidth: 820, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         {/* Header */}

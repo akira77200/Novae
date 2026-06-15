@@ -1,6 +1,6 @@
 // pages/simulateur-budget.js — NOVAE v5 — Simulateur budget annuel étudiant
 import { useState, useMemo, useEffect } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 
 // ─────────────────────────────────────────────────────────────────
@@ -242,7 +242,7 @@ export default function SimulateurBudget() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         {/* Header */}

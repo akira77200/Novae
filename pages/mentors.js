@@ -1,7 +1,7 @@
 // pages/mentors.js — NOVAE v5 — Découverte & réservation de mentors
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
-import Navbar from '../components/Navbar'
+
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
@@ -156,7 +156,7 @@ export default function Mentors() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
 
       {/* Overlay paiement */}
       {paying && (

@@ -1,6 +1,6 @@
 // pages/todo.js
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 
 export default function Todo() {
@@ -57,7 +57,7 @@ export default function Todo() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 660, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>📋 {t.todo_title}</h1>

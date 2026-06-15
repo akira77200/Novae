@@ -48,22 +48,22 @@ export const PALETTE = {
     success:  '#34D399',
   },
   light: {
-    bg:       '#FAFAF9',
-    bg2:      '#F5F5F3',
+    bg:       '#F4F6F8',
+    bg2:      '#F8F9FA',
     surface:  '#FFFFFF',
-    surface2: '#F9F9F8',
+    surface2: '#F8F9FA',
     accent:   '#2D6A4F',
     accent2:  '#52B788',
     rose:     '#B5838D',
-    text:     '#1A1A1A',
-    text2:    '#3A3A3A',
-    muted:    '#6B7280',
-    muted2:   '#9CA3AF',
-    border:   'rgba(0,0,0,0.08)',
-    border2:  'rgba(0,0,0,0.14)',
+    text:     '#1A202C',
+    text2:    '#2D3748',
+    muted:    '#718096',
+    muted2:   '#A0AEC0',
+    border:   '#E8ECF0',
+    border2:  '#CBD5E0',
     error:    '#EF4444',
     warning:  '#F59E0B',
-    success:  '#10B981',
+    success:  '#22C55E',
   }
 }
 
@@ -219,7 +219,7 @@ export const T = {
 
 export function AppProvider({ children }) {
   const [lang,    setLangState]  = useState('fr')
-  const [theme,   setThemeState] = useState('dark')
+  const [theme,   setThemeState] = useState('light')
   const [user,        setUser]        = useState(null)
   const [accessToken, setAccessToken] = useState(null)
   const [profile,     setProfile]     = useState(null)

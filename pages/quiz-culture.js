@@ -1,6 +1,6 @@
 // pages/quiz-culture.js — NOVAE v5 — Quiz culture canadienne
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
 
@@ -320,7 +320,7 @@ export default function QuizCulture() {
   // ── ÉCRAN SÉLECTION ──────────────────────────────────────────
   if (ecran === 'selection') return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth:680, margin:'0 auto', padding:'36px 20px 80px' }}>
         <h1 style={{ fontSize:26, fontWeight:800, color:C.text, letterSpacing:-0.5, marginBottom:6 }}>
           🎮 {lang==='fr'?'Quiz culture canadienne':'Canadian Culture Quiz'}
@@ -382,7 +382,7 @@ export default function QuizCulture() {
   // ── ÉCRAN QUIZ ───────────────────────────────────────────────
   if (ecran === 'quiz') return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth:640, margin:'0 auto', padding:'32px 20px 80px' }}>
 
         {/* Header */}
@@ -466,7 +466,7 @@ export default function QuizCulture() {
   // ── ÉCRAN RÉSULTATS ──────────────────────────────────────────
   return (
     <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth:560, margin:'0 auto', padding:'48px 20px 80px', textAlign:'center' }}>
 
         <p style={{ fontSize:56, marginBottom:16 }}>{cat?.emoji}</p>

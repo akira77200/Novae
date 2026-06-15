@@ -1,6 +1,6 @@
 // pages/entrevue.js — NOVAE v5 — Simulation entrevue IA
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
 import FeedbackSection from '../components/FeedbackSection'
@@ -171,7 +171,7 @@ export default function Entrevue() {
   // ── ÉCRAN CONFIG ──────────────────────────────────────────────
   if (etape === 'config') return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 680, margin: '0 auto', padding: '40px 20px 80px' }}>
 
         <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, letterSpacing: -0.5, marginBottom: 6 }}>
@@ -286,7 +286,7 @@ export default function Entrevue() {
   // ── ÉCRAN SESSION ─────────────────────────────────────────────
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif', display: 'flex', flexDirection: 'column' }}>
-      <Navbar />
+      
 
       {/* Header session */}
       <div style={{ borderBottom: `1px solid ${C.border}`, padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 14, background: C.surface, flexShrink: 0 }}>

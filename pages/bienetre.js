@@ -1,6 +1,6 @@
 // pages/bienetre.js — NOVAE v5 — Indice de bien-être étudiant
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
+
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
@@ -129,7 +129,7 @@ export default function Bienetre() {
 
   if (!user && !authLoading) return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <div style={{ maxWidth: 500, margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
         <p style={{ fontSize: 40, marginBottom: 16 }}>🔒</p>
         <p style={{ fontSize: 16, color: C.text, fontWeight: 600, marginBottom: 8 }}>{lang === 'fr' ? 'Connexion requise' : 'Login required'}</p>
@@ -142,7 +142,7 @@ export default function Bienetre() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 680, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, letterSpacing: -0.5, marginBottom: 4 }}>

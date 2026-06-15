@@ -1,6 +1,6 @@
 // pages/documents.js — NOVAE v5 — Coffre-fort Documents
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 import { useAuthFetch } from '../lib/useAuthFetch'
 
@@ -207,7 +207,7 @@ export default function Documents() {
 
   if (!user) return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+
       <div style={{ maxWidth: 500, margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
         <p style={{ fontSize: 40, marginBottom: 16 }}>🔒</p>
         <p style={{ fontSize: 16, color: C.text, fontWeight: 600, marginBottom: 8 }}>
@@ -225,7 +225,7 @@ export default function Documents() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+
 
       {/* ── Modal Ajout / Édition ── */}
       {modal && (

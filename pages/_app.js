@@ -100,6 +100,7 @@ function AppLayout({ Component, pageProps }) {
         flex: 1,
         background: theme === 'dark' ? 'var(--novae-bg-dark)' : 'var(--novae-bg)',
         transition: 'margin-left 0.2s ease',
+        padding: '32px 36px',
       }}>
         <Component {...pageProps} />
       </main>
@@ -136,13 +137,14 @@ function AppContent({ Component, pageProps }) {
           --novae-accent: #52B788;
           --novae-accent-soft: #95D5B2;
 
-          --novae-bg: #F8F9FA;
+          --novae-bg: #F4F6F8;
           --novae-surface: #FFFFFF;
-          --novae-surface-2: #F1F3F5;
-          --novae-border: #E9ECEF;
-          --novae-text: #1A1A2E;
-          --novae-text-secondary: #6C757D;
-          --novae-text-muted: #ADB5BD;
+          --novae-surface-2: #F8F9FA;
+          --novae-border: #E8ECF0;
+          --novae-text: #1A202C;
+          --novae-text-secondary: #718096;
+          --novae-text-muted: #A0AEC0;
+          --novae-primary-pale: #E8F5E9;
 
           --novae-bg-dark: #0F1A14;
           --novae-surface-dark: #162820;
@@ -151,10 +153,10 @@ function AppContent({ Component, pageProps }) {
           --novae-text-dark: #F8F9FA;
           --novae-text-secondary-dark: #95D5B2;
 
-          --novae-success: #40C057;
-          --novae-warning: #FAB005;
-          --novae-danger: #FA5252;
-          --novae-info: #4DABF7;
+          --novae-success: #22C55E;
+          --novae-warning: #F59E0B;
+          --novae-danger: #EF4444;
+          --novae-info: #3B82F6;
 
           --sidebar-width: 220px;
           --sidebar-collapsed: 72px;
@@ -162,9 +164,9 @@ function AppContent({ Component, pageProps }) {
           --border-radius: 12px;
           --border-radius-sm: 8px;
           --border-radius-lg: 16px;
-          --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-          --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
-          --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+          --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+          --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+          --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
 
           --font-display: 'Inter', -apple-system, sans-serif;
           --font-size-xs: 0.75rem;

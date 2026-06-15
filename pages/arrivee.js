@@ -1,6 +1,6 @@
 // pages/arrivee.js
 import { useState, useEffect } from 'react'
-import Navbar from '../components/Navbar'
+
 import FeedbackSection from '../components/FeedbackSection'
 import { useApp } from '../context/AppContext'
 
@@ -110,7 +110,7 @@ export default function Arrivee() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
 
       <main style={{ maxWidth: 760, margin: '0 auto', padding: '36px 20px 80px' }}>
 

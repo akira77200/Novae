@@ -1,7 +1,7 @@
 // pages/day-to-day.js
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import Navbar from '../components/Navbar'
+
 import { useApp } from '../context/AppContext'
 import FeedbackSection from '../components/FeedbackSection'
 import SAFE_LINKS from '../lib/safeLinks'
@@ -369,7 +369,7 @@ export default function DayToDay() {
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
-      <Navbar />
+      
       <main style={{ maxWidth: 820, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
