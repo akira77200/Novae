@@ -30,37 +30,37 @@ export const PLAN_LIMITS = {
 // ── Palette premium sobre ─────────────────────────────────────────
 export const PALETTE = {
   dark: {
-    bg:       '#0F0F0F',
-    bg2:      '#141414',
-    surface:  '#1C1C1E',
-    surface2: '#242426',
-    accent:   '#2D6A4F',
-    accent2:  '#52B788',
+    bg:       '#0D1B2E',
+    bg2:      '#132035',
+    surface:  '#132035',
+    surface2: '#1A2D47',
+    accent:   '#1E3A5F',
+    accent2:  '#3B82F6',
     rose:     '#B5838D',
-    text:     '#F5F5F4',
-    text2:    '#D4D4D0',
-    muted:    '#6B7280',
-    muted2:   '#9CA3AF',
-    border:   'rgba(255,255,255,0.07)',
-    border2:  'rgba(255,255,255,0.13)',
+    text:     '#F1F5F9',
+    text2:    '#CBD5E1',
+    muted:    '#94A3B8',
+    muted2:   '#64748B',
+    border:   'rgba(59,130,246,0.15)',
+    border2:  'rgba(59,130,246,0.25)',
     error:    '#F87171',
     warning:  '#FBBF24',
     success:  '#34D399',
   },
   light: {
-    bg:       '#F4F6F8',
-    bg2:      '#F8F9FA',
+    bg:       '#F8F9FA',
+    bg2:      '#F1F5F9',
     surface:  '#FFFFFF',
     surface2: '#F8F9FA',
-    accent:   '#2D6A4F',
-    accent2:  '#52B788',
+    accent:   '#1E3A5F',
+    accent2:  '#3B82F6',
     rose:     '#B5838D',
-    text:     '#1A202C',
-    text2:    '#2D3748',
-    muted:    '#718096',
-    muted2:   '#A0AEC0',
-    border:   '#E8ECF0',
-    border2:  '#CBD5E0',
+    text:     '#0F172A',
+    text2:    '#334155',
+    muted:    '#64748B',
+    muted2:   '#94A3B8',
+    border:   '#E2E8F0',
+    border2:  '#CBD5E1',
     error:    '#EF4444',
     warning:  '#F59E0B',
     success:  '#22C55E',
@@ -230,7 +230,7 @@ export function AppProvider({ children }) {
     setMounted(true)
     if (!sb) return
     const l = localStorage.getItem('novae_lang')  || 'fr'
-    const t = localStorage.getItem('novae_theme') || 'dark'
+    const t = localStorage.getItem('novae_theme') || 'light'
     setLangState(l); setThemeState(t)
 
     const { data: { subscription } } = sb.auth.onAuthStateChange((event, session) => {

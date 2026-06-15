@@ -138,7 +138,7 @@ function AppContent({ Component, pageProps }) {
           --sidebar-text-active: #FFFFFF;
           --sidebar-icon: #94A3B8;
           --sidebar-border: #16304F;
-          --sidebar-logo-text: #FFFFFF;
+          --sidebar-logo-text: #1E3A5F;
 
           /* ── Fond & cards ── */
           --bg-page: #F8F9FA;
@@ -149,7 +149,8 @@ function AppContent({ Component, pageProps }) {
           /* ── Couleurs ── */
           --color-primary: #3B82F6;
           --color-primary-light: #DBEAFE;
-          --color-success: #1E3A5F;
+          --accent-light: #3B82F6;
+          --color-success: #22C55E;
           --color-success-light: #D1FAE5;
           --color-warning: #F59E0B;
           --color-danger: #EF4444;
@@ -162,8 +163,9 @@ function AppContent({ Component, pageProps }) {
           /* ── Boutons ── */
           --btn-primary-bg: #1E3A5F;
           --btn-primary-hover: #25487A;
-          --btn-premium-bg: #3B82F6;
-          --btn-premium-hover: #2563EB;
+          --btn-premium-bg: #FFFFFF;
+          --btn-premium-color: #1E3A5F;
+          --btn-premium-hover: #F1F5F9;
 
           /* ── Dark mode (héritage) ── */
           --novae-bg-dark: #0D1B2E;
@@ -173,7 +175,7 @@ function AppContent({ Component, pageProps }) {
           --novae-text-dark: #F1F5F9;
           --novae-text-secondary-dark: #94A3B8;
 
-          /* ── Compatibilité héritage (pages qui utilisent encore C.*) ── */
+          /* ── Compatibilité héritage ── */
           --novae-primary: #1E3A5F;
           --novae-primary-light: #25487A;
           --novae-primary-pale: #DBEAFE;
@@ -191,7 +193,7 @@ function AppContent({ Component, pageProps }) {
           --novae-danger: #EF4444;
           --novae-info: #3B82F6;
 
-          --sidebar-width: 220px;
+          --sidebar-width: 188px;
           --sidebar-collapsed: 72px;
           --topbar-height: 64px;
           --border-radius: 12px;
@@ -201,19 +203,20 @@ function AppContent({ Component, pageProps }) {
           --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
           --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
 
+          --font: 'Inter', -apple-system, sans-serif;
           --font-display: 'Inter', -apple-system, sans-serif;
-          --font-size-xs: 0.75rem;
-          --font-size-sm: 0.875rem;
-          --font-size-base: 1rem;
-          --font-size-lg: 1.125rem;
-          --font-size-xl: 1.25rem;
-          --font-size-2xl: 1.5rem;
-          --font-size-3xl: 2rem;
+          --font-size-xs: 11px;
+          --font-size-sm: 13px;
+          --font-size-base: 14px;
+          --font-size-lg: 16px;
+          --font-size-xl: 18px;
+          --font-size-2xl: 22px;
+          --font-size-3xl: 28px;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: var(--font-display); }
+        body { font-family: var(--font); background: var(--bg-page); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         input, button, textarea, select { font-family: inherit; }
         a { color: inherit; }
         button { cursor: pointer; }

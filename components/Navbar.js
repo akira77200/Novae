@@ -98,12 +98,13 @@ export default function Navbar() {
       <div style={{ padding: '24px 20px 16px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
         <div style={{
           width: '32px', height: '32px',
-          background: 'var(--sidebar-bg-hover)',
+          background: '#FFFFFF',
           borderRadius: '8px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: 'var(--sidebar-text-active)', fontWeight: 800, fontSize: '14px',
+          color: '#1E3A5F', fontWeight: 800, fontSize: '14px',
+          flexShrink: 0,
         }}>N</div>
-        <span style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--sidebar-logo-text)' }}>novae</span>
+        <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#FFFFFF' }}>novae</span>
       </div>
 
       {/* Nav piliers */}
@@ -149,7 +150,7 @@ export default function Navbar() {
         {/* Badge Premium */}
         {user && userPlan === 'gratuit' && (
           <div style={{
-            background: 'var(--sidebar-bg-hover)',
+            background: 'rgba(255,255,255,0.07)',
             border: '1px solid rgba(255,255,255,0.12)',
             borderRadius: '10px',
             padding: '12px',
@@ -165,7 +166,7 @@ export default function Navbar() {
               style={{
                 marginTop: '10px',
                 background: 'var(--btn-premium-bg)',
-                color: '#fff',
+                color: 'var(--btn-premium-color)',
                 border: 'none',
                 borderRadius: '6px',
                 padding: '7px 12px',
@@ -254,11 +255,16 @@ export default function Navbar() {
             <Link href="/auth/login" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--sidebar-text)', fontSize: '0.85rem', fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
               {isFr ? 'Connexion' : 'Login'}
             </Link>
-            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: 'none', background: 'var(--btn-premium-bg)', color: '#fff', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
+            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: 'none', background: 'var(--btn-premium-bg)', color: 'var(--btn-premium-color)', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
               {isFr ? "S'inscrire" : 'Sign up'}
             </Link>
           </div>
         )}
+
+        {/* Copyright */}
+        <div style={{ marginTop: '12px', fontSize: '0.68rem', color: 'var(--sidebar-icon)', textAlign: 'center', opacity: 0.7 }}>
+          © 2024 Novae
+        </div>
       </div>
     </>
   )
