@@ -1,6 +1,5 @@
 // pages/dashboard.js — NOVAE v5 — Profil vivant
 import { useState, useEffect, useRef } from 'react'
-import Navbar from '../components/Navbar'
 import { useApp } from '../context/AppContext'
 import FeedbackSection from '../components/FeedbackSection'
 import { useAuthFetch } from '../lib/useAuthFetch'
@@ -178,7 +177,7 @@ const filtrerTaches = (taches, province) => taches.filter(t => {
 })
 
 export default function Dashboard() {
-  const { C, t, lang, user, profile, loading: authLoading, sb, refreshProfile } = useApp()
+  const { C, t, lang, theme, user, profile, loading: authLoading, sb, refreshProfile } = useApp()
   const { authFetch } = useAuthFetch()
 
   const hasFetched    = useRef(false)
@@ -392,9 +391,17 @@ export default function Dashboard() {
     { id:'todo',      label: t.nav_todo      },
   ]
 
+  const cardStyle = {
+    background: theme === 'dark' ? 'var(--novae-surface-dark)' : 'var(--novae-surface)',
+    borderRadius: 'var(--border-radius)',
+    border: `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}`,
+    boxShadow: 'var(--shadow-sm)',
+    padding: '20px',
+    marginBottom: '16px',
+  }
+
   return (
-    <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
-      <Navbar />
+    <div style={{ minHeight: '100vh', background: theme === 'dark' ? 'var(--novae-bg-dark)' : 'var(--novae-bg)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', fontFamily: 'var(--font-display)' }}>
 
       {paying && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', backdropFilter:'blur(4px)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -438,15 +445,18 @@ export default function Dashboard() {
         </div>
       )}
 
-      <main style={{ maxWidth:780, margin:'0 auto', padding:'32px 20px 80px' }}>
+      <div style={{ display: 'flex', gap: '24px', padding: '32px', maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
+
+        {/* ── COLONNE PRINCIPALE ── */}
+        <div style={{ flex: 1, minWidth: 0 }}>
 
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
           <div style={{ marginBottom:28 }}>
-            <h1 style={{ fontSize:26, fontWeight:800, color:C.text, letterSpacing:-0.5, marginBottom:6 }}>
+            <h1 style={{ fontSize: 'var(--font-size-3xl)', fontWeight: 800, color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', letterSpacing: -0.5, marginBottom: 4 }}>
               {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
             </h1>
-            <p style={{ fontSize:14, color:C.muted, lineHeight:1.7 }}>
+            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--novae-text-secondary)', lineHeight: 1.7 }}>
               {[
                 profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
                 profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
@@ -723,9 +733,9 @@ export default function Dashboard() {
             { val:taches.length - faites.length, label: t.dash_remaining, color:C.warning },
             { val:jouDisplayVal,    label: jouDisplayLabel,  color:jouDisplayColor },
           ].map((s, i) => (
-            <div key={i} style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:12, padding:'14px 16px' }}>
+            <div key={i} style={{ background: theme === 'dark' ? 'var(--novae-surface-dark)' : 'var(--novae-surface)', border: `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}`, borderRadius: 'var(--border-radius)', padding:'14px 16px', boxShadow: 'var(--shadow-sm)' }}>
               <p style={{ fontSize:24, fontWeight:700, color:s.color, marginBottom:3 }}>{s.val}</p>
-              <p style={{ fontSize:11, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, fontWeight:500 }}>{s.label}</p>
+              <p style={{ fontSize:11, color:'var(--novae-text-secondary)', textTransform:'uppercase', letterSpacing:0.6, fontWeight:500 }}>{s.label}</p>
               {s.bar != null && <div style={{ height:3, background:C.border, borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.5s' }} /></div>}
             </div>
           ))}
@@ -932,8 +942,77 @@ export default function Dashboard() {
           </div>
         )}
 
-        <FeedbackSection page="dashboard" />
-      </main>
+          <FeedbackSection page="dashboard" />
+        </div>{/* fin colonne principale */}
+
+        {/* ── PANNEAU DROIT ── */}
+        <aside style={{ width: '300px', flexShrink: 0, position: 'sticky', top: '24px' }} className="dashboard-aside">
+
+          {/* Vue d'ensemble */}
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ fontWeight: 700, fontSize: 'var(--font-size-base)', margin: 0, color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)' }}>
+                {lang === 'fr' ? "Vue d'ensemble" : 'Overview'}
+              </h3>
+              <span style={{ fontSize: '1.2rem' }}>📈</span>
+            </div>
+            {[
+              { label: lang === 'fr' ? 'Score préparation'    : 'Readiness score',    value: `${scoreTotal} / 100` },
+              { label: lang === 'fr' ? 'Tâches complétées'    : 'Tasks completed',    value: faites.length },
+              { label: lang === 'fr' ? 'Tâches restantes'     : 'Tasks remaining',    value: taches.length - faites.length },
+              { label: lang === 'fr' ? 'Documents'            : 'Documents',          value: scoreDoc !== null ? scoreDoc : '—' },
+              { label: lang === 'fr' ? 'Depuis l\'arrivée'    : 'Since arrival',      value: jouDisplayVal },
+            ].map((stat, i, arr) => (
+              <div key={i} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '8px 0',
+                borderBottom: i < arr.length - 1 ? `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}` : 'none',
+              }}>
+                <span style={{ color: 'var(--novae-text-secondary)', fontSize: 'var(--font-size-sm)' }}>{stat.label}</span>
+                <span style={{ fontWeight: 600, fontSize: 'var(--font-size-sm)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)' }}>{stat.value}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Conseil du jour */}
+          <div style={{ ...cardStyle, background: 'linear-gradient(135deg, var(--novae-primary) 0%, var(--novae-primary-light) 100%)', border: 'none' }}>
+            <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: '#fff', marginBottom: '8px' }}>
+              💡 {lang === 'fr' ? 'Conseil du jour' : "Today's tip"}
+            </p>
+            <p style={{ fontSize: 'var(--font-size-xs)', color: 'rgba(255,255,255,0.88)', lineHeight: 1.6 }}>
+              {lang === 'fr'
+                ? "Complète ton profil pour obtenir des recommandations personnalisées adaptées à ta situation."
+                : "Complete your profile to get personalized recommendations tailored to your situation."}
+            </p>
+          </div>
+
+          {/* Besoin d'aide */}
+          <div style={cardStyle}>
+            <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', marginBottom: '12px', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)' }}>
+              🤝 {lang === 'fr' ? "Besoin d'aide ?" : 'Need help?'}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <a href="/mentors" style={{ padding: '9px 14px', borderRadius: 'var(--border-radius-sm)', background: theme === 'dark' ? 'var(--novae-surface-2-dark)' : 'var(--novae-surface-2)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', textDecoration: 'none', fontSize: 'var(--font-size-sm)', fontWeight: 500, display: 'block' }}>
+                🎓 {lang === 'fr' ? 'Parler à un mentor' : 'Talk to a mentor'}
+              </a>
+              <a href="/arrivee" style={{ padding: '9px 14px', borderRadius: 'var(--border-radius-sm)', background: theme === 'dark' ? 'var(--novae-surface-2-dark)' : 'var(--novae-surface-2)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', textDecoration: 'none', fontSize: 'var(--font-size-sm)', fontWeight: 500, display: 'block' }}>
+                ✈️ {lang === 'fr' ? "Guide d'arrivée" : 'Arrival guide'}
+              </a>
+              <a href="/bienetre" style={{ padding: '9px 14px', borderRadius: 'var(--border-radius-sm)', background: theme === 'dark' ? 'var(--novae-surface-2-dark)' : 'var(--novae-surface-2)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', textDecoration: 'none', fontSize: 'var(--font-size-sm)', fontWeight: 500, display: 'block' }}>
+                🌱 {lang === 'fr' ? 'Check-in bien-être' : 'Wellbeing check-in'}
+              </a>
+            </div>
+          </div>
+
+        </aside>
+
+      </div>{/* fin flex layout */}
+
+      <style jsx global>{`
+        @media (max-width: 900px) {
+          .dashboard-aside { display: none !important; }
+        }
+      `}</style>
     </div>
   )
 }
