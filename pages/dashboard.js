@@ -393,10 +393,10 @@ export default function Dashboard() {
 
   const isDark = theme === 'dark'
   const cardStyle = {
-    background: isDark ? 'var(--novae-surface-dark)' : '#FFFFFF',
+    background: isDark ? 'var(--novae-surface-dark)' : 'var(--bg-card)',
     borderRadius: 'var(--border-radius)',
-    border: `1px solid ${isDark ? 'var(--novae-border-dark)' : '#E8ECF0'}`,
-    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+    border: `1px solid ${isDark ? 'var(--novae-border-dark)' : 'var(--border-default)'}`,
+    boxShadow: 'var(--shadow-sm)',
     padding: '20px 24px',
     marginBottom: '16px',
   }
@@ -454,10 +454,10 @@ export default function Dashboard() {
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
           <div style={{ marginBottom:28 }}>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: isDark ? 'var(--novae-text-dark)' : '#1A202C', letterSpacing: -0.5, marginBottom: 4 }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: isDark ? 'var(--novae-text-dark)' : 'var(--text-primary)', letterSpacing: -0.5, marginBottom: 4 }}>
               {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
             </h1>
-            <p style={{ fontSize: '0.9rem', color: '#718096', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
               {[
                 profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
                 profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
@@ -535,7 +535,7 @@ export default function Dashboard() {
                   setFiltre('a_faire')
                   setTimeout(() => checklistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150)
                 }}
-                style={{ padding: '10px 20px', background: '#1B4332', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                style={{ padding: '10px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {lang === 'fr' ? "Je m'en occupe →" : "I'll handle it →"}
               </button>
             </div>
@@ -555,13 +555,13 @@ export default function Dashboard() {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontSize: 36, fontWeight: 900, color: scoreColor, letterSpacing: -1, lineHeight: 1 }}>{scoreTotal}<span style={{ fontSize: 16, fontWeight: 500, color: C.muted }}>/100</span></p>
-                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 99, background: scoreTotal >= 50 ? '#DCFCE7' : '#FEF9C3', color: scoreTotal >= 50 ? '#166534' : '#854D0E' }}>{scoreBadge}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 99, background: scoreTotal >= 50 ? 'var(--color-success-light)' : '#FEF9C3', color: scoreTotal >= 50 ? 'var(--color-success)' : '#854D0E' }}>{scoreBadge}</span>
               </div>
             </div>
 
             {/* Barre globale */}
-            <div style={{ height: 8, background: C.border, borderRadius: 4, overflow: 'hidden', marginBottom: 16 }}>
-              <div style={{ width: `${scoreTotal}%`, height: '100%', background: `linear-gradient(90deg, ${scoreColor}99, ${scoreColor})`, borderRadius: 4, transition: 'width 0.6s ease' }} />
+            <div style={{ height: 8, background: 'var(--border-default)', borderRadius: 4, overflow: 'hidden', marginBottom: 16 }}>
+              <div style={{ width: `${scoreTotal}%`, height: '100%', background: 'var(--color-primary)', borderRadius: 4, transition: 'width 0.6s ease' }} />
             </div>
 
             {/* Lignes détail */}
@@ -734,7 +734,7 @@ export default function Dashboard() {
             { val:taches.length - faites.length, label: t.dash_remaining, color:C.warning },
             { val:jouDisplayVal,    label: jouDisplayLabel,  color:jouDisplayColor },
           ].map((s, i) => (
-            <div key={i} style={{ background: isDark ? 'var(--novae-surface-dark)' : '#FFFFFF', border: `1px solid ${isDark ? 'var(--novae-border-dark)' : '#E8ECF0'}`, borderRadius: 'var(--border-radius)', padding:'14px 16px', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+            <div key={i} style={{ background: isDark ? 'var(--novae-surface-dark)' : 'var(--bg-card)', border: `1px solid ${isDark ? 'var(--novae-border-dark)' : 'var(--border-default)'}`, borderRadius: 'var(--border-radius)', padding:'14px 16px', boxShadow: 'var(--shadow-sm)' }}>
               <p style={{ fontSize:24, fontWeight:700, color:s.color, marginBottom:3 }}>{s.val}</p>
               <p style={{ fontSize:11, color:'#718096', textTransform:'uppercase', letterSpacing:0.6, fontWeight:500 }}>{s.label}</p>
               {s.bar != null && <div style={{ height:3, background:C.border, borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.5s' }} /></div>}
@@ -952,7 +952,7 @@ export default function Dashboard() {
           {/* Vue d'ensemble */}
           <div style={cardStyle}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ fontWeight: 700, fontSize: 'var(--font-size-base)', margin: 0, color: isDark ? 'var(--novae-text-dark)' : '#1A202C' }}>
+              <h3 style={{ fontWeight: 700, fontSize: 'var(--font-size-base)', margin: 0, color: isDark ? 'var(--novae-text-dark)' : 'var(--text-primary)' }}>
                 {lang === 'fr' ? "Vue d'ensemble" : 'Overview'}
               </h3>
               <span style={{ fontSize: '1.2rem' }}>📈</span>
@@ -969,8 +969,8 @@ export default function Dashboard() {
                 padding: '8px 0',
                 borderBottom: i < arr.length - 1 ? `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}` : 'none',
               }}>
-                <span style={{ color: '#718096', fontSize: '0.85rem' }}>{stat.label}</span>
-                <span style={{ fontWeight: 600, fontSize: '0.85rem', color: isDark ? 'var(--novae-text-dark)' : '#1A202C' }}>{stat.value}</span>
+                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{stat.label}</span>
+                <span style={{ fontWeight: 600, fontSize: '0.85rem', color: isDark ? 'var(--novae-text-dark)' : 'var(--text-primary)' }}>{stat.value}</span>
               </div>
             ))}
           </div>

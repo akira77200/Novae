@@ -131,28 +131,61 @@ function AppContent({ Component, pageProps }) {
 
       <style jsx global>{`
         :root {
-          --novae-primary: #1B4332;
-          --novae-primary-light: #2D6A4F;
-          --novae-primary-pale: #D8F3DC;
-          --novae-accent: #52B788;
-          --novae-accent-soft: #95D5B2;
+          /* ── Sidebar ── */
+          --sidebar-bg: #1E3A5F;
+          --sidebar-bg-hover: #25487A;
+          --sidebar-text: #CBD5E1;
+          --sidebar-text-active: #FFFFFF;
+          --sidebar-icon: #94A3B8;
+          --sidebar-border: #16304F;
+          --sidebar-logo-text: #FFFFFF;
 
-          --novae-bg: #F4F6F8;
+          /* ── Fond & cards ── */
+          --bg-page: #F8F9FA;
+          --bg-card: #FFFFFF;
+          --border-default: #E2E8F0;
+          --border-strong: #CBD5E1;
+
+          /* ── Couleurs ── */
+          --color-primary: #3B82F6;
+          --color-primary-light: #DBEAFE;
+          --color-success: #2D6A4F;
+          --color-success-light: #D1FAE5;
+          --color-warning: #F59E0B;
+          --color-danger: #EF4444;
+
+          /* ── Texte ── */
+          --text-primary: #0F172A;
+          --text-secondary: #475569;
+          --text-muted: #94A3B8;
+
+          /* ── Boutons ── */
+          --btn-primary-bg: #1E3A5F;
+          --btn-primary-hover: #25487A;
+          --btn-premium-bg: #3B82F6;
+          --btn-premium-hover: #2563EB;
+
+          /* ── Dark mode (héritage) ── */
+          --novae-bg-dark: #0D1B2E;
+          --novae-surface-dark: #132035;
+          --novae-surface-2-dark: #1A2D47;
+          --novae-border-dark: rgba(59,130,246,0.15);
+          --novae-text-dark: #F1F5F9;
+          --novae-text-secondary-dark: #94A3B8;
+
+          /* ── Compatibilité héritage (pages qui utilisent encore C.*) ── */
+          --novae-primary: #1E3A5F;
+          --novae-primary-light: #25487A;
+          --novae-primary-pale: #DBEAFE;
+          --novae-accent: #3B82F6;
+          --novae-accent-soft: #93C5FD;
+          --novae-bg: #F8F9FA;
           --novae-surface: #FFFFFF;
           --novae-surface-2: #F8F9FA;
-          --novae-border: #E8ECF0;
-          --novae-text: #1A202C;
-          --novae-text-secondary: #718096;
-          --novae-text-muted: #A0AEC0;
-          --novae-primary-pale: #E8F5E9;
-
-          --novae-bg-dark: #0F1A14;
-          --novae-surface-dark: #162820;
-          --novae-surface-2-dark: #1B3028;
-          --novae-border-dark: rgba(45,106,79,0.19);
-          --novae-text-dark: #F8F9FA;
-          --novae-text-secondary-dark: #95D5B2;
-
+          --novae-border: #E2E8F0;
+          --novae-text: #0F172A;
+          --novae-text-secondary: #475569;
+          --novae-text-muted: #94A3B8;
           --novae-success: #22C55E;
           --novae-warning: #F59E0B;
           --novae-danger: #EF4444;

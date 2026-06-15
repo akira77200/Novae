@@ -73,9 +73,8 @@ export default function Navbar() {
     router.push('/')
   }
 
-  // La sidebar est toujours verte foncée (indépendamment du theme)
-  const sidebarBg     = '#1B4332'
-  const sidebarBorder = 'rgba(255,255,255,0.1)'
+  const sidebarBg     = 'var(--sidebar-bg)'
+  const sidebarBorder = 'var(--sidebar-border)'
 
   const navLinkStyle = (active) => ({
     display: 'flex',
@@ -88,8 +87,8 @@ export default function Navbar() {
     textDecoration: 'none',
     fontSize: 'var(--font-size-sm)',
     fontWeight: active ? 600 : 400,
-    color: active ? '#FFFFFF' : 'rgba(255,255,255,0.65)',
-    background: active ? 'rgba(255,255,255,0.15)' : 'transparent',
+    color: active ? 'var(--sidebar-text-active)' : 'var(--sidebar-text)',
+    background: active ? 'var(--sidebar-bg-hover)' : 'transparent',
     transition: 'all 0.15s ease',
   })
 
@@ -99,12 +98,12 @@ export default function Navbar() {
       <div style={{ padding: '24px 20px 16px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
         <div style={{
           width: '32px', height: '32px',
-          background: 'rgba(255,255,255,0.2)',
+          background: 'var(--sidebar-bg-hover)',
           borderRadius: '8px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#fff', fontWeight: 800, fontSize: '14px',
+          color: 'var(--sidebar-text-active)', fontWeight: 800, fontSize: '14px',
         }}>N</div>
-        <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#FFFFFF' }}>novae</span>
+        <span style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--sidebar-logo-text)' }}>novae</span>
       </div>
 
       {/* Nav piliers */}
@@ -115,7 +114,7 @@ export default function Navbar() {
               padding: '4px 12px 2px 20px',
               fontSize: '0.7rem',
               fontWeight: 600,
-              color: 'rgba(255,255,255,0.4)',
+              color: 'var(--sidebar-icon)',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               marginTop: '14px',
@@ -150,22 +149,22 @@ export default function Navbar() {
         {/* Badge Premium */}
         {user && userPlan === 'gratuit' && (
           <div style={{
-            background: 'rgba(255,255,255,0.1)',
-            border: '1px solid rgba(255,255,255,0.2)',
+            background: 'var(--sidebar-bg-hover)',
+            border: '1px solid rgba(255,255,255,0.12)',
             borderRadius: '10px',
             padding: '12px',
             marginBottom: '12px',
-            color: '#fff',
+            color: 'var(--sidebar-text-active)',
           }}>
             <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>⭐ {isFr ? 'Passer Premium' : 'Go Premium'}</div>
-            <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.75)', marginTop: '4px', lineHeight: 1.5 }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--sidebar-text)', marginTop: '4px', lineHeight: 1.5 }}>
               {isFr ? 'Débloquez toutes les fonctionnalités et accélérez votre réussite.' : 'Unlock all features.'}
             </div>
             <button
               onClick={() => { router.push('/abonnement'); onLinkClick && onLinkClick() }}
               style={{
                 marginTop: '10px',
-                background: '#52B788',
+                background: 'var(--btn-premium-bg)',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '6px',
@@ -188,7 +187,7 @@ export default function Navbar() {
             display: 'flex', alignItems: 'center', gap: '10px',
             width: '100%', padding: '8px 8px', borderRadius: '8px',
             border: 'none', background: 'transparent',
-            color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem',
+            color: 'var(--sidebar-text)', fontSize: '0.85rem',
             cursor: 'pointer', marginBottom: '4px',
           }}
         >
@@ -203,7 +202,7 @@ export default function Navbar() {
             display: 'flex', alignItems: 'center', gap: '10px',
             width: '100%', padding: '8px 8px', borderRadius: '8px',
             border: 'none', background: 'transparent',
-            color: 'rgba(255,255,255,0.65)', fontSize: '0.85rem',
+            color: 'var(--sidebar-text)', fontSize: '0.85rem',
             cursor: 'pointer', marginBottom: '8px',
             fontWeight: 500,
           }}
@@ -217,21 +216,21 @@ export default function Navbar() {
           <div style={{
             display: 'flex', alignItems: 'center', gap: '10px',
             padding: '8px', borderRadius: '8px',
-            background: 'rgba(255,255,255,0.08)',
+            background: 'var(--sidebar-bg-hover)',
           }}>
             <Link href="/profile_1" onClick={onLinkClick} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
               <div style={{
                 width: '32px', height: '32px', borderRadius: '50%',
-                background: 'rgba(255,255,255,0.2)',
+                background: 'rgba(255,255,255,0.15)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 700, color: '#fff', fontSize: '0.9rem',
+                fontWeight: 700, color: 'var(--sidebar-text-active)', fontSize: '0.9rem',
                 flexShrink: 0,
               }}>
                 {(profile?.full_name || user.email || 'U')[0].toUpperCase()}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{
-                  fontWeight: 600, fontSize: '0.8rem', color: '#fff',
+                  fontWeight: 600, fontSize: '0.8rem', color: 'var(--sidebar-text-active)',
                   overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                 }}>
                   {profile?.full_name || user.email?.split('@')[0] || 'Mon profil'}
@@ -242,7 +241,7 @@ export default function Navbar() {
               onClick={handleLogout}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', flexShrink: 0,
+                color: 'var(--sidebar-icon)', fontSize: '0.75rem', flexShrink: 0,
                 padding: '4px 6px',
               }}
               title={isFr ? 'Déconnexion' : 'Logout'}
@@ -252,10 +251,10 @@ export default function Navbar() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <Link href="/auth/login" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
+            <Link href="/auth/login" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'var(--sidebar-text)', fontSize: '0.85rem', fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
               {isFr ? 'Connexion' : 'Login'}
             </Link>
-            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: 'none', background: '#52B788', color: '#fff', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
+            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: 'none', background: 'var(--btn-premium-bg)', color: '#fff', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
               {isFr ? "S'inscrire" : 'Sign up'}
             </Link>
           </div>
@@ -294,8 +293,8 @@ export default function Navbar() {
           width: '40px', height: '40px',
           borderRadius: '10px',
           border: `1px solid ${sidebarBorder}`,
-          background: sidebarBg,
-          color: '#fff',
+          background: 'var(--sidebar-bg)',
+          color: 'var(--sidebar-text-active)',
           fontSize: '18px',
           alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer',
