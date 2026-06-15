@@ -393,16 +393,16 @@ export default function Dashboard() {
 
   const isDark = theme === 'dark'
   const cardStyle = {
-    background: isDark ? 'var(--novae-surface-dark)' : 'var(--bg-card)',
-    borderRadius: 'var(--border-radius)',
-    border: `1px solid ${isDark ? 'var(--novae-border-dark)' : 'var(--border-default)'}`,
-    boxShadow: 'var(--shadow-sm)',
-    padding: '20px 24px',
-    marginBottom: '16px',
+    background: '#FFFFFF',
+    borderRadius: 12,
+    border: '1px solid #E8EDF2',
+    boxShadow: '0 1px 2px rgba(15,23,42,0.04)',
+    padding: '20px 22px',
+    marginBottom: 12,
   }
 
   return (
-    <div style={{ color: isDark ? 'var(--novae-text-dark)' : '#1A202C', fontFamily: 'var(--font-display)' }}>
+    <div style={{ color: '#0F172A' }}>
 
       {paying && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', backdropFilter:'blur(4px)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -446,18 +446,18 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '24px', maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 264px', gap: 24, maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
 
         {/* ── COLONNE PRINCIPALE ── */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ minWidth: 0 }}>
 
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
-          <div style={{ marginBottom:28 }}>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: isDark ? 'var(--novae-text-dark)' : 'var(--text-primary)', letterSpacing: -0.5, marginBottom: 4 }}>
+          <div style={{ marginBottom: 24 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: 4 }}>
               {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
             </h1>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+            <p style={{ fontSize: 13, fontWeight: 400, color: '#64748B', marginTop: 4 }}>
               {[
                 profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
                 profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
@@ -469,18 +469,18 @@ export default function Dashboard() {
             </p>
           </div>
         ) : user ? (
-          <div style={{ marginBottom:24 }}>
-            <h1 style={{ fontSize:24, fontWeight:800, color:C.text, marginBottom:8 }}>
+          <div style={{ marginBottom: 24 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.03em', marginBottom: 8 }}>
               {lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
             </h1>
-            <a href="/profile_1" style={{ fontSize:13, color:C.accent2, textDecoration:'none' }}>
+            <a href="/profile_1" style={{ fontSize: 13, color: '#3B82F6', textDecoration: 'none' }}>
               {lang === 'fr' ? '→ Complète ton profil pour personnaliser ton expérience' : '→ Complete your profile for a personalized experience'}
             </a>
           </div>
         ) : (
-          <div style={{ padding:'12px 18px', background:`${C.accent}10`, border:`1px solid ${C.accent}30`, borderRadius:12, marginBottom:24, display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:10 }}>
-            <p style={{ fontSize:13, color:C.accent2 }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
-            <a href="/auth/register" style={{ padding:'7px 16px', background:C.accent, border:'none', borderRadius:8, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>{lang === 'fr' ? "S'inscrire gratuitement →" : 'Sign up for free →'}</a>
+          <div style={{ padding: '12px 18px', background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 12, marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+            <p style={{ fontSize: 13, color: '#3B82F6' }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
+            <a href="/auth/register" style={{ padding: '7px 16px', background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>{lang === 'fr' ? "S'inscrire gratuitement →" : 'Sign up for free →'}</a>
           </div>
         )}
 
@@ -515,17 +515,22 @@ export default function Dashboard() {
 
         {/* ── PROCHAINE ACTION RECOMMANDÉE ── */}
         {user && nextAction && (
-          <div style={{ padding: '16px 20px', background: `${C.accent}0A`, border: `1.5px solid ${C.accent}30`, borderRadius: 14, marginBottom: 18 }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: C.accent2, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 }}>
-              🎯 {lang === 'fr' ? 'Prochaine action recommandée' : 'Next recommended action'}
-            </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 28 }}>{nextAction.icone}</span>
-              <div style={{ flex: 1, minWidth: 180 }}>
-                <p style={{ fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 4 }}>
+          <div style={{ padding: '20px 22px', background: '#FFFFFF', border: '1px solid #E8EDF2', borderRadius: 12, marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+              <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
+                {lang === 'fr' ? 'Prochaine action recommandée' : 'Next recommended action'}
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <div style={{ width: 44, height: 44, background: '#F1F5F9', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
+                {nextAction.icone}
+              </div>
+              <div style={{ flex: 1, minWidth: 160 }}>
+                <p style={{ fontSize: 15, fontWeight: 600, color: '#0F172A', letterSpacing: '-0.01em', marginBottom: 4 }}>
                   {lang === 'fr' ? nextAction.titre : (nextAction.titre_en || nextAction.titre)}
                 </p>
-                <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.5 }}>
+                <p style={{ fontSize: 13, fontWeight: 400, color: '#64748B', lineHeight: 1.5 }}>
                   {WHY_MSG[nextAction.cat]?.[lang] || ''}
                 </p>
               </div>
@@ -535,7 +540,7 @@ export default function Dashboard() {
                   setFiltre('a_faire')
                   setTimeout(() => checklistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150)
                 }}
-                style={{ padding: '10px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                style={{ padding: '10px 20px', background: '#0F172A', border: 'none', borderRadius: 8, color: '#FFFFFF', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {lang === 'fr' ? "Je m'en occupe →" : "I'll handle it →"}
               </button>
             </div>
@@ -544,41 +549,49 @@ export default function Dashboard() {
 
         {/* ── SCORE PRÉPARATION DOSSIER ── */}
         {user && scoreItems && (
-          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '18px 20px', marginBottom: 18 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #E8EDF2', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
             {/* Header score */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
               <div>
-                <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 2 }}>
-                  📋 {lang === 'fr' ? 'Score de préparation' : 'Readiness Score'}
+                <p style={{ fontSize: 16, fontWeight: 600, color: '#0F172A', letterSpacing: '-0.01em', marginBottom: 4 }}>
+                  {lang === 'fr' ? 'Score de préparation' : 'Readiness Score'}
                 </p>
-                <p style={{ fontSize: 12, color: C.muted }}>{lang === 'fr' ? 'Ton dossier d\'immigration en un coup d\'œil' : 'Your immigration file at a glance'}</p>
+                <p style={{ fontSize: 12, fontWeight: 400, color: '#94A3B8' }}>{lang === 'fr' ? "Ton dossier d'immigration en un coup d'œil" : 'Your immigration file at a glance'}</p>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <p style={{ fontSize: 36, fontWeight: 900, color: scoreColor, letterSpacing: -1, lineHeight: 1 }}>{scoreTotal}<span style={{ fontSize: 16, fontWeight: 500, color: C.muted }}>/100</span></p>
-                <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 99, background: scoreTotal >= 50 ? 'var(--color-success-light)' : '#FEF9C3', color: scoreTotal >= 50 ? 'var(--color-success)' : '#854D0E' }}>{scoreBadge}</span>
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, justifyContent: 'flex-end' }}>
+                  <span style={{ fontSize: 52, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.04em', lineHeight: 1 }}>{scoreTotal}</span>
+                  <span style={{ fontSize: 18, fontWeight: 500, color: '#94A3B8', paddingBottom: 6, marginLeft: 2 }}>/100</span>
+                </div>
+                <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: scoreTotal >= 80 ? '#F0FDF4' : scoreTotal >= 50 ? '#FFFBEB' : '#F1F5F9', color: scoreTotal >= 80 ? '#16A34A' : scoreTotal >= 50 ? '#B45309' : '#475569' }}>
+                  {scoreBadge}
+                </span>
               </div>
             </div>
 
             {/* Barre globale */}
-            <div style={{ height: 8, background: 'var(--border-default)', borderRadius: 4, overflow: 'hidden', marginBottom: 16 }}>
-              <div style={{ width: `${scoreTotal}%`, height: '100%', background: 'var(--color-primary)', borderRadius: 4, transition: 'width 0.6s ease' }} />
+            <div style={{ height: 5, background: '#E2E8F0', borderRadius: 999, overflow: 'hidden', marginBottom: 16 }}>
+              <div style={{ width: `${scoreTotal}%`, height: '100%', background: '#1E3A5F', borderRadius: 999, transition: 'width 0.6s ease' }} />
             </div>
 
             {/* Lignes détail */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {scoreItems.map((item, i) => {
-                const pct = Math.round((item.pts / item.max) * 100)
                 const done = item.pts === item.max
+                const extra = item.max - item.pts
                 const content = (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 9, background: C.surface2, border: `1px solid ${done ? item.color + '30' : C.border}`, cursor: item.href ? 'pointer' : 'default', transition: 'border-color 0.15s' }}>
-                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: done ? item.color : C.border, flexShrink: 0 }} />
-                    <p style={{ fontSize: 13, color: done ? C.text : C.muted, flex: 1, fontWeight: done ? 500 : 400 }}>{item.label}</p>
-                    {item.loading
-                      ? <span style={{ fontSize: 11, color: C.muted }}>…</span>
-                      : <span style={{ fontSize: 13, fontWeight: 700, color: done ? item.color : C.muted }}>{item.pts}/{item.max}</span>
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: i < scoreItems.length - 1 ? '1px solid #F1F5F9' : 'none', cursor: item.href ? 'pointer' : 'default' }}>
+                    {done
+                      ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }}><span style={{ color: '#fff', fontSize: 11, fontWeight: 800 }}>✓</span></span>
+                      : <span style={{ display: 'inline-block', width: 20, height: 20, borderRadius: '50%', border: '1.5px solid #E2E8F0', flexShrink: 0 }} />
                     }
-                    {!done && item.href && <span style={{ fontSize: 11, color: item.color, fontWeight: 600 }}>+{item.max - item.pts} →</span>}
-                    {done && <span style={{ fontSize: 14 }}>✅</span>}
+                    <p style={{ fontSize: 14, fontWeight: 500, color: '#334155', flex: 1 }}>{item.label}</p>
+                    {item.loading
+                      ? <span style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>…</span>
+                      : <span style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>{item.pts}/{item.max}</span>
+                    }
+                    {done && <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: '#F0FDF4', color: '#16A34A' }}>{lang === 'fr' ? 'Terminé' : 'Done'}</span>}
+                    {!done && item.href && <span style={{ fontSize: 12, fontWeight: 600, color: '#3B82F6' }}>+{extra}</span>}
                   </div>
                 )
                 return item.href && !done
@@ -588,8 +601,8 @@ export default function Dashboard() {
             </div>
 
             {scoreTotal < 100 && (
-              <p style={{ fontSize: 12, color: C.muted, marginTop: 12, textAlign: 'center' }}>
-                {lang === 'fr' ? '👆 Clique sur une ligne pour compléter ce point.' : '👆 Click a line to complete that item.'}
+              <p style={{ fontSize: 12, color: '#94A3B8', marginTop: 12, textAlign: 'center' }}>
+                ℹ️ {lang === 'fr' ? 'Clique sur une ligne pour compléter ce point.' : 'Click a line to complete that item.'}
               </p>
             )}
           </div>
@@ -947,62 +960,64 @@ export default function Dashboard() {
         </div>{/* fin colonne principale */}
 
         {/* ── PANNEAU DROIT ── */}
-        <aside style={{ width: '300px', flexShrink: 0, position: 'sticky', top: '24px' }} className="dashboard-aside">
+        <aside style={{ position: 'sticky', top: 24 }} className="dashboard-aside">
 
           {/* Vue d'ensemble */}
           <div style={cardStyle}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ fontWeight: 700, fontSize: 'var(--font-size-base)', margin: 0, color: isDark ? 'var(--novae-text-dark)' : 'var(--text-primary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h3 style={{ fontWeight: 600, fontSize: 14, color: '#0F172A', margin: 0 }}>
                 {lang === 'fr' ? "Vue d'ensemble" : 'Overview'}
               </h3>
-              <span style={{ fontSize: '1.2rem' }}>📈</span>
+              <span style={{ fontSize: 18, color: '#3B82F6' }}>↗</span>
             </div>
             {[
-              { label: lang === 'fr' ? 'Score préparation'    : 'Readiness score',    value: `${scoreTotal} / 100` },
-              { label: lang === 'fr' ? 'Tâches complétées'    : 'Tasks completed',    value: faites.length },
-              { label: lang === 'fr' ? 'Tâches restantes'     : 'Tasks remaining',    value: taches.length - faites.length },
-              { label: lang === 'fr' ? 'Documents'            : 'Documents',          value: scoreDoc !== null ? scoreDoc : '—' },
-              { label: lang === 'fr' ? 'Depuis l\'arrivée'    : 'Since arrival',      value: jouDisplayVal },
+              { label: lang === 'fr' ? 'Points complétés'  : 'Points completed',  value: `${scoreTotal} / 100` },
+              { label: lang === 'fr' ? 'Tâches en cours'   : 'Tasks in progress', value: taches.length - faites.length },
+              { label: lang === 'fr' ? 'Documents'         : 'Documents',         value: scoreDoc !== null ? scoreDoc : '—' },
+              { label: lang === 'fr' ? "Dernière activité" : 'Last activity',     value: lang === 'fr' ? "Aujourd'hui" : 'Today' },
             ].map((stat, i, arr) => (
               <div key={i} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '8px 0',
-                borderBottom: i < arr.length - 1 ? `1px solid ${theme === 'dark' ? 'var(--novae-border-dark)' : 'var(--novae-border)'}` : 'none',
+                borderBottom: i < arr.length - 1 ? '1px solid #F8FAFC' : 'none',
               }}>
-                <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{stat.label}</span>
-                <span style={{ fontWeight: 600, fontSize: '0.85rem', color: isDark ? 'var(--novae-text-dark)' : 'var(--text-primary)' }}>{stat.value}</span>
+                <span style={{ fontSize: 13, fontWeight: 400, color: '#64748B' }}>{stat.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: '#0F172A' }}>{stat.value}</span>
               </div>
             ))}
           </div>
 
           {/* Conseil du jour */}
-          <div style={{ ...cardStyle, background: '#F0FDF4', border: '1px solid #BBF7D0' }}>
-            <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: '#166534', marginBottom: '8px' }}>
-              💡 {lang === 'fr' ? 'Conseil du jour' : "Today's tip"}
-            </p>
-            <p style={{ fontSize: 'var(--font-size-xs)', color: '#166534', lineHeight: 1.6, opacity: 0.85 }}>
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <span style={{ fontSize: 16 }}>💡</span>
+              <p style={{ fontWeight: 600, fontSize: 14, color: '#0F172A' }}>
+                {lang === 'fr' ? 'Conseil du jour' : "Today's tip"}
+              </p>
+            </div>
+            <p style={{ fontSize: 12, fontWeight: 400, color: '#64748B', lineHeight: 1.6 }}>
               {lang === 'fr'
-                ? "Complète ton profil pour obtenir des recommandations personnalisées adaptées à ta situation."
-                : "Complete your profile to get personalized recommendations tailored to your situation."}
+                ? "Assure-toi que toutes tes informations sont à jour. Un dossier complet augmente considérablement tes chances de succès."
+                : "Make sure all your information is up to date. A complete file greatly increases your chances of success."}
             </p>
           </div>
 
           {/* Besoin d'aide */}
           <div style={cardStyle}>
-            <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', marginBottom: '12px', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)' }}>
-              🤝 {lang === 'fr' ? "Besoin d'aide ?" : 'Need help?'}
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <a href="/mentors" style={{ padding: '9px 14px', borderRadius: 'var(--border-radius-sm)', background: theme === 'dark' ? 'var(--novae-surface-2-dark)' : 'var(--novae-surface-2)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', textDecoration: 'none', fontSize: 'var(--font-size-sm)', fontWeight: 500, display: 'block' }}>
-                🎓 {lang === 'fr' ? 'Parler à un mentor' : 'Talk to a mentor'}
-              </a>
-              <a href="/arrivee" style={{ padding: '9px 14px', borderRadius: 'var(--border-radius-sm)', background: theme === 'dark' ? 'var(--novae-surface-2-dark)' : 'var(--novae-surface-2)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', textDecoration: 'none', fontSize: 'var(--font-size-sm)', fontWeight: 500, display: 'block' }}>
-                ✈️ {lang === 'fr' ? "Guide d'arrivée" : 'Arrival guide'}
-              </a>
-              <a href="/bienetre" style={{ padding: '9px 14px', borderRadius: 'var(--border-radius-sm)', background: theme === 'dark' ? 'var(--novae-surface-2-dark)' : 'var(--novae-surface-2)', color: theme === 'dark' ? 'var(--novae-text-dark)' : 'var(--novae-text)', textDecoration: 'none', fontSize: 'var(--font-size-sm)', fontWeight: 500, display: 'block' }}>
-                🌱 {lang === 'fr' ? 'Check-in bien-être' : 'Wellbeing check-in'}
-              </a>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <span style={{ fontSize: 16 }}>🎧</span>
+              <p style={{ fontWeight: 600, fontSize: 14, color: '#0F172A' }}>
+                {lang === 'fr' ? "Besoin d'aide ?" : 'Need help?'}
+              </p>
             </div>
+            <p style={{ fontSize: 12, color: '#64748B', lineHeight: 1.5, marginBottom: 14 }}>
+              {lang === 'fr'
+                ? "Consulte notre centre d'aide ou contacte un conseiller spécialisé."
+                : "Check our help center or contact a specialized advisor."}
+            </p>
+            <a href="/arrivee" style={{ display: 'block', padding: '9px 16px', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: 8, color: '#334155', fontSize: 13, fontWeight: 500, textDecoration: 'none', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
+              {lang === 'fr' ? "Obtenir de l'aide" : 'Get help'}
+            </a>
           </div>
 
         </aside>

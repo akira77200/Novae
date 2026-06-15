@@ -76,68 +76,55 @@ export default function Navbar() {
   const sidebarBg     = 'var(--sidebar-bg)'
   const sidebarBorder = 'var(--sidebar-border)'
 
-  const navLinkStyle = (active) => ({
+  const pilierLinkStyle = (active) => ({
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
-    padding: '8px 12px 8px 16px',
+    padding: '8px 10px',
     borderRadius: '8px',
-    margin: '1px 8px',
+    margin: '2px 8px',
     cursor: 'pointer',
     textDecoration: 'none',
-    fontSize: 'var(--font-size-sm)',
-    fontWeight: active ? 600 : 400,
+    fontSize: 13,
+    fontWeight: active ? 600 : 500,
     color: active ? 'var(--sidebar-text-active)' : 'var(--sidebar-text)',
-    background: active ? 'var(--sidebar-bg-hover)' : 'transparent',
+    background: active ? 'rgba(255,255,255,0.12)' : 'transparent',
     transition: 'all 0.15s ease',
+    letterSpacing: 0,
   })
 
   const sidebarContent = (onLinkClick) => (
     <>
       {/* Logo */}
-      <div style={{ padding: '24px 20px 16px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+      <div style={{ padding: '24px 20px 20px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
         <div style={{
-          width: '32px', height: '32px',
+          width: 30, height: 30,
           background: '#FFFFFF',
-          borderRadius: '8px',
+          borderRadius: 7,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#1E3A5F', fontWeight: 800, fontSize: '14px',
+          color: '#1E3A5F', fontWeight: 800, fontSize: 15,
           flexShrink: 0,
         }}>N</div>
-        <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#FFFFFF' }}>novae</span>
+        <span style={{ fontWeight: 700, fontSize: 15, color: '#FFFFFF', letterSpacing: '-0.02em' }}>novae</span>
       </div>
 
-      {/* Nav piliers */}
+      {/* Nav — 4 piliers plats */}
       <nav style={{ flex: 1, overflowY: 'auto', paddingBottom: '8px' }}>
-        {PILIERS_NAV.map(pilier => (
-          <div key={pilier.fr} style={{ marginBottom: '4px' }}>
-            <div style={{
-              padding: '4px 12px 2px 20px',
-              fontSize: '0.7rem',
-              fontWeight: 600,
-              color: 'var(--sidebar-icon)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              marginTop: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}>
-              <span>{pilier.emoji}</span>
+        {PILIERS_NAV.map(pilier => {
+          const firstHref = pilier.links[0].href
+          const active = pilier.paths.some(p => router.pathname === p || router.pathname.startsWith(p + '/'))
+          return (
+            <Link
+              key={pilier.fr}
+              href={firstHref}
+              onClick={onLinkClick}
+              style={pilierLinkStyle(active)}
+            >
+              <span style={{ fontSize: 16, flexShrink: 0 }}>{pilier.emoji}</span>
               {isFr ? pilier.fr : pilier.en}
-            </div>
-            {pilier.links.map(link => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={onLinkClick}
-                style={navLinkStyle(isActive(link.href))}
-              >
-                {isFr ? link.fr : link.en}
-              </Link>
-            ))}
-          </div>
-        ))}
+            </Link>
+          )
+        })}
       </nav>
 
       {/* Bas de sidebar */}

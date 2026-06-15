@@ -100,7 +100,7 @@ function AppLayout({ Component, pageProps }) {
         flex: 1,
         background: theme === 'dark' ? 'var(--novae-bg-dark)' : 'var(--novae-bg)',
         transition: 'margin-left 0.2s ease',
-        padding: '32px 36px',
+        padding: '36px 40px',
       }}>
         <Component {...pageProps} />
       </main>
