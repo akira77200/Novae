@@ -60,7 +60,7 @@ export default function Todo() {
       
       <main style={{ maxWidth: 660, margin: '0 auto', padding: '36px 20px 80px' }}>
 
-        <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>📋 {t.todo_title}</h1>
+        <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>{t.todo_title}</h1>
         <p style={{ fontSize: 13, color: C.muted, marginBottom: 4, lineHeight: 1.6 }}>
           {lang === 'fr'
             ? 'Tes tâches personnelles libres — pour le suivi officiel d\'immigration, consulte ton'

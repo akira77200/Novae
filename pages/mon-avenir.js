@@ -780,9 +780,9 @@ export default function MonAvenir() {
   }
 
   const TABS = [
-    { id:'orientation', fr:'🎯 Mon orientation', en:'🎯 My Path'    },
-    { id:'secteur',     fr:'📚 Mon secteur',     en:'📚 My Sector'  },
-    { id:'vision',      fr:'✨ Ma vision',        en:'✨ My Vision'  },
+    { id:'orientation', fr:'Mon orientation', en:'My Path'    },
+    { id:'secteur',     fr:'Mon secteur',     en:'My Sector'  },
+    { id:'vision',      fr:'Ma vision',        en:'My Vision'  },
   ]
 
   if (authLoading) return (
@@ -808,7 +808,7 @@ export default function MonAvenir() {
 
         {/* Header */}
         <h1 style={{ fontSize:28, fontWeight:800, color:C.text, letterSpacing:-0.5, marginBottom:6 }}>
-          🚀 {lang === 'fr' ? 'Mon Avenir' : 'My Future'}
+          {lang === 'fr' ? 'Mon Avenir' : 'My Future'}
         </h1>
         <p style={{ fontSize:15, color:C.muted, marginBottom:28, lineHeight:1.6 }}>
           {lang === 'fr' ? 'Découvre les programmes qui te correspondent et construis ta vision.' : 'Discover the programs that match you and build your vision.'}
@@ -849,7 +849,7 @@ export default function MonAvenir() {
             {/* ── PHASE 2 : CHARGEMENT ── */}
             {orientPhase === 'loading' && (
               <div style={{ textAlign:'center', padding:'80px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:20 }}>
-                <div style={{ fontSize:48, marginBottom:24 }}>✨</div>
+                <div style={{ fontSize:48, marginBottom:24 }}></div>
                 <p style={{ fontSize:18, fontWeight:700, color:C.text, marginBottom:12 }}>
                   {lang === 'fr' ? 'Analyse de ton profil en cours...' : 'Analyzing your profile...'}
                 </p>
@@ -1253,13 +1253,13 @@ export default function MonAvenir() {
                       )}
                       {orientAnalyse.plan_suggere.premier_emploi && (
                         <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
-                          <span style={{ width:28, height:28, borderRadius:'50%', background:'#E65100', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>💼</span>
+                          <span style={{ width:28, height:28, borderRadius:'50%', background:'#1E3A5F', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>💼</span>
                           <div><p style={{ fontSize:12, fontWeight:600, color:C.muted, marginBottom:3 }}>{lang === 'fr' ? 'Premier emploi réaliste' : 'Realistic first job'}</p><p style={{ fontSize:14, color:C.text2, lineHeight:1.6 }}>{orientAnalyse.plan_suggere.premier_emploi}</p></div>
                         </div>
                       )}
                       {orientAnalyse.plan_suggere.vision_5_ans && (
                         <div style={{ padding:'14px 16px', background:'linear-gradient(135deg, #1B3A2D 0%, #1F4332 100%)', borderRadius:12, marginTop:4 }}>
-                          <p style={{ fontSize:12, fontWeight:700, color:C.accent2, marginBottom:4 }}>🌟 {lang === 'fr' ? 'Vision 5 ans' : '5-year vision'}</p>
+                          <p style={{ fontSize:12, fontWeight:700, color:C.accent2, marginBottom:4 }}>{lang === 'fr' ? 'Vision 5 ans' : '5-year vision'}</p>
                           <p style={{ fontSize:14, color:'#D1FAE5', lineHeight:1.7, fontStyle:'italic' }}>{orientAnalyse.plan_suggere.vision_5_ans}</p>
                         </div>
                       )}
@@ -1318,7 +1318,7 @@ export default function MonAvenir() {
 
                   {/* BLOC A — C'est quoi vraiment */}
                   <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:12 }}>{prog.emoji} {lang === 'fr' ? `C'est quoi vraiment — ${prog.nom.fr}` : `What is really — ${prog.nom.en}`} 🎯</p>
+                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:12 }}>{lang === 'fr' ? `C'est quoi vraiment — ${prog.nom.fr}` : `What is really — ${prog.nom.en}`}</p>
                     <p style={{ fontSize:14, color:C.muted, lineHeight:1.8 }}>{info.cest_quoi}</p>
                   </div>
 
@@ -1376,14 +1376,14 @@ export default function MonAvenir() {
 
                     {/* Chemin type */}
                     <div style={{ padding:'12px 16px', background:`${C.accent}08`, border:`1px solid ${C.accent}20`, borderRadius:10 }}>
-                      <p style={{ fontSize:12, fontWeight:700, color:C.accent2, marginBottom:4 }}>🛤️ {lang === 'fr' ? 'Chemin type' : 'Typical path'}</p>
+                      <p style={{ fontSize:12, fontWeight:700, color:C.accent2, marginBottom:4 }}>{lang === 'fr' ? 'Chemin type' : 'Typical path'}</p>
                       <p style={{ fontSize:13, color:C.muted, lineHeight:1.7 }}>{info.chemin}</p>
                     </div>
                   </div>
 
                   {/* BLOC D — Retour au pays */}
                   <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:12 }}>🌍 {lang === 'fr' ? 'Le retour au pays' : 'Back home'}</p>
+                    <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:12 }}>{lang === 'fr' ? 'Le retour au pays' : 'Back home'}</p>
                     {!ficheRetour ? (
                       <div style={{ textAlign:'center', padding:'20px', background:C.surface2, borderRadius:10 }}>
                         <p style={{ fontSize:14, color:C.muted, lineHeight:1.7, marginBottom:14 }}>
@@ -1437,7 +1437,7 @@ export default function MonAvenir() {
           <>
             {!visionProg || !visionPays ? (
               <div style={{ textAlign:'center', padding:'56px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:16 }}>
-                <p style={{ fontSize:36, marginBottom:14 }}>✨</p>
+                <div style={{ width:44, height:44, borderRadius:12, background:"#EFF6FF", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
                 <p style={{ fontWeight:700, fontSize:18, color:C.text, marginBottom:10 }}>
                   {lang === 'fr' ? 'Complète d\'abord ton profil' : 'Complete your profile first'}
                 </p>
@@ -1447,7 +1447,7 @@ export default function MonAvenir() {
                     : 'First complete the orientation quiz and add your country of origin in your profile to generate your personalized vision.'}
                 </p>
                 <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
-                  {!visionProg && <button onClick={() => setTab('orientation')} style={{ padding:'10px 22px', background:C.accent, borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, border:'none', cursor:'pointer' }}>{lang === 'fr' ? '🎯 Faire le quiz →' : '🎯 Take the quiz →'}</button>}
+                  {!visionProg && <button onClick={() => setTab('orientation')} style={{ padding:'10px 22px', background:C.accent, borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, border:'none', cursor:'pointer' }}>{lang === 'fr' ? 'Faire le quiz →' : 'Take the quiz →'}</button>}
                   {!visionPays && <a href="/profile_1" style={{ padding:'10px 22px', background:`${C.accent}15`, border:`1px solid ${C.accent}35`, borderRadius:9, color:C.accent2, fontWeight:600, fontSize:14, textDecoration:'none' }}>{lang === 'fr' ? 'Compléter mon profil →' : 'Complete my profile →'}</a>}
                 </div>
               </div>
@@ -1555,8 +1555,8 @@ export default function MonAvenir() {
 
                     {/* Q3 — Impact */}
                     <div>
-                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#F59E0B', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
-                        {lang === 'fr' ? '🌟 Ton impact rêvé' : '🌟 Your dream impact'}
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#3B82F6', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                        {lang === 'fr' ? 'Ton impact rêvé' : 'Your dream impact'}
                       </label>
                       <p style={{ fontSize:12, color:C.muted, marginBottom:8 }}>
                         {lang === 'fr' ? 'Dans 10 ans, quelle trace veux-tu avoir laissée ?' : 'In 10 years, what impact do you want to have made?'}
@@ -1608,7 +1608,7 @@ export default function MonAvenir() {
                 {/* ── CHARGEMENT ── */}
                 {visLoading && (
                   <div style={{ textAlign:'center', padding:'60px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:16 }}>
-                    <p style={{ fontSize:32, marginBottom:16 }}>✨</p>
+                    <div style={{ width:44, height:44, borderRadius:12, background:"#EFF6FF", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
                     <p style={{ fontSize:16, fontWeight:700, color:C.text, marginBottom:8 }}>{lang === 'fr' ? 'Génération de ta vision...' : 'Generating your vision...'}</p>
                     <p style={{ fontSize:13, color:C.muted, marginBottom:28 }}>{lang === 'fr' ? 'L\'IA analyse ton profil en profondeur (30-45 sec)' : 'AI is deeply analyzing your profile (30-45 sec)'}</p>
                     <div style={{ display:'flex', justifyContent:'center', gap:8 }}>
@@ -1670,7 +1670,7 @@ export default function MonAvenir() {
                     {/* SECTION 2 — Métiers dans 10 ans */}
                     {(vision.metiers_futur || []).length > 0 && (
                       <div className="fade-up fade-up-2" style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>🚀 {lang === 'fr' ? 'Tes métiers dans 10 ans' : 'Your careers in 10 years'}</p>
+                        <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>{lang === 'fr' ? 'Tes métiers dans 10 ans' : 'Your careers in 10 years'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom: vision.impact_ia ? 16 : 0 }}>
                           {vision.metiers_futur.map((m, i) => (
                             <div key={i} style={{ padding:'14px 16px', background:'rgba(96,165,250,0.06)', borderRadius:10, border:'1px solid rgba(96,165,250,0.15)' }}>
@@ -1693,7 +1693,7 @@ export default function MonAvenir() {
                         </div>
                         {vision.impact_ia && (
                           <div style={{ padding:'14px 16px', background:'rgba(251,191,36,0.07)', border:'1px solid rgba(251,191,36,0.2)', borderRadius:10 }}>
-                            <p style={{ fontSize:12, fontWeight:700, color:'#F59E0B', marginBottom:6 }}>🤖 {lang === 'fr' ? 'Impact de l\'IA sur ce secteur' : 'AI impact on this sector'}</p>
+                            <p style={{ fontSize:12, fontWeight:700, color:'#3B82F6', marginBottom:6 }}>🤖 {lang === 'fr' ? 'Impact de l\'IA sur ce secteur' : 'AI impact on this sector'}</p>
                             <p style={{ fontSize:13, color:C.muted, lineHeight:1.7, margin:0 }}>{vision.impact_ia}</p>
                           </div>
                         )}
@@ -1706,7 +1706,7 @@ export default function MonAvenir() {
                         <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:16 }}>💡 {lang === 'fr' ? 'Tes idées de startup' : 'Your startup ideas'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
                           {vision.startups.map((s, i) => (
-                            <div key={i} style={{ padding:'16px 18px', background:C.surface2, borderRadius:12, borderLeft:`3px solid ${i === 0 ? C.accent2 : i === 1 ? '#60A5FA' : '#F59E0B'}` }}>
+                            <div key={i} style={{ padding:'16px 18px', background:C.surface2, borderRadius:12, borderLeft:`3px solid ${i === 0 ? C.accent2 : i === 1 ? '#60A5FA' : '#3B82F6'}` }}>
                               <p style={{ fontWeight:700, fontSize:15, color:C.text, marginBottom:10 }}>🏢 {s.nom}</p>
                               <p style={{ fontSize:13, color:C.muted, marginBottom:6 }}>
                                 <strong style={{ color:C.text }}>{lang === 'fr' ? 'Problème résolu :' : 'Problem solved:'}</strong> {s.probleme_resolu || s.probleme}
@@ -1723,8 +1723,8 @@ export default function MonAvenir() {
                                 <p style={{ fontSize:13, color:C.accent2, marginBottom:10 }}>💡 {s.pourquoi_lui || s.pourquoi_toi}</p>
                               )}
                               {s.premier_pas && (
-                                <div style={{ padding:'10px 14px', background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.25)', borderRadius:8, marginBottom:8 }}>
-                                  <p style={{ fontSize:12, fontWeight:700, color:'#F59E0B', marginBottom:4 }}>🎯 {lang === 'fr' ? 'Premier pas cette semaine :' : 'First step this week:'}</p>
+                                <div style={{ padding:'10px 14px', background:'rgba(59,130,246,0.08)', border:'1px solid rgba(59,130,246,0.25)', borderRadius:8, marginBottom:8 }}>
+                                  <p style={{ fontSize:12, fontWeight:700, color:'#3B82F6', marginBottom:4 }}>{lang === 'fr' ? 'Premier pas cette semaine :' : 'First step this week:'}</p>
                                   <p style={{ fontSize:13, color:C.text, margin:0, lineHeight:1.6 }}>{s.premier_pas}</p>
                                 </div>
                               )}
@@ -1746,7 +1746,7 @@ export default function MonAvenir() {
                           return [
                             { label: lang === 'fr' ? 'Années 1-2' : 'Years 1-2', text: plan.annee_1_2, color: C.accent2, bg: `${C.accent}10` },
                             { label: lang === 'fr' ? 'Années 3-4' : 'Years 3-4', text: plan.annee_3_4, color: '#60A5FA', bg: 'rgba(96,165,250,0.08)' },
-                            { label: lang === 'fr' ? 'Année 5' : 'Year 5', text: plan.annee_5, color: '#F59E0B', bg: 'rgba(245,158,11,0.08)' },
+                            { label: lang === 'fr' ? 'Année 5' : 'Year 5', text: plan.annee_5, color: '#3B82F6', bg: 'rgba(59,130,246,0.08)' },
                           ].map((row, i) => (
                             <div key={i} style={{ display:'flex', gap:14, marginBottom: i < 2 ? 14 : 0, paddingBottom: i < 2 ? 14 : 0, borderBottom: i < 2 ? `1px solid ${C.border}` : 'none' }}>
                               <div style={{ width:84, flexShrink:0, paddingTop:2 }}>

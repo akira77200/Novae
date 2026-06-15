@@ -167,7 +167,7 @@ export default function SimulateurBudget() {
     const maxDep = budget.total_depenses
     const postes = [
       { label: lang==='fr'?'Frais de scolarité (moy.)':'Tuition (avg.)', val: budget.frais_scolarite, color: '#60A5FA' },
-      { label: lang==='fr'?'Loyer (12 mois)':'Rent (12 months)',          val: budget.loyer,           color: '#F97316' },
+      { label: lang==='fr'?'Loyer (12 mois)':'Rent (12 months)',          val: budget.loyer,           color: '#3B82F6' },
       { label: lang==='fr'?'Épicerie + transport':'Groceries + transit',   val: budget.epicerie_transport, color: '#3B82F6' },
       { label: lang==='fr'?'Téléphone + internet':'Phone + internet',      val: budget.telephone_internet, color: '#A78BFA' },
       { label: lang==='fr'?'Loisirs':'Leisure',                            val: budget.loisirs,         color: '#B5838D' },
@@ -305,7 +305,7 @@ export default function SimulateurBudget() {
             ) : (
               <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '18px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#F97316' }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#3B82F6' }}>
                     🟠 {lang==='fr'?'Scénario B':'Scenario B'}
                   </p>
                   <button onClick={() => setCompareMode(false)}
@@ -335,7 +335,7 @@ export default function SimulateurBudget() {
                 <BudgetCard
                   budget={budgetB}
                   label={`🟠 ${villeB} · ${typeB === 'universite' ? (lang==='fr'?'Université':'University') : (lang==='fr'?'Collège':'College')}`}
-                  color="#F97316"
+                  color="#3B82F6"
                 />
               )}
             </div>

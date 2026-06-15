@@ -131,7 +131,7 @@ const PASSERELLES = [
     desc:  { fr: 'L\'Attestation d\'Études Collégiales (AEC) est une formation courte (6–18 mois) très ciblée. Parfaite si tu as déjà un diplôme et veux te reconvertir rapidement au Canada.', en: 'The AEC is a short program (6–18 months) highly targeted to the job market. Perfect if you already have a degree and want to quickly pivot in Canada.' },
     exemples: ['AEC en développement web (6 mois)', 'AEC en soins de santé (12 mois)', 'AEC en comptabilité et gestion (18 mois)'],
     lien: { fr: SAFE_LINKS.inforoutefpt.url, en: SAFE_LINKS.inforoutefpt.url },
-    couleur: '#F97316',
+    couleur: '#3B82F6',
   },
 ]
 
@@ -171,8 +171,8 @@ export default function OrientationType() {
 
   const TABS = [
     { id: 'tableau',     fr: '📊 Comparatif',      en: '📊 Comparison'    },
-    { id: 'quiz',        fr: '🎯 Lequel me convient ?', en: '🎯 Which fits me?' },
-    { id: 'passerelles', fr: '🔄 Les passerelles',  en: '🔄 Bridges'       },
+    { id: 'quiz',        fr: 'Lequel me convient ?', en: 'Which fits me?' },
+    { id: 'passerelles', fr: 'Les passerelles',  en: '🔄 Bridges'       },
   ]
 
   return (
@@ -256,7 +256,7 @@ export default function OrientationType() {
             {/* CTA quiz */}
             <div style={{ padding: '18px 22px', background: `${C.accent}08`, border: `1px solid ${C.accent}20`, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
               <p style={{ fontSize: 14, color: C.text, fontWeight: 600 }}>
-                🎯 {lang === 'fr' ? 'Lequel te convient le mieux ?' : 'Which one fits you best?'}
+                {lang === 'fr' ? 'Lequel te convient le mieux ?' : 'Which one fits you best?'}
               </p>
               <button onClick={() => setSection('quiz')}
                 style={{ padding: '9px 20px', background: C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
@@ -471,8 +471,8 @@ export default function OrientationType() {
                     </tr>
                     {[
                       { path: { fr: '🏛️ Université directe (baccalauréat 4 ans)', en: '🏛️ Direct university (4-year bachelor\'s)' }, duree: '4 ans', frais: '25 000–50 000 $/an', savings: '—', highlight: false },
-                      { path: { fr: '🔄 DEC-BAC Québec (cégep 2 ans + univ. 2 ans)', en: '🔄 DEC-BAC Quebec (CEGEP 2yr + univ. 2yr)' }, duree: '4 ans', frais: '8 000 + 22 000 $/an', savings: lang === 'fr' ? '~30 000 $ sur 4 ans' : '~$30,000 over 4 years', highlight: true },
-                      { path: { fr: '🎓 Collège → Transfert (Ontario)', en: '🎓 College → Transfer (Ontario)' }, duree: '3–4 ans', frais: '12 000 + 35 000 $/an', savings: lang === 'fr' ? '~15 000 $ sur le parcours' : '~$15,000 over the path', highlight: true },
+                      { path: { fr: 'DEC-BAC Québec (cégep 2 ans + univ. 2 ans)', en: '🔄 DEC-BAC Quebec (CEGEP 2yr + univ. 2yr)' }, duree: '4 ans', frais: '8 000 + 22 000 $/an', savings: lang === 'fr' ? '~30 000 $ sur 4 ans' : '~$30,000 over 4 years', highlight: true },
+                      { path: { fr: 'Collège → Transfert (Ontario)', en: 'College → Transfer (Ontario)' }, duree: '3–4 ans', frais: '12 000 + 35 000 $/an', savings: lang === 'fr' ? '~15 000 $ sur le parcours' : '~$15,000 over the path', highlight: true },
                       { path: { fr: '⚡ AEC seule (6–18 mois)', en: '⚡ AEC only (6–18 months)' }, duree: '6–18 mois', frais: '5 000–12 000 $ total', savings: lang === 'fr' ? '~80 000 $ vs univ. 4 ans' : '~$80,000 vs 4yr univ.', highlight: false },
                     ].map((r, i) => (
                       <tr key={i} style={{ background: r.highlight ? `${C.accent}05` : 'transparent' }}>
@@ -493,8 +493,7 @@ export default function OrientationType() {
             {/* Conseil final */}
             <div style={{ marginTop: 24, padding: '16px 20px', background: `${C.accent}08`, border: `1px solid ${C.accent}20`, borderRadius: 14 }}>
               <p style={{ fontSize: 14, color: C.accent2, lineHeight: 1.7 }}>
-                🎯 {lang === 'fr'
-                  ? "Le meilleur chemin n'est pas le plus rapide — c'est celui qui correspond à ton projet de vie. Prends le temps de te renseigner auprès des conseillers d'orientation de l'université ou du collège de ton choix."
+                {lang === 'fr' ? "Le meilleur chemin n'est pas le plus rapide — c'est celui qui correspond à ton projet de vie. Prends le temps de te renseigner auprès des conseillers d'orientation de l'université ou du collège de ton choix."
                   : "The best path isn't the fastest — it's the one that fits your life project. Take time to consult advisors at the university or college of your choice."}
               </p>
             </div>

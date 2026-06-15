@@ -138,7 +138,7 @@ export default function Culture() {
               { id:'codes_sociaux', emoji:'🤝', fr:'Codes sociaux',    en:'Social Codes',    color:'#3B82F6' },
               { id:'hiver',         emoji:'❄️', fr:"Survivre à l'hiver", en:'Surviving Winter', color:'#60A5FA' },
               { id:'travail',       emoji:'💼', fr:'Culture du travail',en:'Work Culture',    color:'#FBBF24' },
-              { id:'finances',      emoji:'💳', fr:'Finances & banque', en:'Finance & Banking',color:'#F97316' },
+              { id:'finances',      emoji:'💳', fr:'Finances & banque', en:'Finance & Banking',color:'#3B82F6' },
             ].map(q => (
               <a key={q.id} href={`/quiz-culture?cat=${q.id}`}
                 style={{ display:'flex', alignItems:'center', gap:10, padding:'12px 14px', background:q.color+'10', border:`1px solid ${q.color}30`, borderRadius:11, textDecoration:'none' }}>

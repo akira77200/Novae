@@ -152,7 +152,7 @@ function AppContent({ Component, pageProps }) {
           --accent-light: #3B82F6;
           --color-success: #22C55E;
           --color-success-light: #D1FAE5;
-          --color-warning: #F59E0B;
+          --color-warning: #854D0E;
           --color-danger: #EF4444;
 
           /* ── Texte ── */
@@ -189,7 +189,7 @@ function AppContent({ Component, pageProps }) {
           --novae-text-secondary: #475569;
           --novae-text-muted: #94A3B8;
           --novae-success: #22C55E;
-          --novae-warning: #F59E0B;
+          --novae-warning: #854D0E;
           --novae-danger: #EF4444;
           --novae-info: #3B82F6;
 

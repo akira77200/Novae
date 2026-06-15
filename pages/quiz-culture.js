@@ -167,7 +167,7 @@ const QUIZ_DATA = {
   finances: {
     titre: { fr: 'Finances et banque', en: 'Finance & Banking' },
     emoji: '💳',
-    color: '#F97316',
+    color: '#3B82F6',
     questions: [
       {
         q: { fr: "Pour construire ta cote de crédit rapidement au Canada :", en: "To build your credit score quickly in Canada:" },
@@ -224,7 +224,7 @@ const QUIZ_DATA = {
 const getPct = (score, total) => total > 0 ? Math.round((score / total) * 100) : 0
 
 const getResultat = (pct, lang) => {
-  if (pct >= 80) return { label: lang==='fr'?'🏆 Expert canadien !':'🏆 Canadian Expert!', color:'#34D399' }
+  if (pct >= 80) return { label: lang==='fr'?'Expert canadien !':'Canadian Expert!', color:'#34D399' }
   if (pct >= 60) return { label: lang==='fr'?'🌟 Tu apprends vite !':'🌟 Fast learner!', color:'#FBBF24' }
   if (pct >= 40) return { label: lang==='fr'?'📚 Continue à explorer':'📚 Keep exploring', color:'#60A5FA' }
   return { label: lang==='fr'?'💡 La culture canadienne te réserve encore des surprises !':'💡 Canadian culture still has surprises for you!', color:'#F87171' }

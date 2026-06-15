@@ -447,7 +447,7 @@ export default function Reseau() {
         ) : contactsFiltres.length === 0 && contacts.length === 0 ? (
           /* État vide */
           <div style={{ textAlign:'center', padding:'52px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, marginBottom:24 }}>
-            <p style={{ fontSize:36, marginBottom:14 }}>🎯</p>
+            <div style={{ width:44, height:44, borderRadius:12, background:"#EFF6FF", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <p style={{ fontWeight:600, fontSize:15, color:C.text, marginBottom:8 }}>
               {lang==='fr'?'Ton réseau commence ici.':'Your network starts here.'}
             </p>

@@ -584,7 +584,7 @@ export default function CV() {
 
             {experiences.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px 24px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, marginBottom: 20 }}>
-                <p style={{ fontSize: 36, marginBottom: 12 }}>💼</p>
+                <div style={{ width:44, height:44, borderRadius:12, background:"#EFF6FF", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:12 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M2 12h20"/></svg></div>
                 <p style={{ color: C.muted, fontSize: 14, marginBottom: 16 }}>
                   {lang === 'fr' ? "Aucune expérience ajoutée. Tu peux passer cette étape." : 'No experience added. You can skip this step.'}
                 </p>
@@ -787,7 +787,7 @@ export default function CV() {
                     {[
                       { label: lang === 'fr' ? 'Techniques' : 'Technical', items: aiData.competences_classees.techniques, color: '#60A5FA' },
                       { label: lang === 'fr' ? 'Langues' : 'Languages', items: aiData.competences_classees.langues, color: C.accent2 },
-                      { label: lang === 'fr' ? 'Soft skills' : 'Soft Skills', items: aiData.competences_classees.soft_skills, color: '#F59E0B' },
+                      { label: lang === 'fr' ? 'Soft skills' : 'Soft Skills', items: aiData.competences_classees.soft_skills, color: '#3B82F6' },
                     ].map((group, gi) => (group.items || []).length > 0 && (
                       <div key={gi} style={{ marginBottom: 10 }}>
                         <span style={{ fontSize: 11, fontWeight: 700, color: group.color, marginRight: 8 }}>{group.label} :</span>

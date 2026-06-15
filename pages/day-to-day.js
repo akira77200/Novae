@@ -80,7 +80,7 @@ const POSTES_BUDGET = [
   { id: 'transport', fr: 'Transport',  en: 'Transit',   icon: '🚇', color: '#60A5FA' },
   { id: 'telephone', fr: 'Téléphone',  en: 'Phone',     icon: '📱', color: '#B5838D' },
   { id: 'internet',  fr: 'Internet',   en: 'Internet',  icon: '📡', color: '#A78BFA' },
-  { id: 'loisirs',   fr: 'Loisirs',    en: 'Leisure',   icon: '🎭', color: '#F97316' },
+  { id: 'loisirs',   fr: 'Loisirs',    en: 'Leisure',   icon: '🎭', color: '#3B82F6' },
 ]
 
 // ── Données convertisseur devises ─────────────────────────────────
@@ -293,7 +293,7 @@ const CHECKLIST_BAIL = [
 ]
 
 const CATEGORIES = [
-  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#F97316', query: null },
+  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#3B82F6', query: null },
   { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#34D399', query: null },
   { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#A78BFA', query: null },
   { id: 'halal',      fr: 'Épiceries halal',     en: 'Halal groceries',    icon: '🥩', color: '#3B82F6', query: (c) => `halal+grocery+${c}` },
@@ -581,7 +581,7 @@ export default function DayToDay() {
               <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:20 }}>
                 {Object.entries(LOGEMENT_DATA).map(([k,v]) => (
                   <button key={k} onClick={()=>{ setLogVille(k); setLogBudget(900) }}
-                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'#F97316'+'50':C.border}`, background:logVille===k?'rgba(249,115,22,0.12)':'transparent', color:logVille===k?'#F97316':C.muted, fontSize:13, fontWeight:500, cursor:'pointer' }}>
+                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'#3B82F6'+'50':C.border}`, background:logVille===k?'rgba(59,130,246,0.12)':'transparent', color:logVille===k?'#3B82F6':C.muted, fontSize:13, fontWeight:500, cursor:'pointer' }}>
                     {v.label}
                   </button>
                 ))}
@@ -595,9 +595,9 @@ export default function DayToDay() {
                 <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12, flexWrap:'wrap' }}>
                   <input type="range" min={400} max={2500} step={50} value={logBudget}
                     onChange={e=>setLogBudget(Number(e.target.value))}
-                    style={{ flex:1, minWidth:160, accentColor:'#F97316' }} />
-                  <div style={{ padding:'8px 16px', background:'rgba(249,115,22,0.12)', border:'1px solid rgba(249,115,22,0.30)', borderRadius:10, minWidth:110, textAlign:'center' }}>
-                    <p style={{ fontSize:22, fontWeight:800, color:'#F97316', lineHeight:1 }}>{logBudget} $</p>
+                    style={{ flex:1, minWidth:160, accentColor:'#3B82F6' }} />
+                  <div style={{ padding:'8px 16px', background:'rgba(59,130,246,0.12)', border:'1px solid rgba(59,130,246,0.30)', borderRadius:10, minWidth:110, textAlign:'center' }}>
+                    <p style={{ fontSize:22, fontWeight:800, color:'#3B82F6', lineHeight:1 }}>{logBudget} $</p>
                     <p style={{ fontSize:10, color:C.muted, marginTop:2 }}>CAD / {lang==='fr'?'mois':'month'}</p>
                   </div>
                 </div>
@@ -629,10 +629,10 @@ export default function DayToDay() {
               ) : (
                 <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:24 }}>
                   {optionsDispo.map((opt, i) => (
-                    <div key={i} style={{ background:C.surface, border:`1px solid ${'rgba(249,115,22,0.25)'}`, borderRadius:14, overflow:'hidden' }}>
+                    <div key={i} style={{ background:C.surface, border:`1px solid ${'rgba(59,130,246,0.25)'}`, borderRadius:14, overflow:'hidden' }}>
                       {/* Header */}
                       <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 18px', borderBottom:`1px solid ${C.border}` }}>
-                        <div style={{ width:40, height:40, borderRadius:10, background:'rgba(249,115,22,0.12)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>
+                        <div style={{ width:40, height:40, borderRadius:10, background:'rgba(59,130,246,0.12)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>
                           {i===0?'🛏️':i===1?'🏠':'🏛️'}
                         </div>
                         <div style={{ flex:1 }}>
@@ -642,7 +642,7 @@ export default function DayToDay() {
                           <p style={{ fontSize:12, color:C.muted }}>{lang==='fr'?opt.description:opt.description_en}</p>
                         </div>
                         <div style={{ textAlign:'right', flexShrink:0 }}>
-                          <p style={{ fontSize:16, fontWeight:800, color:'#F97316' }}>{opt.budget_min}–{opt.budget_max} $</p>
+                          <p style={{ fontSize:16, fontWeight:800, color:'#3B82F6' }}>{opt.budget_min}–{opt.budget_max} $</p>
                           <p style={{ fontSize:10, color:C.muted }}>{lang==='fr'?'/ mois':'/ month'}</p>
                         </div>
                       </div>
@@ -651,7 +651,7 @@ export default function DayToDay() {
                         <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginBottom:12 }}>
                           <span style={{ fontSize:11, color:C.muted, marginRight:4 }}>📍</span>
                           {opt.quartiers.map(q => (
-                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'rgba(249,115,22,0.08)', color:'#F97316', border:'1px solid rgba(249,115,22,0.20)', fontWeight:500 }}>{q}</span>
+                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'rgba(59,130,246,0.08)', color:'#3B82F6', border:'1px solid rgba(59,130,246,0.20)', fontWeight:500 }}>{q}</span>
                           ))}
                         </div>
                         {/* Avantages / Inconvénients */}
@@ -668,14 +668,14 @@ export default function DayToDay() {
                           </div>
                         </div>
                         {/* Conseil clé */}
-                        <div style={{ padding:'9px 12px', background:'rgba(249,115,22,0.06)', border:'1px solid rgba(249,115,22,0.18)', borderRadius:8, marginBottom:12 }}>
-                          <p style={{ fontSize:12, color:'#F97316', fontWeight:600 }}>
+                        <div style={{ padding:'9px 12px', background:'rgba(59,130,246,0.06)', border:'1px solid rgba(59,130,246,0.18)', borderRadius:8, marginBottom:12 }}>
+                          <p style={{ fontSize:12, color:'#3B82F6', fontWeight:600 }}>
                             💡 {lang==='fr'?opt.conseil:opt.conseil_en}
                           </p>
                         </div>
                         {/* CTA */}
                         <a href={safeLien(opt.lien)} target="_blank" rel="noreferrer"
-                          style={{ display:'inline-block', padding:'8px 18px', background:'#F97316', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                          style={{ display:'inline-block', padding:'8px 18px', background:'#3B82F6', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
                           {lang==='fr'?'Chercher →':'Search →'}
                         </a>
                       </div>

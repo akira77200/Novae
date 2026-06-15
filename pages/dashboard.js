@@ -153,7 +153,7 @@ const WHY_MSG = {
 
 const CAT_STYLE = {
   admin:    { label:'Admin',      labelEn:'Admin',     color:'#3B82F6', bg:'rgba(59,130,246,0.12)'  },
-  banque:   { label:'Banque',     labelEn:'Banking',   color:'#F59E0B', bg:'rgba(245,158,11,0.12)'  },
+  banque:   { label:'Banque',     labelEn:'Banking',   color:'#3B82F6', bg:'rgba(59,130,246,0.12)'  },
   sante:    { label:'Santé',      labelEn:'Health',    color:'#60A5FA', bg:'rgba(96,165,250,0.12)'  },
   logement: { label:'Logement',   labelEn:'Housing',   color:'#B5838D', bg:'rgba(181,131,141,0.12)' },
   social:   { label:'Social',     labelEn:'Social',    color:'#A78BFA', bg:'rgba(167,139,250,0.12)' },
@@ -364,7 +364,7 @@ export default function Dashboard() {
     pts.push({ label: lang === 'fr' ? 'Documents ajoutés': 'Documents',  labelEn: 'Documents',  pts: ptsDoc ?? 0, max: 20, color: '#FBBF24', href: '/documents', loading: scoreDoc === null })
     // 4. CV créé (15 pts)
     const hasCv = typeof window !== 'undefined' && !!localStorage.getItem('novae_cv_nom')
-    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: '#F97316', href: '/cv' })
+    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: '#3B82F6', href: '/cv' })
     // 5. Mon Avenir (10 pts)
     pts.push({ label: lang === 'fr' ? 'Projet d\'avenir'  : 'Future plan',labelEn:'Future plan', pts: monAvenirResult ? 10 : 0,             max: 10, color: '#A78BFA', href: '/mon-avenir' })
     return pts
@@ -584,7 +584,7 @@ export default function Dashboard() {
                   <span style={{ fontSize: 52, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.04em', lineHeight: 1 }}>{scoreTotal}</span>
                   <span style={{ fontSize: 18, fontWeight: 500, color: '#94A3B8', paddingBottom: 6, marginLeft: 2 }}>/100</span>
                 </div>
-                <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: scoreTotal >= 80 ? '#F0FDF4' : scoreTotal >= 50 ? '#FFFBEB' : '#F1F5F9', color: scoreTotal >= 80 ? '#16A34A' : scoreTotal >= 50 ? '#B45309' : '#475569' }}>
+                <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: scoreTotal >= 80 ? '#F0FDF4' : scoreTotal >= 50 ? '#FFFBEB' : '#F1F5F9', color: scoreTotal >= 80 ? '#16A34A' : scoreTotal >= 50 ? '#1E3A5F' : '#475569' }}>
                   {scoreBadge}
                 </span>
               </div>
