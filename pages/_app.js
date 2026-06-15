@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { AppProvider, useApp } from '../context/AppContext'
-import NovaChat from '../components/NovaChat'
+
 import Navbar from '../components/Navbar'
 
 // ── ErrorBoundary global ──────────────────────────────────────────
@@ -141,7 +141,7 @@ function AppContent({ Component, pageProps }) {
           --sidebar-logo-text: #1E3A5F;
 
           /* ── Fond & cards ── */
-          --bg-page: #F8F9FA;
+          --bg-page: #F4F6F8;
           --bg-card: #FFFFFF;
           --border-default: #E2E8F0;
           --border-strong: #CBD5E1;
@@ -181,7 +181,7 @@ function AppContent({ Component, pageProps }) {
           --novae-primary-pale: #DBEAFE;
           --novae-accent: #3B82F6;
           --novae-accent-soft: #93C5FD;
-          --novae-bg: #F8F9FA;
+          --novae-bg: #F4F6F8;
           --novae-surface: #FFFFFF;
           --novae-surface-2: #F8F9FA;
           --novae-border: #E2E8F0;
@@ -226,7 +226,6 @@ function AppContent({ Component, pageProps }) {
       `}</style>
 
       <AppLayout Component={Component} pageProps={pageProps} />
-      <NovaChat />
     </AppProvider>
   )
 }

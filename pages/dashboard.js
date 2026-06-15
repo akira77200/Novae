@@ -453,23 +453,44 @@ export default function Dashboard() {
 
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
-          <div style={{ marginBottom: 24 }}>
-            <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: 4 }}>
-              {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
-            </h1>
-            <p style={{ fontSize: 13, fontWeight: 400, color: '#64748B', marginTop: 4 }}>
-              {[
-                profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
-                profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
-                profile.statut === 'famille'     ? (lang === 'fr' ? 'Famille' : 'Family')           : null,
-                profile.programme  ? `${lang === 'fr' ? 'en' : 'in'} ${profile.programme}`          : null,
-                profile.universite ? `${lang === 'fr' ? 'à' : 'at'} ${profile.universite}`          : null,
-                profile.ville_accueil ? `· ${profile.ville_accueil}${profile.pays_accueil ? `, ${profile.pays_accueil}` : ''}` : null,
-              ].filter(Boolean).join(' ')}
-            </p>
+          <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 28, padding: '24px 28px', background: '#FFFFFF', borderRadius: 12, border: '1px solid #E8EDF2' }}>
+            {/* Skyline SVG décoratif */}
+            <svg
+              style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '45%', opacity: 0.08, pointerEvents: 'none', zIndex: 0 }}
+              viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax slice"
+            >
+              <rect x="320" y="60" width="30" height="140" fill="#1E3A5F"/>
+              <rect x="280" y="80" width="25" height="120" fill="#1E3A5F"/>
+              <rect x="240" y="100" width="20" height="100" fill="#1E3A5F"/>
+              <rect x="200" y="70" width="28" height="130" fill="#1E3A5F"/>
+              <rect x="160" y="110" width="22" height="90" fill="#1E3A5F"/>
+              <rect x="130" y="90" width="18" height="110" fill="#1E3A5F"/>
+              <rect x="100" y="120" width="20" height="80" fill="#1E3A5F"/>
+              <rect x="60"  y="95"  width="26" height="105" fill="#1E3A5F"/>
+              <rect x="20"  y="130" width="24" height="70"  fill="#1E3A5F"/>
+              <rect x="330" y="40" width="8"  height="20"  fill="#1E3A5F"/>
+              <rect x="204" y="50" width="6"  height="20"  fill="#1E3A5F"/>
+              <rect x="283" y="62" width="5"  height="18"  fill="#1E3A5F"/>
+            </svg>
+            {/* Contenu header */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: 4 }}>
+                {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
+              </h1>
+              <p style={{ fontSize: 13, fontWeight: 400, color: '#64748B', marginTop: 4 }}>
+                {[
+                  profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
+                  profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
+                  profile.statut === 'famille'     ? (lang === 'fr' ? 'Famille' : 'Family')           : null,
+                  profile.programme  ? `${lang === 'fr' ? 'en' : 'in'} ${profile.programme}`          : null,
+                  profile.universite ? `${lang === 'fr' ? 'à' : 'at'} ${profile.universite}`          : null,
+                  profile.ville_accueil ? `· ${profile.ville_accueil}${profile.pays_accueil ? `, ${profile.pays_accueil}` : ''}` : null,
+                ].filter(Boolean).join(' ')}
+              </p>
+            </div>
           </div>
         ) : user ? (
-          <div style={{ marginBottom: 24 }}>
+          <div style={{ marginBottom: 28 }}>
             <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.03em', marginBottom: 8 }}>
               {lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
             </h1>
@@ -478,7 +499,7 @@ export default function Dashboard() {
             </a>
           </div>
         ) : (
-          <div style={{ padding: '12px 18px', background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 12, marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+          <div style={{ padding: '12px 18px', background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 12, marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
             <p style={{ fontSize: 13, color: '#3B82F6' }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
             <a href="/auth/register" style={{ padding: '7px 16px', background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>{lang === 'fr' ? "S'inscrire gratuitement →" : 'Sign up for free →'}</a>
           </div>
@@ -540,7 +561,7 @@ export default function Dashboard() {
                   setFiltre('a_faire')
                   setTimeout(() => checklistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150)
                 }}
-                style={{ padding: '10px 20px', background: '#0F172A', border: 'none', borderRadius: 8, color: '#FFFFFF', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                style={{ padding: '10px 20px', background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#FFFFFF', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {lang === 'fr' ? "Je m'en occupe →" : "I'll handle it →"}
               </button>
             </div>
