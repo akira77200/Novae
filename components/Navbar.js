@@ -1,4 +1,4 @@
-// components/Navbar.js — NOVAE v5 — 4 piliers + hamburger mobile
+// components/Navbar.js — NOVAE v5 — Sidebar latérale
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -9,37 +9,31 @@ const PILIERS_NAV = [
     emoji: '✈️',
     fr: 'Immigration',
     en: 'Immigration',
-    color: '#1565C0',
-    colorLight: '#42A5F5',
     paths: ['/dashboard', '/documents', '/echeances', '/arrivee'],
     links: [
-      { href: '/dashboard',  fr: 'Dashboard',       en: 'Dashboard'      },
-      { href: '/documents',  fr: '📁 Documents',    en: '📁 Documents'   },
-      { href: '/echeances',  fr: '📅 Échéances',    en: '📅 Deadlines'   },
-      { href: '/arrivee',    fr: 'Guide d\'arrivée',en: 'Arrival guide'  },
+      { href: '/dashboard',  fr: 'Dashboard',        en: 'Dashboard'      },
+      { href: '/documents',  fr: '📁 Documents',     en: '📁 Documents'   },
+      { href: '/echeances',  fr: '📅 Échéances',     en: '📅 Deadlines'   },
+      { href: '/arrivee',    fr: "Guide d'arrivée",  en: 'Arrival guide'  },
     ],
   },
   {
     emoji: '🎓',
     fr: 'Académie',
     en: 'Academia',
-    color: '#6A1B9A',
-    colorLight: '#AB47BC',
     paths: ['/mon-avenir', '/bourses', '/orientation-type', '/simulateur-budget', '/calendrier-academique'],
     links: [
-      { href: '/mon-avenir',            fr: 'Mon Orientation',       en: 'My Path'              },
-      { href: '/bourses',               fr: 'Bourses & Univs',       en: 'Scholarships'         },
-      { href: '/orientation-type',      fr: '🏛️ Univ. ou Collège',  en: '🏛️ Univ. or College'  },
-      { href: '/simulateur-budget',     fr: '💰 Simulateur budget',  en: '💰 Budget simulator'  },
-      { href: '/calendrier-academique', fr: '🗓️ Calendrier',         en: '🗓️ Calendar'          },
+      { href: '/mon-avenir',            fr: 'Mon Orientation',      en: 'My Path'             },
+      { href: '/bourses',               fr: 'Bourses & Univs',      en: 'Scholarships'        },
+      { href: '/orientation-type',      fr: '🏛️ Univ. ou Collège', en: '🏛️ Univ. or College' },
+      { href: '/simulateur-budget',     fr: '💰 Budget',            en: '💰 Budget'           },
+      { href: '/calendrier-academique', fr: '🗓️ Calendrier',        en: '🗓️ Calendar'         },
     ],
   },
   {
     emoji: '💼',
     fr: 'Carrière',
     en: 'Career',
-    color: '#E65100',
-    colorLight: '#FF7043',
     paths: ['/mentors', '/cv', '/entrevue', '/reseau'],
     links: [
       { href: '/mentors',  fr: 'Mentors',       en: 'Mentors'         },
@@ -52,339 +46,308 @@ const PILIERS_NAV = [
     emoji: '🏠',
     fr: 'Intégration',
     en: 'Integration',
-    color: '#2D6A4F',
-    colorLight: '#52B788',
     paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage', '/culture', '/quiz-culture'],
     links: [
-      { href: '/day-to-day',   fr: 'Vie quotidienne',    en: 'Daily life'         },
-      { href: '/todo',         fr: 'Mes tâches',          en: 'My tasks'           },
-      { href: '/bienetre',     fr: 'Bien-être',           en: 'Wellbeing'          },
-      { href: '/parrainage',   fr: 'Parrainage',          en: 'Peer Mentoring'     },
-      { href: '/culture',      fr: 'Culture canadienne',  en: 'Canadian Culture'   },
-      { href: '/quiz-culture', fr: 'Quiz culture',        en: 'Culture Quiz'       },
+      { href: '/day-to-day',   fr: 'Vie quotidienne',   en: 'Daily life'       },
+      { href: '/todo',         fr: 'Mes tâches',         en: 'My tasks'         },
+      { href: '/bienetre',     fr: 'Bien-être',          en: 'Wellbeing'        },
+      { href: '/parrainage',   fr: 'Parrainage',         en: 'Peer Mentoring'   },
+      { href: '/culture',      fr: 'Culture canadienne', en: 'Canadian Culture' },
+      { href: '/quiz-culture', fr: 'Quiz culture',       en: 'Culture Quiz'     },
     ],
   },
 ]
 
 export default function Navbar() {
-  const { C, t, lang, setLang, theme, setTheme, user, profile, userPlan } = useApp()
+  const { t, lang, setLang, theme, setTheme, user, profile, userPlan, sb } = useApp()
   const router = useRouter()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const isFr = lang === 'fr'
 
-  const activePilier = PILIERS_NAV.find(p =>
-    p.paths.some(path => router.pathname === path || router.pathname.startsWith(path + '/'))
+  const isActive = (href) =>
+    router.pathname === href || router.pathname.startsWith(href + '/')
+
+  const handleLogout = async () => {
+    if (sb) await sb.auth.signOut()
+    router.push('/')
+  }
+
+  const sidebarBg    = theme === 'dark' ? 'var(--novae-surface-dark)'  : 'var(--novae-surface)'
+  const sidebarBorder = theme === 'dark' ? 'var(--novae-border-dark)'  : 'var(--novae-border)'
+  const textColor    = theme === 'dark' ? 'var(--novae-text-dark)'     : 'var(--novae-text)'
+  const mutedColor   = theme === 'dark' ? 'var(--novae-text-secondary-dark)' : 'var(--novae-text-secondary)'
+
+  const navLinkStyle = (active) => ({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '8px 12px 8px 20px',
+    borderRadius: '8px',
+    margin: '1px 8px',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    fontSize: 'var(--font-size-sm)',
+    fontWeight: active ? 600 : 400,
+    color: active ? 'var(--novae-primary-light)' : mutedColor,
+    background: active ? 'var(--novae-primary-pale)' : 'transparent',
+    transition: 'all 0.15s ease',
+  })
+
+  const sidebarContent = (onLinkClick) => (
+    <>
+      {/* Logo */}
+      <div style={{ padding: '24px 20px 16px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+        <div style={{
+          width: '32px', height: '32px',
+          background: 'var(--novae-primary)',
+          borderRadius: '8px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#fff', fontWeight: 800, fontSize: '14px',
+        }}>N</div>
+        <span style={{ fontWeight: 700, fontSize: '1.1rem', color: textColor }}>novae</span>
+      </div>
+
+      {/* Nav piliers */}
+      <nav style={{ flex: 1, overflowY: 'auto', paddingBottom: '8px' }}>
+        {PILIERS_NAV.map(pilier => (
+          <div key={pilier.fr} style={{ marginBottom: '4px' }}>
+            <div style={{
+              padding: '4px 12px 2px 20px',
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              color: 'var(--novae-text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              marginTop: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}>
+              <span>{pilier.emoji}</span>
+              {isFr ? pilier.fr : pilier.en}
+            </div>
+            {pilier.links.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={onLinkClick}
+                style={navLinkStyle(isActive(link.href))}
+              >
+                {isFr ? link.fr : link.en}
+              </Link>
+            ))}
+          </div>
+        ))}
+      </nav>
+
+      {/* Bas de sidebar */}
+      <div style={{
+        marginTop: 'auto',
+        padding: '12px',
+        borderTop: `1px solid ${sidebarBorder}`,
+        flexShrink: 0,
+      }}>
+        {/* Badge Premium */}
+        {user && userPlan === 'gratuit' && (
+          <div style={{
+            background: 'linear-gradient(135deg, #F59E0B, #EF4444)',
+            borderRadius: '10px',
+            padding: '12px',
+            marginBottom: '12px',
+            color: '#fff',
+          }}>
+            <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>⭐ {isFr ? 'Passer Premium' : 'Go Premium'}</div>
+            <div style={{ fontSize: '0.75rem', opacity: 0.9, marginTop: '2px' }}>
+              {isFr ? 'Débloquez toutes les fonctionnalités' : 'Unlock all features'}
+            </div>
+            <button
+              onClick={() => { router.push('/abonnement'); onLinkClick && onLinkClick() }}
+              style={{
+                marginTop: '8px',
+                background: '#fff',
+                color: '#EF4444',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '6px 12px',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                width: '100%',
+              }}
+            >
+              {isFr ? 'Découvrir' : 'Discover'}
+            </button>
+          </div>
+        )}
+
+        {/* Toggles */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            style={{
+              flex: 1, padding: '7px', borderRadius: '8px',
+              border: `1px solid ${sidebarBorder}`,
+              background: 'transparent', color: mutedColor,
+              fontSize: '14px', cursor: 'pointer',
+            }}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+          <button
+            onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')}
+            style={{
+              flex: 1, padding: '7px', borderRadius: '8px',
+              border: `1px solid ${sidebarBorder}`,
+              background: 'transparent', color: mutedColor,
+              fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer',
+              letterSpacing: '0.05em',
+            }}
+          >
+            {lang === 'fr' ? 'EN' : 'FR'}
+          </button>
+        </div>
+
+        {/* Profil + déconnexion */}
+        {user ? (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '10px',
+            padding: '8px', borderRadius: '8px',
+          }}>
+            <Link href="/profile_1" onClick={onLinkClick} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
+              <div style={{
+                width: '32px', height: '32px', borderRadius: '50%',
+                background: 'var(--novae-primary-pale)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontWeight: 700, color: 'var(--novae-primary)', fontSize: '0.9rem',
+                flexShrink: 0,
+              }}>
+                {(profile?.full_name || user.email || 'U')[0].toUpperCase()}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{
+                  fontWeight: 600, fontSize: '0.8rem', color: textColor,
+                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                }}>
+                  {profile?.full_name || user.email?.split('@')[0] || 'Mon profil'}
+                </div>
+              </div>
+            </Link>
+            <button
+              onClick={handleLogout}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                color: 'var(--novae-text-muted)', fontSize: '0.75rem', flexShrink: 0,
+                padding: '4px 6px',
+              }}
+              title={isFr ? 'Déconnexion' : 'Logout'}
+            >
+              {isFr ? 'Déco' : 'Out'}
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <Link href="/auth/login" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: `1px solid ${sidebarBorder}`, background: 'transparent', color: mutedColor, fontSize: '0.85rem', fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
+              {isFr ? 'Connexion' : 'Login'}
+            </Link>
+            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '9px', borderRadius: '8px', border: 'none', background: 'var(--novae-primary-light)', color: '#fff', fontSize: '0.85rem', fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
+              {isFr ? "S'inscrire" : 'Sign up'}
+            </Link>
+          </div>
+        )}
+      </div>
+    </>
   )
 
   return (
     <>
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: theme === 'dark' ? 'rgba(15,15,15,0.92)' : 'rgba(250,250,249,0.92)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: `1px solid ${C.border}`,
-      }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', padding:'0 20px', height:58, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-
-          {/* Logo */}
-          <Link href="/" style={{ display:'flex', alignItems:'center', gap:8, textDecoration:'none', flexShrink:0 }}>
-            <span style={{ width:28, height:28, borderRadius:8, background: C.accent, display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, fontWeight:800, color:'#fff' }}>N</span>
-            <span style={{ fontWeight:700, fontSize:16, color: C.text, letterSpacing:-0.3 }}>novae</span>
-          </Link>
-
-          {/* Desktop — 4 piliers + dropdowns */}
-          <div className="nav-desktop" style={{ display:'flex', gap:4, alignItems:'center' }}>
-            {PILIERS_NAV.map(p => {
-              const isActive = activePilier?.fr === p.fr
-              const dropBg   = theme === 'dark' ? '#1B2B1E' : '#fff'
-              return (
-                <div key={p.fr} className="nav-pilier-wrap" style={{ position:'relative' }}>
-                  <Link
-                    href={p.links[0].href}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 6,
-                      padding: '6px 13px',
-                      borderRadius: 9,
-                      fontSize: 13,
-                      fontWeight: isActive ? 700 : 500,
-                      color: isActive ? p.colorLight : C.muted,
-                      background: isActive ? `${p.color}18` : 'transparent',
-                      textDecoration: 'none',
-                      transition: 'all 0.15s',
-                      borderBottom: isActive ? `2px solid ${p.colorLight}` : '2px solid transparent',
-                    }}
-                  >
-                    <span style={{ fontSize:14 }}>{p.emoji}</span>
-                    {isFr ? p.fr : p.en}
-                  </Link>
-                  <div
-                    className="nav-dropdown"
-                    style={{
-                      display: 'none',
-                      position: 'absolute',
-                      top: 'calc(100% + 6px)',
-                      left: 0,
-                      minWidth: 210,
-                      background: dropBg,
-                      border: '1px solid #2D6A4F30',
-                      borderRadius: 8,
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                      padding: '6px 0',
-                      zIndex: 60,
-                    }}
-                  >
-                    {p.links.map(l => {
-                      const isLinkActive = router.pathname === l.href
-                      return (
-                        <Link
-                          key={l.href}
-                          href={l.href}
-                          className="nav-dropdown-link"
-                          style={{
-                            display: 'block',
-                            padding: '10px 16px',
-                            fontSize: 13,
-                            color: isLinkActive ? C.accent2 : C.text2,
-                            textDecoration: 'none',
-                            fontWeight: isLinkActive ? 600 : 400,
-                            transition: 'background 0.12s, color 0.12s',
-                          }}
-                        >
-                          {isFr ? l.fr : l.en}
-                        </Link>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Actions */}
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-
-            {/* Lang toggle */}
-            <button
-              onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')}
-              className="nav-desktop"
-              style={{ padding:'5px 10px', borderRadius:7, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:12, fontWeight:600, cursor:'pointer', letterSpacing:0.5 }}
-            >
-              {lang === 'fr' ? 'EN' : 'FR'}
-            </button>
-
-            {/* Theme toggle */}
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="nav-desktop"
-              style={{ width:32, height:32, borderRadius:8, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:15, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}
-            >
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-
-            {/* Plan badge — desktop */}
-            {user && (
-              <div className="nav-desktop">
-                {userPlan === 'gratuit' ? (
-                  <a href="/abonnement" style={{ padding:'6px 12px', borderRadius:7, border:'none', background:'#F59E0B', color:'#fff', fontSize:12, fontWeight:600, cursor:'pointer', textDecoration:'none', whiteSpace:'nowrap' }}>
-                    ⭐ {isFr ? 'Passer Premium' : 'Go Premium'}
-                  </a>
-                ) : userPlan === 'starter' ? (
-                  <span style={{ padding:'5px 10px', borderRadius:7, border:'none', background:'#1565C0', color:'#fff', fontSize:11, fontWeight:600, whiteSpace:'nowrap' }}>
-                    Starter ✓
-                  </span>
-                ) : (
-                  <span style={{ padding:'5px 10px', borderRadius:7, border:'none', background:'#2D6A4F', color:'#fff', fontSize:11, fontWeight:600, whiteSpace:'nowrap' }}>
-                    Premium ✓
-                  </span>
-                )}
-              </div>
-            )}
-
-            {/* Auth — desktop */}
-            <div className="nav-desktop">
-              {user ? (
-                <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                  <Link href="/profile_1" style={{
-                    width:32, height:32, borderRadius:'50%',
-                    background:`${C.accent}20`, border:`1.5px solid ${C.accent}40`,
-                    color: C.accent2, display:'flex', alignItems:'center',
-                    justifyContent:'center', fontWeight:700, fontSize:13, textDecoration:'none',
-                  }}>
-                    {(profile?.full_name || user.email || 'U')[0].toUpperCase()}
-                  </Link>
-                  <a href="/logout" style={{ padding:'5px 12px', borderRadius:7, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:13, cursor:'pointer', textDecoration:'none' }}>
-                    {t.nav_logout}
-                  </a>
-                </div>
-              ) : (
-                <div style={{ display:'flex', gap:6 }}>
-                  <Link href="/auth/login" style={{ padding:'6px 14px', borderRadius:8, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:13, fontWeight:500, textDecoration:'none' }}>
-                    {t.nav_login}
-                  </Link>
-                  <Link href="/auth/register" style={{ padding:'6px 14px', borderRadius:8, border:'none', background: C.accent, color:'#fff', fontSize:13, fontWeight:600, textDecoration:'none' }}>
-                    {t.nav_register}
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Hamburger — mobile only */}
-            <button
-              className="nav-hamburger"
-              onClick={() => setMenuOpen(v => !v)}
-              style={{ display:'none', width:36, height:36, borderRadius:9, border:`1px solid ${C.border}`, background:'transparent', color: C.text, fontSize:18, cursor:'pointer', alignItems:'center', justifyContent:'center', flexShrink:0 }}
-              aria-label="Menu"
-            >
-              {menuOpen ? '✕' : '☰'}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* ── MOBILE DRAWER ─────────────────────────────────────────────── */}
-      {menuOpen && (
-        <div
-          style={{ position:'fixed', inset:0, zIndex:49, background:'rgba(0,0,0,0.55)', backdropFilter:'blur(4px)' }}
-          onClick={() => setMenuOpen(false)}
-        />
-      )}
-      <div style={{
+      {/* ── SIDEBAR DESKTOP ─────────────────────────────────────── */}
+      <aside style={{
         position: 'fixed',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        width: 280,
-        zIndex: 50,
-        background: theme === 'dark' ? '#141414' : '#fff',
-        borderLeft: `1px solid ${C.border}`,
-        transform: menuOpen ? 'translateX(0)' : 'translateX(100%)',
-        transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
+        top: 0, left: 0,
+        width: 'var(--sidebar-width)',
+        height: '100vh',
+        background: sidebarBg,
+        borderRight: `1px solid ${sidebarBorder}`,
         display: 'flex',
         flexDirection: 'column',
-        padding: '20px 0 0',
+        zIndex: 100,
         overflowY: 'auto',
-      }}>
-        {/* Drawer header */}
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 20px 16px', borderBottom:`1px solid ${C.border}` }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <div style={{ width:26, height:26, borderRadius:7, background: C.accent, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, fontWeight:800, color:'#fff' }}>N</div>
-            <span style={{ fontWeight:700, fontSize:15, color: C.text }}>novae</span>
-          </div>
-          <button onClick={() => setMenuOpen(false)} style={{ background:'transparent', border:'none', color: C.muted, fontSize:20, cursor:'pointer', lineHeight:1 }}>✕</button>
-        </div>
+        transition: 'width 0.2s ease',
+      }} className="sidebar-desktop">
+        {sidebarContent(null)}
+      </aside>
 
-        {/* Piliers */}
-        <div style={{ padding:'12px 0', flexGrow:1 }}>
-          {PILIERS_NAV.map(p => {
-            const isPilierActive = activePilier?.fr === p.fr
-            return (
-              <div key={p.fr} style={{ marginBottom:4 }}>
-                {/* Pilier header */}
-                <div style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 20px', borderLeft:`3px solid ${isPilierActive ? p.colorLight : 'transparent'}` }}>
-                  <span style={{ fontSize:17 }}>{p.emoji}</span>
-                  <span style={{ fontSize:13, fontWeight:700, color: isPilierActive ? p.colorLight : C.muted, letterSpacing:0.2 }}>
-                    {isFr ? p.fr : p.en}
-                  </span>
-                </div>
-                {/* Sub-links */}
-                {p.links.map(l => {
-                  const isLinkActive = router.pathname === l.href
-                  return (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      onClick={() => setMenuOpen(false)}
-                      style={{
-                        display: 'block',
-                        padding: '9px 20px 9px 52px',
-                        fontSize: 14,
-                        color: isLinkActive ? p.colorLight : C.muted,
-                        background: isLinkActive ? `${p.color}14` : 'transparent',
-                        textDecoration: 'none',
-                        fontWeight: isLinkActive ? 600 : 400,
-                        transition: 'all 0.12s',
-                      }}
-                    >
-                      {isFr ? l.fr : l.en}
-                    </Link>
-                  )
-                })}
-              </div>
-            )
-          })}
-        </div>
+      {/* ── HAMBURGER MOBILE ────────────────────────────────────── */}
+      <button
+        className="hamburger-btn"
+        onClick={() => setMobileOpen(true)}
+        style={{
+          display: 'none',
+          position: 'fixed', top: '16px', left: '16px',
+          zIndex: 150,
+          width: '40px', height: '40px',
+          borderRadius: '10px',
+          border: `1px solid ${sidebarBorder}`,
+          background: sidebarBg,
+          color: textColor,
+          fontSize: '18px',
+          alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer',
+          boxShadow: 'var(--shadow-md)',
+        }}
+        aria-label="Menu"
+      >
+        ☰
+      </button>
 
-        {/* Drawer footer */}
-        <div style={{ padding:'16px 20px', borderTop:`1px solid ${C.border}`, display:'flex', flexDirection:'column', gap:10 }}>
-          {/* Lang + Theme */}
-          <div style={{ display:'flex', gap:8 }}>
-            <button onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} style={{ flex:1, padding:'8px', borderRadius:8, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:13, fontWeight:600, cursor:'pointer' }}>
-              {lang === 'fr' ? 'EN' : 'FR'}
-            </button>
-            <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} style={{ flex:1, padding:'8px', borderRadius:8, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:15, cursor:'pointer' }}>
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-          </div>
+      {/* ── OVERLAY MOBILE ──────────────────────────────────────── */}
+      {mobileOpen && (
+        <div
+          onClick={() => setMobileOpen(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 190,
+            background: 'rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(4px)',
+          }}
+        />
+      )}
 
-          {/* Plan badge — mobile */}
-          {user && (
-            <div>
-              {userPlan === 'gratuit' ? (
-                <a href="/abonnement" onClick={() => setMenuOpen(false)} style={{ display:'block', padding:'10px', borderRadius:9, border:'none', background:'#F59E0B', color:'#fff', fontSize:13, fontWeight:600, textDecoration:'none', textAlign:'center' }}>
-                  ⭐ {isFr ? 'Passer Premium' : 'Go Premium'}
-                </a>
-              ) : userPlan === 'starter' ? (
-                <span style={{ display:'block', padding:'9px', borderRadius:9, border:'none', background:'#1565C0', color:'#fff', fontSize:12, fontWeight:600, textAlign:'center' }}>
-                  Starter ✓
-                </span>
-              ) : (
-                <span style={{ display:'block', padding:'9px', borderRadius:9, border:'none', background:'#2D6A4F', color:'#fff', fontSize:12, fontWeight:600, textAlign:'center' }}>
-                  Premium ✓
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Auth */}
-          {user ? (
-            <div style={{ display:'flex', gap:8, alignItems:'center' }}>
-              <Link href="/profile_1" onClick={() => setMenuOpen(false)} style={{ display:'flex', alignItems:'center', gap:8, flex:1, padding:'9px 12px', borderRadius:9, border:`1px solid ${C.border}`, textDecoration:'none', color: C.text2, fontSize:13, fontWeight:600 }}>
-                <div style={{ width:26, height:26, borderRadius:'50%', background:`${C.accent}20`, color: C.accent2, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:12, flexShrink:0 }}>
-                  {(profile?.full_name || user.email || 'U')[0].toUpperCase()}
-                </div>
-                {profile?.full_name || user.email?.split('@')[0] || 'Profil'}
-              </Link>
-              <a href="/logout" style={{ padding:'9px 14px', borderRadius:9, border:`1px solid ${C.border}`, color: C.muted, fontSize:13, textDecoration:'none', whiteSpace:'nowrap' }}>
-                {t.nav_logout}
-              </a>
-            </div>
-          ) : (
-            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-              <Link href="/auth/login" onClick={() => setMenuOpen(false)} style={{ padding:'11px', borderRadius:9, border:`1px solid ${C.border}`, background:'transparent', color: C.muted, fontSize:14, fontWeight:500, textDecoration:'none', textAlign:'center' }}>
-                {t.nav_login}
-              </Link>
-              <Link href="/auth/register" onClick={() => setMenuOpen(false)} style={{ padding:'11px', borderRadius:9, border:'none', background: C.accent, color:'#fff', fontSize:14, fontWeight:700, textDecoration:'none', textAlign:'center' }}>
-                {t.nav_register}
-              </Link>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* ── SIDEBAR MOBILE DRAWER ───────────────────────────────── */}
+      <aside style={{
+        position: 'fixed',
+        top: 0, left: 0,
+        width: 'var(--sidebar-width)',
+        height: '100vh',
+        background: sidebarBg,
+        borderRight: `1px solid ${sidebarBorder}`,
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 200,
+        overflowY: 'auto',
+        transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
+        boxShadow: mobileOpen ? 'var(--shadow-lg)' : 'none',
+      }} className="sidebar-mobile">
+        <button
+          onClick={() => setMobileOpen(false)}
+          style={{
+            position: 'absolute', top: '16px', right: '12px',
+            background: 'none', border: 'none', color: mutedColor,
+            fontSize: '18px', cursor: 'pointer', lineHeight: 1,
+          }}
+        >✕</button>
+        {sidebarContent(() => setMobileOpen(false))}
+      </aside>
 
       <style jsx global>{`
-        .nav-pilier-wrap:hover .nav-dropdown {
-          display: block !important;
-        }
-        .nav-dropdown-link:hover {
-          background: rgba(45, 106, 79, 0.12);
-          color: #52B788 !important;
-        }
         @media (max-width: 768px) {
-          .nav-desktop { display: none !important; }
-          .nav-hamburger { display: flex !important; }
+          .sidebar-desktop { display: none !important; }
+          .hamburger-btn { display: flex !important; }
+        }
+        @media (min-width: 769px) {
+          .sidebar-mobile { display: none !important; }
+          .hamburger-btn { display: none !important; }
         }
       `}</style>
     </>
