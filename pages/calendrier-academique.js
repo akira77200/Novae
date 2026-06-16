@@ -127,10 +127,10 @@ const CALENDRIER_DB = {
 // CONFIG TYPES
 // ─────────────────────────────────────────────────────────────────
 const TYPE_CFG = {
-  session:   { label: { fr: 'Session',   en: 'Session'   }, color: '#34D399', bg: 'rgba(52,211,153,0.10)',  dot: '#34D399', icon: '📅' },
-  examen:    { label: { fr: 'Examens',   en: 'Exams'     }, color: '#F87171', bg: 'rgba(248,113,113,0.10)', dot: '#F87171', icon: '📝' },
-  conge:     { label: { fr: 'Congé',     en: 'Holiday'   }, color: '#60A5FA', bg: 'rgba(96,165,250,0.10)',  dot: '#60A5FA', icon: '🏖️' },
-  important: { label: { fr: 'Important', en: 'Important' }, color: '#FBBF24', bg: 'rgba(251,191,36,0.10)',  dot: '#FBBF24', icon: '⚡' },
+  session:   { label: { fr: 'Session',   en: 'Session'   }, color: '#3A3D40', bg: 'rgba(52,211,153,0.10)',  dot: '#3A3D40', icon: '📅' },
+  examen:    { label: { fr: 'Examens',   en: 'Exams'     }, color: '#DC2626', bg: 'rgba(248,113,113,0.10)', dot: '#DC2626', icon: '📝' },
+  conge:     { label: { fr: 'Congé',     en: 'Holiday'   }, color: '#6B6F76', bg: 'rgba(96,165,250,0.10)',  dot: '#6B6F76', icon: '🏖️' },
+  important: { label: { fr: 'Important', en: 'Important' }, color: '#6B6F76', bg: 'rgba(251,191,36,0.10)',  dot: '#6B6F76', icon: '⚡' },
 }
 
 const FILTRES = [
@@ -236,15 +236,15 @@ export default function CalendrierAcademique() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:C.bg, color:C.text, fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth:820, margin:'0 auto', padding:'32px 20px 80px' }}>
 
         {/* Header */}
-        <h1 style={{ fontSize:26, fontWeight:800, color:C.text, letterSpacing:-0.5, marginBottom:4 }}>
+        <h1 style={{ fontSize:26, fontWeight:800, color:'#0E1116', letterSpacing:-0.5, marginBottom:4 }}>
           🗓️ {lang==='fr'?'Calendrier académique':'Academic Calendar'}
         </h1>
-        <p style={{ fontSize:14, color:C.muted, marginBottom:28, lineHeight:1.6 }}>
+        <p style={{ fontSize:14, color:'#6B6F76', marginBottom:28, lineHeight:1.6 }}>
           {lang==='fr'
             ? 'Dates clés de session, examens et congés — ajoutables en un clic à tes échéances.'
             : 'Key session dates, exams and holidays — add them to your deadlines in one click.'}
@@ -252,15 +252,15 @@ export default function CalendrierAcademique() {
 
         {/* Sélecteur université */}
         <div style={{ marginBottom:20 }}>
-          <p style={{ fontSize:11, fontWeight:600, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, marginBottom:10 }}>
+          <p style={{ fontSize:11, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, marginBottom:10 }}>
             {lang==='fr'?'Ton université':'Your university'}
           </p>
           <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
             {Object.entries(CALENDRIER_DB).map(([id, u]) => (
               <button key={id} onClick={() => setUnivId(id)}
-                style={{ padding:'8px 14px', borderRadius:10, border:`1px solid ${univId===id?C.accent+'50':C.border}`, background:univId===id?`${C.accent}15`:'transparent', color:univId===id?C.accent2:C.muted, fontSize:12, fontWeight:univId===id?700:400, cursor:'pointer', transition:'all 0.15s' }}>
+                style={{ padding:'8px 14px', borderRadius:10, border:`1px solid ${univId===id?'#0E111650':'#EBEBE9'}`, background:univId===id?`${'#0E1116'}15`:'transparent', color:univId===id?'#3A3D40':'#6B6F76', fontSize:12, fontWeight:univId===id?700:400, cursor:'pointer', transition:'all 0.15s' }}>
                 {u.nom.split(' ').slice(0,3).join(' ')}
-                {univId===id && profile?.universite && detectUniv(profile)===id && <span style={{ marginLeft:6, fontSize:10, color:C.accent2 }}>✓</span>}
+                {univId===id && profile?.universite && detectUniv(profile)===id && <span style={{ marginLeft:6, fontSize:10, color:'#3A3D40' }}>✓</span>}
               </button>
             ))}
           </div>
@@ -268,12 +268,12 @@ export default function CalendrierAcademique() {
 
         {/* Université inconnue — calendrier générique Québec/Ontario */}
         {unknownUniv && (
-          <div style={{ marginBottom:20, padding:'12px 16px', background:`${C.accent}08`, border:`1px solid ${C.accent}25`, borderRadius:12, display:'flex', alignItems:'flex-start', gap:12, flexWrap:'wrap' }}>
+          <div style={{ marginBottom:20, padding:'12px 16px', background:`${'#0E1116'}08`, border:`1px solid ${'#0E1116'}25`, borderRadius:12, display:'flex', alignItems:'flex-start', gap:12, flexWrap:'wrap' }}>
             <div style={{ flex:1 }}>
-              <p style={{ fontSize:13, fontWeight:700, color:C.accent2, marginBottom:4 }}>
+              <p style={{ fontSize:13, fontWeight:700, color:'#3A3D40', marginBottom:4 }}>
                 🏫 {lang==='fr' ? `"${profile.universite}" non reconnue` : `"${profile.universite}" not recognized`}
               </p>
-              <p style={{ fontSize:12, color:C.muted, lineHeight:1.6 }}>
+              <p style={{ fontSize:12, color:'#6B6F76', lineHeight:1.6 }}>
                 {lang==='fr'
                   ? 'Nous affichons le calendrier générique. Sélectionne l\'université la plus proche ci-dessus ou consulte le site officiel.'
                   : 'We\'re showing the closest calendar. Select the nearest university above or check the official website.'}
@@ -281,7 +281,7 @@ export default function CalendrierAcademique() {
             </div>
             <a href={`https://www.google.com/search?q=${encodeURIComponent((profile.universite || '') + ' calendrier académique')}`}
               target="_blank" rel="noreferrer"
-              style={{ padding:'7px 14px', background:C.accent, borderRadius:8, color:'#fff', fontWeight:600, fontSize:12, textDecoration:'none', flexShrink:0 }}>
+              style={{ padding:'7px 14px', background:'#0E1116', borderRadius:8, color:'#fff', fontWeight:600, fontSize:12, textDecoration:'none', flexShrink:0 }}>
               {lang==='fr' ? 'Chercher →' : 'Search →'}
             </a>
           </div>
@@ -289,25 +289,25 @@ export default function CalendrierAcademique() {
 
         {/* Compte à rebours prochain événement */}
         {prochainImportant && (
-          <div style={{ padding:'14px 18px', background: joursRestants(prochainImportant.date) <= 14 ? 'rgba(248,113,113,0.08)' : `${C.accent}07`, border:`1px solid ${joursRestants(prochainImportant.date) <= 14 ? '#F87171' : C.accent}30`, borderRadius:14, marginBottom:24, display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
-            <div style={{ width:52, height:52, borderRadius:12, background: joursRestants(prochainImportant.date) <= 14 ? 'rgba(248,113,113,0.15)' : `${C.accent}15`, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-              <p style={{ fontSize:22, fontWeight:900, color: joursRestants(prochainImportant.date) <= 14 ? '#F87171' : C.accent2, lineHeight:1 }}>
+          <div style={{ padding:'14px 18px', background: joursRestants(prochainImportant.date) <= 14 ? 'rgba(248,113,113,0.08)' : `${'#0E1116'}07`, border:`1px solid ${joursRestants(prochainImportant.date) <= 14 ? '#DC2626' : '#0E1116'}30`, borderRadius:14, marginBottom:24, display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
+            <div style={{ width:52, height:52, borderRadius:12, background: joursRestants(prochainImportant.date) <= 14 ? 'rgba(248,113,113,0.15)' : `${'#0E1116'}15`, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+              <p style={{ fontSize:22, fontWeight:900, color: joursRestants(prochainImportant.date) <= 14 ? '#DC2626' : '#3A3D40', lineHeight:1 }}>
                 {Math.max(0, joursRestants(prochainImportant.date))}
               </p>
-              <p style={{ fontSize:9, color:C.muted, textTransform:'uppercase', letterSpacing:0.5 }}>
+              <p style={{ fontSize:9, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.5 }}>
                 {lang==='fr'?'jours':'days'}
               </p>
             </div>
             <div style={{ flex:1 }}>
-              <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:2 }}>
+              <p style={{ fontSize:14, fontWeight:700, color:'#0E1116', marginBottom:2 }}>
                 {TYPE_CFG[prochainImportant.type]?.icon} {prochainImportant.titre[lang] || prochainImportant.titre.fr}
               </p>
-              <p style={{ fontSize:12, color:C.muted }}>{formatDate(prochainImportant.date, lang)} · {univ.nom}</p>
+              <p style={{ fontSize:12, color:'#6B6F76' }}>{formatDate(prochainImportant.date, lang)} · {univ.nom}</p>
             </div>
             {user && (
               <button onClick={() => ajouterEcheance(prochainImportant)}
                 disabled={ajouts.has(prochainImportant.date+prochainImportant.titre.fr) || ajoutEnCours===prochainImportant.date+prochainImportant.titre.fr}
-                style={{ padding:'8px 16px', background: ajouts.has(prochainImportant.date+prochainImportant.titre.fr)?C.success:C.accent, border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:12, cursor:'pointer', flexShrink:0, opacity: ajoutEnCours===prochainImportant.date+prochainImportant.titre.fr?0.7:1 }}>
+                style={{ padding:'8px 16px', background: ajouts.has(prochainImportant.date+prochainImportant.titre.fr)?'#3A3D40':'#0E1116', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:12, cursor:'pointer', flexShrink:0, opacity: ajoutEnCours===prochainImportant.date+prochainImportant.titre.fr?0.7:1 }}>
                 {ajouts.has(prochainImportant.date+prochainImportant.titre.fr) ? (lang==='fr'?'✓ Ajouté':'✓ Added') : (lang==='fr'?'+ Mes échéances':'+ My deadlines')}
               </button>
             )}
@@ -320,7 +320,7 @@ export default function CalendrierAcademique() {
             const cfg = f.id !== 'tous' ? TYPE_CFG[f.id] : null
             return (
               <button key={f.id} onClick={() => setFiltre(f.id)}
-                style={{ display:'flex', alignItems:'center', gap:6, padding:'6px 14px', borderRadius:20, border:`1px solid ${filtre===f.id?(cfg?.color||C.accent)+'50':C.border}`, background:filtre===f.id?`${cfg?.color||C.accent}12`:'transparent', color:filtre===f.id?(cfg?.color||C.accent2):C.muted, fontSize:12, fontWeight:filtre===f.id?600:400, cursor:'pointer' }}>
+                style={{ display:'flex', alignItems:'center', gap:6, padding:'6px 14px', borderRadius:20, border:`1px solid ${filtre===f.id?(cfg?.color||'#0E1116')+'50':'#EBEBE9'}`, background:filtre===f.id?`${cfg?.color||'#0E1116'}12`:'transparent', color:filtre===f.id?(cfg?.color||'#3A3D40'):'#6B6F76', fontSize:12, fontWeight:filtre===f.id?600:400, cursor:'pointer' }}>
                 {cfg && <span style={{ width:8, height:8, borderRadius:'50%', background:cfg.color, flexShrink:0 }} />}
                 {lang==='fr'?f.fr:f.en}
               </button>
@@ -330,16 +330,16 @@ export default function CalendrierAcademique() {
 
         {/* Calendrier groupé par mois */}
         {groupes.length === 0 ? (
-          <p style={{ textAlign:'center', color:C.muted, padding:'40px' }}>{lang==='fr'?'Aucun événement.':'No events.'}</p>
+          <p style={{ textAlign:'center', color:'#6B6F76', padding:'40px' }}>{lang==='fr'?'Aucun événement.':'No events.'}</p>
         ) : (
           <div style={{ display:'flex', flexDirection:'column', gap:24 }}>
             {groupes.map(([moisKey, { label, events: evts }]) => (
               <div key={moisKey}>
                 {/* Mois header */}
                 <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
-                  <p style={{ fontSize:13, fontWeight:700, color:C.text, textTransform:'capitalize' }}>{label}</p>
-                  <div style={{ flex:1, height:1, background:C.border }} />
-                  <span style={{ fontSize:11, color:C.muted }}>{evts.length} {lang==='fr'?'événement(s)':'event(s)'}</span>
+                  <p style={{ fontSize:13, fontWeight:700, color:'#0E1116', textTransform:'capitalize' }}>{label}</p>
+                  <div style={{ flex:1, height:1, background:'#EBEBE9' }} />
+                  <span style={{ fontSize:11, color:'#6B6F76' }}>{evts.length} {lang==='fr'?'événement(s)':'event(s)'}</span>
                 </div>
 
                 {/* Événements du mois */}
@@ -354,11 +354,11 @@ export default function CalendrierAcademique() {
                     const loading = ajoutEnCours === cle
 
                     return (
-                      <div key={i} style={{ display:'flex', alignItems:'center', gap:14, padding:'13px 16px', background: passe ? 'transparent' : cfg.bg, border:`1px solid ${passe ? C.border : urgent ? '#F87171':''+cfg.color+'30'}`, borderRadius:12, opacity: passe ? 0.45 : 1, transition:'opacity 0.15s' }}>
+                      <div key={i} style={{ display:'flex', alignItems:'center', gap:14, padding:'13px 16px', background: passe ? 'transparent' : cfg.bg, border:`1px solid ${passe ? '#EBEBE9' : urgent ? '#DC2626':''+cfg.color+'30'}`, borderRadius:12, opacity: passe ? 0.45 : 1, transition:'opacity 0.15s' }}>
                         {/* Dot + date */}
                         <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:3, flexShrink:0, minWidth:42, textAlign:'center' }}>
-                          <div style={{ width:10, height:10, borderRadius:'50%', background: passe?C.muted:cfg.dot }} />
-                          <p style={{ fontSize:10, color: passe?C.muted:cfg.color, fontWeight:600, lineHeight:1.2 }}>
+                          <div style={{ width:10, height:10, borderRadius:'50%', background: passe?'#6B6F76':cfg.dot }} />
+                          <p style={{ fontSize:10, color: passe?'#6B6F76':cfg.color, fontWeight:600, lineHeight:1.2 }}>
                             {formatDateCourt(evt.date, lang)}
                           </p>
                         </div>
@@ -366,7 +366,7 @@ export default function CalendrierAcademique() {
                         {/* Icon + titre */}
                         <span style={{ fontSize:18, flexShrink:0 }}>{cfg.icon}</span>
                         <div style={{ flex:1 }}>
-                          <p style={{ fontSize:14, fontWeight:600, color: passe?C.muted:C.text, marginBottom:2, textDecoration: passe?'line-through':undefined }}>
+                          <p style={{ fontSize:14, fontWeight:600, color: passe?'#6B6F76':'#0E1116', marginBottom:2, textDecoration: passe?'line-through':undefined }}>
                             {evt.titre[lang] || evt.titre.fr}
                           </p>
                           <div style={{ display:'flex', alignItems:'center', gap:8, flexWrap:'wrap' }}>
@@ -374,7 +374,7 @@ export default function CalendrierAcademique() {
                               {cfg.label[lang]}
                             </span>
                             {!passe && (
-                              <span style={{ fontSize:11, color: urgent?'#F87171':C.muted, fontWeight: urgent?600:400 }}>
+                              <span style={{ fontSize:11, color: urgent?'#DC2626':'#6B6F76', fontWeight: urgent?600:400 }}>
                                 {jours === 0
                                   ? (lang==='fr'?'Aujourd\'hui':'Today')
                                   : `J-${jours}`}
@@ -387,7 +387,7 @@ export default function CalendrierAcademique() {
                         {!passe && user && (
                           <button onClick={() => ajouterEcheance(evt)} disabled={ajoute || !!loading}
                             title={lang==='fr'?'Ajouter à mes échéances':'Add to my deadlines'}
-                            style={{ padding:'6px 12px', background: ajoute?`${C.success}12`:C.surface2, border:`1px solid ${ajoute?C.success+'30':C.border}`, borderRadius:8, color: ajoute?C.success:C.muted, fontSize:12, fontWeight:600, cursor: ajoute||loading?'default':'pointer', whiteSpace:'nowrap', flexShrink:0, opacity: loading?0.6:1, transition:'all 0.15s' }}>
+                            style={{ padding:'6px 12px', background: ajoute?`${'#3A3D40'}12`:'#F7F7F5', border:`1px solid ${ajoute?'#3A3D4030':'#EBEBE9'}`, borderRadius:8, color: ajoute?'#3A3D40':'#6B6F76', fontSize:12, fontWeight:600, cursor: ajoute||loading?'default':'pointer', whiteSpace:'nowrap', flexShrink:0, opacity: loading?0.6:1, transition:'all 0.15s' }}>
                             {loading ? '...' : ajoute ? '✓' : '+'}
                           </button>
                         )}
@@ -401,14 +401,14 @@ export default function CalendrierAcademique() {
         )}
 
         {/* Note */}
-        <p style={{ fontSize:11, color:C.muted, marginTop:28, textAlign:'center', lineHeight:1.6, fontStyle:'italic' }}>
+        <p style={{ fontSize:11, color:'#6B6F76', marginTop:28, textAlign:'center', lineHeight:1.6, fontStyle:'italic' }}>
           {lang==='fr'
             ? `Calendrier ${univ?.annee} — Dates indicatives, vérifie sur le site officiel de ${univ?.nom}.`
             : `${univ?.annee} calendar — Indicative dates, verify on ${univ?.nom}'s official website.`}
         </p>
         {!user && (
-          <p style={{ fontSize:12, color:C.muted, textAlign:'center', marginTop:10 }}>
-            <a href="/auth/login" style={{ color:C.accent2, textDecoration:'none' }}>{lang==='fr'?'Connecte-toi':'Log in'}</a>
+          <p style={{ fontSize:12, color:'#6B6F76', textAlign:'center', marginTop:10 }}>
+            <a href="/auth/login" style={{ color:'#3A3D40', textDecoration:'none' }}>{lang==='fr'?'Connecte-toi':'Log in'}</a>
             {' '}{lang==='fr'?'pour ajouter des dates à tes échéances.':'to add dates to your deadlines.'}
           </p>
         )}
