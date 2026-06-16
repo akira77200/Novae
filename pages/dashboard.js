@@ -47,7 +47,7 @@ function BienetreWidget({ C, lang, sb }) {
   )
 
   const numSem = Math.ceil((new Date(checkin.semaine) - new Date(new Date().getFullYear(), 0, 1)) / 604800000)
-  const scoreColor = checkin.score <= 2 ? '#F87171' : checkin.score === 3 ? '#FBBF24' : '#34D399'
+  const scoreColor = checkin.score <= 2 ? '#DC2626' : checkin.score === 3 ? '#6B6F76' : '#3A3D40'
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: scoreColor + '08', border: `1px solid ${scoreColor}25`, borderRadius: 12, marginBottom: 16 }}>
       <span style={{ fontSize: 22 }}>{SCORE_EMOJIS_DB[checkin.score - 1]}</span>
@@ -152,12 +152,12 @@ const WHY_MSG = {
 }
 
 const CAT_STYLE = {
-  admin:    { label:'Admin',      labelEn:'Admin',     color:'#3B82F6', bg:'rgba(59,130,246,0.12)'  },
-  banque:   { label:'Banque',     labelEn:'Banking',   color:'#3B82F6', bg:'rgba(59,130,246,0.12)'  },
-  sante:    { label:'Santé',      labelEn:'Health',    color:'#60A5FA', bg:'rgba(96,165,250,0.12)'  },
-  logement: { label:'Logement',   labelEn:'Housing',   color:'#B5838D', bg:'rgba(181,131,141,0.12)' },
-  social:   { label:'Social',     labelEn:'Social',    color:'#A78BFA', bg:'rgba(167,139,250,0.12)' },
-  univ:     { label:'Université', labelEn:'University',color:'#FBBF24', bg:'rgba(251,191,36,0.12)'  },
+  admin:    { label:'Admin',      labelEn:'Admin',     color:'#3A3D40', bg:'#F0F0EE' },
+  banque:   { label:'Banque',     labelEn:'Banking',   color:'#3A3D40', bg:'#F0F0EE' },
+  sante:    { label:'Santé',      labelEn:'Health',    color:'#3A3D40', bg:'#EBEBE9'  },
+  logement: { label:'Logement',   labelEn:'Housing',   color:'#3A3D40', bg:'#EBEBE9' },
+  social:   { label:'Social',     labelEn:'Social',    color:'#6B6F76', bg:'#F7F7F5' },
+  univ:     { label:'Université', labelEn:'University',color:'#3A3D40', bg:'#F0F0EE'  },
 }
 
 const getProvince = (ville) => {
@@ -355,23 +355,23 @@ export default function Dashboard() {
     if (!user) return null
     const pts = []
     // 1. Profil (30 pts)
-    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: '#3B82F6', href: '/profile_1' })
+    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: '#3A3D40', href: '/profile_1' })
     // 2. Checklist (25 pts)
     const pctCheck = taches.length > 0 ? faites.length / taches.length : 0
-    pts.push({ label: lang === 'fr' ? 'Tâches checklist' : 'Checklist',  labelEn: 'Checklist',  pts: Math.round(pctCheck * 25),          max: 25, color: '#60A5FA', href: null })
+    pts.push({ label: lang === 'fr' ? 'Tâches checklist' : 'Checklist',  labelEn: 'Checklist',  pts: Math.round(pctCheck * 25),          max: 25, color: '#3A3D40', href: null })
     // 3. Documents (20 pts)
     const ptsDoc = scoreDoc === null ? null : Math.min(Math.round((scoreDoc / 5) * 20), 20)
-    pts.push({ label: lang === 'fr' ? 'Documents ajoutés': 'Documents',  labelEn: 'Documents',  pts: ptsDoc ?? 0, max: 20, color: '#FBBF24', href: '/documents', loading: scoreDoc === null })
+    pts.push({ label: lang === 'fr' ? 'Documents ajoutés': 'Documents',  labelEn: 'Documents',  pts: ptsDoc ?? 0, max: 20, color: '#3A3D40', href: '/documents', loading: scoreDoc === null })
     // 4. CV créé (15 pts)
     const hasCv = typeof window !== 'undefined' && !!localStorage.getItem('novae_cv_nom')
-    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: '#3B82F6', href: '/cv' })
+    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: '#3A3D40', href: '/cv' })
     // 5. Mon Avenir (10 pts)
-    pts.push({ label: lang === 'fr' ? 'Projet d\'avenir'  : 'Future plan',labelEn:'Future plan', pts: monAvenirResult ? 10 : 0,             max: 10, color: '#A78BFA', href: '/mon-avenir' })
+    pts.push({ label: lang === 'fr' ? 'Projet d\'avenir'  : 'Future plan',labelEn:'Future plan', pts: monAvenirResult ? 10 : 0,             max: 10, color: '#6B6F76', href: '/mon-avenir' })
     return pts
   }
   const scoreItems = calcScore()
   const scoreTotal = scoreItems ? scoreItems.reduce((s, i) => s + i.pts, 0) : 0
-  const scoreColor = scoreTotal >= 80 ? '#34D399' : scoreTotal >= 50 ? '#FBBF24' : '#F87171'
+  const scoreColor = scoreTotal >= 80 ? '#3A3D40' : scoreTotal >= 50 ? '#6B6F76' : '#DC2626'
   const scoreBadge = scoreTotal >= 80
     ? (lang === 'fr' ? 'Excellent' : 'Excellent')
     : scoreTotal >= 50
@@ -394,12 +394,20 @@ export default function Dashboard() {
   const isDark = theme === 'dark'
   const cardStyle = {
     background: '#FFFFFF',
-    borderRadius: 12,
-    border: '1px solid #E8EDF2',
-    boxShadow: '0 1px 2px rgba(15,23,42,0.04)',
+    borderRadius: 8,
+    border: '1px solid #EBEBE9',
+    boxShadow: 'none',
     padding: '20px 22px',
     marginBottom: 12,
   }
+
+  // Stepper parcours
+  const stepIdx = scoreTotal < 33 ? 0 : scoreTotal < 67 ? 1 : 2
+  const STEPS = [
+    { fr: 'Arrivée',      en: 'Arrival'    },
+    { fr: 'Installation', en: 'Settlement' },
+    { fr: 'Autonomie',    en: 'Autonomy'   },
+  ]
 
   return (
     <div style={{ color: '#0F172A' }}>
@@ -451,6 +459,45 @@ export default function Dashboard() {
         {/* ── COLONNE PRINCIPALE ── */}
         <div style={{ minWidth: 0 }}>
 
+        {/* ── STEPPER PARCOURS ── */}
+        {user && (
+          <div style={{ marginBottom: 20, padding: '16px 20px', background: '#FFFFFF', borderRadius: 8, border: '1px solid #EBEBE9' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: '#9A9D9F', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 14 }}>
+              {lang === 'fr' ? 'Ton parcours' : 'Your journey'}
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {STEPS.map((s, i) => {
+                const done   = i < stepIdx
+                const active = i === stepIdx
+                const future = i > stepIdx
+                return (
+                  <React.Fragment key={i}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                      <div style={{
+                        width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: done ? '#0E1116' : active ? '#FFFFFF' : '#FFFFFF',
+                        border: done ? 'none' : active ? '1.5px solid #0E1116' : '1.5px solid #D5D5D2',
+                        flexShrink: 0,
+                      }}>
+                        {done
+                          ? <span style={{ fontSize: 10, color: '#FFFFFF', fontWeight: 700 }}>✓</span>
+                          : <span style={{ fontSize: 10, color: active ? '#0E1116' : '#9A9D9F', fontWeight: 600 }}>{i + 1}</span>
+                        }
+                      </div>
+                      <span style={{ fontSize: 11, fontWeight: active || done ? 500 : 400, color: future ? '#9A9D9F' : '#0E1116', whiteSpace: 'nowrap' }}>
+                        {lang === 'fr' ? s.fr : s.en}
+                      </span>
+                    </div>
+                    {i < STEPS.length - 1 && (
+                      <div style={{ flex: 1, height: 1, background: i < stepIdx ? '#0E1116' : '#EBEBE9', margin: '0 8px', marginBottom: 20 }} />
+                    )}
+                  </React.Fragment>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
           <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 28, padding: '24px 28px', background: '#FFFFFF', borderRadius: 12, border: '1px solid #E8EDF2' }}>
@@ -459,18 +506,18 @@ export default function Dashboard() {
               style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '45%', opacity: 0.08, pointerEvents: 'none', zIndex: 0 }}
               viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax slice"
             >
-              <rect x="320" y="60" width="30" height="140" fill="#1E3A5F"/>
-              <rect x="280" y="80" width="25" height="120" fill="#1E3A5F"/>
-              <rect x="240" y="100" width="20" height="100" fill="#1E3A5F"/>
-              <rect x="200" y="70" width="28" height="130" fill="#1E3A5F"/>
-              <rect x="160" y="110" width="22" height="90" fill="#1E3A5F"/>
-              <rect x="130" y="90" width="18" height="110" fill="#1E3A5F"/>
-              <rect x="100" y="120" width="20" height="80" fill="#1E3A5F"/>
-              <rect x="60"  y="95"  width="26" height="105" fill="#1E3A5F"/>
-              <rect x="20"  y="130" width="24" height="70"  fill="#1E3A5F"/>
-              <rect x="330" y="40" width="8"  height="20"  fill="#1E3A5F"/>
-              <rect x="204" y="50" width="6"  height="20"  fill="#1E3A5F"/>
-              <rect x="283" y="62" width="5"  height="18"  fill="#1E3A5F"/>
+              <rect x="320" y="60" width="30" height="140" fill="#0E1116"/>
+              <rect x="280" y="80" width="25" height="120" fill="#0E1116"/>
+              <rect x="240" y="100" width="20" height="100" fill="#0E1116"/>
+              <rect x="200" y="70" width="28" height="130" fill="#0E1116"/>
+              <rect x="160" y="110" width="22" height="90" fill="#0E1116"/>
+              <rect x="130" y="90" width="18" height="110" fill="#0E1116"/>
+              <rect x="100" y="120" width="20" height="80" fill="#0E1116"/>
+              <rect x="60"  y="95"  width="26" height="105" fill="#0E1116"/>
+              <rect x="20"  y="130" width="24" height="70"  fill="#0E1116"/>
+              <rect x="330" y="40" width="8"  height="20"  fill="#0E1116"/>
+              <rect x="204" y="50" width="6"  height="20"  fill="#0E1116"/>
+              <rect x="283" y="62" width="5"  height="18"  fill="#0E1116"/>
             </svg>
             {/* Contenu header */}
             <div style={{ position: 'relative', zIndex: 1 }}>
@@ -494,14 +541,14 @@ export default function Dashboard() {
             <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.03em', marginBottom: 8 }}>
               {lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
             </h1>
-            <a href="/profile_1" style={{ fontSize: 13, color: '#3B82F6', textDecoration: 'none' }}>
+            <a href="/profile_1" style={{ fontSize: 13, color: '#6B6F76', textDecoration: 'none' }}>
               {lang === 'fr' ? '→ Complète ton profil pour personnaliser ton expérience' : '→ Complete your profile for a personalized experience'}
             </a>
           </div>
         ) : (
-          <div style={{ padding: '12px 18px', background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 12, marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
-            <p style={{ fontSize: 13, color: '#3B82F6' }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
-            <a href="/auth/register" style={{ padding: '7px 16px', background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>{lang === 'fr' ? "S'inscrire gratuitement →" : 'Sign up for free →'}</a>
+          <div style={{ padding: '12px 18px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 12, marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+            <p style={{ fontSize: 13, color: '#6B6F76' }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
+            <a href="/auth/register" style={{ padding: '7px 16px', background: '#0E1116', border: 'none', borderRadius: 6, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>{lang === 'fr' ? "S'inscrire gratuitement →" : 'Sign up for free →'}</a>
           </div>
         )}
 
@@ -524,7 +571,7 @@ export default function Dashboard() {
 
         {/* ── ALERTES INTELLIGENTES ── */}
         {alertes.map((a, i) => (
-          <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'12px 16px', borderRadius:11, border:'1px solid', marginBottom:10, borderColor: a.type === 'urgent' ? '#F87171' : a.type === 'warning' ? '#FBBF24' : C.accent+'50', background: a.type === 'urgent' ? 'rgba(248,113,113,0.07)' : a.type === 'warning' ? 'rgba(251,191,36,0.07)' : `${C.accent}08` }}>
+          <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'12px 16px', borderRadius:11, border:'1px solid', marginBottom:10, borderColor: a.type === 'urgent' ? '#DC2626' : a.type === 'warning' ? '#6B6F76' : C.accent+'50', background: a.type === 'urgent' ? 'rgba(220,38,38,0.06)' : a.type === 'warning' ? '#F7F7F5' : `${C.accent}08` }}>
             <span style={{ fontSize:16 }}>{a.type === 'urgent' ? '🔴' : a.type === 'warning' ? '⚠️' : 'ℹ️'}</span>
             <div style={{ flex:1 }}>
               <p style={{ fontWeight:600, fontSize:13, color:C.text, marginBottom:2 }}>{a.titre}</p>
@@ -538,9 +585,9 @@ export default function Dashboard() {
         {user && nextAction && (
           <div style={{ padding: '20px 22px', background: '#FFFFFF', border: '1px solid #E8EDF2', borderRadius: 12, marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
-              <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />
-              <p style={{ fontSize: 10, fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
-                {lang === 'fr' ? 'Prochaine action recommandée' : 'Next recommended action'}
+              <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#0E1116', flexShrink: 0 }} />
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#9A9D9F', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
+                {lang === 'fr' ? 'Prochaine étape' : 'Next step'}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
@@ -561,7 +608,7 @@ export default function Dashboard() {
                   setFiltre('a_faire')
                   setTimeout(() => checklistRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150)
                 }}
-                style={{ padding: '10px 20px', background: '#1E3A5F', border: 'none', borderRadius: 8, color: '#FFFFFF', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                style={{ padding: '10px 20px', background: '#0E1116', border: 'none', borderRadius: 6, color: '#FFFFFF', fontWeight: 600, fontSize: 13, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {lang === 'fr' ? "Je m'en occupe →" : "I'll handle it →"}
               </button>
             </div>
@@ -581,18 +628,18 @@ export default function Dashboard() {
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, justifyContent: 'flex-end' }}>
-                  <span style={{ fontSize: 52, fontWeight: 800, color: '#0F172A', letterSpacing: '-0.04em', lineHeight: 1 }}>{scoreTotal}</span>
+                  <span style={{ fontSize: 48, fontWeight: 700, color: '#0E1116', letterSpacing: '-0.04em', lineHeight: 1 }}>{scoreTotal}</span>
                   <span style={{ fontSize: 18, fontWeight: 500, color: '#94A3B8', paddingBottom: 6, marginLeft: 2 }}>/100</span>
                 </div>
-                <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: scoreTotal >= 80 ? '#F0FDF4' : scoreTotal >= 50 ? '#FFFBEB' : '#F1F5F9', color: scoreTotal >= 80 ? '#16A34A' : scoreTotal >= 50 ? '#1E3A5F' : '#475569' }}>
+                <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: scoreTotal >= 80 ? '#F0F0EE' : '#F7F7F5', color: scoreTotal >= 80 ? '#3A3D40' : '#6B6F76' }}>
                   {scoreBadge}
                 </span>
               </div>
             </div>
 
             {/* Barre globale */}
-            <div style={{ height: 5, background: '#E2E8F0', borderRadius: 999, overflow: 'hidden', marginBottom: 16 }}>
-              <div style={{ width: `${scoreTotal}%`, height: '100%', background: '#1E3A5F', borderRadius: 999, transition: 'width 0.6s ease' }} />
+            <div style={{ height: 3, background: '#EBEBE9', borderRadius: 999, overflow: 'hidden', marginBottom: 16 }}>
+              <div style={{ width: `${scoreTotal}%`, height: '100%', background: '#0E1116', borderRadius: 999, transition: 'width 0.6s ease' }} />
             </div>
 
             {/* Lignes détail */}
@@ -603,16 +650,16 @@ export default function Dashboard() {
                 const content = (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: i < scoreItems.length - 1 ? '1px solid #F1F5F9' : 'none', cursor: item.href ? 'pointer' : 'default' }}>
                     {done
-                      ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }}><span style={{ color: '#fff', fontSize: 11, fontWeight: 800 }}>✓</span></span>
-                      : <span style={{ display: 'inline-block', width: 20, height: 20, borderRadius: '50%', border: '1.5px solid #E2E8F0', flexShrink: 0 }} />
+                      ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: '#0E1116', flexShrink: 0 }}><span style={{ color: '#fff', fontSize: 11, fontWeight: 800 }}>✓</span></span>
+                      : <span style={{ display: 'inline-block', width: 20, height: 20, borderRadius: '50%', border: '1.5px solid #EBEBE9', flexShrink: 0 }} />
                     }
                     <p style={{ fontSize: 14, fontWeight: 500, color: '#334155', flex: 1 }}>{item.label}</p>
                     {item.loading
                       ? <span style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>…</span>
                       : <span style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>{item.pts}/{item.max}</span>
                     }
-                    {done && <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: '#F0FDF4', color: '#16A34A' }}>{lang === 'fr' ? 'Terminé' : 'Done'}</span>}
-                    {!done && item.href && <span style={{ fontSize: 12, fontWeight: 600, color: '#3B82F6' }}>+{extra}</span>}
+                    {done && <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: '#F0F0EE', color: '#3A3D40' }}>{lang === 'fr' ? 'Terminé' : 'Done'}</span>}
+                    {!done && item.href && <span style={{ fontSize: 12, fontWeight: 600, color: '#6B6F76' }}>+{extra}</span>}
                   </div>
                 )
                 return item.href && !done
@@ -626,6 +673,20 @@ export default function Dashboard() {
                 ℹ️ {lang === 'fr' ? 'Clique sur une ligne pour compléter ce point.' : 'Click a line to complete that item.'}
               </p>
             )}
+          </div>
+        )}
+
+        {/* ── MINI-CARDS SCORE + DEPUIS ARRIVÉE ── */}
+        {user && scoreItems && (
+          <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
+            <div style={{ flex: 1, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 8, padding: '10px 12px' }}>
+              <p style={{ fontSize: 10, fontWeight: 600, color: '#9A9D9F', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 4 }}>Score</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: '#0E1116' }}>{scoreTotal}<span style={{ fontSize: 12, fontWeight: 400, color: '#9A9D9F' }}>/100</span></p>
+            </div>
+            <div style={{ flex: 1, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 8, padding: '10px 12px' }}>
+              <p style={{ fontSize: 10, fontWeight: 600, color: '#9A9D9F', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 4 }}>{lang === 'fr' ? 'Depuis arrivée' : 'Since arrival'}</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: '#0E1116' }}>{jouDisplayVal}</p>
+            </div>
           </div>
         )}
 
@@ -699,7 +760,7 @@ export default function Dashboard() {
 
                   {/* BLOC 1 — Message de bienvenue */}
                   {rec.welcome_message && (
-                    <div style={{ padding:'20px 24px', background:'linear-gradient(135deg, #1E3A5F 0%, #25487A 100%)', borderRadius:14, marginBottom:16 }}>
+                    <div style={{ padding:'20px 24px', background:'#0E1116', borderRadius:14, marginBottom:16 }}>
                       <p style={{ color:'#fff', fontSize:15, lineHeight:1.75, fontStyle:'italic', margin:0 }}>{rec.welcome_message}</p>
                     </div>
                   )}
@@ -732,10 +793,10 @@ export default function Dashboard() {
                       <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
                         {rec.tips.map((tip, i) => {
                           const bs =
-                            tip.category === 'finance'    ? { bg:`rgba(30,58,95,0.18)`,   color:C.accent2   } :
-                            tip.category === 'social'     ? { bg:`rgba(96,165,250,0.18)`,  color:'#60A5FA'   } :
-                            tip.category === 'academique' ? { bg:`rgba(251,191,36,0.18)`,  color:C.warning   } :
-                            tip.category === 'sante'      ? { bg:`rgba(248,113,113,0.18)`, color:C.error     } :
+                            tip.category === 'finance'    ? { bg:'#F0F0EE', color:'#0E1116'   } :
+                            tip.category === 'social'     ? { bg:'#F0F0EE', color:'#3A3D40'   } :
+                            tip.category === 'academique' ? { bg:'#F0F0EE', color:'#3A3D40'   } :
+                            tip.category === 'sante'      ? { bg:'#FEF2F2', color:'#DC2626'     } :
                             { bg:C.surface2, color:C.muted }
                           return (
                             <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:8, padding:'10px 16px', background:bs.bg, borderRadius:99 }}>
@@ -989,7 +1050,7 @@ export default function Dashboard() {
               <h3 style={{ fontWeight: 600, fontSize: 14, color: '#0F172A', margin: 0 }}>
                 {lang === 'fr' ? "Vue d'ensemble" : 'Overview'}
               </h3>
-              <span style={{ fontSize: 18, color: '#3B82F6' }}>↗</span>
+              <span style={{ fontSize: 18, color: '#9A9D9F' }}>↗</span>
             </div>
             {[
               { label: lang === 'fr' ? 'Points complétés'  : 'Points completed',  value: `${scoreTotal} / 100` },

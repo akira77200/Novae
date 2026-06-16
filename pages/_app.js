@@ -98,7 +98,7 @@ function AppLayout({ Component, pageProps }) {
         marginLeft: 'var(--sidebar-width)',
         minHeight: '100vh',
         flex: 1,
-        background: theme === 'dark' ? 'var(--novae-bg-dark)' : 'var(--novae-bg)',
+        background: 'var(--bg-page)',
         transition: 'margin-left 0.2s ease',
         padding: '36px 40px',
       }}>
@@ -120,7 +120,7 @@ function AppContent({ Component, pageProps }) {
     <AppProvider>
       <Head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#1E3A5F" />
+        <meta name="theme-color" content="#0E1116" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Novae" />
@@ -131,98 +131,120 @@ function AppContent({ Component, pageProps }) {
 
       <style jsx global>{`
         :root {
-          /* ── Sidebar ── */
-          --sidebar-bg: #1E3A5F;
-          --sidebar-bg-hover: #25487A;
-          --sidebar-text: #CBD5E1;
-          --sidebar-text-active: #FFFFFF;
-          --sidebar-icon: #94A3B8;
-          --sidebar-border: #16304F;
-          --sidebar-logo-text: #1E3A5F;
-
-          /* ── Fond & cards ── */
-          --bg-page: #F4F6F8;
-          --bg-card: #FFFFFF;
-          --border-default: #E2E8F0;
-          --border-strong: #CBD5E1;
-
-          /* ── Couleurs ── */
-          --color-primary: #3B82F6;
-          --color-primary-light: #DBEAFE;
-          --accent-light: #3B82F6;
-          --color-success: #22C55E;
-          --color-success-light: #D1FAE5;
-          --color-warning: #854D0E;
-          --color-danger: #EF4444;
+          /* ── Fonds ── */
+          --bg-page:           #FAFAF9;
+          --bg-card:           #FFFFFF;
+          --bg-sidebar:        #0E1116;
+          --bg-sidebar-hover:  rgba(255,255,255,0.08);
+          --bg-sidebar-active: rgba(255,255,255,0.08);
 
           /* ── Texte ── */
-          --text-primary: #0F172A;
-          --text-secondary: #475569;
-          --text-muted: #94A3B8;
+          --text-h1:             #0E1116;
+          --text-body:           #3A3D40;
+          --text-muted:          #6B6F76;
+          --text-faint:          #9A9D9F;
+          --text-sidebar:        #6B6F76;
+          --text-sidebar-active: #FAFAF8;
 
-          /* ── Boutons ── */
-          --btn-primary-bg: #1E3A5F;
-          --btn-primary-hover: #25487A;
-          --btn-premium-bg: #FFFFFF;
-          --btn-premium-color: #1E3A5F;
-          --btn-premium-hover: #F1F5F9;
+          /* ── Bordures ── */
+          --border:        #EBEBE9;
+          --border-strong: #D5D5D2;
 
-          /* ── Dark mode (héritage) ── */
-          --novae-bg-dark: #0D1B2E;
-          --novae-surface-dark: #132035;
-          --novae-surface-2-dark: #1A2D47;
-          --novae-border-dark: rgba(59,130,246,0.15);
-          --novae-text-dark: #F1F5F9;
-          --novae-text-secondary-dark: #94A3B8;
+          /* ── Accent unique (noir) ── */
+          --accent:      #0E1116;
+          --accent-soft: rgba(14,17,22,0.08);
 
-          /* ── Compatibilité héritage ── */
-          --novae-primary: #1E3A5F;
-          --novae-primary-light: #25487A;
-          --novae-primary-pale: #DBEAFE;
-          --novae-accent: #3B82F6;
-          --novae-accent-soft: #93C5FD;
-          --novae-bg: #F4F6F8;
-          --novae-surface: #FFFFFF;
-          --novae-surface-2: #F8F9FA;
-          --novae-border: #E2E8F0;
-          --novae-text: #0F172A;
-          --novae-text-secondary: #475569;
-          --novae-text-muted: #94A3B8;
-          --novae-success: #22C55E;
-          --novae-warning: #854D0E;
-          --novae-danger: #EF4444;
-          --novae-info: #3B82F6;
+          /* ── Badges statut ── */
+          --badge-done-bg:   #F0F0EE;
+          --badge-done-text: #3A3D40;
+          --badge-todo-bg:   #F7F7F5;
+          --badge-todo-text: #6B6F76;
 
-          --sidebar-width: 188px;
+          /* ── Erreur/danger uniquement ── */
+          --color-danger: #DC2626;
+
+          /* ── Compatibilité héritage (autres pages) ── */
+          --bg-page-legacy:      #FAFAF9;
+          --novae-bg:            #FAFAF9;
+          --novae-surface:       #FFFFFF;
+          --novae-surface-2:     #F7F7F5;
+          --novae-border:        #EBEBE9;
+          --novae-text:          #0E1116;
+          --novae-text-secondary:#6B6F76;
+          --novae-text-muted:    #9A9D9F;
+          --novae-accent:        #0E1116;
+          --novae-accent-soft:   rgba(14,17,22,0.08);
+          --novae-primary:       #0E1116;
+          --novae-primary-light: #3A3D40;
+          --novae-primary-pale:  #F0F0EE;
+          --novae-success:       #3A3D40;
+          --novae-warning:       #6B6F76;
+          --novae-danger:        #DC2626;
+          --novae-info:          #3A3D40;
+          --novae-bg-dark:       #0E1116;
+          --novae-surface-dark:  #1A1D22;
+          --novae-surface-2-dark:#222529;
+          --novae-border-dark:   rgba(255,255,255,0.08);
+          --novae-text-dark:     #FAFAF8;
+          --novae-text-secondary-dark: #9A9D9F;
+          --btn-primary-bg:      #0E1116;
+          --btn-primary-hover:   #3A3D40;
+          --btn-premium-bg:      #FAFAF8;
+          --btn-premium-color:   #0E1116;
+          --btn-premium-hover:   #F0F0EE;
+          --color-primary:       #0E1116;
+          --color-primary-light: #F0F0EE;
+          --color-success:       #3A3D40;
+          --color-success-light: #F0F0EE;
+          --color-warning:       #6B6F76;
+          --border-default:      #EBEBE9;
+          --text-primary:        #0E1116;
+          --text-secondary:      #6B6F76;
+
+          /* ── Dimensions ── */
+          --sidebar-width:    188px;
           --sidebar-collapsed: 72px;
-          --topbar-height: 64px;
-          --border-radius: 12px;
-          --border-radius-sm: 8px;
-          --border-radius-lg: 16px;
-          --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-          --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
-          --shadow-lg: 0 10px 15px rgba(0,0,0,0.08);
+          --border-radius:     8px;
+          --border-radius-sm:  6px;
+          --border-radius-lg: 10px;
+          --radius-sm:   6px;
+          --radius-md:   8px;
+          --radius-lg:  10px;
+          --radius-pill: 999px;
+          --shadow-card:  none;
+          --shadow-hover: 0 1px 2px rgba(14,17,22,0.04);
+          --shadow-sm:    none;
+          --shadow-md:    0 1px 2px rgba(14,17,22,0.04);
+          --shadow-lg:    0 2px 8px rgba(14,17,22,0.06);
 
-          --font: 'Inter', -apple-system, sans-serif;
+          /* ── Typographie ── */
+          --font:         'Inter', -apple-system, sans-serif;
           --font-display: 'Inter', -apple-system, sans-serif;
-          --font-size-xs: 11px;
-          --font-size-sm: 13px;
+          --text-xs:   11px;
+          --text-sm:   12px;
+          --text-base: 13px;
+          --text-md:   14px;
+          --text-lg:   15px;
+          --text-xl:   22px;
+          --text-2xl:  48px;
+          --font-size-xs:   11px;
+          --font-size-sm:   13px;
           --font-size-base: 14px;
-          --font-size-lg: 16px;
-          --font-size-xl: 18px;
-          --font-size-2xl: 22px;
-          --font-size-3xl: 28px;
+          --font-size-lg:   16px;
+          --font-size-xl:   18px;
+          --font-size-2xl:  22px;
+          --font-size-3xl:  28px;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: var(--font); background: var(--bg-page); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body { font-family: var(--font); background: var(--bg-page); color: var(--text-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         input, button, textarea, select { font-family: inherit; }
         a { color: inherit; }
         button { cursor: pointer; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.35); border-radius: 3px; }
-        ::selection { background: rgba(59,130,246,0.25); }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(14,17,22,0.12); border-radius: 2px; }
+        ::selection { background: rgba(14,17,22,0.10); }
       `}</style>
 
       <AppLayout Component={Component} pageProps={pageProps} />

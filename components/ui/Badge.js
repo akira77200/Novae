@@ -1,11 +1,11 @@
 const COLORS = {
-  green:  { bg: '#F0FDF4', text: '#16A34A' },
-  orange: { bg: '#EFF6FF', text: '#1E3A5F' },
+  green:  { bg: '#F0F0EE', text: '#3A3D40' },
+  orange: { bg: '#F0F0EE', text: '#3A3D40' },
   red:    { bg: '#FEF2F2', text: '#DC2626' },
-  blue:   { bg: '#EFF6FF', text: '#1E3A5F' },
-  gray:   { bg: '#F1F5F9', text: '#475569' },
-  navy:   { bg: '#EFF6FF', text: '#1E3A5F' },
-  warn:   { bg: '#FEF9C3', text: '#854D0E' },
+  blue:   { bg: '#F0F0EE', text: '#3A3D40' },
+  gray:   { bg: '#F7F7F5', text: '#6B6F76' },
+  navy:   { bg: '#F0F0EE', text: '#0E1116' },
+  warn:   { bg: '#F7F7F5', text: '#6B6F76' },
 }
 
 export default function Badge({ children, color = 'blue' }) {
