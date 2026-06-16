@@ -6,9 +6,9 @@ import { useAuthFetch } from '../lib/useAuthFetch'
 import FeedbackSection from '../components/FeedbackSection'
 
 const TYPES = [
-  { id: 'emploi',    fr: "💼 Entrevue d'emploi",       en: '💼 Job Interview',           color: '#3B82F6', desc_fr: 'Prépare-toi pour un poste au Canada', desc_en: 'Prepare for a Canadian job position' },
-  { id: 'admission', fr: '🎓 Admission universitaire',  en: '🎓 University Admission',     color: '#60A5FA', desc_fr: 'Entretien de motivation pour un programme', desc_en: 'Motivation interview for a program' },
-  { id: 'visa',      fr: '🛂 Entrevue visa / immigration', en: '🛂 Visa / Immigration',    color: '#FBBF24', desc_fr: 'Prépare-toi à l\'entretien consulaire', desc_en: 'Prepare for a consular interview' },
+  { id: 'emploi',    fr: "💼 Entrevue d'emploi",       en: '💼 Job Interview',           color: '#0E1116', desc_fr: 'Prépare-toi pour un poste au Canada', desc_en: 'Prepare for a Canadian job position' },
+  { id: 'admission', fr: '🎓 Admission universitaire',  en: '🎓 University Admission',     color: '#6B6F76', desc_fr: 'Entretien de motivation pour un programme', desc_en: 'Motivation interview for a program' },
+  { id: 'visa',      fr: '🛂 Entrevue visa / immigration', en: '🛂 Visa / Immigration',    color: '#6B6F76', desc_fr: 'Prépare-toi à l\'entretien consulaire', desc_en: 'Prepare for a consular interview' },
 ]
 
 const EXEMPLES_CIBLE = {
@@ -170,14 +170,14 @@ export default function Entrevue() {
 
   // ── ÉCRAN CONFIG ──────────────────────────────────────────────
   if (etape === 'config') return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 680, margin: '0 auto', padding: '40px 20px 80px' }}>
 
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, letterSpacing: -0.5, marginBottom: 6 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 6 }}>
           🎙️ {lang === 'fr' ? 'Simulation d\'entrevue IA' : 'AI Interview Simulator'}
         </h1>
-        <p style={{ fontSize: 14, color: C.muted, marginBottom: 32, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 32, lineHeight: 1.6 }}>
           {lang === 'fr'
             ? 'Entraîne-toi avec un recruteur IA avant ton vrai entretien. Feedback en temps réel.'
             : 'Practice with an AI interviewer before your real interview. Real-time feedback.'}
@@ -185,14 +185,14 @@ export default function Entrevue() {
 
         {/* Bannière Mon Avenir */}
         {!progSujet && (
-          <div style={{ padding: '12px 16px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 10, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ padding: '12px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 10, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 16 }}>💡</span>
-            <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0 }}>
+            <p style={{ fontSize: 13, color: '#6B6F76', flex: 1, margin: 0 }}>
               {lang === 'fr'
                 ? 'Définis ton orientation pour obtenir des questions adaptées à ton secteur.'
                 : 'Set your orientation to get questions tailored to your sector.'}
             </p>
-            <a href="/mon-avenir" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            <a href="/mon-avenir" style={{ fontSize: 13, color: '#3A3D40', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? 'Mon Avenir →' : 'My Future →'}
             </a>
           </div>
@@ -200,35 +200,35 @@ export default function Entrevue() {
 
         {/* Message limite plan gratuit */}
         {userPlan === 'gratuit' && (
-          <div style={{ padding: '20px 24px', background: `${C.warning}10`, border: `1px solid ${C.warning}30`, borderRadius: 12, marginBottom: 32 }}>
-            <p style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>
+          <div style={{ padding: '20px 24px', background: '#6B6F7610', border: `1px solid ${'#6B6F76'}30`, borderRadius: 12, marginBottom: 32 }}>
+            <p style={{ fontSize: 15, fontWeight: 600, color: '#0E1116', marginBottom: 8 }}>
               {lang === 'fr' ? 'Disponible à partir du plan Starter' : 'Available from Starter plan'}
             </p>
-            <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 16 }}>
+            <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.6, marginBottom: 16 }}>
               {lang === 'fr'
                 ? 'La simulation d\'entrevue IA est une fonctionnalité premium. Passe au plan Starter pour accéder à cette fonctionnalité.'
                 : 'AI interview simulation is a premium feature. Upgrade to Starter to access this feature.'}
             </p>
-            <a href="/abonnement" style={{ display: 'inline-block', padding: '10px 20px', borderRadius: 10, background: C.accent, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+            <a href="/abonnement" style={{ display: 'inline-block', padding: '10px 20px', borderRadius: 10, background: '#0E1116', color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
               {lang === 'fr' ? 'Voir les abonnements →' : 'View plans →'}
             </a>
           </div>
         )}
 
         {/* Type d'entrevue */}
-        <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           {lang === 'fr' ? '1. Type d\'entrevue' : '1. Interview type'}
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
           {TYPES.map(t => (
             <button key={t.id} onClick={() => { setTypeId(t.id); setCible(''); setCibleInput('') }}
-              style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', borderRadius: 12, border: `1.5px solid ${typeId === t.id ? t.color + '60' : C.border}`, background: typeId === t.id ? t.color + '10' : C.surface, cursor: 'pointer', textAlign: 'left' }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', borderRadius: 12, border: `1.5px solid ${typeId === t.id ? t.color + '60' : '#EBEBE9'}`, background: typeId === t.id ? t.color + '10' : '#FFFFFF', cursor: 'pointer', textAlign: 'left' }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: t.color + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
                 {t.id === 'emploi' ? '💼' : t.id === 'admission' ? '🎓' : '🛂'}
               </div>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 2 }}>{lang === 'fr' ? t.fr : t.en}</p>
-                <p style={{ fontSize: 12, color: C.muted }}>{lang === 'fr' ? t.desc_fr : t.desc_en}</p>
+                <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 2 }}>{lang === 'fr' ? t.fr : t.en}</p>
+                <p style={{ fontSize: 12, color: '#6B6F76' }}>{lang === 'fr' ? t.desc_fr : t.desc_en}</p>
               </div>
               {typeId === t.id && <span style={{ color: t.color, fontSize: 18 }}>✓</span>}
             </button>
@@ -236,7 +236,7 @@ export default function Entrevue() {
         </div>
 
         {/* Cible */}
-        <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 12 }}>
           {lang === 'fr'
             ? typeId === 'emploi' ? '2. Poste visé' : typeId === 'admission' ? '2. Programme visé' : '2. Type de visa'
             : typeId === 'emploi' ? '2. Target position' : typeId === 'admission' ? '2. Target program' : '2. Visa type'}
@@ -247,36 +247,36 @@ export default function Entrevue() {
             typeId === 'admission' ? (lang === 'fr' ? 'ex. Master Informatique — UdeM' : 'e.g. Master in Computer Science') :
             (lang === 'fr' ? 'ex. Permis d\'études' : 'e.g. Study permit')
           }
-          style={{ width: '100%', padding: '11px 14px', background: C.surface, border: `1px solid ${cibleInput ? typeActif.color + '50' : C.border}`, borderRadius: 10, color: C.text, fontSize: 14, outline: 'none', boxSizing: 'border-box', marginBottom: 12 }} />
+          style={{ width: '100%', padding: '11px 14px', background: '#FFFFFF', border: `1px solid ${cibleInput ? typeActif.color + '50' : '#EBEBE9'}`, borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none', boxSizing: 'border-box', marginBottom: 12 }} />
 
         {/* Suggestions rapides */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 28 }}>
           {exemples.map(ex => (
             <button key={ex} onClick={() => setCibleInput(ex)}
-              style={{ padding: '5px 13px', borderRadius: 20, border: `1px solid ${cibleInput === ex ? typeActif.color + '50' : C.border}`, background: cibleInput === ex ? typeActif.color + '12' : 'transparent', color: cibleInput === ex ? typeActif.color : C.muted, fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '5px 13px', borderRadius: 20, border: `1px solid ${cibleInput === ex ? typeActif.color + '50' : '#EBEBE9'}`, background: cibleInput === ex ? typeActif.color + '12' : 'transparent', color: cibleInput === ex ? typeActif.color : '#6B6F76', fontSize: 12, cursor: 'pointer' }}>
               {ex}
             </button>
           ))}
         </div>
 
         {/* Conseils */}
-        <div style={{ padding: '16px 18px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, marginBottom: 28 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 10 }}>
+        <div style={{ padding: '16px 18px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, marginBottom: 28 }}>
+          <p style={{ fontSize: 12, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 10 }}>
             {lang === 'fr' ? 'Conseils avant de commencer' : 'Tips before you start'}
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             {conseils.map((c, i) => (
-              <p key={i} style={{ fontSize: 13, color: C.text, lineHeight: 1.6 }}>{c}</p>
+              <p key={i} style={{ fontSize: 13, color: '#0E1116', lineHeight: 1.6 }}>{c}</p>
             ))}
           </div>
         </div>
 
         <button onClick={demarrer} disabled={!cibleInput.trim()}
-          style={{ width: '100%', padding: '14px', background: cibleInput.trim() ? typeActif.color : C.border, border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: cibleInput.trim() ? 'pointer' : 'not-allowed', opacity: cibleInput.trim() ? 1 : 0.6 }}>
+          style={{ width: '100%', padding: '14px', background: cibleInput.trim() ? typeActif.color : '#EBEBE9', border: 'none', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 15, cursor: cibleInput.trim() ? 'pointer' : 'not-allowed', opacity: cibleInput.trim() ? 1 : 0.6 }}>
           🎙️ {lang === 'fr' ? 'Démarrer l\'entrevue →' : 'Start the interview →'}
         </button>
 
-        <p style={{ textAlign: 'center', fontSize: 12, color: C.muted, marginTop: 14 }}>
+        <p style={{ textAlign: 'center', fontSize: 12, color: '#6B6F76', marginTop: 14 }}>
           {lang === 'fr' ? '5–6 questions · Feedback immédiat · Bilan final' : '5–6 questions · Immediate feedback · Final review'}
         </p>
       </main>
@@ -285,24 +285,24 @@ export default function Entrevue() {
 
   // ── ÉCRAN SESSION ─────────────────────────────────────────────
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif', display: 'flex', flexDirection: 'column' }}>
       
 
       {/* Header session */}
-      <div style={{ borderBottom: `1px solid ${C.border}`, padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 14, background: C.surface, flexShrink: 0 }}>
-        <button onClick={recommencer} style={{ padding: '6px 12px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 8, color: C.muted, fontSize: 12, cursor: 'pointer' }}>
+      <div style={{ borderBottom: '1px solid #EBEBE9', padding: '12px 20px', display: 'flex', alignItems: 'center', gap: 14, background: '#FFFFFF', flexShrink: 0 }}>
+        <button onClick={recommencer} style={{ padding: '6px 12px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 8, color: '#6B6F76', fontSize: 12, cursor: 'pointer' }}>
           ← {lang === 'fr' ? 'Nouvelle session' : 'New session'}
         </button>
         <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: C.text }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116' }}>
             {typeActif.id === 'emploi' ? '💼' : typeActif.id === 'admission' ? '🎓' : '🛂'} {cible}
           </p>
-          <p style={{ fontSize: 11, color: C.muted }}>
+          <p style={{ fontSize: 11, color: '#6B6F76' }}>
             {lang === 'fr' ? typeActif.fr : typeActif.en} · {lang === 'fr' ? `Question ${Math.min(nbEchanges, 6)}/6` : `Question ${Math.min(nbEchanges, 6)}/6`}
           </p>
         </div>
         {/* Barre progression */}
-        <div style={{ width: 80, height: 6, background: C.border, borderRadius: 3, overflow: 'hidden' }}>
+        <div style={{ width: 80, height: 6, background: '#EBEBE9', borderRadius: 3, overflow: 'hidden' }}>
           <div style={{ width: `${Math.min((nbEchanges / 6) * 100, 100)}%`, height: '100%', background: typeActif.color, borderRadius: 3, transition: 'width 0.4s' }} />
         </div>
       </div>
@@ -325,10 +325,10 @@ export default function Entrevue() {
                   maxWidth: '78%',
                   padding: '11px 15px',
                   borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                  background: isUser ? typeActif.color : C.surface,
-                  border: isUser ? 'none' : `1px solid ${C.border}`,
+                  background: isUser ? typeActif.color : '#FFFFFF',
+                  border: isUser ? 'none' : '1px solid #EBEBE9',
                   fontSize: 14, lineHeight: 1.7,
-                  color: isUser ? '#fff' : C.text,
+                  color: isUser ? '#fff' : '#0E1116',
                   whiteSpace: 'pre-wrap', wordBreak: 'break-word',
                 }}>
                   {m.content || (
@@ -340,7 +340,7 @@ export default function Entrevue() {
                   )}
                 </div>
                 {isUser && (
-                  <div style={{ width: 34, height: 34, borderRadius: '50%', background: C.accent + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, flexShrink: 0, fontWeight: 700, color: C.accent2 }}>
+                  <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#0E111620', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, flexShrink: 0, fontWeight: 700, color: '#3A3D40' }}>
                     {profile?.full_name?.[0]?.toUpperCase() || '👤'}
                   </div>
                 )}
@@ -352,17 +352,17 @@ export default function Entrevue() {
       </div>
 
       {/* Bilan / Input */}
-      <div style={{ borderTop: `1px solid ${C.border}`, background: C.surface, padding: '12px 20px', flexShrink: 0 }}>
+      <div style={{ borderTop: '1px solid #EBEBE9', background: '#FFFFFF', padding: '12px 20px', flexShrink: 0 }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
           {termine && !streaming ? (
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-              <p style={{ fontSize: 13, color: C.success, fontWeight: 600, flex: 1 }}>
+              <p style={{ fontSize: 13, color: '#3A3D40', fontWeight: 600, flex: 1 }}>
                 ✅ {lang === 'fr' ? 'Entrevue terminée — le bilan est dans la conversation.' : 'Interview done — see the review above.'}
               </p>
               <button onClick={recommencer} style={{ padding: '9px 20px', background: typeActif.color, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 {lang === 'fr' ? '↺ Recommencer' : '↺ Start over'}
               </button>
-              <button onClick={() => { setTermine(false) }} style={{ padding: '9px 16px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 9, color: C.muted, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={() => { setTermine(false) }} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 9, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 {lang === 'fr' ? '+ Continuer' : '+ Continue'}
               </button>
             </div>
@@ -376,15 +376,15 @@ export default function Entrevue() {
                 placeholder={lang === 'fr' ? 'Ta réponse... (Entrée pour envoyer, Maj+Entrée pour saut de ligne)' : 'Your answer... (Enter to send, Shift+Enter for new line)'}
                 disabled={streaming}
                 rows={2}
-                style={{ flex: 1, padding: '10px 13px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 10, color: C.text, fontSize: 14, outline: 'none', resize: 'none', fontFamily: 'system-ui,sans-serif', opacity: streaming ? 0.7 : 1 }}
+                style={{ flex: 1, padding: '10px 13px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none', resize: 'none', fontFamily: 'system-ui,sans-serif', opacity: streaming ? 0.7 : 1 }}
               />
               <button onClick={() => envoyer()} disabled={!input.trim() || streaming}
-                style={{ width: 48, borderRadius: 10, background: input.trim() && !streaming ? typeActif.color : C.border, border: 'none', color: '#fff', fontSize: 20, cursor: input.trim() && !streaming ? 'pointer' : 'not-allowed', flexShrink: 0 }}>
+                style={{ width: 48, borderRadius: 10, background: input.trim() && !streaming ? typeActif.color : '#EBEBE9', border: 'none', color: '#fff', fontSize: 20, cursor: input.trim() && !streaming ? 'pointer' : 'not-allowed', flexShrink: 0 }}>
                 ↑
               </button>
             </div>
           )}
-          <p style={{ fontSize: 11, color: C.muted, marginTop: 8, textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 8, textAlign: 'center' }}>
             {lang === 'fr' ? 'Sois naturel(le) — réponds comme tu le ferais en vrai.' : 'Be natural — answer as you would in a real interview.'}
           </p>
         </div>
