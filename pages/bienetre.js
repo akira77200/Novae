@@ -29,7 +29,7 @@ const SCORE_LABELS_EN = ['Very hard', 'Hard', 'Okay', 'Good', 'Very good']
 const HUMEURS_FR = ['Solitude / isolement', 'Finances', 'Études / charge de travail', 'Logement', 'Langue / communication', 'Famille éloignée', 'Santé', 'Tout va bien ✨']
 const HUMEURS_EN = ['Loneliness / isolation', 'Finances', 'Studies / workload', 'Housing', 'Language / communication', 'Family far away', 'Health', 'All good ✨']
 
-const SCORE_COLOR = (s) => s <= 2 ? '#F87171' : s === 3 ? '#FBBF24' : '#34D399'
+const SCORE_COLOR = (s) => s <= 2 ? '#DC2626' : s === 3 ? '#6B6F76' : '#3A3D40'
 
 const ENCOURAGEMENTS_FR = [
   '', // index 0 unused
@@ -118,9 +118,9 @@ export default function Bienetre() {
   const moyenne   = derniers4.length > 0 ? derniers4.reduce((s, h) => s + h.score, 0) / derniers4.length : null
 
   const insight = moyenne === null ? null :
-    moyenne >= 4 ? { txt_fr: "🌟 Tu traverses cette période avec résilience !", txt_en: "🌟 You're navigating this period with resilience!", color: '#34D399' } :
-    moyenne >= 3 ? { txt_fr: "💪 Tu gères bien — continue à prendre soin de toi", txt_en: "💪 You're managing well — keep taking care of yourself", color: '#FBBF24' } :
-    { txt_fr: "🤗 Les débuts sont difficiles — tu n'es pas seul(e)", txt_en: "🤗 Beginnings are hard — you're not alone", color: '#F87171' }
+    moyenne >= 4 ? { txt_fr: "🌟 Tu traverses cette période avec résilience !", txt_en: "🌟 You're navigating this period with resilience!", color: '#3A3D40' } :
+    moyenne >= 3 ? { txt_fr: "💪 Tu gères bien — continue à prendre soin de toi", txt_en: "💪 You're managing well — keep taking care of yourself", color: '#6B6F76' } :
+    { txt_fr: "🤗 Les débuts sont difficiles — tu n'es pas seul(e)", txt_en: "🤗 Beginnings are hard — you're not alone", color: '#DC2626' }
 
   const besoinRessources = score !== null && score <= 2
 
@@ -128,12 +128,12 @@ export default function Bienetre() {
   const troisSemBas      = derniers3.length === 3 && derniers3.every(h => h.score <= 2)
 
   if (!user && !authLoading) return (
-    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', fontFamily: 'system-ui,sans-serif' }}>
       
       <div style={{ maxWidth: 500, margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
         <p style={{ fontSize: 40, marginBottom: 16 }}>🔒</p>
-        <p style={{ fontSize: 16, color: C.text, fontWeight: 600, marginBottom: 8 }}>{lang === 'fr' ? 'Connexion requise' : 'Login required'}</p>
-        <a href="/auth/login" style={{ padding: '10px 24px', background: C.accent, borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+        <p style={{ fontSize: 16, color: '#0E1116', fontWeight: 600, marginBottom: 8 }}>{lang === 'fr' ? 'Connexion requise' : 'Login required'}</p>
+        <a href="/auth/login" style={{ padding: '10px 24px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
           {lang === 'fr' ? 'Se connecter →' : 'Log in →'}
         </a>
       </div>
@@ -141,37 +141,37 @@ export default function Bienetre() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 680, margin: '0 auto', padding: '32px 20px 80px' }}>
 
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, letterSpacing: -0.5, marginBottom: 4 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 4 }}>
           🌱 {lang === 'fr' ? 'Mon Bien-être' : 'My Wellbeing'}
         </h1>
-        <p style={{ fontSize: 14, color: C.muted, marginBottom: 32 }}>
+        <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 32 }}>
           {lang === 'fr' ? 'Un suivi hebdomadaire pour prendre soin de toi.' : 'A weekly check-in to take care of yourself.'}
         </p>
 
         {/* ═══ SECTION 1 — Check-in ═══ */}
         {ready && !checkinSem && !saved && (
-          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px', marginBottom: 24 }}>
-            <p style={{ fontSize: 17, fontWeight: 800, color: C.text, marginBottom: 6 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px', marginBottom: 24 }}>
+            <p style={{ fontSize: 17, fontWeight: 800, color: '#0E1116', marginBottom: 6 }}>
               {lang === 'fr' ? 'Comment tu vas cette semaine ? 🌱' : 'How are you this week? 🌱'}
             </p>
-            <p style={{ fontSize: 13, color: C.muted, marginBottom: 24 }}>
+            <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 24 }}>
               {lang === 'fr' ? 'Semaine du ' : 'Week of '}{formatSemaine(semaineCourante, lang)}
             </p>
 
             {/* Q1 — Score */}
-            <p style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 12 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116', marginBottom: 12 }}>
               {lang === 'fr' ? '1. Mon moral général' : '1. My overall mood'}
             </p>
             <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
               {SCORE_EMOJIS.map((emoji, i) => (
                 <button key={i} onClick={() => setScore(i + 1)}
-                  style={{ flex: 1, padding: '12px 4px', borderRadius: 12, border: `2px solid ${score === i + 1 ? SCORE_COLOR(i + 1) : C.border}`, background: score === i + 1 ? SCORE_COLOR(i + 1) + '18' : C.surface2, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, transition: 'all 0.15s' }}>
+                  style={{ flex: 1, padding: '12px 4px', borderRadius: 12, border: `2px solid ${score === i + 1 ? SCORE_COLOR(i + 1) : '#EBEBE9'}`, background: score === i + 1 ? SCORE_COLOR(i + 1) + '18' : '#F7F7F5', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, transition: 'all 0.15s' }}>
                   <span style={{ fontSize: 26 }}>{emoji}</span>
-                  <span style={{ fontSize: 10, color: score === i + 1 ? SCORE_COLOR(i + 1) : C.muted, fontWeight: 500, textAlign: 'center', lineHeight: 1.3 }}>
+                  <span style={{ fontSize: 10, color: score === i + 1 ? SCORE_COLOR(i + 1) : '#6B6F76', fontWeight: 500, textAlign: 'center', lineHeight: 1.3 }}>
                     {lang === 'fr' ? SCORE_LABELS_FR[i] : SCORE_LABELS_EN[i]}
                   </span>
                 </button>
@@ -179,9 +179,9 @@ export default function Bienetre() {
             </div>
 
             {/* Q2 — Ce qui me pèse */}
-            <p style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 12 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116', marginBottom: 12 }}>
               {lang === 'fr' ? '2. Ce qui me pèse le plus' : '2. What weighs on me most'}
-              <span style={{ fontSize: 11, color: C.muted, fontWeight: 400, marginLeft: 8 }}>{lang === 'fr' ? '(max 2)' : '(max 2)'}</span>
+              <span style={{ fontSize: 11, color: '#6B6F76', fontWeight: 400, marginLeft: 8 }}>{lang === 'fr' ? '(max 2)' : '(max 2)'}</span>
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
               {(lang === 'fr' ? HUMEURS_FR : HUMEURS_EN).map((h, i) => {
@@ -189,7 +189,7 @@ export default function Bienetre() {
                 const disabled = !selected && humeurs.length >= 2
                 return (
                   <button key={i} onClick={() => toggleHumeur(h)} disabled={disabled}
-                    style={{ padding: '7px 14px', borderRadius: 20, border: `1px solid ${selected ? C.accent + '60' : C.border}`, background: selected ? `${C.accent}18` : 'transparent', color: selected ? C.accent2 : disabled ? C.muted + '60' : C.muted, fontSize: 13, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: selected ? 600 : 400, transition: 'all 0.15s', opacity: disabled ? 0.4 : 1 }}>
+                    style={{ padding: '7px 14px', borderRadius: 20, border: `1px solid ${selected ? '#0E111660' : '#EBEBE9'}`, background: selected ? '#0E111618' : 'transparent', color: selected ? '#3A3D40' : disabled ? '#6B6F7660' : '#6B6F76', fontSize: 13, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: selected ? 600 : 400, transition: 'all 0.15s', opacity: disabled ? 0.4 : 1 }}>
                     {selected ? '✓ ' : ''}{h}
                   </button>
                 )
@@ -197,29 +197,29 @@ export default function Bienetre() {
             </div>
 
             {/* Q3 — Note */}
-            <p style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 8 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116', marginBottom: 8 }}>
               {lang === 'fr' ? '3. Un mot pour décrire ma semaine' : '3. One word to describe my week'}
-              <span style={{ fontSize: 11, color: C.muted, fontWeight: 400, marginLeft: 8 }}>{lang === 'fr' ? '(optionnel)' : '(optional)'}</span>
+              <span style={{ fontSize: 11, color: '#6B6F76', fontWeight: 400, marginLeft: 8 }}>{lang === 'fr' ? '(optionnel)' : '(optional)'}</span>
             </p>
             <input value={note} onChange={e => setNote(e.target.value.slice(0, 50))}
               placeholder={lang === 'fr' ? 'ex. Stressante, Productive, Solitaire...' : 'e.g. Stressful, Productive, Lonely...'}
-              style={{ width: '100%', padding: '10px 13px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 14, outline: 'none', marginBottom: 20, boxSizing: 'border-box' }} />
-            <p style={{ fontSize: 11, color: C.muted, textAlign: 'right', marginTop: -16, marginBottom: 20 }}>{note.length}/50</p>
+              style={{ width: '100%', padding: '10px 13px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 9, color: '#0E1116', fontSize: 14, outline: 'none', marginBottom: 20, boxSizing: 'border-box' }} />
+            <p style={{ fontSize: 11, color: '#6B6F76', textAlign: 'right', marginTop: -16, marginBottom: 20 }}>{note.length}/50</p>
 
             {/* Ressources si score <= 2 */}
             {besoinRessources && (
               <div style={{ padding: '14px 16px', background: 'rgba(248,113,113,0.07)', border: '1px solid rgba(248,113,113,0.25)', borderRadius: 12, marginBottom: 18 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: C.error, marginBottom: 10 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#DC2626', marginBottom: 10 }}>
                   {lang === 'fr' ? '💙 Tu n\'es pas seul(e). Voici des ressources :' : '💙 You\'re not alone. Here are some resources:'}
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>
+                  <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>
                     📞 Distress Centre Canada : 1-800-268-9688
                   </a>
-                  <a href="/mentors" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>
+                  <a href="/mentors" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>
                     🤝 {lang === 'fr' ? 'Parler à un mentor Novae →' : 'Talk to a Novae mentor →'}
                   </a>
-                  <p style={{ fontSize: 12, color: C.muted }}>
+                  <p style={{ fontSize: 12, color: '#6B6F76' }}>
                     {lang === 'fr' ? '🏫 Contacte le service de counseling de ton université' : '🏫 Contact your university counseling service'}
                   </p>
                 </div>
@@ -227,7 +227,7 @@ export default function Bienetre() {
             )}
 
             <button onClick={enregistrer} disabled={score === null || saving}
-              style={{ width: '100%', padding: '13px', background: score !== null && !saving ? C.accent : C.border, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: score !== null && !saving ? 'pointer' : 'not-allowed', opacity: score !== null ? 1 : 0.5 }}>
+              style={{ width: '100%', padding: '13px', background: score !== null && !saving ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: score !== null && !saving ? 'pointer' : 'not-allowed', opacity: score !== null ? 1 : 0.5 }}>
               {saving ? '...' : (lang === 'fr' ? '✓ Enregistrer mon check-in' : '✓ Save my check-in')}
             </button>
           </div>
@@ -235,21 +235,21 @@ export default function Bienetre() {
 
         {/* ═══ Confirmation après save ═══ */}
         {(saved || (ready && checkinSem)) && (
-          <div style={{ padding: '18px 22px', background: `${C.accent}10`, border: `1px solid ${C.accent}30`, borderRadius: 14, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+          <div style={{ padding: '18px 22px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 14, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 30 }}>{SCORE_EMOJIS[(checkinSem?.score || score || 3) - 1]}</span>
             <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 2 }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 2 }}>
                 {lang === 'fr'
                   ? (ENCOURAGEMENTS_FR[checkinSem?.score || score || 3])
                   : (ENCOURAGEMENTS_EN[checkinSem?.score || score || 3])}
               </p>
-              <p style={{ fontSize: 12, color: C.muted }}>
+              <p style={{ fontSize: 12, color: '#6B6F76' }}>
                 {lang === 'fr' ? 'Check-in enregistré · Semaine du ' : 'Check-in saved · Week of '}
                 {formatSemaine(checkinSem?.semaine || semaineCourante, lang)}
               </p>
             </div>
             <button onClick={() => { setCheckinSem(null); setSaved(false); setScore(null); setHumeurs([]); setNote('') }}
-              style={{ padding: '7px 14px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 8, color: C.muted, fontSize: 12, cursor: 'pointer' }}>
+              style={{ padding: '7px 14px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 8, color: '#6B6F76', fontSize: 12, cursor: 'pointer' }}>
               {lang === 'fr' ? 'Modifier' : 'Edit'}
             </button>
           </div>
@@ -258,25 +258,25 @@ export default function Bienetre() {
         {/* Ressources si dernier score <= 2 */}
         {checkinSem?.score <= 2 && (
           <div style={{ padding: '14px 16px', background: 'rgba(248,113,113,0.07)', border: '1px solid rgba(248,113,113,0.25)', borderRadius: 12, marginBottom: 20 }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: C.error, marginBottom: 10 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#DC2626', marginBottom: 10 }}>
               {lang === 'fr' ? '💙 Tu n\'es pas seul(e). Des ressources pour toi :' : '💙 You\'re not alone. Resources for you:'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
-              <a href="/mentors" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}</a>
+              <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
+              <a href="/mentors" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}</a>
             </div>
           </div>
         )}
 
         {/* ═══ SECTION 2 — Graphique historique ═══ */}
         {historique.length > 0 && (
-          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '20px', marginBottom: 24 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 18 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '20px', marginBottom: 24 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 18 }}>
               {lang === 'fr' ? '📈 Évolution sur 8 semaines' : '📈 8-week evolution'}
             </p>
 
             {/* Graphique simplifié en barres verticales */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 100, paddingBottom: 8, borderBottom: `1px solid ${C.border}`, marginBottom: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 100, paddingBottom: 8, borderBottom: '1px solid #EBEBE9', marginBottom: 8 }}>
               {historique.map((h, i) => {
                 const pct    = (h.score / 5) * 100
                 const color  = SCORE_COLOR(h.score)
@@ -293,14 +293,14 @@ export default function Bienetre() {
             <div style={{ display: 'flex', gap: 8 }}>
               {historique.map((h, i) => (
                 <div key={i} style={{ flex: 1, textAlign: 'center' }}>
-                  <p style={{ fontSize: 9, color: C.muted }}>{formatSemaine(h.semaine, lang)}</p>
+                  <p style={{ fontSize: 9, color: '#6B6F76' }}>{formatSemaine(h.semaine, lang)}</p>
                 </div>
               ))}
             </div>
 
             {/* Score moyen */}
             {moyenne !== null && (
-              <p style={{ fontSize: 13, color: C.muted, marginTop: 12, textAlign: 'center' }}>
+              <p style={{ fontSize: 13, color: '#6B6F76', marginTop: 12, textAlign: 'center' }}>
                 {lang === 'fr' ? 'Moyenne sur 4 semaines :' : '4-week average:'} <strong style={{ color: SCORE_COLOR(Math.round(moyenne)) }}>{moyenne.toFixed(1)}/5 {SCORE_EMOJIS[Math.round(moyenne) - 1]}</strong>
               </p>
             )}
@@ -315,9 +315,9 @@ export default function Bienetre() {
             </p>
             {moyenne !== null && moyenne < 3 && (
               <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 7 }}>
-                <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
-                <a href="/mentors" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}</a>
-                <a href="/parrainage" style={{ fontSize: 13, color: C.accent2, textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Trouver un parrain →' : 'Find a peer mentor →'}</a>
+                <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>📞 Distress Centre Canada : 1-800-268-9688</a>
+                <a href="/mentors" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}</a>
+                <a href="/parrainage" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none' }}>🤝 {lang === 'fr' ? 'Trouver un parrain →' : 'Find a peer mentor →'}</a>
               </div>
             )}
           </div>
@@ -325,20 +325,20 @@ export default function Bienetre() {
 
         {/* ═══ Suggestion mentor si score bas 3 semaines consécutives ═══ */}
         {troisSemBas && (
-          <div style={{ padding: '16px 18px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 14, marginBottom: 24 }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 8 }}>
+          <div style={{ padding: '16px 18px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 14, marginBottom: 24 }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 8 }}>
               💚 {lang === 'fr' ? 'As-tu pensé à parler à quelqu\'un ?' : 'Have you thought about talking to someone?'}
             </p>
-            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 14 }}>
+            <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7, marginBottom: 14 }}>
               {lang === 'fr'
                 ? 'Parfois, échanger avec quelqu\'un qui est passé par là aide énormément. Les mentors Novae sont là pour ça — gratuitement, et sans jugement.'
                 : 'Sometimes, talking to someone who\'s been through it helps a lot. Novae mentors are here for that — for free, without judgment.'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <a href="/mentors" style={{ fontSize: 13, color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+              <a href="/mentors" style={{ fontSize: 13, color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
                 🤝 {lang === 'fr' ? 'Parler à un mentor Novae →' : 'Talk to a Novae mentor →'}
               </a>
-              <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: C.muted, textDecoration: 'none' }}>
+              <a href={SAFE_LINKS.torontodistresscentre.url} target="_blank" rel="noreferrer" style={{ fontSize: 13, color: '#6B6F76', textDecoration: 'none' }}>
                 📞 {lang === 'fr' ? 'Distress Centre Canada : 1-800-268-9688' : 'Distress Centre Canada: 1-800-268-9688'}
               </a>
             </div>
@@ -347,9 +347,9 @@ export default function Bienetre() {
 
         {/* Vide — premier check-in */}
         {ready && !authLoading && !user && (
-          <div style={{ textAlign: 'center', padding: '48px 24px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16 }}>
+          <div style={{ textAlign: 'center', padding: '48px 24px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16 }}>
             <p style={{ fontSize: 36, marginBottom: 12 }}>🌱</p>
-            <p style={{ fontSize: 14, color: C.muted }}>{lang === 'fr' ? 'Connecte-toi pour accéder à ton suivi bien-être.' : 'Log in to access your wellbeing tracker.'}</p>
+            <p style={{ fontSize: 14, color: '#6B6F76' }}>{lang === 'fr' ? 'Connecte-toi pour accéder à ton suivi bien-être.' : 'Log in to access your wellbeing tracker.'}</p>
           </div>
         )}
 

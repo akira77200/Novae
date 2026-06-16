@@ -29,13 +29,13 @@ export default function Logout() {
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#0F1A14',
+      minHeight: '100vh', background: '#0E1116',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       fontFamily: 'system-ui,sans-serif',
     }}>
-      <div style={{ width: 44, height: 44, borderRadius: 12, background: '#1E3A5F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 16 }}>N</div>
-      <p style={{ color: '#9CA3AF', fontSize: 15 }}>Déconnexion...</p>
+      <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 16 }}>N</div>
+      <p style={{ color: '#9A9D9F', fontSize: 15 }}>Déconnexion...</p>
     </div>
   )
 }

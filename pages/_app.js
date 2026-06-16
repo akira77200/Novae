@@ -182,8 +182,8 @@ function AppContent({ Component, pageProps }) {
           --novae-danger:        #DC2626;
           --novae-info:          #3A3D40;
           --novae-bg-dark:       #0E1116;
-          --novae-surface-dark:  #1A1D22;
-          --novae-surface-2-dark:#222529;
+          --novae-surface-dark:  #0E1116;
+          --novae-surface-2-dark:#3A3D40;
           --novae-border-dark:   rgba(255,255,255,0.08);
           --novae-text-dark:     #FAFAF8;
           --novae-text-secondary-dark: #9A9D9F;

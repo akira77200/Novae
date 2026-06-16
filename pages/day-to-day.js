@@ -9,7 +9,7 @@ import SAFE_LINKS from '../lib/safeLinks'
 const MapView = dynamic(() => import('../components/MapView'), {
   ssr: false,
   loading: () => (
-    <div style={{ height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1a1a', borderRadius: '12px', color: '#888', fontSize: 14 }}>
+    <div style={{ height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0E1116', borderRadius: '12px', color: '#888', fontSize: 14 }}>
       Loading map...
     </div>
   ),
@@ -75,12 +75,12 @@ const COUT_VILLES = {
 }
 
 const POSTES_BUDGET = [
-  { id: 'loyer',     fr: 'Loyer',      en: 'Rent',      icon: '🏠', color: '#3B82F6' },
-  { id: 'epicerie',  fr: 'Épicerie',   en: 'Groceries', icon: '🛒', color: '#FBBF24' },
-  { id: 'transport', fr: 'Transport',  en: 'Transit',   icon: '🚇', color: '#60A5FA' },
-  { id: 'telephone', fr: 'Téléphone',  en: 'Phone',     icon: '📱', color: '#B5838D' },
-  { id: 'internet',  fr: 'Internet',   en: 'Internet',  icon: '📡', color: '#A78BFA' },
-  { id: 'loisirs',   fr: 'Loisirs',    en: 'Leisure',   icon: '🎭', color: '#3B82F6' },
+  { id: 'loyer',     fr: 'Loyer',      en: 'Rent',      icon: '🏠', color: '#0E1116' },
+  { id: 'epicerie',  fr: 'Épicerie',   en: 'Groceries', icon: '🛒', color: '#6B6F76' },
+  { id: 'transport', fr: 'Transport',  en: 'Transit',   icon: '🚇', color: '#6B6F76' },
+  { id: 'telephone', fr: 'Téléphone',  en: 'Phone',     icon: '📱', color: '#9A9D9F' },
+  { id: 'internet',  fr: 'Internet',   en: 'Internet',  icon: '📡', color: '#6B6F76' },
+  { id: 'loisirs',   fr: 'Loisirs',    en: 'Leisure',   icon: '🎭', color: '#0E1116' },
 ]
 
 // ── Données convertisseur devises ─────────────────────────────────
@@ -293,13 +293,13 @@ const CHECKLIST_BAIL = [
 ]
 
 const CATEGORIES = [
-  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#3B82F6', query: null },
-  { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#34D399', query: null },
-  { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#A78BFA', query: null },
-  { id: 'halal',      fr: 'Épiceries halal',     en: 'Halal groceries',    icon: '🥩', color: '#3B82F6', query: (c) => `halal+grocery+${c}` },
-  { id: 'hair',       fr: 'Coiffeurs afro',      en: 'Afro hairdressers',  icon: '💈', color: '#B5838D', query: (c) => `afro+hair+salon+${c}` },
-  { id: 'exotic',     fr: 'Épiceries exotiques', en: 'Exotic stores',      icon: '🛒', color: '#FBBF24', query: (c) => `african+caribbean+grocery+${c}` },
-  { id: 'prices',     fr: 'Prix comparés',       en: 'Price comparison',   icon: '💰', color: '#60A5FA', query: null },
+  { id: 'logement',   fr: 'Logement',            en: 'Housing',            icon: '🏠', color: '#0E1116', query: null },
+  { id: 'budget',     fr: 'Budget mensuel',      en: 'Monthly budget',     icon: '📊', color: '#3A3D40', query: null },
+  { id: 'convertir',  fr: 'Convertisseur',       en: 'Converter',          icon: '💱', color: '#6B6F76', query: null },
+  { id: 'halal',      fr: 'Épiceries halal',     en: 'Halal groceries',    icon: '🥩', color: '#0E1116', query: (c) => `halal+grocery+${c}` },
+  { id: 'hair',       fr: 'Coiffeurs afro',      en: 'Afro hairdressers',  icon: '💈', color: '#9A9D9F', query: (c) => `afro+hair+salon+${c}` },
+  { id: 'exotic',     fr: 'Épiceries exotiques', en: 'Exotic stores',      icon: '🛒', color: '#6B6F76', query: (c) => `african+caribbean+grocery+${c}` },
+  { id: 'prices',     fr: 'Prix comparés',       en: 'Price comparison',   icon: '💰', color: '#6B6F76', query: null },
 ]
 
 const detectStudyCity = (universite) => {
@@ -368,28 +368,28 @@ export default function DayToDay() {
   const enCAD    = montantN > 0 ? (montantN / devise.taux) : 0
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 820, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
           🌆 {lang === 'fr' ? 'Vie quotidienne' : 'Daily Life'}
         </h1>
-        <p style={{ fontSize: 15, color: C.muted, marginBottom: studyCitySuggestion ? 16 : 28, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 15, color: '#6B6F76', marginBottom: studyCitySuggestion ? 16 : 28, lineHeight: 1.6 }}>
           {lang === 'fr' ? 'Trouve ce dont tu as besoin autour de toi.' : 'Find what you need around you.'}
         </p>
 
         {/* Suggestion ville d'études */}
         {studyCitySuggestion && (
-          <div style={{ padding: '11px 16px', background: `${C.accent}08`, border: `1px solid ${C.accent}25`, borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ padding: '11px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 16 }}>📍</span>
-            <p style={{ fontSize: 13, color: C.muted, flex: 1, margin: 0 }}>
+            <p style={{ fontSize: 13, color: '#6B6F76', flex: 1, margin: 0 }}>
               {lang === 'fr'
                 ? `Tu étudies à ${studyCitySuggestion} ? Découvre le coût de la vie là-bas →`
                 : `Studying in ${studyCitySuggestion}? Discover the cost of living there →`}
             </p>
             <button onClick={() => { setBudgetVille(Object.keys(COUT_VILLES).find(k => COUT_VILLES[k].label === studyCitySuggestion) || 'Montreal'); setActive('budget') }}
-              style={{ fontSize: 12, color: C.accent2, fontWeight: 600, background: 'transparent', border: `1px solid ${C.accent}30`, borderRadius: 7, padding: '5px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              style={{ fontSize: 12, color: '#3A3D40', fontWeight: 600, background: 'transparent', border: `1px solid ${'#0E1116'}30`, borderRadius: 7, padding: '5px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? 'Voir →' : 'View →'}
             </button>
           </div>
@@ -397,12 +397,12 @@ export default function DayToDay() {
 
         {/* City selector */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-          <span style={{ fontSize: 13, color: C.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.7, flexShrink: 0 }}>
+          <span style={{ fontSize: 13, color: '#6B6F76', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.7, flexShrink: 0 }}>
             {lang === 'fr' ? 'Ville' : 'City'}
           </span>
           <input value={city} onChange={e => setCity(e.target.value)}
             placeholder="Montreal, Toronto..."
-            style={{ maxWidth: 240, padding: '9px 13px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 14, outline: 'none', colorScheme: 'dark' }} />
+            style={{ maxWidth: 240, padding: '9px 13px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 9, color: '#0E1116', fontSize: 14, outline: 'none', colorScheme: 'dark' }} />
         </div>
 
         {/* Category tabs */}
@@ -412,8 +412,8 @@ export default function DayToDay() {
               padding: '9px 16px', borderRadius: 10, border: `1px solid`,
               fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s',
               background: active === c.id ? `${c.color}18` : 'transparent',
-              borderColor: active === c.id ? `${c.color}50` : C.border,
-              color: active === c.id ? c.color : C.muted,
+              borderColor: active === c.id ? `${c.color}50` : '#EBEBE9',
+              color: active === c.id ? c.color : '#6B6F76',
             }}>
               {c.icon} {lang === 'fr' ? c.fr : c.en}
             </button>
@@ -422,10 +422,10 @@ export default function DayToDay() {
 
         {/* Carte OpenStreetMap via Leaflet */}
         {active !== 'prices' && active !== 'budget' && active !== 'convertir' && active !== 'logement' && cat?.query && (
-          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, overflow: 'hidden', marginBottom: 20 }}>
+          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, overflow: 'hidden', marginBottom: 20 }}>
             <MapView city={city} query={cat.query(city)} />
             <div style={{ padding: '12px 16px' }}>
-              <p style={{ fontSize: 13, color: C.muted }}>
+              <p style={{ fontSize: 13, color: '#6B6F76' }}>
                 {lang === 'fr' ? cat.fr : cat.en} · {city} · {lang === 'fr' ? 'via OpenStreetMap' : 'via OpenStreetMap'}
               </p>
             </div>
@@ -437,14 +437,14 @@ export default function DayToDay() {
           <div style={{
             textAlign: 'center',
             padding: '40px 20px',
-            background: theme === 'dark' ? '#1a2a1e' : '#f9fafb',
+            background: theme === 'dark' ? '#0E1116' : '#FAFAF9',
             borderRadius: '16px',
-            border: '2px dashed #1E3A5F40',
+            border: '2px dashed #0E111640',
           }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🚧</div>
             <div style={{
               display: 'inline-block',
-              background: '#F4A261',
+              background: '#6B6F76',
               color: '#fff',
               padding: '4px 12px',
               borderRadius: '99px',
@@ -458,13 +458,13 @@ export default function DayToDay() {
             <h3 style={{
               fontSize: '1.2rem',
               fontWeight: 700,
-              color: C.text,
+              color: '#0E1116',
               marginBottom: '12px',
             }}>
               {lang === 'fr' ? 'Comparatif de prix — Bientôt disponible' : 'Price Comparison — Coming Soon'}
             </h3>
             <p style={{
-              color: C.muted,
+              color: '#6B6F76',
               fontSize: '0.9rem',
               maxWidth: '400px',
               margin: '0 auto 20px',
@@ -474,7 +474,7 @@ export default function DayToDay() {
                 ? 'Nous travaillons à valider les prix avec des sources fiables. Cette section sera disponible prochainement avec des données vérifiées.'
                 : 'We are working to validate prices with reliable sources. This section will be available soon with verified data.'}
             </p>
-            <p style={{ color: '#1E3A5F', fontSize: '0.85rem', fontWeight: 600 }}>
+            <p style={{ color: '#0E1116', fontSize: '0.85rem', fontWeight: 600 }}>
               {lang === 'fr'
                 ? '💡 Tu connais les prix dans ta ville ? Partage-les avec nous →'
                 : '💡 Do you know prices in your city? Share them with us →'}
@@ -489,7 +489,7 @@ export default function DayToDay() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 18 }}>
               {Object.entries(COUT_VILLES).map(([k, v]) => (
                 <button key={k} onClick={() => { setBudgetVille(k); setBudgetCustom({}) }}
-                  style={{ padding: '7px 16px', borderRadius: 10, border: `1px solid ${budgetVille === k ? C.accent + '50' : C.border}`, background: budgetVille === k ? `${C.accent}15` : 'transparent', color: budgetVille === k ? C.accent2 : C.muted, fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                  style={{ padding: '7px 16px', borderRadius: 10, border: `1px solid ${budgetVille === k ? '#0E111650' : '#EBEBE9'}`, background: budgetVille === k ? '#0E111615' : 'transparent', color: budgetVille === k ? '#3A3D40' : '#6B6F76', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
                   {v.label}
                 </button>
               ))}
@@ -502,7 +502,7 @@ export default function DayToDay() {
                 { id: 'studio', fr: '🏠 Studio seul',           en: '🏠 Studio alone'   },
               ].map(m => (
                 <button key={m.id} onClick={() => { setModeLogement(m.id); setBudgetCustom(p => ({ ...p, loyer: undefined })) }}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: `1px solid ${modeLogement === m.id ? C.accent + '50' : C.border}`, background: modeLogement === m.id ? `${C.accent}15` : 'transparent', color: modeLogement === m.id ? C.accent2 : C.muted, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: `1px solid ${modeLogement === m.id ? '#0E111650' : '#EBEBE9'}`, background: modeLogement === m.id ? '#0E111615' : 'transparent', color: modeLogement === m.id ? '#3A3D40' : '#6B6F76', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                   {lang === 'fr' ? m.fr : m.en}
                 </button>
               ))}
@@ -514,23 +514,23 @@ export default function DayToDay() {
                 const val = getVal(p.id)
                 const pct = total > 0 ? Math.round((val / total) * 100) : 0
                 return (
-                  <div key={p.id} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '13px 16px' }}>
+                  <div key={p.id} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, padding: '13px 16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                       <span style={{ fontSize: 18, flexShrink: 0 }}>{p.icon}</span>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: C.text, flex: 1 }}>{lang === 'fr' ? p.fr : p.en}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: '#0E1116', flex: 1 }}>{lang === 'fr' ? p.fr : p.en}</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                         <input
                           type="number" min="0" step="10"
                           value={val}
                           onChange={e => setVal(p.id, e.target.value)}
-                          style={{ width: 80, padding: '5px 8px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 7, color: C.text, fontSize: 13, textAlign: 'right', outline: 'none' }}
+                          style={{ width: 80, padding: '5px 8px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 7, color: '#0E1116', fontSize: 13, textAlign: 'right', outline: 'none' }}
                         />
-                        <span style={{ fontSize: 12, color: C.muted }}>$</span>
+                        <span style={{ fontSize: 12, color: '#6B6F76' }}>$</span>
                         <span style={{ fontSize: 11, color: p.color, fontWeight: 600, minWidth: 32, textAlign: 'right' }}>{pct}%</span>
                       </div>
                     </div>
                     {/* Barre de progression */}
-                    <div style={{ height: 4, background: C.border, borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ height: 4, background: '#EBEBE9', borderRadius: 2, overflow: 'hidden' }}>
                       <div style={{ width: `${pct}%`, height: '100%', background: p.color, borderRadius: 2, transition: 'width 0.3s' }} />
                     </div>
                   </div>
@@ -539,28 +539,28 @@ export default function DayToDay() {
             </div>
 
             {/* Total */}
-            <div style={{ padding: '18px 22px', background: `${C.accent}10`, border: `1px solid ${C.accent}30`, borderRadius: 14, marginBottom: 16 }}>
+            <div style={{ padding: '18px 22px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 14, marginBottom: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
                 <div>
-                  <p style={{ fontSize: 13, color: C.muted, marginBottom: 4 }}>{lang === 'fr' ? 'Total mensuel estimé' : 'Estimated monthly total'}</p>
-                  <p style={{ fontSize: 32, fontWeight: 800, color: C.accent2, letterSpacing: -1 }}>{total.toFixed(0)} <span style={{ fontSize: 16, fontWeight: 500 }}>$ CAD</span></p>
+                  <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 4 }}>{lang === 'fr' ? 'Total mensuel estimé' : 'Estimated monthly total'}</p>
+                  <p style={{ fontSize: 32, fontWeight: 800, color: '#3A3D40', letterSpacing: -1 }}>{total.toFixed(0)} <span style={{ fontSize: 16, fontWeight: 500 }}>$ CAD</span></p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontSize: 12, color: C.muted, marginBottom: 4 }}>
+                  <p style={{ fontSize: 12, color: '#6B6F76', marginBottom: 4 }}>
                     {lang === 'fr' ? `Salaire min. ${villeData.smig_h.toFixed(2)} $/h` : `Min. wage ${villeData.smig_h.toFixed(2)} $/h`}
                   </p>
-                  <p style={{ fontSize: 20, fontWeight: 700, color: C.warning }}>
-                    ~{hMois}h <span style={{ fontSize: 13, fontWeight: 400, color: C.muted }}>{lang === 'fr' ? '/ mois pour couvrir' : '/ month to cover'}</span>
+                  <p style={{ fontSize: 20, fontWeight: 700, color: '#6B6F76' }}>
+                    ~{hMois}h <span style={{ fontSize: 13, fontWeight: 400, color: '#6B6F76' }}>{lang === 'fr' ? '/ mois pour couvrir' : '/ month to cover'}</span>
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Note ville */}
-            <p style={{ fontSize: 12, color: C.muted, marginBottom: 8, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 12, color: '#6B6F76', marginBottom: 8, lineHeight: 1.6 }}>
               📌 {villeData.note}
             </p>
-            <p style={{ fontSize: 11, color: C.muted, fontStyle: 'italic' }}>
+            <p style={{ fontSize: 11, color: '#6B6F76', fontStyle: 'italic' }}>
               {lang === 'fr' ? '* Modifie chaque ligne pour personnaliser ton budget.' : '* Edit each line to customize your budget.'}
             </p>
           </div>
@@ -581,46 +581,46 @@ export default function DayToDay() {
               <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:20 }}>
                 {Object.entries(LOGEMENT_DATA).map(([k,v]) => (
                   <button key={k} onClick={()=>{ setLogVille(k); setLogBudget(900) }}
-                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'#3B82F6'+'50':C.border}`, background:logVille===k?'rgba(59,130,246,0.12)':'transparent', color:logVille===k?'#3B82F6':C.muted, fontSize:13, fontWeight:500, cursor:'pointer' }}>
+                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'#0E111650':'#EBEBE9'}`, background:logVille===k?'rgba(59,130,246,0.12)':'transparent', color:logVille===k?'#0E1116':'#6B6F76', fontSize:13, fontWeight:500, cursor:'pointer' }}>
                     {v.label}
                   </button>
                 ))}
               </div>
 
               {/* SECTION 1 — Slider budget */}
-              <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'20px', marginBottom:20 }}>
-                <p style={{ fontSize:13, fontWeight:700, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, marginBottom:14 }}>
+              <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'20px', marginBottom:20 }}>
+                <p style={{ fontSize:13, fontWeight:700, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, marginBottom:14 }}>
                   {lang==='fr'?'Mon budget logement / mois':'My housing budget / month'}
                 </p>
                 <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12, flexWrap:'wrap' }}>
                   <input type="range" min={400} max={2500} step={50} value={logBudget}
                     onChange={e=>setLogBudget(Number(e.target.value))}
-                    style={{ flex:1, minWidth:160, accentColor:'#3B82F6' }} />
+                    style={{ flex:1, minWidth:160, accentColor:'#0E1116' }} />
                   <div style={{ padding:'8px 16px', background:'rgba(59,130,246,0.12)', border:'1px solid rgba(59,130,246,0.30)', borderRadius:10, minWidth:110, textAlign:'center' }}>
-                    <p style={{ fontSize:22, fontWeight:800, color:'#3B82F6', lineHeight:1 }}>{logBudget} $</p>
-                    <p style={{ fontSize:10, color:C.muted, marginTop:2 }}>CAD / {lang==='fr'?'mois':'month'}</p>
+                    <p style={{ fontSize:22, fontWeight:800, color:'#0E1116', lineHeight:1 }}>{logBudget} $</p>
+                    <p style={{ fontSize:10, color:'#6B6F76', marginTop:2 }}>CAD / {lang==='fr'?'mois':'month'}</p>
                   </div>
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between' }}>
-                  <span style={{ fontSize:11, color:C.muted }}>400 $</span>
-                  <span style={{ fontSize:11, color:C.muted }}>2 500 $</span>
+                  <span style={{ fontSize:11, color:'#6B6F76' }}>400 $</span>
+                  <span style={{ fontSize:11, color:'#6B6F76' }}>2 500 $</span>
                 </div>
               </div>
 
               {/* SECTION 2 — Options selon budget */}
-              <p style={{ fontSize:13, fontWeight:700, color:C.muted, textTransform:'uppercase', letterSpacing:0.6, marginBottom:12 }}>
+              <p style={{ fontSize:13, fontWeight:700, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, marginBottom:12 }}>
                 {lang==='fr'
                   ? `Options disponibles à ${villeData.label} pour ${logBudget} $/mois`
                   : `Options in ${villeData.label} for $${logBudget}/month`}
               </p>
 
               {optionsDispo.length === 0 ? (
-                <div style={{ padding:'24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:14, textAlign:'center', marginBottom:20 }}>
+                <div style={{ padding:'24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, textAlign:'center', marginBottom:20 }}>
                   <p style={{ fontSize:36, marginBottom:10 }}>💸</p>
-                  <p style={{ fontSize:14, color:C.text, fontWeight:600, marginBottom:6 }}>
+                  <p style={{ fontSize:14, color:'#0E1116', fontWeight:600, marginBottom:6 }}>
                     {lang==='fr'?'Budget insuffisant pour cette ville':'Budget too low for this city'}
                   </p>
-                  <p style={{ fontSize:13, color:C.muted }}>
+                  <p style={{ fontSize:13, color:'#6B6F76' }}>
                     {lang==='fr'
                       ? `Augmente ton budget ou choisis une autre ville.`
                       : `Increase your budget or choose another city.`}
@@ -629,53 +629,53 @@ export default function DayToDay() {
               ) : (
                 <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:24 }}>
                   {optionsDispo.map((opt, i) => (
-                    <div key={i} style={{ background:C.surface, border:`1px solid ${'rgba(59,130,246,0.25)'}`, borderRadius:14, overflow:'hidden' }}>
+                    <div key={i} style={{ background:'#FFFFFF', border:`1px solid ${'rgba(59,130,246,0.25)'}`, borderRadius:14, overflow:'hidden' }}>
                       {/* Header */}
-                      <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 18px', borderBottom:`1px solid ${C.border}` }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 18px', borderBottom:'1px solid #EBEBE9' }}>
                         <div style={{ width:40, height:40, borderRadius:10, background:'rgba(59,130,246,0.12)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>
                           {i===0?'🛏️':i===1?'🏠':'🏛️'}
                         </div>
                         <div style={{ flex:1 }}>
-                          <p style={{ fontSize:15, fontWeight:700, color:C.text, marginBottom:2 }}>
+                          <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:2 }}>
                             {lang==='fr'?opt.type:opt.type_en}
                           </p>
-                          <p style={{ fontSize:12, color:C.muted }}>{lang==='fr'?opt.description:opt.description_en}</p>
+                          <p style={{ fontSize:12, color:'#6B6F76' }}>{lang==='fr'?opt.description:opt.description_en}</p>
                         </div>
                         <div style={{ textAlign:'right', flexShrink:0 }}>
-                          <p style={{ fontSize:16, fontWeight:800, color:'#3B82F6' }}>{opt.budget_min}–{opt.budget_max} $</p>
-                          <p style={{ fontSize:10, color:C.muted }}>{lang==='fr'?'/ mois':'/ month'}</p>
+                          <p style={{ fontSize:16, fontWeight:800, color:'#0E1116' }}>{opt.budget_min}–{opt.budget_max} $</p>
+                          <p style={{ fontSize:10, color:'#6B6F76' }}>{lang==='fr'?'/ mois':'/ month'}</p>
                         </div>
                       </div>
                       <div style={{ padding:'14px 18px' }}>
                         {/* Quartiers */}
                         <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginBottom:12 }}>
-                          <span style={{ fontSize:11, color:C.muted, marginRight:4 }}>📍</span>
+                          <span style={{ fontSize:11, color:'#6B6F76', marginRight:4 }}>📍</span>
                           {opt.quartiers.map(q => (
-                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'rgba(59,130,246,0.08)', color:'#3B82F6', border:'1px solid rgba(59,130,246,0.20)', fontWeight:500 }}>{q}</span>
+                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'rgba(59,130,246,0.08)', color:'#0E1116', border:'1px solid rgba(59,130,246,0.20)', fontWeight:500 }}>{q}</span>
                           ))}
                         </div>
                         {/* Avantages / Inconvénients */}
                         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:12 }}>
                           <div>
                             {(lang==='fr'?opt.avantages:opt.avantages_en).map((a,j) => (
-                              <p key={j} style={{ fontSize:12, color:C.success, marginBottom:3 }}>✅ {a}</p>
+                              <p key={j} style={{ fontSize:12, color:'#3A3D40', marginBottom:3 }}>✅ {a}</p>
                             ))}
                           </div>
                           <div>
                             {(lang==='fr'?opt.inconvenients:opt.inconvenients_en).map((a,j) => (
-                              <p key={j} style={{ fontSize:12, color:C.warning, marginBottom:3 }}>⚠️ {a}</p>
+                              <p key={j} style={{ fontSize:12, color:'#6B6F76', marginBottom:3 }}>⚠️ {a}</p>
                             ))}
                           </div>
                         </div>
                         {/* Conseil clé */}
                         <div style={{ padding:'9px 12px', background:'rgba(59,130,246,0.06)', border:'1px solid rgba(59,130,246,0.18)', borderRadius:8, marginBottom:12 }}>
-                          <p style={{ fontSize:12, color:'#3B82F6', fontWeight:600 }}>
+                          <p style={{ fontSize:12, color:'#0E1116', fontWeight:600 }}>
                             💡 {lang==='fr'?opt.conseil:opt.conseil_en}
                           </p>
                         </div>
                         {/* CTA */}
                         <a href={safeLien(opt.lien)} target="_blank" rel="noreferrer"
-                          style={{ display:'inline-block', padding:'8px 18px', background:'#3B82F6', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                          style={{ display:'inline-block', padding:'8px 18px', background:'#0E1116', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
                           {lang==='fr'?'Chercher →':'Search →'}
                         </a>
                       </div>
@@ -685,8 +685,8 @@ export default function DayToDay() {
               )}
 
               {/* SECTION 3 — Checklist bail */}
-              <div style={{ background:C.surface, border:`1px solid ${C.border}`, borderRadius:16, padding:'20px' }}>
-                <p style={{ fontSize:14, fontWeight:700, color:C.text, marginBottom:14 }}>
+              <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'20px' }}>
+                <p style={{ fontSize:14, fontWeight:700, color:'#0E1116', marginBottom:14 }}>
                   📋 {lang==='fr'?'Avant de signer un bail au Canada :':'Before signing a lease in Canada:'}
                 </p>
                 <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
@@ -694,11 +694,11 @@ export default function DayToDay() {
                     const checked = bailChecks.includes(i)
                     return (
                       <button key={i} onClick={()=>toggleCheck(i)}
-                        style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'10px 12px', background:checked?`${C.success}08`:'transparent', border:`1px solid ${checked?C.success+'30':C.border}`, borderRadius:10, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
-                        <div style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${checked?C.success:C.border}`, background:checked?C.success:'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
-                          {checked && <span style={{ color:C.bg, fontSize:11, fontWeight:800 }}>✓</span>}
+                        style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'10px 12px', background:checked?'#3A3D4008':'transparent', border:`1px solid ${checked?'#3A3D4030':'#EBEBE9'}`, borderRadius:10, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                        <div style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${checked?'#3A3D40':'#EBEBE9'}`, background:checked?'#3A3D40':'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
+                          {checked && <span style={{ color:'#FAFAF9', fontSize:11, fontWeight:800 }}>✓</span>}
                         </div>
-                        <p style={{ fontSize:13, color:checked?C.text:C.muted, lineHeight:1.5, textDecoration:checked?'line-through':undefined }}>
+                        <p style={{ fontSize:13, color:checked?'#0E1116':'#6B6F76', lineHeight:1.5, textDecoration:checked?'line-through':undefined }}>
                           {lang==='fr'?item.fr:item.en}
                         </p>
                       </button>
@@ -706,8 +706,8 @@ export default function DayToDay() {
                   })}
                 </div>
                 {bailChecks.length === CHECKLIST_BAIL.length && (
-                  <div style={{ marginTop:14, padding:'10px 14px', background:`${C.success}10`, border:`1px solid ${C.success}30`, borderRadius:10, textAlign:'center' }}>
-                    <p style={{ fontSize:13, color:C.success, fontWeight:600 }}>
+                  <div style={{ marginTop:14, padding:'10px 14px', background:'#3A3D4010', border:`1px solid ${'#3A3D40'}30`, borderRadius:10, textAlign:'center' }}>
+                    <p style={{ fontSize:13, color:'#3A3D40', fontWeight:600 }}>
                       ✅ {lang==='fr'?'Tu es prêt(e) à signer en toute sécurité !':'You\'re ready to sign safely!'}
                     </p>
                   </div>
@@ -720,7 +720,7 @@ export default function DayToDay() {
         {/* ══ CONVERTISSEUR AFRICA → CANADA ══ */}
         {active === 'convertir' && (
           <div>
-            <p style={{ fontSize: 14, color: C.muted, marginBottom: 20, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 20, lineHeight: 1.6 }}>
               {lang === 'fr'
                 ? 'Convertis ta monnaie locale en dollars canadiens pour mieux planifier ton budget.'
                 : 'Convert your local currency to Canadian dollars to better plan your budget.'}
@@ -728,70 +728,70 @@ export default function DayToDay() {
 
             {/* Sélecteur devise */}
             <div style={{ marginBottom: 20 }}>
-              <p style={{ fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 10 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 10 }}>
                 {lang === 'fr' ? 'Ta devise' : 'Your currency'}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {DEVISES.map(d => (
                   <button key={d.code} onClick={() => { setDeviseCode(d.code); setMontant(String(d.ex)) }}
-                    style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 11, border: `1px solid ${deviseCode === d.code ? C.accent + '50' : C.border}`, background: deviseCode === d.code ? `${C.accent}12` : C.surface, cursor: 'pointer', textAlign: 'left' }}>
+                    style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 11, border: `1px solid ${deviseCode === d.code ? '#0E111650' : '#EBEBE9'}`, background: deviseCode === d.code ? '#0E111612' : '#FFFFFF', cursor: 'pointer', textAlign: 'left' }}>
                     <span style={{ fontSize: 20 }}>{d.drapeau}</span>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{d.code} — {d.nom}</p>
-                      <p style={{ fontSize: 11, color: C.muted }}>{d.pays}</p>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: '#0E1116' }}>{d.code} — {d.nom}</p>
+                      <p style={{ fontSize: 11, color: '#6B6F76' }}>{d.pays}</p>
                     </div>
-                    <span style={{ fontSize: 12, color: C.muted }}>1 CAD = {d.taux} {d.code}</span>
+                    <span style={{ fontSize: 12, color: '#6B6F76' }}>1 CAD = {d.taux} {d.code}</span>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Zone de conversion */}
-            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '22px', marginBottom: 20 }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '22px', marginBottom: 20 }}>
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', marginBottom: 20, flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: 160 }}>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 6 }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 6 }}>
                     {devise.drapeau} Montant en {devise.code}
                   </p>
                   <input
                     type="number" min="0" value={montant}
                     onChange={e => setMontant(e.target.value)}
                     placeholder="ex. 200000"
-                    style={{ width: '100%', padding: '12px 14px', background: C.bg2, border: `1px solid ${C.accent}40`, borderRadius: 10, color: C.text, fontSize: 18, fontWeight: 700, outline: 'none', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '12px 14px', background: '#F7F7F5', border: `1px solid ${'#0E1116'}40`, borderRadius: 10, color: '#0E1116', fontSize: 18, fontWeight: 700, outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>
-                <div style={{ padding: '0 4px 12px', color: C.muted, fontSize: 22 }}>→</div>
+                <div style={{ padding: '0 4px 12px', color: '#6B6F76', fontSize: 22 }}>→</div>
                 <div style={{ flex: 1, minWidth: 160 }}>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 6 }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 6 }}>
                     🍁 Équivalent CAD
                   </p>
-                  <div style={{ padding: '12px 14px', background: `${C.accent}10`, border: `1px solid ${C.accent}30`, borderRadius: 10 }}>
-                    <p style={{ fontSize: 22, fontWeight: 800, color: C.accent2 }}>
+                  <div style={{ padding: '12px 14px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 10 }}>
+                    <p style={{ fontSize: 22, fontWeight: 800, color: '#3A3D40' }}>
                       {enCAD > 0 ? enCAD.toLocaleString(lang === 'fr' ? 'fr-CA' : 'en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
-                      {enCAD > 0 && <span style={{ fontSize: 14, fontWeight: 500, color: C.muted }}> $</span>}
+                      {enCAD > 0 && <span style={{ fontSize: 14, fontWeight: 500, color: '#6B6F76' }}> $</span>}
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Taux affiché */}
-              <p style={{ fontSize: 12, color: C.muted, textAlign: 'center', marginBottom: 18 }}>
+              <p style={{ fontSize: 12, color: '#6B6F76', textAlign: 'center', marginBottom: 18 }}>
                 1 CAD = {devise.taux} {devise.code} · 1 {devise.code} = {(1 / devise.taux).toFixed(4)} CAD
               </p>
 
               {/* Exemples contextuels */}
               {enCAD > 0 && (
                 <div>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 10 }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 10 }}>
                     {lang === 'fr' ? 'Avec ce montant tu peux payer...' : 'With this amount you can cover...'}
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                     {EXEMPLES_CAD.map((ex, i) => {
                       const nb = enCAD / ex.cad
                       return (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 14px', background: C.bg2, borderRadius: 9 }}>
-                          <span style={{ fontSize: 13, color: C.text }}>{ex.label}</span>
-                          <span style={{ fontSize: 13, fontWeight: 700, color: nb >= 1 ? C.success : C.error }}>
+                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 14px', background: '#F7F7F5', borderRadius: 9 }}>
+                          <span style={{ fontSize: 13, color: '#0E1116' }}>{ex.label}</span>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: nb >= 1 ? '#3A3D40' : '#DC2626' }}>
                             {nb >= 1
                               ? `${nb.toFixed(nb < 10 ? 1 : 0)}× ✓`
                               : `${(nb * 100).toFixed(0)}% ✗`}
@@ -806,20 +806,20 @@ export default function DayToDay() {
 
             {/* Raccourcis montants */}
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Montants rapides' : 'Quick amounts'}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {[devise.ex / 4, devise.ex / 2, devise.ex, devise.ex * 2, devise.ex * 5].map((v, i) => (
                   <button key={i} onClick={() => setMontant(String(Math.round(v)))}
-                    style={{ padding: '6px 14px', borderRadius: 20, border: `1px solid ${C.border}`, background: Number(montant) === Math.round(v) ? `${C.accent}15` : 'transparent', color: Number(montant) === Math.round(v) ? C.accent2 : C.muted, fontSize: 12, cursor: 'pointer', fontWeight: 500 }}>
+                    style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid #EBEBE9', background: Number(montant) === Math.round(v) ? '#0E111615' : 'transparent', color: Number(montant) === Math.round(v) ? '#3A3D40' : '#6B6F76', fontSize: 12, cursor: 'pointer', fontWeight: 500 }}>
                     {Math.round(v).toLocaleString()} {devise.code}
                   </button>
                 ))}
               </div>
             </div>
 
-            <p style={{ fontSize: 11, color: C.muted, marginTop: 18, fontStyle: 'italic', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 18, fontStyle: 'italic', lineHeight: 1.6 }}>
               ⚠ {lang === 'fr'
                 ? 'Taux indicatifs basés sur les moyennes 2025. Vérifie le taux réel sur XE.com avant tout transfert.'
                 : 'Indicative rates based on 2025 averages. Check the actual rate on XE.com before any transfer.'}

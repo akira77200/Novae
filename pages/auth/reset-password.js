@@ -101,31 +101,31 @@ export default function ResetPassword() {
   }
 
   const inp = {
-    width: '100%', padding: '11px 14px', background: C.surface2,
-    border: `1px solid ${C.border}`, borderRadius: 10, color: C.text,
+    width: '100%', padding: '11px 14px', background: '#F7F7F5',
+    border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116',
     fontSize: 15, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark',
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
 
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: -0.3, marginBottom: 6 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0E1116', letterSpacing: -0.3, marginBottom: 6 }}>
             {lang === 'fr' ? 'Nouveau mot de passe' : 'New password'}
           </h1>
         </div>
 
-        <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '28px 28px 24px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '28px 28px 24px' }}>
 
           {/* ── Vérification en cours ── */}
           {sessionReady === null && (
             <div style={{ textAlign: 'center', padding: '24px 0' }}>
               <div style={{ fontSize: 28, marginBottom: 12 }}>⏳</div>
-              <p style={{ fontSize: 14, color: C.muted }}>
+              <p style={{ fontSize: 14, color: '#6B6F76' }}>
                 {lang === 'fr' ? 'Vérification du lien en cours...' : 'Verifying link...'}
               </p>
             </div>
@@ -135,16 +135,16 @@ export default function ResetPassword() {
           {sessionReady === false && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 12 }}>⏱️</div>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.text, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 600, color: '#0E1116', marginBottom: 8 }}>
                 {lang === 'fr' ? 'Ce lien a expiré' : 'This link has expired'}
               </p>
-              <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 20 }}>
+              <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7, marginBottom: 20 }}>
                 {lang === 'fr'
                   ? 'Le lien de réinitialisation est valide 60 minutes. Demande un nouveau lien pour continuer.'
                   : 'The reset link is valid for 60 minutes. Request a new link to continue.'}
               </p>
               <Link href="/auth/forgot-password"
-                style={{ display: 'inline-block', padding: '11px 24px', background: C.accent, borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+                style={{ display: 'inline-block', padding: '11px 24px', background: '#0E1116', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
                 {lang === 'fr' ? 'Demander un nouveau lien →' : 'Request a new link →'}
               </Link>
             </div>
@@ -154,15 +154,15 @@ export default function ResetPassword() {
           {success && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
-              <p style={{ fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 6 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: '#0E1116', marginBottom: 6 }}>
                 {lang === 'fr' ? 'Mot de passe mis à jour !' : 'Password updated!'}
               </p>
-              <p style={{ fontSize: 13, color: C.muted, marginBottom: 16 }}>
+              <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 16 }}>
                 {lang === 'fr' ? `Redirection dans ${countdown} seconde${countdown > 1 ? 's' : ''}...` : `Redirecting in ${countdown}s...`}
               </p>
               {/* Barre de progression */}
-              <div style={{ width: '100%', height: 5, background: C.border, borderRadius: 3, overflow: 'hidden' }}>
-                <div style={{ height: '100%', background: C.accent, borderRadius: 3, width: `${(countdown / 8) * 100}%`, transition: 'width 1s linear' }} />
+              <div style={{ width: '100%', height: 5, background: '#EBEBE9', borderRadius: 3, overflow: 'hidden' }}>
+                <div style={{ height: '100%', background: '#0E1116', borderRadius: 3, width: `${(countdown / 8) * 100}%`, transition: 'width 1s linear' }} />
               </div>
             </div>
           )}
@@ -170,23 +170,23 @@ export default function ResetPassword() {
           {/* ── Formulaire ── */}
           {sessionReady === true && !success && (
             <form onSubmit={handleSubmit}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7 }}>
                 {lang === 'fr' ? 'Nouveau mot de passe' : 'New password'}
               </label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••••" style={{ ...inp, marginBottom: 6 }} autoComplete="new-password" />
-              {password && !passOk && <p style={{ fontSize: 11, color: C.error, marginBottom: 8 }}>{lang === 'fr' ? 'Minimum 8 caractères' : 'Minimum 8 characters'}</p>}
+              {password && !passOk && <p style={{ fontSize: 11, color: '#DC2626', marginBottom: 8 }}>{lang === 'fr' ? 'Minimum 8 caractères' : 'Minimum 8 characters'}</p>}
 
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }}>
                 {lang === 'fr' ? 'Confirmer le mot de passe' : 'Confirm password'}
               </label>
               <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} required placeholder="••••••••" style={{ ...inp, marginBottom: 6 }} autoComplete="new-password" />
-              {confirm && !matchOk && <p style={{ fontSize: 11, color: C.error, marginBottom: 8 }}>{lang === 'fr' ? 'Les mots de passe ne correspondent pas' : 'Passwords do not match'}</p>}
+              {confirm && !matchOk && <p style={{ fontSize: 11, color: '#DC2626', marginBottom: 8 }}>{lang === 'fr' ? 'Les mots de passe ne correspondent pas' : 'Passwords do not match'}</p>}
 
               {error && (
-                <div style={{ padding: '10px 14px', background: `${C.error}15`, border: `1px solid ${C.error}40`, borderRadius: 9, color: C.error, fontSize: 13, marginTop: 12, marginBottom: 12, lineHeight: 1.6 }}>
+                <div style={{ padding: '10px 14px', background: '#DC262615', border: `1px solid ${'#DC2626'}40`, borderRadius: 9, color: '#DC2626', fontSize: 13, marginTop: 12, marginBottom: 12, lineHeight: 1.6 }}>
                   {error}
                   {(error.includes('expiré') || error.includes('expired')) && (
-                    <span> <Link href="/auth/forgot-password" style={{ color: C.error, fontWeight: 700, textDecoration: 'underline' }}>
+                    <span> <Link href="/auth/forgot-password" style={{ color: '#DC2626', fontWeight: 700, textDecoration: 'underline' }}>
                       {lang === 'fr' ? 'Demander un nouveau lien →' : 'Get a new link →'}
                     </Link></span>
                   )}
@@ -196,7 +196,7 @@ export default function ResetPassword() {
               <button
                 type="submit"
                 disabled={!passOk || !matchOk || loading}
-                style={{ width: '100%', padding: '12px', background: passOk && matchOk && !loading ? C.accent : C.border, border: 'none', borderRadius: 10, color: passOk && matchOk && !loading ? '#fff' : C.muted, fontWeight: 600, fontSize: 15, cursor: passOk && matchOk && !loading ? 'pointer' : 'not-allowed', marginTop: 16, opacity: loading ? 0.7 : 1 }}>
+                style={{ width: '100%', padding: '12px', background: passOk && matchOk && !loading ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: passOk && matchOk && !loading ? '#fff' : '#6B6F76', fontWeight: 600, fontSize: 15, cursor: passOk && matchOk && !loading ? 'pointer' : 'not-allowed', marginTop: 16, opacity: loading ? 0.7 : 1 }}>
                 {loading
                   ? (lang === 'fr' ? 'Mise à jour...' : 'Updating...')
                   : (lang === 'fr' ? 'Mettre à jour →' : 'Update password →')}

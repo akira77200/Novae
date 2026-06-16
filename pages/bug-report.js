@@ -69,37 +69,37 @@ export default function BugReport() {
   }
 
   const inp = {
-    width: '100%', padding: '11px 14px', background: C.surface2,
-    border: `1px solid ${C.border}`, borderRadius: 10, color: C.text,
+    width: '100%', padding: '11px 14px', background: '#F7F7F5',
+    border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116',
     fontSize: 14, outline: 'none', boxSizing: 'border-box',
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 520, margin: '0 auto', padding: '36px 20px 80px' }}>
         <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>
           🐛 {isFr ? 'Signaler un bug' : 'Report a bug'}
         </h1>
-        <p style={{ fontSize: 14, color: C.muted, marginBottom: 28, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 28, lineHeight: 1.6 }}>
           {isFr
             ? 'Décris le problème rencontré. Notre équipe le traitera rapidement.'
             : 'Describe the issue you encountered. Our team will look into it quickly.'}
         </p>
 
         {success ? (
-          <div style={{ background: `${C.success}12`, border: `1px solid ${C.success}40`, borderRadius: 14, padding: 24, textAlign: 'center' }}>
+          <div style={{ background: '#3A3D4012', border: `1px solid ${'#3A3D40'}40`, borderRadius: 14, padding: 24, textAlign: 'center' }}>
             <p style={{ fontSize: 40, marginBottom: 12 }}>✅</p>
             <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>
               {isFr ? 'Merci ! Ton rapport a été envoyé.' : 'Thank you! Your report was submitted.'}
             </p>
-            <Link href="/" style={{ color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>
+            <Link href="/" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
               {isFr ? '← Retour à l\'accueil' : '← Back to home'}
             </Link>
           </div>
         ) : (
-          <form onSubmit={submit} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: 24 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: C.muted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+          <form onSubmit={submit} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: 24 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
               Email
             </label>
             <input
@@ -110,7 +110,7 @@ export default function BugReport() {
               style={{ ...inp, marginBottom: 18 }}
             />
 
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: C.muted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
               {isFr ? 'Page concernée' : 'Affected page'}
             </label>
             <select value={page} onChange={e => setPage(e.target.value)} style={{ ...inp, marginBottom: 18, cursor: 'pointer' }}>
@@ -120,7 +120,7 @@ export default function BugReport() {
               ))}
             </select>
 
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: C.muted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
               {isFr ? 'Description du bug' : 'Bug description'}
             </label>
             <textarea
@@ -133,14 +133,14 @@ export default function BugReport() {
             />
 
             {error && (
-              <p style={{ fontSize: 13, color: C.error, marginBottom: 14 }}>⚠ {error}</p>
+              <p style={{ fontSize: 13, color: '#DC2626', marginBottom: 14 }}>⚠ {error}</p>
             )}
 
             <button
               type="submit"
               disabled={loading || !description.trim()}
               style={{
-                width: '100%', padding: 13, background: loading ? C.border : C.accent,
+                width: '100%', padding: 13, background: loading ? '#EBEBE9' : '#0E1116',
                 border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700,
                 fontSize: 15, cursor: loading ? 'not-allowed' : 'pointer',
               }}

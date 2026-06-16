@@ -52,21 +52,21 @@ export default function RegisterMentor() {
     } finally { setLoading(false) }
   }
 
-  const inp = { width: '100%', padding: '11px 14px', background: C.surface2, border: `1px solid ${C.border}`, borderRadius: 10, color: C.text, fontSize: 14, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark' }
-  const lbl = { display: 'block', fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
+  const inp = { width: '100%', padding: '11px 14px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark' }
+  const lbl = { display: 'block', fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
 
   if (success) return (
-    <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ textAlign: 'center', maxWidth: 440 }}>
         <div style={{ fontSize: 56, marginBottom: 20 }}>✅</div>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: C.text, marginBottom: 12 }}>Candidature envoyée</h1>
-        <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, marginBottom: 10 }}>
-          Ton profil mentor a été créé. Il sera activé sous <strong style={{ color: C.text }}>48 heures</strong> après vérification.
+        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#0E1116', marginBottom: 12 }}>Candidature envoyée</h1>
+        <p style={{ fontSize: 15, color: '#6B6F76', lineHeight: 1.7, marginBottom: 10 }}>
+          Ton profil mentor a été créé. Il sera activé sous <strong style={{ color: '#0E1116' }}>48 heures</strong> après vérification.
         </p>
-        <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 28 }}>
+        <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7, marginBottom: 28 }}>
           Une fois activé, tu apparaîtras dans la liste des mentors et tu pourras recevoir des réservations.
         </p>
-        <button onClick={() => router.push('/')} style={{ padding: '12px 28px', background: C.accent, border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>
+        <button onClick={() => router.push('/')} style={{ padding: '12px 28px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>
           Retour à l'accueil →
         </button>
       </div>
@@ -74,26 +74,26 @@ export default function RegisterMentor() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'system-ui,sans-serif', padding: '36px 20px 60px' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', fontFamily: 'system-ui,sans-serif', padding: '36px 20px 60px' }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
 
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: C.accent, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#fff', margin: '0 auto 12px' }}>N</div>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#fff', margin: '0 auto 12px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: C.text, marginBottom: 4 }}>Devenir mentor</h1>
-          <p style={{ fontSize: 13, color: C.muted }}>Aide les nouveaux arrivants · Gagne 70% de chaque session</p>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0E1116', marginBottom: 4 }}>Devenir mentor</h1>
+          <p style={{ fontSize: 13, color: '#6B6F76' }}>Aide les nouveaux arrivants · Gagne 70% de chaque session</p>
         </div>
 
         <div style={{ display: 'flex', gap: 6, marginBottom: 22 }}>
-          {[1,2].map(i => <div key={i} style={{ flex: 1, height: 3, borderRadius: 3, background: i <= step ? C.accent : C.border, transition: 'background 0.3s' }} />)}
+          {[1,2].map(i => <div key={i} style={{ flex: 1, height: 3, borderRadius: 3, background: i <= step ? '#0E1116' : '#EBEBE9', transition: 'background 0.3s' }} />)}
         </div>
 
-        <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: '24px 24px 20px' }}>
+        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px 24px 20px' }}>
 
           {step === 1 && (
             <>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 4 }}>Étape 1 — Ton compte</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#0E1116', marginBottom: 4 }}>Étape 1 — Ton compte</p>
               <label style={lbl}>Nom complet *</label>
               <input value={form.full_name} onChange={e => set('full_name', e.target.value)} placeholder="Kwame Mensah" style={inp} />
               <label style={lbl}>Email *</label>
@@ -101,19 +101,19 @@ export default function RegisterMentor() {
               <label style={lbl}>Mot de passe * (min. 8 caractères)</label>
               <input type="password" value={form.password} onChange={e => set('password', e.target.value)} style={inp} minLength={8} />
               <button onClick={() => step1ok && setStep(2)} disabled={!step1ok}
-                style={{ width: '100%', padding: '12px', background: step1ok ? C.accent : C.border, border: 'none', borderRadius: 10, color: step1ok ? '#fff' : C.muted, fontWeight: 600, fontSize: 15, cursor: step1ok ? 'pointer' : 'not-allowed', marginTop: 20 }}>
+                style={{ width: '100%', padding: '12px', background: step1ok ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: step1ok ? '#fff' : '#6B6F76', fontWeight: 600, fontSize: 15, cursor: step1ok ? 'pointer' : 'not-allowed', marginTop: 20 }}>
                 Continuer →
               </button>
-              <p style={{ textAlign: 'center', fontSize: 13, color: C.muted, marginTop: 14 }}>
+              <p style={{ textAlign: 'center', fontSize: 13, color: '#6B6F76', marginTop: 14 }}>
                 Déjà un compte ?{' '}
-                <Link href="/auth/login" style={{ color: C.accent2, fontWeight: 600, textDecoration: 'none' }}>Connexion</Link>
+                <Link href="/auth/login" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>Connexion</Link>
               </p>
             </>
           )}
 
           {step === 2 && (
             <>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 4 }}>Étape 2 — Ton profil mentor</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#0E1116', marginBottom: 4 }}>Étape 2 — Ton profil mentor</p>
 
               <label style={lbl}>Pays d'origine *</label>
               <input value={form.pays_origine} onChange={e => set('pays_origine', e.target.value)} placeholder="Côte d'Ivoire, Sénégal..." style={inp} />
@@ -129,7 +129,7 @@ export default function RegisterMentor() {
               <label style={lbl}>Niveau</label>
               <div style={{ display: 'flex', gap: 7 }}>
                 {[{id:'etudiant',l:'Étudiant'},{id:'professionnel',l:'Professionnel'},{id:'expert',l:'Expert'}].map(n => (
-                  <button key={n.id} onClick={() => set('niveau', n.id)} style={{ flex: 1, padding: '9px', borderRadius: 9, border: `1px solid ${form.niveau === n.id ? C.accent+'60' : C.border}`, background: form.niveau === n.id ? C.accent+'18' : 'transparent', color: form.niveau === n.id ? C.accent2 : C.muted, fontSize: 13, cursor: 'pointer' }}>
+                  <button key={n.id} onClick={() => set('niveau', n.id)} style={{ flex: 1, padding: '9px', borderRadius: 9, border: `1px solid ${form.niveau === n.id ? '#0E111660' : '#EBEBE9'}`, background: form.niveau === n.id ? '#0E111618' : 'transparent', color: form.niveau === n.id ? '#3A3D40' : '#6B6F76', fontSize: 13, cursor: 'pointer' }}>
                     {n.l}
                   </button>
                 ))}
@@ -138,7 +138,7 @@ export default function RegisterMentor() {
               <label style={lbl}>Sujets * (min. 1)</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
                 {SUJETS.map(s => (
-                  <button key={s} onClick={() => toggleSujet(s)} style={{ padding: '6px 13px', borderRadius: 20, border: `1px solid ${form.sujets.includes(s) ? C.accent+'60' : C.border}`, background: form.sujets.includes(s) ? C.accent+'18' : 'transparent', color: form.sujets.includes(s) ? C.accent2 : C.muted, fontSize: 12, cursor: 'pointer' }}>
+                  <button key={s} onClick={() => toggleSujet(s)} style={{ padding: '6px 13px', borderRadius: 20, border: `1px solid ${form.sujets.includes(s) ? '#0E111660' : '#EBEBE9'}`, background: form.sujets.includes(s) ? '#0E111618' : 'transparent', color: form.sujets.includes(s) ? '#3A3D40' : '#6B6F76', fontSize: 12, cursor: 'pointer' }}>
                     {s}
                   </button>
                 ))}
@@ -148,7 +148,7 @@ export default function RegisterMentor() {
               <textarea value={form.bio} onChange={e => set('bio', e.target.value)} rows={3}
                 placeholder="Arrivé de Côte d'Ivoire en 2022 pour l'informatique à UdeM. Je t'aide à éviter les erreurs que j'ai faites."
                 style={{ ...inp, resize: 'vertical', minHeight: 80 }} />
-              <p style={{ fontSize: 11, color: form.bio.length >= 30 ? C.success : C.muted, marginTop: 4 }}>
+              <p style={{ fontSize: 11, color: form.bio.length >= 30 ? '#3A3D40' : '#6B6F76', marginTop: 4 }}>
                 {form.bio.length}/30 minimum {form.bio.length >= 30 ? '✓' : ''}
               </p>
 
@@ -156,24 +156,24 @@ export default function RegisterMentor() {
                 <div>
                   <label style={lbl}>Tarif 30 min (centimes CAD)</label>
                   <input type="number" value={form.tarif_30min} onChange={e => set('tarif_30min', e.target.value)} style={inp} />
-                  <p style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>= {(parseInt(form.tarif_30min||0)/100).toFixed(2)} $ CAD</p>
+                  <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 3 }}>= {(parseInt(form.tarif_30min||0)/100).toFixed(2)} $ CAD</p>
                 </div>
                 <div>
                   <label style={lbl}>Tarif 45 min (centimes CAD)</label>
                   <input type="number" value={form.tarif_45min} onChange={e => set('tarif_45min', e.target.value)} style={inp} />
-                  <p style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>= {(parseInt(form.tarif_45min||0)/100).toFixed(2)} $ CAD</p>
+                  <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 3 }}>= {(parseInt(form.tarif_45min||0)/100).toFixed(2)} $ CAD</p>
                 </div>
               </div>
 
               <label style={lbl}>Lien Calendly (optionnel)</label>
               <input value={form.calendly_url} onChange={e => set('calendly_url', e.target.value)} placeholder="https://calendly.com/ton-nom" style={inp} />
 
-              {error && <div style={{ padding: '10px 14px', background: `${C.error}15`, border: `1px solid ${C.error}40`, borderRadius: 9, color: C.error, fontSize: 13, marginTop: 14 }}>{error}</div>}
+              {error && <div style={{ padding: '10px 14px', background: '#DC262615', border: `1px solid ${'#DC2626'}40`, borderRadius: 9, color: '#DC2626', fontSize: 13, marginTop: 14 }}>{error}</div>}
 
               <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
-                <button onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 10, color: C.muted, fontSize: 14, cursor: 'pointer' }}>← Retour</button>
+                <button onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 10, color: '#6B6F76', fontSize: 14, cursor: 'pointer' }}>← Retour</button>
                 <button onClick={submit} disabled={!step2ok || loading}
-                  style={{ flex: 2, padding: '12px', background: step2ok ? C.accent : C.border, border: 'none', borderRadius: 10, color: step2ok ? '#fff' : C.muted, fontWeight: 600, fontSize: 14, cursor: step2ok && !loading ? 'pointer' : 'not-allowed', opacity: loading ? 0.7 : 1 }}>
+                  style={{ flex: 2, padding: '12px', background: step2ok ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: step2ok ? '#fff' : '#6B6F76', fontWeight: 600, fontSize: 14, cursor: step2ok && !loading ? 'pointer' : 'not-allowed', opacity: loading ? 0.7 : 1 }}>
                   {loading ? 'Envoi...' : 'Soumettre ma candidature →'}
                 </button>
               </div>

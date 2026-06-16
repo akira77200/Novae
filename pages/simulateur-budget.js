@@ -127,9 +127,9 @@ export default function SimulateurBudget() {
   const budgetA = useMemo(() => calculer(villeA, typeA, logA, heuresA), [villeA, typeA, logA, heuresA])
   const budgetB = useMemo(() => compareMode ? calculer(villeB, typeB, logB, heuresB) : null, [compareMode, villeB, typeB, logB, heuresB])
 
-  const jauge = (besoin) => besoin > 40000 ? { color:'#F87171', label: lang==='fr'?'Budget serré':'Tight budget', bg:'rgba(248,113,113,0.08)' }
-    : besoin > 25000 ? { color:'#FBBF24', label: lang==='fr'?'Budget modéré':'Moderate budget', bg:'rgba(251,191,36,0.08)' }
-    : { color:'#34D399', label: lang==='fr'?'Budget gérable':'Manageable budget', bg:'rgba(52,211,153,0.08)' }
+  const jauge = (besoin) => besoin > 40000 ? { color:'#DC2626', label: lang==='fr'?'Budget serré':'Tight budget', bg:'rgba(248,113,113,0.08)' }
+    : besoin > 25000 ? { color:'#6B6F76', label: lang==='fr'?'Budget modéré':'Moderate budget', bg:'rgba(251,191,36,0.08)' }
+    : { color:'#3A3D40', label: lang==='fr'?'Budget gérable':'Manageable budget', bg:'rgba(52,211,153,0.08)' }
 
   const conseil = (b, ville, type, heures) => {
     if (!b) return null
@@ -153,9 +153,9 @@ export default function SimulateurBudget() {
 
   const Field = ({ label, value, setter, options }) => (
     <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 11, fontWeight: 600, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 6 }}>{label}</label>
+      <label style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 6 }}>{label}</label>
       <select value={value} onChange={e => setter(e.target.value)}
-        style={{ width: '100%', padding: '9px 12px', background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 9, color: C.text, fontSize: 13, outline: 'none' }}>
+        style={{ width: '100%', padding: '9px 12px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 9, color: '#0E1116', fontSize: 13, outline: 'none' }}>
         {options.map(o => <option key={o.val} value={o.val}>{o.label}</option>)}
       </select>
     </div>
@@ -166,19 +166,19 @@ export default function SimulateurBudget() {
     const j     = jauge(budget.besoin_reel)
     const maxDep = budget.total_depenses
     const postes = [
-      { label: lang==='fr'?'Frais de scolarité (moy.)':'Tuition (avg.)', val: budget.frais_scolarite, color: '#60A5FA' },
-      { label: lang==='fr'?'Loyer (12 mois)':'Rent (12 months)',          val: budget.loyer,           color: '#3B82F6' },
-      { label: lang==='fr'?'Épicerie + transport':'Groceries + transit',   val: budget.epicerie_transport, color: '#3B82F6' },
-      { label: lang==='fr'?'Téléphone + internet':'Phone + internet',      val: budget.telephone_internet, color: '#A78BFA' },
-      { label: lang==='fr'?'Loisirs':'Leisure',                            val: budget.loisirs,         color: '#B5838D' },
-      { label: lang==='fr'?'Divers + imprévus (10%)':'Misc + unexpected (10%)', val: budget.divers,    color: '#9CA3AF' },
+      { label: lang==='fr'?'Frais de scolarité (moy.)':'Tuition (avg.)', val: budget.frais_scolarite, color: '#6B6F76' },
+      { label: lang==='fr'?'Loyer (12 mois)':'Rent (12 months)',          val: budget.loyer,           color: '#0E1116' },
+      { label: lang==='fr'?'Épicerie + transport':'Groceries + transit',   val: budget.epicerie_transport, color: '#0E1116' },
+      { label: lang==='fr'?'Téléphone + internet':'Phone + internet',      val: budget.telephone_internet, color: '#6B6F76' },
+      { label: lang==='fr'?'Loisirs':'Leisure',                            val: budget.loisirs,         color: '#9A9D9F' },
+      { label: lang==='fr'?'Divers + imprévus (10%)':'Misc + unexpected (10%)', val: budget.divers,    color: '#9A9D9F' },
     ]
 
     return (
-      <div style={{ background: C.surface, border: `1px solid ${color}30`, borderRadius: 16, overflow: 'hidden', flex: 1, minWidth: 280 }}>
+      <div style={{ background: '#FFFFFF', border: `1px solid ${color}30`, borderRadius: 16, overflow: 'hidden', flex: 1, minWidth: 280 }}>
         <div style={{ height: 4, background: color }} />
         <div style={{ padding: '18px 20px' }}>
-          <p style={{ fontSize: 15, fontWeight: 800, color: C.text, marginBottom: 18 }}>{label}</p>
+          <p style={{ fontSize: 15, fontWeight: 800, color: '#0E1116', marginBottom: 18 }}>{label}</p>
 
           {/* Tableau des postes */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
@@ -187,10 +187,10 @@ export default function SimulateurBudget() {
               return (
                 <div key={i}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                    <span style={{ fontSize: 12, color: C.muted }}>{p.label}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: C.text }}>{p.val.toLocaleString()} $</span>
+                    <span style={{ fontSize: 12, color: '#6B6F76' }}>{p.label}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#0E1116' }}>{p.val.toLocaleString()} $</span>
                   </div>
-                  <div style={{ height: 4, background: C.border, borderRadius: 2, overflow: 'hidden' }}>
+                  <div style={{ height: 4, background: '#EBEBE9', borderRadius: 2, overflow: 'hidden' }}>
                     <div style={{ width: `${pct}%`, height: '100%', background: p.color, borderRadius: 2 }} />
                   </div>
                 </div>
@@ -199,18 +199,18 @@ export default function SimulateurBudget() {
           </div>
 
           {/* Séparateur */}
-          <div style={{ borderTop: `1px dashed ${C.border}`, paddingTop: 14, marginBottom: 14 }}>
+          <div style={{ borderTop: '1px dashed #EBEBE9', paddingTop: 14, marginBottom: 14 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontSize: 13, color: C.muted }}>{lang==='fr'?'Total dépenses':'Total expenses'}</span>
-              <span style={{ fontSize: 15, fontWeight: 700, color: C.text }}>{budget.total_depenses.toLocaleString()} $</span>
+              <span style={{ fontSize: 13, color: '#6B6F76' }}>{lang==='fr'?'Total dépenses':'Total expenses'}</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: '#0E1116' }}>{budget.total_depenses.toLocaleString()} $</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontSize: 13, color: C.success }}>- {lang==='fr'?'Revenus travail':'Work income'}</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: C.success }}>- {budget.revenu_travail.toLocaleString()} $</span>
+              <span style={{ fontSize: 13, color: '#3A3D40' }}>- {lang==='fr'?'Revenus travail':'Work income'}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: '#3A3D40' }}>- {budget.revenu_travail.toLocaleString()} $</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-              <span style={{ fontSize: 13, color: C.accent2 }}>- {lang==='fr'?'Bourse estimée':'Est. scholarship'}</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: C.accent2 }}>- {budget.bourse_estimee.toLocaleString()} $</span>
+              <span style={{ fontSize: 13, color: '#3A3D40' }}>- {lang==='fr'?'Bourse estimée':'Est. scholarship'}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: '#3A3D40' }}>- {budget.bourse_estimee.toLocaleString()} $</span>
             </div>
           </div>
 
@@ -232,7 +232,7 @@ export default function SimulateurBudget() {
           </div>
 
           {/* Fourchette scolarité */}
-          <p style={{ fontSize: 11, color: C.muted, textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#6B6F76', textAlign: 'center' }}>
             {lang==='fr'?'Frais de scolarité estimés :':'Estimated tuition:'} {budget.scol_min.toLocaleString()}–{budget.scol_max.toLocaleString()} $ {lang==='fr'?'selon programme':'depending on program'}
           </p>
         </div>
@@ -241,15 +241,15 @@ export default function SimulateurBudget() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         {/* Header */}
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: C.text, letterSpacing: -0.5, marginBottom: 4 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 4 }}>
           💰 {lang==='fr'?'Simulateur budget annuel étudiant':'Annual Student Budget Simulator'}
         </h1>
-        <p style={{ fontSize: 14, color: C.muted, marginBottom: 28, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 28, lineHeight: 1.6 }}>
           {lang==='fr'
             ? 'Estime ton besoin financier réel selon ta ville, ton établissement et ton mode de vie.'
             : 'Estimate your real financial need based on your city, institution and lifestyle.'}
@@ -261,8 +261,8 @@ export default function SimulateurBudget() {
           <div style={{ width: '100%', maxWidth: 260, flexShrink: 0 }}>
 
             {/* Scénario A */}
-            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '18px', marginBottom: 14 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: C.accent2, marginBottom: 14 }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '18px', marginBottom: 14 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: '#3A3D40', marginBottom: 14 }}>
                 🔵 {compareMode ? (lang==='fr'?'Scénario A':'Scenario A') : (lang==='fr'?'Mes paramètres':'My parameters')}
               </p>
 
@@ -299,17 +299,17 @@ export default function SimulateurBudget() {
             {/* Scénario B (optionnel) */}
             {!compareMode ? (
               <button onClick={() => setCompareMode(true)}
-                style={{ width: '100%', padding: '11px', background: 'transparent', border: `1px dashed ${C.border}`, borderRadius: 12, color: C.muted, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                style={{ width: '100%', padding: '11px', background: 'transparent', border: '1px dashed #EBEBE9', borderRadius: 12, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 + {lang==='fr'?'Comparer une autre ville':'Compare another city'}
               </button>
             ) : (
-              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '18px' }}>
+              <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '18px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#3B82F6' }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116' }}>
                     🟠 {lang==='fr'?'Scénario B':'Scenario B'}
                   </p>
                   <button onClick={() => setCompareMode(false)}
-                    style={{ background: 'none', border: 'none', color: C.muted, fontSize: 12, cursor: 'pointer' }}>✕</button>
+                    style={{ background: 'none', border: 'none', color: '#6B6F76', fontSize: 12, cursor: 'pointer' }}>✕</button>
                 </div>
                 <Field label={lang==='fr'?'Ville':'City'} value={villeB} setter={setVilleB}
                   options={VILLES.map(v => ({ val: v, label: v }))} />
@@ -329,26 +329,26 @@ export default function SimulateurBudget() {
               <BudgetCard
                 budget={budgetA}
                 label={compareMode ? `🔵 ${villeA} · ${typeA === 'universite' ? (lang==='fr'?'Université':'University') : (lang==='fr'?'Collège':'College')}` : `${villeA}`}
-                color="#60A5FA"
+                color="#6B6F76"
               />
               {compareMode && budgetB && (
                 <BudgetCard
                   budget={budgetB}
                   label={`🟠 ${villeB} · ${typeB === 'universite' ? (lang==='fr'?'Université':'University') : (lang==='fr'?'Collège':'College')}`}
-                  color="#3B82F6"
+                  color="#0E1116"
                 />
               )}
             </div>
 
             {/* Économie si comparaison */}
             {compareMode && budgetA && budgetB && (
-              <div style={{ marginTop: 14, padding: '14px 18px', background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12 }}>
+              <div style={{ marginTop: 14, padding: '14px 18px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12 }}>
                 {(() => {
                   const diff = budgetA.besoin_reel - budgetB.besoin_reel
                   const moins = diff > 0 ? 'B' : 'A'
                   const abs   = Math.abs(diff)
                   return (
-                    <p style={{ fontSize: 14, color: C.text, fontWeight: 600 }}>
+                    <p style={{ fontSize: 14, color: '#0E1116', fontWeight: 600 }}>
                       {abs === 0
                         ? (lang==='fr'?'Les deux scénarios coûtent la même chose.':'Both scenarios cost the same.')
                         : lang==='fr'
@@ -364,13 +364,13 @@ export default function SimulateurBudget() {
             {budgetA && (() => {
               const lines = conseil(budgetA, villeA, typeA, heuresA)
               return lines && lines.length > 0 && (
-                <div style={{ marginTop: 14, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '16px 18px' }}>
-                  <p style={{ fontSize: 12, fontWeight: 700, color: C.muted, textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 12 }}>
+                <div style={{ marginTop: 14, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '16px 18px' }}>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 12 }}>
                     {lang==='fr'?'Conseils personnalisés':'Personalized tips'}
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {lines.map((l, i) => (
-                      <p key={i} style={{ fontSize: 13, color: C.text, lineHeight: 1.6, padding: '8px 12px', background: C.surface2, borderRadius: 8 }}>
+                      <p key={i} style={{ fontSize: 13, color: '#0E1116', lineHeight: 1.6, padding: '8px 12px', background: '#F7F7F5', borderRadius: 8 }}>
                         {l}
                       </p>
                     ))}
@@ -399,15 +399,15 @@ export default function SimulateurBudget() {
                 try { localStorage.setItem('novae_budget_scenarios', JSON.stringify(next)) } catch {}
               }
               return (
-                <div style={{ marginTop: 14, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: '16px 18px' }}>
+                <div style={{ marginTop: 14, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '16px 18px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: scenarios.length > 0 ? 14 : 0 }}>
-                    <p style={{ fontSize: 13, fontWeight: 700, color: C.text }}>
+                    <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116' }}>
                       📊 {lang === 'fr' ? `Scénarios sauvegardés (${scenarios.length}/3)` : `Saved scenarios (${scenarios.length}/3)`}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      {scenarioMsg && <span style={{ fontSize: 12, color: scenarioMsg.startsWith('⚠️') ? C.warning : C.success }}>{scenarioMsg}</span>}
+                      {scenarioMsg && <span style={{ fontSize: 12, color: scenarioMsg.startsWith('⚠️') ? '#6B6F76' : '#3A3D40' }}>{scenarioMsg}</span>}
                       <button onClick={saveScenario} disabled={scenarios.length >= 3}
-                        style={{ padding: '8px 16px', background: scenarios.length >= 3 ? C.border : C.accent, border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 12, cursor: scenarios.length >= 3 ? 'not-allowed' : 'pointer', opacity: scenarios.length >= 3 ? 0.6 : 1 }}>
+                        style={{ padding: '8px 16px', background: scenarios.length >= 3 ? '#EBEBE9' : '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 12, cursor: scenarios.length >= 3 ? 'not-allowed' : 'pointer', opacity: scenarios.length >= 3 ? 0.6 : 1 }}>
                         {lang === 'fr' ? '📊 Sauvegarder ce scénario' : '📊 Save this scenario'}
                       </button>
                     </div>
@@ -415,15 +415,15 @@ export default function SimulateurBudget() {
                   {scenarios.length > 0 && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                       {scenarios.map(s => (
-                        <div key={s.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: C.surface2, borderRadius: 10, gap: 10, flexWrap: 'wrap' }}>
+                        <div key={s.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', background: '#F7F7F5', borderRadius: 10, gap: 10, flexWrap: 'wrap' }}>
                           <div>
-                            <p style={{ fontSize: 13, fontWeight: 600, color: C.text }}>
+                            <p style={{ fontSize: 13, fontWeight: 600, color: '#0E1116' }}>
                               {s.ville} · {s.type === 'universite' ? (lang === 'fr' ? 'Université' : 'University') : (lang === 'fr' ? 'Collège' : 'College')}
                             </p>
-                            <p style={{ fontSize: 11, color: C.muted }}>{s.date} · {lang === 'fr' ? 'Besoin' : 'Need'}: <strong style={{ color: C.accent2 }}>{s.besoin.toLocaleString()} $</strong></p>
+                            <p style={{ fontSize: 11, color: '#6B6F76' }}>{s.date} · {lang === 'fr' ? 'Besoin' : 'Need'}: <strong style={{ color: '#3A3D40' }}>{s.besoin.toLocaleString()} $</strong></p>
                           </div>
                           <button onClick={() => removeScenario(s.id)}
-                            style={{ background: 'none', border: `1px solid ${C.border}`, borderRadius: 8, padding: '4px 10px', color: C.muted, fontSize: 12, cursor: 'pointer' }}>
+                            style={{ background: 'none', border: '1px solid #EBEBE9', borderRadius: 8, padding: '4px 10px', color: '#6B6F76', fontSize: 12, cursor: 'pointer' }}>
                             {lang === 'fr' ? 'Supprimer' : 'Delete'}
                           </button>
                         </div>
@@ -435,8 +435,8 @@ export default function SimulateurBudget() {
             })()}
 
             {/* Note bas de page */}
-            <div style={{ marginTop: 16, padding: '12px 16px', background: `${C.accent}06`, border: `1px solid ${C.accent}18`, borderRadius: 10 }}>
-              <p style={{ fontSize: 11, color: C.muted, lineHeight: 1.6 }}>
+            <div style={{ marginTop: 16, padding: '12px 16px', background: '#0E111606', border: `1px solid ${'#0E1116'}18`, borderRadius: 10 }}>
+              <p style={{ fontSize: 11, color: '#6B6F76', lineHeight: 1.6 }}>
                 {lang==='fr'
                   ? '* Estimations basées sur les données 2025. Frais de scolarité = moyenne selon programme. Revenus travail nets (~18% impôts). Bourse estimée conservative (3 000 $ univ. / 1 500 $ collège). Consulte ton université pour des chiffres exacts.'
                   : '* Estimates based on 2025 data. Tuition = program average. Net work income (~18% tax). Conservative scholarship estimate ($3,000 univ. / $1,500 college). Consult your institution for exact figures.'}
@@ -445,13 +445,13 @@ export default function SimulateurBudget() {
 
             {/* Liens utiles */}
             <div style={{ marginTop: 14, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              <a href="/bourses" style={{ padding: '8px 16px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 9, color: C.accent2, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
+              <a href="/bourses" style={{ padding: '8px 16px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 9, color: '#3A3D40', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
                 🎓 {lang==='fr'?'Trouver des bourses →':'Find scholarships →'}
               </a>
-              <a href="/orientation-type" style={{ padding: '8px 16px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 9, color: C.accent2, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
+              <a href="/orientation-type" style={{ padding: '8px 16px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 9, color: '#3A3D40', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
                 🏛️ {lang==='fr'?'Univ. ou Collège →':'Univ. or College →'}
               </a>
-              <a href="/cv" style={{ padding: '8px 16px', background: `${C.accent}12`, border: `1px solid ${C.accent}25`, borderRadius: 9, color: C.accent2, fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
+              <a href="/cv" style={{ padding: '8px 16px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 9, color: '#3A3D40', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
                 📄 {lang==='fr'?'Créer mon CV →':'Build my resume →'}
               </a>
             </div>

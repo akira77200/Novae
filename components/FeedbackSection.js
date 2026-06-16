@@ -42,7 +42,7 @@ export default function FeedbackSection({ page }) {
 
   if (envoye) {
     return (
-      <div style={{ textAlign: 'center', padding: '20px', color: C.success, fontSize: '0.9rem' }}>
+      <div style={{ textAlign: 'center', padding: '20px', color: '#3A3D40', fontSize: '0.9rem' }}>
         ✅ {lang === 'fr' ? 'Merci pour ton retour !' : 'Thank you for your feedback!'}
       </div>
     )
@@ -51,32 +51,32 @@ export default function FeedbackSection({ page }) {
   return (
     <div style={{
       marginTop: '60px',
-      borderTop: `1px solid ${C.border}`,
+      borderTop: '1px solid #EBEBE9',
       padding: '24px 0',
     }}>
 
       {/* ── Boutons initiaux ── */}
       {!mode && (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: C.muted, fontSize: '0.85rem', marginBottom: '12px' }}>
+          <p style={{ color: '#6B6F76', fontSize: '0.85rem', marginBottom: '12px' }}>
             {lang === 'fr' ? 'Cette page t\'a été utile ?' : 'Was this page helpful?'}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <button
               onClick={() => setMode('note')}
-              style={{ ...btnBase, border: `1px solid ${C.accent}40`, color: C.accent2 }}
+              style={{ ...btnBase, border: `1px solid ${'#0E1116'}40`, color: '#3A3D40' }}
             >
               ⭐ {lang === 'fr' ? 'Donner une note' : 'Rate this page'}
             </button>
             <button
               onClick={() => setMode('bug')}
-              style={{ ...btnBase, border: `1px solid ${C.error}40`, color: C.error }}
+              style={{ ...btnBase, border: `1px solid ${'#DC2626'}40`, color: '#DC2626' }}
             >
               🐛 {lang === 'fr' ? 'Signaler un bug' : 'Report a bug'}
             </button>
             <button
               onClick={() => setMode('suggestion')}
-              style={{ ...btnBase, border: `1px solid #1565C040`, color: '#1565C0' }}
+              style={{ ...btnBase, border: `1px solid #0E111640`, color: '#0E1116' }}
             >
               💡 {lang === 'fr' ? 'Suggérer une amélioration' : 'Suggest improvement'}
             </button>
@@ -87,7 +87,7 @@ export default function FeedbackSection({ page }) {
       {/* ── Mode Note ── */}
       {mode === 'note' && (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: C.muted, fontSize: '0.85rem', marginBottom: '12px' }}>
+          <p style={{ color: '#6B6F76', fontSize: '0.85rem', marginBottom: '12px' }}>
             {lang === 'fr' ? 'Note cette page :' : 'Rate this page:'}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '16px' }}>
@@ -121,9 +121,9 @@ export default function FeedbackSection({ page }) {
                   maxWidth: '400px',
                   padding: '10px',
                   borderRadius: '8px',
-                  border: `1px solid ${C.border}`,
+                  border: '1px solid #EBEBE9',
                   background: 'transparent',
-                  color: C.text,
+                  color: '#0E1116',
                   fontSize: '0.85rem',
                   resize: 'vertical',
                   display: 'block',
@@ -136,7 +136,7 @@ export default function FeedbackSection({ page }) {
                 onClick={envoyer}
                 disabled={loading}
                 style={{
-                  background: C.accent,
+                  background: '#0E1116',
                   color: '#fff',
                   border: 'none',
                   padding: '8px 24px',
@@ -152,7 +152,7 @@ export default function FeedbackSection({ page }) {
             </>
           )}
           <div style={{ marginTop: 12 }}>
-            <button onClick={() => { setMode(null); setNote(0) }} style={{ ...btnBase, border: `1px solid ${C.border}`, color: C.muted, fontSize: '0.78rem' }}>
+            <button onClick={() => { setMode(null); setNote(0) }} style={{ ...btnBase, border: '1px solid #EBEBE9', color: '#6B6F76', fontSize: '0.78rem' }}>
               {lang === 'fr' ? 'Annuler' : 'Cancel'}
             </button>
           </div>
@@ -162,7 +162,7 @@ export default function FeedbackSection({ page }) {
       {/* ── Mode Bug ou Suggestion ── */}
       {(mode === 'bug' || mode === 'suggestion') && (
         <div style={{ maxWidth: '500px', margin: '0 auto' }}>
-          <p style={{ color: C.muted, fontSize: '0.85rem', marginBottom: '8px', textAlign: 'center' }}>
+          <p style={{ color: '#6B6F76', fontSize: '0.85rem', marginBottom: '8px', textAlign: 'center' }}>
             {mode === 'bug'
               ? (lang === 'fr' ? 'Décris le problème que tu as rencontré :' : 'Describe the problem you encountered:')
               : (lang === 'fr' ? 'Quelle amélioration suggères-tu ?' : 'What improvement do you suggest?')}
@@ -180,9 +180,9 @@ export default function FeedbackSection({ page }) {
               width: '100%',
               padding: '10px',
               borderRadius: '8px',
-              border: `1px solid ${mode === 'bug' ? C.error + '40' : '#1565C040'}`,
+              border: `1px solid ${mode === 'bug' ? '#DC262640' : '#0E111640'}`,
               background: 'transparent',
-              color: C.text,
+              color: '#0E1116',
               fontSize: '0.85rem',
               resize: 'vertical',
               marginBottom: '12px',
@@ -196,12 +196,12 @@ export default function FeedbackSection({ page }) {
               onClick={() => { setMode(null); setTexte('') }}
               style={{
                 background: 'none',
-                border: `1px solid ${C.border}`,
+                border: '1px solid #EBEBE9',
                 padding: '8px 16px',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
-                color: C.muted,
+                color: '#6B6F76',
               }}
             >
               {lang === 'fr' ? 'Annuler' : 'Cancel'}
@@ -210,7 +210,7 @@ export default function FeedbackSection({ page }) {
               onClick={envoyer}
               disabled={loading || texte.length < 5}
               style={{
-                background: mode === 'bug' ? C.error : '#1565C0',
+                background: mode === 'bug' ? '#DC2626' : '#0E1116',
                 color: '#fff',
                 border: 'none',
                 padding: '8px 20px',

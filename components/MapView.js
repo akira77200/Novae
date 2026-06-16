@@ -221,7 +221,7 @@ export default function MapView({ city, query }) {
             <Popup>
               <strong style={{ fontSize: '0.9rem' }}>{p.name}</strong>
               {p.type && (
-                <div style={{ color: '#666', fontSize: '0.78rem', marginTop: 2, textTransform: 'capitalize' }}>
+                <div style={{ color: '#6B6F76', fontSize: '0.78rem', marginTop: 2, textTransform: 'capitalize' }}>
                   {p.type}
                 </div>
               )}
@@ -234,7 +234,7 @@ export default function MapView({ city, query }) {
                 href={`https://www.google.com/maps/search/${encodeURIComponent(p.name + ' ' + city)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: '#1E3A5F', fontSize: '0.78rem', display: 'block', marginTop: 6, fontWeight: 600 }}
+                style={{ color: '#0E1116', fontSize: '0.78rem', display: 'block', marginTop: 6, fontWeight: 600 }}
               >
                 {isFr ? 'Voir sur Google Maps →' : 'View on Google Maps →'}
               </a>
@@ -294,7 +294,7 @@ export default function MapView({ city, query }) {
         rel="noopener noreferrer"
         style={{
           position: 'absolute', bottom: 10, right: 10,
-          zIndex: 1000, background: '#1E3A5F', color: '#fff',
+          zIndex: 1000, background: '#0E1116', color: '#fff',
           padding: '6px 12px', borderRadius: 8,
           fontSize: '0.78rem', textDecoration: 'none', fontWeight: 600,
         }}

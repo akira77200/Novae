@@ -1,7 +1,7 @@
 const COLORS = {
   green:  { bg: '#F0F0EE', text: '#3A3D40' },
   orange: { bg: '#F0F0EE', text: '#3A3D40' },
-  red:    { bg: '#FEF2F2', text: '#DC2626' },
+  red:    { bg: '#F7F7F5', text: '#DC2626' },
   blue:   { bg: '#F0F0EE', text: '#3A3D40' },
   gray:   { bg: '#F7F7F5', text: '#6B6F76' },
   navy:   { bg: '#F0F0EE', text: '#0E1116' },
