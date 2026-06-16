@@ -824,23 +824,23 @@ export default function Dashboard() {
         {/* ── STATS ── */}
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10, marginBottom:28 }}>
           {[
-            { val:`${prog}%`,       label: t.dash_progress,  color:C.accent2, bar:prog },
-            { val:faites.length,    label: t.dash_done,      color:C.success },
-            { val:taches.length - faites.length, label: t.dash_remaining, color:C.warning },
-            { val:jouDisplayVal,    label: jouDisplayLabel,  color:jouDisplayColor },
+            { val:`${prog}%`, label: t.dash_progress,                       bar:prog },
+            { val:faites.length,                    label: t.dash_done      },
+            { val:taches.length - faites.length,    label: t.dash_remaining },
+            { val:jouDisplayVal,                    label: jouDisplayLabel  },
           ].map((s, i) => (
-            <div key={i} style={{ background: isDark ? 'var(--novae-surface-dark)' : 'var(--bg-card)', border: `1px solid ${isDark ? 'var(--novae-border-dark)' : 'var(--border-default)'}`, borderRadius: 'var(--border-radius)', padding:'14px 16px', boxShadow: 'var(--shadow-sm)' }}>
-              <p style={{ fontSize:24, fontWeight:700, color:s.color, marginBottom:3 }}>{s.val}</p>
-              <p style={{ fontSize:11, color:'#718096', textTransform:'uppercase', letterSpacing:0.6, fontWeight:500 }}>{s.label}</p>
-              {s.bar != null && <div style={{ height:3, background:C.border, borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:C.accent2, borderRadius:3, transition:'width 0.5s' }} /></div>}
+            <div key={i} style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:8, padding:'14px 16px' }}>
+              <p style={{ fontSize:28, fontWeight:700, color:'#0E1116', marginBottom:3, lineHeight:1 }}>{s.val}</p>
+              <p style={{ fontSize:10, fontWeight:500, color:'#9A9D9F', textTransform:'uppercase', letterSpacing:'0.06em' }}>{s.label}</p>
+              {s.bar != null && <div style={{ height:3, background:'#EBEBE9', borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:'#0E1116', borderRadius:3, transition:'width 0.5s' }} /></div>}
             </div>
           ))}
         </div>
 
         {/* ── TABS ── */}
-        <div style={{ display:'flex', gap:4, marginBottom:22, background:C.surface, border:`1px solid ${C.border}`, borderRadius:12, padding:4 }}>
+        <div style={{ display:'flex', gap:4, marginBottom:22, background:'#F7F7F5', borderRadius:8, padding:4 }}>
           {TABS.map(tb => (
-            <button key={tb.id} onClick={() => setTab(tb.id)} style={{ flex:1, padding:'9px 12px', borderRadius:8, border:'none', fontSize:13, fontWeight:500, cursor:'pointer', transition:'all 0.15s', background: tab === tb.id ? C.accent : 'transparent', color: tab === tb.id ? '#fff' : C.muted }}>
+            <button key={tb.id} onClick={() => setTab(tb.id)} style={{ flex:1, padding:'8px 16px', borderRadius:6, border:'none', fontSize:13, fontWeight: tab === tb.id ? 600 : 500, cursor:'pointer', transition:'all 0.15s', background: tab === tb.id ? '#0E1116' : 'transparent', color: tab === tb.id ? '#FFFFFF' : '#6B6F76' }}>
               {tb.label}
             </button>
           ))}
@@ -856,7 +856,7 @@ export default function Dashboard() {
             )}
             <div style={{ display:'flex', gap:6, marginBottom:16 }}>
               {['tous','a_faire','faites'].map(f => (
-                <button key={f} onClick={() => setFiltre(f)} style={{ padding:'6px 14px', borderRadius:8, border:`1px solid ${filtre === f ? C.accent+'50' : C.border}`, background: filtre === f ? `${C.accent}15` : 'transparent', color: filtre === f ? C.accent2 : C.muted, fontSize:12, fontWeight:500, cursor:'pointer' }}>
+                <button key={f} onClick={() => setFiltre(f)} style={{ padding:'5px 12px', borderRadius:999, border: filtre === f ? 'none' : '1px solid #EBEBE9', background: filtre === f ? '#F0F0EE' : 'transparent', color: filtre === f ? '#0E1116' : '#9A9D9F', fontSize:12, fontWeight: filtre === f ? 600 : 500, cursor:'pointer' }}>
                   {f === 'tous' ? `${t.checklist_all} (${taches.length})` : f === 'a_faire' ? `${t.checklist_todo} (${taches.length - faites.length})` : `${t.checklist_done} (${faites.length})`}
                 </button>
               ))}
@@ -866,11 +866,11 @@ export default function Dashboard() {
             ) : (
               <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
                 {tF.length === 0 && taches.length === 0 && !province ? (
-                  <div style={{ textAlign:'center', padding:'32px 24px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:14 }}>
-                    <p style={{ fontSize:14, color:C.muted, marginBottom:12 }}>
+                  <div style={{ textAlign:'center', padding:'32px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:8 }}>
+                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:12 }}>
                       {lang === 'fr' ? 'Renseigne ta ville dans ton profil pour voir les tâches adaptées.' : 'Add your city in your profile to see adapted tasks.'}
                     </p>
-                    <a href="/profile_1" style={{ padding:'8px 18px', background:C.accent, border:'none', borderRadius:8, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                    <a href="/profile_1" style={{ padding:'8px 18px', background:'#0E1116', border:'none', borderRadius:6, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
                       {lang === 'fr' ? 'Compléter mon profil →' : 'Complete profile →'}
                     </a>
                   </div>
@@ -882,20 +882,26 @@ export default function Dashboard() {
                     const cat   = CAT_STYLE[tache.cat] || CAT_STYLE.admin
                     const titre = lang === 'fr' ? tache.titre : (tache.titre_en || tache.titre)
                     return (
-                      <div key={tache.id} onClick={() => toggleTache(tache.id)} style={{ display:'flex', alignItems:'center', gap:12, padding:'13px 16px', background:C.surface, border:`1px solid ${C.border}`, borderRadius:11, cursor:'pointer', opacity: done ? 0.5 : 1, transition:'opacity 0.15s' }}>
-                        <span style={{ fontSize:18, flexShrink:0 }}>{tache.icone}</span>
-                        <div style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${done ? C.success : C.border}`, background: done ? C.success : 'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, transition:'all 0.15s' }}>
-                          {done && <span style={{ color:C.bg, fontSize:11, fontWeight:800 }}>✓</span>}
+                      <div key={tache.id} onClick={() => toggleTache(tache.id)} style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 16px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:8, cursor:'pointer', opacity: done ? 0.5 : 1, transition:'opacity 0.15s', marginBottom:8 }}>
+                        {/* Icône SVG neutre dans cercle léger */}
+                        <div style={{ width:36, height:36, background:'#F7F7F5', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6F76" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                          </svg>
                         </div>
-                        <div style={{ flex:1 }}>
-                          <p style={{ fontSize:14, fontWeight:500, color:C.text, marginBottom:5, textDecoration: done ? 'line-through' : 'none' }}>{titre}</p>
-                          <div style={{ display:'flex', gap:6 }}>
-                            <span style={{ fontSize:11, fontWeight:500, padding:'2px 9px', borderRadius:20, background:cat.bg, color:cat.color }}>{lang === 'fr' ? cat.label : cat.labelEn}</span>
-                            {tache.prio === 'critique' && <span style={{ fontSize:11, color:C.error, fontWeight:500 }}>· {lang === 'fr' ? 'Critique' : 'Critical'}</span>}
+                        {/* Checkbox */}
+                        <div style={{ width:18, height:18, borderRadius:4, border:`1.5px solid ${done ? '#0E1116' : '#D5D5D2'}`, background: done ? '#0E1116' : '#FFFFFF', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, transition:'all 0.15s' }}>
+                          {done && <span style={{ color:'#FFFFFF', fontSize:10, fontWeight:800 }}>✓</span>}
+                        </div>
+                        <div style={{ flex:1, minWidth:0 }}>
+                          <p style={{ fontSize:14, fontWeight:600, color:'#0E1116', marginBottom:5, textDecoration: done ? 'line-through' : 'none' }}>{titre}</p>
+                          <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
+                            <span style={{ fontSize:11, fontWeight:500, padding:'3px 9px', borderRadius:999, background:'#F7F7F5', color:'#6B6F76' }}>{lang === 'fr' ? cat.label : cat.labelEn}</span>
+                            {tache.prio === 'critique' && <span style={{ fontSize:11, fontWeight:600, padding:'3px 9px', borderRadius:999, background:'#F7F7F5', color:'#3A3D40' }}>{lang === 'fr' ? 'Critique' : 'Critical'}</span>}
                           </div>
                         </div>
                         {tache.lien && !done && (
-                          <a href={tache.lien} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ padding:'5px 10px', background:`${C.accent}12`, border:`1px solid ${C.accent}25`, borderRadius:7, color:C.accent2, fontSize:12 }}>↗</a>
+                          <a href={tache.lien} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ padding:'5px 8px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:6, color:'#9A9D9F', fontSize:13, flexShrink:0 }}>↗</a>
                         )}
                       </div>
                     )
