@@ -1,5 +1,5 @@
 // pages/dashboard.js — NOVAE v5 — Profil vivant
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useApp } from '../context/AppContext'
 import FeedbackSection from '../components/FeedbackSection'
 import { useAuthFetch } from '../lib/useAuthFetch'
