@@ -179,8 +179,8 @@ export default function NovaChat() {
           position: 'fixed', bottom: 84, right: 20, zIndex: 200,
           width: 360, maxWidth: 'calc(100vw - 40px)',
           height: 520, maxHeight: 'calc(100vh - 120px)',
-          background: '#FFFFFF',
-          border: '1px solid #EBEBE9',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border)',
           borderRadius: 20,
           boxShadow: '0 24px 64px rgba(0,0,0,0.45)',
           display: 'flex', flexDirection: 'column',
@@ -190,17 +190,17 @@ export default function NovaChat() {
         }}>
 
           {/* Header */}
-          <div style={{ padding: '14px 16px', borderBottom: '1px solid #EBEBE9', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-            <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#F7F7F5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>✨</div>
+          <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>✨</div>
             <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116' }}>Nova</p>
-              <p style={{ fontSize: 11, color: '#3A3D40' }}>{lang === 'fr' ? 'Assistante immigration · En ligne' : 'Immigration assistant · Online'}</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)' }}>Nova</p>
+              <p style={{ fontSize: 11, color: 'var(--text-body)' }}>{lang === 'fr' ? 'Assistante immigration · En ligne' : 'Immigration assistant · Online'}</p>
             </div>
             <div style={{ display: 'flex', gap: 6 }}>
               <button onClick={reinitialiser} title={lang === 'fr' ? 'Nouvelle conversation' : 'New conversation'}
-                style={{ width: 28, height: 28, borderRadius: 8, border: '1px solid #EBEBE9', background: 'transparent', color: '#6B6F76', cursor: 'pointer', fontSize: 13 }}>↺</button>
+                style={{ width: 28, height: 28, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13 }}>↺</button>
               <button onClick={() => setOpen(false)}
-                style={{ width: 28, height: 28, borderRadius: 8, border: '1px solid #EBEBE9', background: 'transparent', color: '#6B6F76', cursor: 'pointer', fontSize: 13 }}>✕</button>
+                style={{ width: 28, height: 28, borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13 }}>✕</button>
             </div>
           </div>
 
@@ -210,12 +210,12 @@ export default function NovaChat() {
             {/* Message limite atteinte */}
             {limitReached && (
               <div style={{ padding: '12px 16px', background: '#6B6F7610', border: `1px solid ${'#6B6F76'}30`, borderRadius: 10, marginBottom: 8 }}>
-                <p style={{ fontSize: 13, color: '#0E1116', marginBottom: 8, lineHeight: 1.6 }}>
+                <p style={{ fontSize: 13, color: 'var(--text-h1)', marginBottom: 8, lineHeight: 1.6 }}>
                   {lang === 'fr'
                     ? `Tu as atteint ta limite de ${planLimits.nova_daily} messages aujourd'hui pour le plan ${userPlan}.`
                     : `You've reached your limit of ${planLimits.nova_daily} messages today for the ${userPlan} plan.`}
                 </p>
-                <a href="/abonnement" style={{ fontSize: 12, color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
+                <a href="/abonnement" style={{ fontSize: 12, color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>
                   {lang === 'fr' ? 'Voir les abonnements →' : 'View plans →'}
                 </a>
               </div>
@@ -226,7 +226,7 @@ export default function NovaChat() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
                 {suggestions.map((s, i) => (
                   <button key={i} onClick={() => envoyer(s)}
-                    style={{ textAlign: 'left', padding: '8px 12px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 10, color: '#3A3D40', fontSize: 12, cursor: 'pointer', lineHeight: 1.4 }}>
+                    style={{ textAlign: 'left', padding: '8px 12px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 10, color: 'var(--text-body)', fontSize: 12, cursor: 'pointer', lineHeight: 1.4 }}>
                     {s}
                   </button>
                 ))}
@@ -241,11 +241,11 @@ export default function NovaChat() {
                     maxWidth: '82%',
                     padding: '9px 13px',
                     borderRadius: isUser ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
-                    background: isUser ? '#0E1116' : '#F7F7F5',
-                    border: isUser ? 'none' : '1px solid #EBEBE9',
+                    background: isUser ? 'var(--accent)' : 'var(--bg-subtle)',
+                    border: isUser ? 'none' : '1px solid var(--border)',
                     fontSize: 13,
                     lineHeight: 1.65,
-                    color: isUser ? '#fff' : '#0E1116',
+                    color: isUser ? 'var(--bg-page)' : 'var(--text-h1)',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-word',
                   }}>
@@ -264,7 +264,7 @@ export default function NovaChat() {
           </div>
 
           {/* Input */}
-          <div style={{ padding: '10px 12px', borderTop: '1px solid #EBEBE9', display: 'flex', gap: 8, flexShrink: 0 }}>
+          <div style={{ padding: '10px 12px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8, flexShrink: 0 }}>
             <input
               ref={inputRef}
               value={input}
@@ -274,8 +274,8 @@ export default function NovaChat() {
               disabled={streaming}
               style={{
                 flex: 1, padding: '9px 12px',
-                background: '#F7F7F5', border: '1px solid #EBEBE9',
-                borderRadius: 10, color: '#0E1116', fontSize: 13, outline: 'none',
+                background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+                borderRadius: 10, color: 'var(--text-h1)', fontSize: 13, outline: 'none',
                 opacity: streaming ? 0.7 : 1,
               }}
             />

@@ -62,15 +62,15 @@ const FORM_VIDE = {
 // ── Composant champ formulaire ────────────────────────────────────
 function Field({ C, label, value, onChange, placeholder, type='text', rows, required }) {
   const base = {
-    width:'100%', padding:'9px 12px', background: '#F7F7F5',
-    border:'1px solid #EBEBE9', borderRadius:9,
-    color: '#0E1116', fontSize:13, outline:'none',
+    width:'100%', padding:'9px 12px', background: 'var(--bg-subtle)',
+    border:'1px solid var(--border)', borderRadius:9,
+    color: 'var(--text-h1)', fontSize:13, outline:'none',
     boxSizing:'border-box', fontFamily:'system-ui,sans-serif',
   }
   return (
     <div style={{ marginBottom:14 }}>
       {label && (
-        <label style={{ fontSize:11, fontWeight:600, color: '#6B6F76', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:5 }}>
+        <label style={{ fontSize:11, fontWeight:600, color: 'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:5 }}>
           {label}{required && <span style={{ color: '#DC2626' }}> *</span>}
         </label>
       )}
@@ -221,11 +221,11 @@ export default function Reseau() {
 
   // ── Gate auth ─────────────────────────────────────────────────
   if (!user && !authLoading) return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', fontFamily:'system-ui,sans-serif' }}>
       
       <div style={{ maxWidth:500, margin:'80px auto', padding:'0 20px', textAlign:'center' }}>
         <p style={{ fontSize:40, marginBottom:16 }}>🔒</p>
-        <p style={{ fontSize:16, color:'#0E1116', fontWeight:600, marginBottom:8 }}>
+        <p style={{ fontSize:16, color:'var(--text-h1)', fontWeight:600, marginBottom:8 }}>
           {lang==='fr' ? 'Connexion requise' : 'Login required'}
         </p>
         <a href="/auth/login" style={{ padding:'10px 24px', background:'#0E1116', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, textDecoration:'none' }}>
@@ -236,22 +236,22 @@ export default function Reseau() {
   )
 
   return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
       
 
       {/* ── Modal ajout / édition ── */}
       {modal && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.65)', backdropFilter:'blur(6px)', zIndex:50, display:'flex', alignItems:'center', justifyContent:'center', padding:20, overflowY:'auto' }}
           onClick={() => setModal(null)}>
-          <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:18, width:'100%', maxWidth:500, overflow:'hidden', margin:'auto' }}
+          <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:18, width:'100%', maxWidth:500, overflow:'hidden', margin:'auto' }}
             onClick={e => e.stopPropagation()}>
-            <div style={{ padding:'18px 22px 14px', borderBottom:'1px solid #EBEBE9', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-              <p style={{ fontWeight:700, fontSize:15, color:'#0E1116' }}>
+            <div style={{ padding:'18px 22px 14px', borderBottom:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <p style={{ fontWeight:700, fontSize:15, color:'var(--text-h1)' }}>
                 {modal === 'new'
                   ? (lang==='fr' ? '+ Nouveau contact' : '+ New contact')
                   : (lang==='fr' ? 'Modifier le contact' : 'Edit contact')}
               </p>
-              <button onClick={() => setModal(null)} style={{ width:28, height:28, borderRadius:'50%', border:'1px solid #EBEBE9', background:'transparent', color:'#6B6F76', cursor:'pointer', fontSize:13 }}>✕</button>
+              <button onClick={() => setModal(null)} style={{ width:28, height:28, borderRadius:'50%', border:'1px solid var(--border)', background:'transparent', color:'var(--text-muted)', cursor:'pointer', fontSize:13 }}>✕</button>
             </div>
 
             <div style={{ padding:'20px 22px', maxHeight:'70vh', overflowY:'auto' }}>
@@ -264,11 +264,11 @@ export default function Reseau() {
 
               {/* Secteur */}
               <div style={{ marginBottom:14 }}>
-                <label style={{ fontSize:11, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:5 }}>
+                <label style={{ fontSize:11, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:5 }}>
                   {lang==='fr'?'Secteur':'Sector'}
                 </label>
                 <select value={form.secteur} onChange={e=>setForm(p=>({...p,secteur:e.target.value}))}
-                  style={{ width:'100%', padding:'9px 12px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:9, color:'#0E1116', fontSize:13, outline:'none' }}>
+                  style={{ width:'100%', padding:'9px 12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:9, color:'var(--text-h1)', fontSize:13, outline:'none' }}>
                   <option value="">{lang==='fr'?'Choisir...':'Choose...'}</option>
                   {SECTEURS.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -276,7 +276,7 @@ export default function Reseau() {
 
               {/* Contexte */}
               <div style={{ marginBottom:14 }}>
-                <label style={{ fontSize:11, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:8 }}>
+                <label style={{ fontSize:11, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:8 }}>
                   {lang==='fr'?'Contexte de rencontre':'How you met'}
                 </label>
                 <div style={{ display:'flex', flexWrap:'wrap', gap:7 }}>
@@ -299,7 +299,7 @@ export default function Reseau() {
 
               {/* Rappel */}
               <div style={{ marginBottom:14 }}>
-                <label style={{ fontSize:11, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:8 }}>
+                <label style={{ fontSize:11, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.6, display:'block', marginBottom:8 }}>
                   {lang==='fr'?'Rappel de suivi':'Follow-up reminder'}
                 </label>
                 <div style={{ display:'flex', flexWrap:'wrap', gap:7 }}>
@@ -321,7 +321,7 @@ export default function Reseau() {
               {err && <p style={{ fontSize:13, color:'#DC2626', marginBottom:12 }}>{err}</p>}
 
               <div style={{ display:'flex', gap:10 }}>
-                <button onClick={()=>setModal(null)} style={{ flex:1, padding:'11px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:9, color:'#6B6F76', fontWeight:600, fontSize:13, cursor:'pointer' }}>
+                <button onClick={()=>setModal(null)} style={{ flex:1, padding:'11px', background:'transparent', border:'1px solid var(--border)', borderRadius:9, color:'var(--text-muted)', fontWeight:600, fontSize:13, cursor:'pointer' }}>
                   {lang==='fr'?'Annuler':'Cancel'}
                 </button>
                 <button onClick={sauvegarder} disabled={saving}
@@ -339,13 +339,13 @@ export default function Reseau() {
         {/* Header */}
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:8, flexWrap:'wrap', gap:12 }}>
           <div>
-            <h1 style={{ fontSize:26, fontWeight:800, color:'#0E1116', letterSpacing:-0.5, marginBottom:4 }}>
+            <h1 style={{ fontSize:26, fontWeight:800, color:'var(--text-h1)', letterSpacing:-0.5, marginBottom:4 }}>
               🎯 {lang==='fr'?'Mon Réseau Professionnel':'My Professional Network'}
             </h1>
-            <p style={{ fontSize:14, color:'#6B6F76' }}>
+            <p style={{ fontSize:14, color:'var(--text-muted)' }}>
               {contacts.length} {lang==='fr'?'contact(s)':'contact(s)'}
               {rappelsUrgents.length > 0 && (
-                <span style={{ color:'#6B6F76', fontWeight:600 }}>
+                <span style={{ color:'var(--text-muted)', fontWeight:600 }}>
                   {' '}· {rappelsUrgents.length} {lang==='fr'?'rappel(s) cette semaine':'reminder(s) this week'} ⏰
                 </span>
               )}
@@ -358,7 +358,7 @@ export default function Reseau() {
         </div>
 
         {/* Sous-titre */}
-        <p style={{ fontSize:13, color:'#6B6F76', marginBottom:16, lineHeight:1.6 }}>
+        <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:16, lineHeight:1.6 }}>
           {lang==='fr'
             ? 'Les connexions que tu fais au Canada peuvent changer ta carrière.'
             : 'The connections you make in Canada can change your career.'}
@@ -368,12 +368,12 @@ export default function Reseau() {
         {!progSecteur ? (
           <div style={{ padding:'12px 16px', background:'#0E111608', border:`1px solid ${'#0E1116'}25`, borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
             <span style={{ fontSize:16 }}>💡</span>
-            <p style={{ fontSize:13, color:'#6B6F76', flex:1, margin:0 }}>
+            <p style={{ fontSize:13, color:'var(--text-muted)', flex:1, margin:0 }}>
               {lang==='fr'
                 ? 'Découvre ton orientation idéale pour voir tes connexions dans ton secteur cible.'
                 : 'Discover your ideal orientation to see connections in your target sector.'}
             </p>
-            <a href="/mon-avenir" style={{ fontSize:13, color:'#3A3D40', fontWeight:600, textDecoration:'none', whiteSpace:'nowrap' }}>
+            <a href="/mon-avenir" style={{ fontSize:13, color:'var(--text-body)', fontWeight:600, textDecoration:'none', whiteSpace:'nowrap' }}>
               {lang==='fr' ? 'Mon Avenir →' : 'My Future →'}
             </a>
           </div>
@@ -382,7 +382,7 @@ export default function Reseau() {
           return (
             <div style={{ padding:'12px 16px', background:'#0E111608', border:`1px solid ${'#0E1116'}25`, borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
               <span style={{ fontSize:16 }}>🎯</span>
-              <p style={{ fontSize:13, color:'#6B6F76', flex:1, margin:0 }}>
+              <p style={{ fontSize:13, color:'var(--text-muted)', flex:1, margin:0 }}>
                 {lang==='fr'
                   ? `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} dans ton secteur cible (${progSecteur}) sur ${contacts.length} au total.`
                   : `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} in your target sector (${progSecteur}) out of ${contacts.length} total.`}
@@ -400,7 +400,7 @@ export default function Reseau() {
           return (
             <div key={c.id} style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px', background:'#6B6F7608', border:`1px solid ${'#6B6F76'}30`, borderRadius:12, marginBottom:10, flexWrap:'wrap' }}>
               <span style={{ fontSize:18 }}>⏰</span>
-              <p style={{ fontSize:13, color:'#0E1116', flex:1 }}>
+              <p style={{ fontSize:13, color:'var(--text-h1)', flex:1 }}>
                 <strong>{c.prenom}{c.nom?' '+c.nom:''}</strong>
                 {' — '}
                 {lang==='fr'
@@ -433,7 +433,7 @@ export default function Reseau() {
             </div>
             {/* Tri */}
             <select value={tri} onChange={e=>setTri(e.target.value)}
-              style={{ padding:'7px 12px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:9, color:'#0E1116', fontSize:12, outline:'none' }}>
+              style={{ padding:'7px 12px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:9, color:'var(--text-h1)', fontSize:12, outline:'none' }}>
               <option value="recent">{lang==='fr'?'↓ Plus récents':'↓ Most recent'}</option>
               <option value="nom">{lang==='fr'?'A → Z (prénom)':'A → Z (name)'}</option>
               <option value="secteur">{lang==='fr'?'Par secteur':'By sector'}</option>
@@ -443,15 +443,15 @@ export default function Reseau() {
 
         {/* ── Liste contacts ── */}
         {!ready ? (
-          <p style={{ textAlign:'center', color:'#6B6F76', padding:'40px' }}>{lang==='fr'?'Chargement...':'Loading...'}</p>
+          <p style={{ textAlign:'center', color:'var(--text-muted)', padding:'40px' }}>{lang==='fr'?'Chargement...':'Loading...'}</p>
         ) : contactsFiltres.length === 0 && contacts.length === 0 ? (
           /* État vide */
-          <div style={{ textAlign:'center', padding:'52px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, marginBottom:24 }}>
+          <div style={{ textAlign:'center', padding:'52px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, marginBottom:24 }}>
             <div style={{ width:44, height:44, borderRadius:12, background:"#F7F7F5", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-            <p style={{ fontWeight:600, fontSize:15, color:'#0E1116', marginBottom:8 }}>
+            <p style={{ fontWeight:600, fontSize:15, color:'var(--text-h1)', marginBottom:8 }}>
               {lang==='fr'?'Ton réseau commence ici.':'Your network starts here.'}
             </p>
-            <p style={{ fontSize:13, color:'#6B6F76', marginBottom:20, lineHeight:1.6 }}>
+            <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:20, lineHeight:1.6 }}>
               {lang==='fr'
                 ? 'Ajoute les personnes que tu rencontres — événements, université, LinkedIn.'
                 : 'Add people you meet — events, university, LinkedIn.'}
@@ -461,7 +461,7 @@ export default function Reseau() {
             </button>
           </div>
         ) : contactsFiltres.length === 0 ? (
-          <p style={{ textAlign:'center', color:'#6B6F76', padding:'32px' }}>{lang==='fr'?'Aucun contact dans ce filtre.':'No contacts in this filter.'}</p>
+          <p style={{ textAlign:'center', color:'var(--text-muted)', padding:'32px' }}>{lang==='fr'?'Aucun contact dans ce filtre.':'No contacts in this filter.'}</p>
         ) : (
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px, 1fr))', gap:12, marginBottom:32 }}>
             {contactsFiltres.map(c => {
@@ -471,32 +471,32 @@ export default function Reseau() {
               const ctx    = CONTEXTES.find(x => x.id === c.contexte_rencontre)
 
               return (
-                <div key={c.id} style={{ background:'#FFFFFF', border:`1px solid ${urgent?'#6B6F7640':'#EBEBE9'}`, borderRadius:14, padding:'16px 18px' }}>
+                <div key={c.id} style={{ background:'var(--bg-card)', border:`1px solid ${urgent?'#6B6F7640':'#EBEBE9'}`, borderRadius:14, padding:'16px 18px' }}>
                   {/* Header carte */}
                   <div style={{ display:'flex', alignItems:'flex-start', gap:12, marginBottom:12 }}>
-                    <div style={{ width:42, height:42, borderRadius:'50%', background:'#0E111618', border:`1.5px solid ${'#0E1116'}30`, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:15, color:'#3A3D40', flexShrink:0 }}>
+                    <div style={{ width:42, height:42, borderRadius:'50%', background:'#0E111618', border:`1.5px solid ${'#0E1116'}30`, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:15, color:'var(--text-body)', flexShrink:0 }}>
                       {initiales(c.prenom, c.nom)}
                     </div>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <p style={{ fontSize:14, fontWeight:700, color:'#0E1116', marginBottom:2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:'var(--text-h1)', marginBottom:2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
                         {c.prenom}{c.nom?' '+c.nom:''}
                       </p>
                       {(c.poste || c.entreprise) && (
-                        <p style={{ fontSize:12, color:'#6B6F76', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                        <p style={{ fontSize:12, color:'var(--text-muted)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
                           {[c.poste, c.entreprise].filter(Boolean).join(' @ ')}
                         </p>
                       )}
                     </div>
                     {c.secteur && (
-                      <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:20, background:'#0E111610', color:'#3A3D40', flexShrink:0 }}>{c.secteur}</span>
+                      <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:20, background:'#0E111610', color:'var(--text-body)', flexShrink:0 }}>{c.secteur}</span>
                     )}
                   </div>
 
                   {/* Infos */}
-                  <div style={{ display:'flex', flexDirection:'column', gap:5, marginBottom:12, fontSize:12, color:'#6B6F76' }}>
+                  <div style={{ display:'flex', flexDirection:'column', gap:5, marginBottom:12, fontSize:12, color:'var(--text-muted)' }}>
                     {c.date_rencontre && (
                       <p>📅 {lang==='fr'?'Rencontré le':'Met on'} {formatDate(c.date_rencontre, lang)}
-                        {jDep !== null && <span style={{ color:'#6B6F76' }}> · {jDep}j</span>}
+                        {jDep !== null && <span style={{ color:'var(--text-muted)' }}> · {jDep}j</span>}
                       </p>
                     )}
                     {ctx && <p>📍 {lang==='fr'?ctx.fr:ctx.en}</p>}
@@ -515,12 +515,12 @@ export default function Reseau() {
                     {c.linkedin_url && (
                       <a href={c.linkedin_url.startsWith('http')?c.linkedin_url:`https://${c.linkedin_url}`}
                         target="_blank" rel="noreferrer"
-                        style={{ padding:'6px 12px', background:'#0E111612', border:`1px solid ${'#0E1116'}25`, borderRadius:8, color:'#3A3D40', fontSize:12, fontWeight:600, textDecoration:'none' }}>
+                        style={{ padding:'6px 12px', background:'#0E111612', border:`1px solid ${'#0E1116'}25`, borderRadius:8, color:'var(--text-body)', fontSize:12, fontWeight:600, textDecoration:'none' }}>
                         LinkedIn →
                       </a>
                     )}
                     <button onClick={()=>ouvrirEdition(c)}
-                      style={{ padding:'6px 10px', background:'#0E111608', border:'1px solid #EBEBE9', borderRadius:8, color:'#6B6F76', fontSize:13, cursor:'pointer' }}>✏️</button>
+                      style={{ padding:'6px 10px', background:'#0E111608', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:13, cursor:'pointer' }}>✏️</button>
                     <button onClick={()=>supprimer(c.id)} disabled={deleting===c.id}
                       style={{ padding:'6px 10px', background:'#DC262608', border:`1px solid ${'#DC2626'}20`, borderRadius:8, color:'#DC2626', fontSize:13, cursor:deleting===c.id?'not-allowed':'pointer', opacity:deleting===c.id?0.5:1 }}>🗑</button>
                   </div>
@@ -532,20 +532,20 @@ export default function Reseau() {
 
         {/* ── Stats réseau ── */}
         {contacts.length > 0 && (
-          <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'20px 22px', marginBottom:20 }}>
-            <p style={{ fontSize:14, fontWeight:700, color:'#0E1116', marginBottom:16 }}>
+          <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'20px 22px', marginBottom:20 }}>
+            <p style={{ fontSize:14, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>
               📊 {lang==='fr'?'Ton réseau au Canada':'Your network in Canada'}
             </p>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(140px, 1fr))', gap:12 }}>
               {[
-                { val:contacts.length,  label:lang==='fr'?'contacts':'contacts',          color:'#3A3D40'   },
-                { val:secteursDiff,     label:lang==='fr'?'secteurs différents':'sectors', color:'#6B6F76'   },
-                { val:plusRecent ? `${plusRecent.prenom}` : '—', label:lang==='fr'?'contact récent':'latest contact', color:'#3A3D40', small:true },
-                { val:prochainRapp ? `J-${prochainRapp.jAvant}` : '—', label:lang==='fr'?'prochain rappel':'next reminder', color:'#9A9D9F' },
+                { val:contacts.length,  label:lang==='fr'?'contacts':'contacts',          color:'var(--text-body)'   },
+                { val:secteursDiff,     label:lang==='fr'?'secteurs différents':'sectors', color:'var(--text-muted)'   },
+                { val:plusRecent ? `${plusRecent.prenom}` : '—', label:lang==='fr'?'contact récent':'latest contact', color:'var(--text-body)', small:true },
+                { val:prochainRapp ? `J-${prochainRapp.jAvant}` : '—', label:lang==='fr'?'prochain rappel':'next reminder', color:'var(--text-faint)' },
               ].map((s,i) => (
-                <div key={i} style={{ background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:10, padding:'12px 14px' }}>
+                <div key={i} style={{ background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, padding:'12px 14px' }}>
                   <p style={{ fontSize:s.small?16:24, fontWeight:700, color:s.color, marginBottom:3 }}>{s.val}</p>
-                  <p style={{ fontSize:11, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.5 }}>{s.label}</p>
+                  <p style={{ fontSize:11, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.5 }}>{s.label}</p>
                 </div>
               ))}
             </div>
@@ -557,13 +557,13 @@ export default function Reseau() {
           <div style={{ display:'flex', gap:12, padding:'14px 16px', background:'#0E111606', border:`1px solid ${'#0E1116'}18`, borderRadius:12 }}>
             <span style={{ fontSize:20 }}>💡</span>
             <div style={{ flex:1 }}>
-              <p style={{ fontSize:13, color:'#0E1116', lineHeight:1.6, marginBottom:8 }}>
+              <p style={{ fontSize:13, color:'var(--text-h1)', lineHeight:1.6, marginBottom:8 }}>
                 {lang==='fr'
                   ? `Conseil : participe à un événement networking dans ta ville pour agrandir ton réseau.`
                   : `Tip: attend a networking event in your city to grow your network.`}
               </p>
               <a href={lienEvent} target="_blank" rel="noreferrer"
-                style={{ fontSize:12, color:'#3A3D40', fontWeight:600, textDecoration:'none' }}>
+                style={{ fontSize:12, color:'var(--text-body)', fontWeight:600, textDecoration:'none' }}>
                 🔗 {lang==='fr'?`Événements networking ${villeProfile||'Canada'} →`:`Networking events ${villeProfile||'Canada'} →`}
               </a>
             </div>

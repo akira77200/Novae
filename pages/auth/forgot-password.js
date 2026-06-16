@@ -38,7 +38,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
 
         {/* Logo */}
@@ -46,19 +46,19 @@ export default function ForgotPassword() {
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0E1116', letterSpacing: -0.3, marginBottom: 6 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-h1)', letterSpacing: -0.3, marginBottom: 6 }}>
             {lang === 'fr' ? 'Mot de passe oublié' : 'Forgot password'}
           </h1>
-          <p style={{ fontSize: 14, color: '#6B6F76' }}>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>
             {lang === 'fr' ? 'Saisis ton email pour recevoir un lien de réinitialisation.' : 'Enter your email to receive a reset link.'}
           </p>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '28px 28px 24px' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '28px 28px 24px' }}>
 
           {!sent ? (
             <form onSubmit={envoyerLien}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7 }}>
                 {lang === 'fr' ? 'Adresse email' : 'Email address'}
               </label>
               <input
@@ -68,7 +68,7 @@ export default function ForgotPassword() {
                 required
                 placeholder="ton@email.com"
                 autoComplete="email"
-                style={{ width: '100%', padding: '11px 14px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116', fontSize: 15, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark', marginBottom: 20 }}
+                style={{ width: '100%', padding: '11px 14px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)', fontSize: 15, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark', marginBottom: 20 }}
               />
               <button
                 type="submit"
@@ -82,20 +82,20 @@ export default function ForgotPassword() {
           ) : (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 40, marginBottom: 14 }}>📧</div>
-              <p style={{ fontSize: 16, fontWeight: 700, color: '#0E1116', marginBottom: 12 }}>
+              <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 12 }}>
                 {lang === 'fr' ? 'Email envoyé !' : 'Email sent!'}
               </p>
-              <div style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.8, marginBottom: 20, textAlign: 'left', padding: '14px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 10 }}>
+              <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.8, marginBottom: 20, textAlign: 'left', padding: '14px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 10 }}>
                 {lang === 'fr' ? (
                   <>
-                    <p style={{ margin: '0 0 6px' }}>✅ Le lien est valide pendant <strong style={{ color: '#0E1116' }}>60 minutes</strong>.</p>
-                    <p style={{ margin: '0 0 6px' }}>📬 Vérifie ta boîte de réception et tes <strong style={{ color: '#0E1116' }}>spams</strong>.</p>
+                    <p style={{ margin: '0 0 6px' }}>✅ Le lien est valide pendant <strong style={{ color: 'var(--text-h1)' }}>60 minutes</strong>.</p>
+                    <p style={{ margin: '0 0 6px' }}>📬 Vérifie ta boîte de réception et tes <strong style={{ color: 'var(--text-h1)' }}>spams</strong>.</p>
                     <p style={{ margin: 0 }}>⏱ Si tu ne reçois rien dans 5 minutes, vérifie que l'email saisi est correct.</p>
                   </>
                 ) : (
                   <>
-                    <p style={{ margin: '0 0 6px' }}>✅ The link is valid for <strong style={{ color: '#0E1116' }}>60 minutes</strong>.</p>
-                    <p style={{ margin: '0 0 6px' }}>📬 Check your inbox and <strong style={{ color: '#0E1116' }}>spam</strong> folder.</p>
+                    <p style={{ margin: '0 0 6px' }}>✅ The link is valid for <strong style={{ color: 'var(--text-h1)' }}>60 minutes</strong>.</p>
+                    <p style={{ margin: '0 0 6px' }}>📬 Check your inbox and <strong style={{ color: 'var(--text-h1)' }}>spam</strong> folder.</p>
                     <p style={{ margin: 0 }}>⏱ If you don't receive anything in 5 minutes, check that the email is correct.</p>
                   </>
                 )}
@@ -114,7 +114,7 @@ export default function ForgotPassword() {
           )}
 
           <div style={{ textAlign: 'center', marginTop: 20 }}>
-            <Link href="/auth/login" style={{ fontSize: 13, color: '#3A3D40', textDecoration: 'none', fontWeight: 500 }}>
+            <Link href="/auth/login" style={{ fontSize: 13, color: 'var(--text-body)', textDecoration: 'none', fontWeight: 500 }}>
               ← {lang === 'fr' ? 'Retour à la connexion' : 'Back to login'}
             </Link>
           </div>

@@ -80,35 +80,35 @@ export default function Profile() {
   }
 
   const jours = form.date_arrivee ? Math.max(0, Math.floor((Date.now()-new Date(form.date_arrivee))/86400000)) : null
-  const inp = {width:'100%',padding:'11px 14px',background:'#F7F7F5',border:'1px solid #EBEBE9',borderRadius:10,color:'#0E1116',fontSize:14,outline:'none',boxSizing:'border-box',colorScheme:'dark'}
-  const lbl = {display:'block',fontSize:11,fontWeight:600,color:'#6B6F76',textTransform:'uppercase',letterSpacing:0.8,marginBottom:7,marginTop:18}
+  const inp = {width:'100%',padding:'11px 14px',background:'var(--bg-subtle)',border:'1px solid var(--border)',borderRadius:10,color:'var(--text-h1)',fontSize:14,outline:'none',boxSizing:'border-box',colorScheme:'dark'}
+  const lbl = {display:'block',fontSize:11,fontWeight:600,color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:0.8,marginBottom:7,marginTop:18}
   const chip = (active) => ({padding:'7px 14px',borderRadius:20,border:`1px solid ${active?'#0E111660':'#EBEBE9'}`,background:active?'#0E111618':'transparent',color:active?'#3A3D40':'#6B6F76',fontSize:13,cursor:'pointer'})
 
   if (authLoading || profileLoading) return (
-    <div style={{minHeight:'100vh',background:'#FAFAF9',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{minHeight:'100vh',background:'var(--bg-page)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'system-ui,sans-serif'}}>
       <div style={{textAlign:'center'}}>
         <div style={{width:40,height:40,borderRadius:10,background:'#0E1116',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,fontWeight:800,color:'#fff',margin:'0 auto 14px'}}>N</div>
-        <p style={{color:'#6B6F76',fontSize:14}}>{lang === 'fr' ? 'Chargement du profil...' : 'Loading profile...'}</p>
+        <p style={{color:'var(--text-muted)',fontSize:14}}>{lang === 'fr' ? 'Chargement du profil...' : 'Loading profile...'}</p>
       </div>
     </div>
   )
 
   return (
-    <div style={{minHeight:'100vh',background:'#FAFAF9',color:'#0E1116',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{minHeight:'100vh',background:'var(--bg-page)',color:'var(--text-h1)',fontFamily:'system-ui,sans-serif'}}>
       
       <main style={{maxWidth:640,margin:'0 auto',padding:'36px 20px 80px'}}>
         <div style={{display:'flex',alignItems:'center',gap:18,marginBottom:32}}>
-          <div style={{width:60,height:60,borderRadius:'50%',background:'#0E111620',border:`2px solid ${'#0E1116'}40`,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:22,color:'#3A3D40',flexShrink:0}}>
+          <div style={{width:60,height:60,borderRadius:'50%',background:'#0E111620',border:`2px solid ${'#0E1116'}40`,display:'flex',alignItems:'center',justifyContent:'center',fontWeight:800,fontSize:22,color:'var(--text-body)',flexShrink:0}}>
             {(form.full_name||user?.email||'U')[0].toUpperCase()}
           </div>
           <div>
-            <h1 style={{fontSize:20,fontWeight:700,color:'#0E1116',marginBottom:4}}>{form.full_name||user?.email}</h1>
-            <p style={{fontSize:13,color:'#6B6F76'}}>{user?.email}{jours!==null&&` · J+${jours}`}</p>
+            <h1 style={{fontSize:20,fontWeight:700,color:'var(--text-h1)',marginBottom:4}}>{form.full_name||user?.email}</h1>
+            <p style={{fontSize:13,color:'var(--text-muted)'}}>{user?.email}{jours!==null&&` · J+${jours}`}</p>
           </div>
         </div>
 
-        <div style={{background:'#FFFFFF',border:'1px solid #EBEBE9',borderRadius:16,padding:'24px'}}>
-          <p style={{fontSize:15,fontWeight:600,color:'#0E1116',marginBottom:16}}>{lang==='fr'?'Mes informations':'My Information'}</p>
+        <div style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:16,padding:'24px'}}>
+          <p style={{fontSize:15,fontWeight:600,color:'var(--text-h1)',marginBottom:16}}>{lang==='fr'?'Mes informations':'My Information'}</p>
 
           <label style={lbl}>{lang==='fr'?'Nom complet':'Full name'}</label>
           <input value={form.full_name} onChange={e=>set('full_name',e.target.value)} style={inp}/>
@@ -139,7 +139,7 @@ export default function Profile() {
           <input value={form.programme} onChange={e=>set('programme',e.target.value)} placeholder="Informatique, Gestion..." style={inp}/>
 
           {error&&<div style={{padding:'10px 14px',background:'#DC262612',border:`1px solid ${'#DC2626'}30`,borderRadius:9,color:'#DC2626',fontSize:13,marginTop:16}}>{error}</div>}
-          {saved&&<div style={{padding:'10px 14px',background:'#3A3D4012',border:`1px solid ${'#3A3D40'}30`,borderRadius:9,color:'#3A3D40',fontSize:13,marginTop:16}}>✓ {lang==='fr'?'Profil sauvegardé':'Profile saved'}</div>}
+          {saved&&<div style={{padding:'10px 14px',background:'#3A3D4012',border:`1px solid ${'#3A3D40'}30`,borderRadius:9,color:'var(--text-body)',fontSize:13,marginTop:16}}>✓ {lang==='fr'?'Profil sauvegardé':'Profile saved'}</div>}
 
           <button onClick={sauvegarder} disabled={saving} style={{width:'100%',padding:'12px',background:'#0E1116',border:'none',borderRadius:10,color:'#fff',fontWeight:600,fontSize:15,cursor:saving?'not-allowed':'pointer',opacity:saving?0.7:1,marginTop:22}}>
             {saving?'...':(lang==='fr'?'💾 Sauvegarder':'💾 Save')}
@@ -147,7 +147,7 @@ export default function Profile() {
         </div>
 
         <div style={{marginTop:16,textAlign:'center'}}>
-          <button onClick={logout} style={{padding:'10px 24px',background:'transparent',border:'1px solid #EBEBE9',borderRadius:10,color:'#6B6F76',fontSize:14,cursor:'pointer'}}>
+          <button onClick={logout} style={{padding:'10px 24px',background:'transparent',border:'1px solid var(--border)',borderRadius:10,color:'var(--text-muted)',fontSize:14,cursor:'pointer'}}>
             {lang==='fr'?'Déconnexion':'Logout'}
           </button>
         </div>

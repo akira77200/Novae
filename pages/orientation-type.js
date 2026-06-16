@@ -176,22 +176,22 @@ export default function OrientationType() {
   ]
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
 
       <main style={{ maxWidth: 820, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         {/* Header */}
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 4 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--text-h1)', letterSpacing: -0.5, marginBottom: 4 }}>
           🏛️ {lang === 'fr' ? 'Université ou Collège ?' : 'University or College?'}
         </h1>
-        <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 28, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 28, lineHeight: 1.6 }}>
           {lang === 'fr'
             ? 'Le système canadien d\'enseignement supérieur expliqué — et lequel te convient le mieux.'
             : 'Canada\'s post-secondary system explained — and which one fits you best.'}
         </p>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 12, padding: 4 }}>
+        <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 12, padding: 4 }}>
           {TABS.map(tab => (
             <button key={tab.id} onClick={() => setSection(tab.id)}
               style={{ flex: 1, padding: '9px 8px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: section === tab.id ? '#0E1116' : 'transparent', color: section === tab.id ? '#fff' : '#6B6F76' }}>
@@ -206,15 +206,15 @@ export default function OrientationType() {
             {/* Intro */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
               {[
-                { emoji:'🏛️', titre:'Université', titre_en:'University', desc: lang==='fr'?'Formation théorique et scientifique. Nécessaire pour les professions libérales.':'Theoretical and scientific training. Required for liberal professions.', color:'#6B6F76' },
-                { emoji:'🔧', titre:'Collège / Cégep', titre_en:'College / CEGEP', desc: lang==='fr'?'Formation technique et pratique. Directement orienté emploi ou passerelle univ.':'Technical and practical training. Employment-focused or university bridge.', color:'#0E1116' },
+                { emoji:'🏛️', titre:'Université', titre_en:'University', desc: lang==='fr'?'Formation théorique et scientifique. Nécessaire pour les professions libérales.':'Theoretical and scientific training. Required for liberal professions.', color:'var(--text-muted)' },
+                { emoji:'🔧', titre:'Collège / Cégep', titre_en:'College / CEGEP', desc: lang==='fr'?'Formation technique et pratique. Directement orienté emploi ou passerelle univ.':'Technical and practical training. Employment-focused or university bridge.', color:'var(--text-h1)' },
               ].map((c, i) => (
-                <div key={i} style={{ padding: '16px', background: '#FFFFFF', border: `1px solid ${c.color}30`, borderRadius: 14 }}>
+                <div key={i} style={{ padding: '16px', background: 'var(--bg-card)', border: `1px solid ${c.color}30`, borderRadius: 14 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
                     <span style={{ fontSize: 22 }}>{c.emoji}</span>
                     <p style={{ fontSize: 15, fontWeight: 700, color: c.color }}>{lang === 'fr' ? c.titre : c.titre_en}</p>
                   </div>
-                  <p style={{ fontSize: 12, color: '#6B6F76', lineHeight: 1.6 }}>{c.desc}</p>
+                  <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6 }}>{c.desc}</p>
                 </div>
               ))}
             </div>
@@ -226,10 +226,10 @@ export default function OrientationType() {
                   <tr>
                     {[
                       { label: lang==='fr'?'Critère':'Criterion', align:'left' },
-                      { label: '🏛️ ' + (lang==='fr'?'Université':'University'), align:'center', color:'#6B6F76' },
-                      { label: '🔧 ' + (lang==='fr'?'Collège':'College'), align:'center', color:'#0E1116' },
+                      { label: '🏛️ ' + (lang==='fr'?'Université':'University'), align:'center', color:'var(--text-muted)' },
+                      { label: '🔧 ' + (lang==='fr'?'Collège':'College'), align:'center', color:'var(--text-h1)' },
                     ].map((h, i) => (
-                      <th key={i} style={{ padding: '11px 14px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, textAlign: h.align, color: h.color || '#6B6F76', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                      <th key={i} style={{ padding: '11px 14px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, textAlign: h.align, color: h.color || '#6B6F76', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                         {h.label}
                       </th>
                     ))}
@@ -238,13 +238,13 @@ export default function OrientationType() {
                 <tbody>
                   {TABLEAU.map((row, i) => (
                     <tr key={i} style={{ background: row.highlight ? `${'#0E1116'}04` : i % 2 === 0 ? '#FFFFFF' : 'transparent' }}>
-                      <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, fontWeight: 600, color: '#0E1116' }}>
+                      <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, fontWeight: 600, color: 'var(--text-h1)' }}>
                         {row.aspect[lang] || row.aspect.fr}
                       </td>
-                      <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: '#6B6F76', fontWeight: row.highlight ? 600 : 400 }}>
+                      <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: 'var(--text-muted)', fontWeight: row.highlight ? 600 : 400 }}>
                         {row.univ[lang] || row.univ.fr}
                       </td>
-                      <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: '#0E1116', fontWeight: row.highlight ? 600 : 400 }}>
+                      <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: 'var(--text-h1)', fontWeight: row.highlight ? 600 : 400 }}>
                         {row.college[lang] || row.college.fr}
                       </td>
                     </tr>
@@ -255,7 +255,7 @@ export default function OrientationType() {
 
             {/* CTA quiz */}
             <div style={{ padding: '18px 22px', background: `${'#0E1116'}08`, border: `1px solid ${'#0E1116'}20`, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-              <p style={{ fontSize: 14, color: '#0E1116', fontWeight: 600 }}>
+              <p style={{ fontSize: 14, color: 'var(--text-h1)', fontWeight: 600 }}>
                 {lang === 'fr' ? 'Lequel te convient le mieux ?' : 'Which one fits you best?'}
               </p>
               <button onClick={() => setSection('quiz')}
@@ -273,17 +273,17 @@ export default function OrientationType() {
               <>
                 {/* Progression */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-                  <div style={{ flex: 1, height: 5, background: '#EBEBE9', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ flex: 1, height: 5, background: 'var(--border)', borderRadius: 3, overflow: 'hidden' }}>
                     <div style={{ width: `${(progression / QUESTIONS.length) * 100}%`, height: '100%', background: '#0E1116', borderRadius: 3, transition: 'width 0.3s' }} />
                   </div>
-                  <span style={{ fontSize: 12, color: '#6B6F76', fontWeight: 600, whiteSpace: 'nowrap' }}>{progression}/{QUESTIONS.length}</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>{progression}/{QUESTIONS.length}</span>
                 </div>
 
                 {/* Questions répondues — résumé compact */}
                 {progression > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
                     {QUESTIONS.slice(0, progression).map((q, i) => (
-                      <span key={i} style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, background: `${'#0E1116'}12`, color: '#3A3D40', border: `1px solid ${'#0E1116'}20` }}>
+                      <span key={i} style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, background: `${'#0E1116'}12`, color: 'var(--text-body)', border: `1px solid ${'#0E1116'}20` }}>
                         ✓ {lang === 'fr' ? q.options[repQ[q.id]]?.fr : q.options[repQ[q.id]]?.en}
                       </span>
                     ))}
@@ -294,23 +294,23 @@ export default function OrientationType() {
                 {QUESTIONS[qActuelle] && (() => {
                   const q = QUESTIONS[qActuelle]
                   return (
-                    <div style={{ background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 16, padding: '24px' }}>
-                      <p style={{ fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 14 }}>
+                    <div style={{ background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 16, padding: '24px' }}>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.7, marginBottom: 14 }}>
                         {lang === 'fr' ? `Question ${qActuelle + 1} sur ${QUESTIONS.length}` : `Question ${qActuelle + 1} of ${QUESTIONS.length}`}
                       </p>
-                      <p style={{ fontSize: 17, fontWeight: 700, color: '#0E1116', lineHeight: 1.5, marginBottom: 22 }}>
+                      <p style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-h1)', lineHeight: 1.5, marginBottom: 22 }}>
                         {q.q[lang] || q.q.fr}
                       </p>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                         {q.options.map((opt, i) => (
                           <button key={i} onClick={() => repondre(q.id, i, opt.score)}
-                            style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 16px', background: '#F7F7F5', border: `1px solid ${'#EBEBE9'}`, borderRadius: 11, cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s' }}
+                            style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '13px 16px', background: 'var(--bg-subtle)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 11, cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s' }}
                             onMouseEnter={e => { e.currentTarget.style.borderColor = '#0E111650'; e.currentTarget.style.background = `${'#0E1116'}08` }}
                             onMouseLeave={e => { e.currentTarget.style.borderColor = '#EBEBE9'; e.currentTarget.style.background = '#F7F7F5' }}>
-                            <div style={{ width: 30, height: 30, borderRadius: '50%', background: `${'#0E1116'}12`, border: `1px solid ${'#0E1116'}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, color: '#3A3D40', flexShrink: 0 }}>
+                            <div style={{ width: 30, height: 30, borderRadius: '50%', background: `${'#0E1116'}12`, border: `1px solid ${'#0E1116'}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, color: 'var(--text-body)', flexShrink: 0 }}>
                               {String.fromCharCode(65 + i)}
                             </div>
-                            <p style={{ fontSize: 14, color: '#0E1116', lineHeight: 1.5 }}>{lang === 'fr' ? opt.fr : opt.en}</p>
+                            <p style={{ fontSize: 14, color: 'var(--text-h1)', lineHeight: 1.5 }}>{lang === 'fr' ? opt.fr : opt.en}</p>
                           </button>
                         ))}
                       </div>
@@ -322,18 +322,18 @@ export default function OrientationType() {
               /* ── RÉSULTAT ── */
               <div>
                 {/* Résultat principal */}
-                <div style={{ textAlign: 'center', padding: '32px 24px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 18, marginBottom: 24 }}>
+                <div style={{ textAlign: 'center', padding: '32px 24px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 18, marginBottom: 24 }}>
                   <p style={{ fontSize: 48, marginBottom: 12 }}>
                     {resultat.recommande === 'univ' ? '🏛️' : resultat.recommande === 'college' ? '🔧' : '⚖️'}
                   </p>
-                  <p style={{ fontSize: 22, fontWeight: 800, color: '#0E1116', marginBottom: 8 }}>
+                  <p style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-h1)', marginBottom: 8 }}>
                     {resultat.recommande === 'univ'
                       ? (lang === 'fr' ? "L'université correspond à ton profil" : "University fits your profile")
                       : resultat.recommande === 'college'
                       ? (lang === 'fr' ? "Le collège correspond à ton profil" : "College fits your profile")
                       : (lang === 'fr' ? "Les deux options te conviennent" : "Both options suit you")}
                   </p>
-                  <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.6, maxWidth: 500, margin: '0 auto 24px' }}>
+                  <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: 500, margin: '0 auto 24px' }}>
                     {resultat.recommande === 'univ'
                       ? (lang === 'fr' ? "Ton profil — objectifs, budget et secteur — correspond mieux à un parcours universitaire." : "Your profile — goals, budget and sector — better aligns with a university path.")
                       : resultat.recommande === 'college'
@@ -344,15 +344,15 @@ export default function OrientationType() {
                   {/* Barres comparatives */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 400, margin: '0 auto 24px' }}>
                     {[
-                      { label: lang === 'fr' ? '🏛️ Université' : '🏛️ University', pct: resultat.pctUniv,   color: '#6B6F76' },
-                      { label: lang === 'fr' ? '🔧 Collège'    : '🔧 College',    pct: resultat.pctCol,    color: '#0E1116' },
+                      { label: lang === 'fr' ? '🏛️ Université' : '🏛️ University', pct: resultat.pctUniv,   color: 'var(--text-muted)' },
+                      { label: lang === 'fr' ? '🔧 Collège'    : '🔧 College',    pct: resultat.pctCol,    color: 'var(--text-h1)' },
                     ].map((b, i) => (
                       <div key={i}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                          <span style={{ fontSize: 13, color: '#0E1116', fontWeight: 600 }}>{b.label}</span>
+                          <span style={{ fontSize: 13, color: 'var(--text-h1)', fontWeight: 600 }}>{b.label}</span>
                           <span style={{ fontSize: 13, color: b.color, fontWeight: 700 }}>{b.pct}%</span>
                         </div>
-                        <div style={{ height: 8, background: '#EBEBE9', borderRadius: 4, overflow: 'hidden' }}>
+                        <div style={{ height: 8, background: 'var(--border)', borderRadius: 4, overflow: 'hidden' }}>
                           <div style={{ width: `${b.pct}%`, height: '100%', background: b.color, borderRadius: 4, transition: 'width 0.6s ease' }} />
                         </div>
                       </div>
@@ -361,7 +361,7 @@ export default function OrientationType() {
 
                   <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
                     <button onClick={resetQuiz}
-                      style={{ padding: '10px 20px', background: 'transparent', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                      style={{ padding: '10px 20px', background: 'transparent', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                       ↺ {lang === 'fr' ? 'Recommencer' : 'Restart'}
                     </button>
                     <a href="/bourses"
@@ -370,7 +370,7 @@ export default function OrientationType() {
                     </a>
                     {(resultat.recommande === 'college' || resultat.recommande === 'egal') && (
                       <button onClick={() => setSection('passerelles')}
-                        style={{ padding: '10px 20px', background: `${'#0E1116'}15`, border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: '#3A3D40', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                        style={{ padding: '10px 20px', background: `${'#0E1116'}15`, border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: 'var(--text-body)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                         🔄 {lang === 'fr' ? 'Voir les passerelles' : 'See bridges'}
                       </button>
                     )}
@@ -378,8 +378,8 @@ export default function OrientationType() {
                 </div>
 
                 {/* Raisonnement détaillé */}
-                <div style={{ background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 14, padding: '18px 20px' }}>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116', marginBottom: 14 }}>
+                <div style={{ background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 14, padding: '18px 20px' }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 14 }}>
                     💡 {lang === 'fr' ? 'Pourquoi cette recommandation ?' : 'Why this recommendation?'}
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -388,11 +388,11 @@ export default function OrientationType() {
                       if (!rep) return null
                       const fav = rep.score.univ > rep.score.college ? '🏛️' : rep.score.college > rep.score.univ ? '🔧' : '⚖️'
                       return (
-                        <div key={q.id} style={{ display: 'flex', gap: 10, padding: '9px 12px', background: '#F7F7F5', borderRadius: 9 }}>
+                        <div key={q.id} style={{ display: 'flex', gap: 10, padding: '9px 12px', background: 'var(--bg-subtle)', borderRadius: 9 }}>
                           <span style={{ flexShrink: 0, fontSize: 14 }}>{fav}</span>
                           <div>
-                            <p style={{ fontSize: 12, color: '#6B6F76', marginBottom: 2 }}>{q.q[lang] || q.q.fr}</p>
-                            <p style={{ fontSize: 13, color: '#0E1116', fontWeight: 500 }}>{lang === 'fr' ? rep.fr : rep.en}</p>
+                            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 2 }}>{q.q[lang] || q.q.fr}</p>
+                            <p style={{ fontSize: 13, color: 'var(--text-h1)', fontWeight: 500 }}>{lang === 'fr' ? rep.fr : rep.en}</p>
                           </div>
                         </div>
                       )
@@ -407,7 +407,7 @@ export default function OrientationType() {
         {/* ══════════ PASSERELLES ══════════ */}
         {section === 'passerelles' && (
           <>
-            <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 24, lineHeight: 1.7 }}>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 24, lineHeight: 1.7 }}>
               {lang === 'fr'
                 ? '💡 Au Canada, les systèmes sont perméables : commencer par un collège ne t\'empêche pas d\'aller à l\'université — et vice versa.'
                 : '💡 In Canada, the systems are permeable: starting at college doesn\'t prevent you from going to university — and vice versa.'}
@@ -415,19 +415,19 @@ export default function OrientationType() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {PASSERELLES.map((p, i) => (
-                <div key={i} style={{ background: '#FFFFFF', border: `1px solid ${p.couleur}30`, borderRadius: 16, overflow: 'hidden' }}>
+                <div key={i} style={{ background: 'var(--bg-card)', border: `1px solid ${p.couleur}30`, borderRadius: 16, overflow: 'hidden' }}>
                   <div style={{ height: 4, background: p.couleur }} />
                   <div style={{ padding: '20px 22px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                       <span style={{ fontSize: 28 }}>{p.emoji}</span>
-                      <p style={{ fontSize: 16, fontWeight: 800, color: '#0E1116' }}>{p.titre[lang] || p.titre.fr}</p>
+                      <p style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-h1)' }}>{p.titre[lang] || p.titre.fr}</p>
                     </div>
-                    <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.7, marginBottom: 14 }}>
+                    <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 14 }}>
                       {p.desc[lang] || p.desc.fr}
                     </p>
 
                     {/* Exemples */}
-                    <p style={{ fontSize: 11, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 8 }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 8 }}>
                       {lang === 'fr' ? 'Exemples' : 'Examples'}
                     </p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 16 }}>
@@ -448,9 +448,9 @@ export default function OrientationType() {
             </div>
 
             {/* Tableau comparatif des coûts */}
-            <div style={{ marginTop: 24, background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 14, overflow: 'hidden' }}>
+            <div style={{ marginTop: 24, background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 14, overflow: 'hidden' }}>
               <div style={{ padding: '14px 18px', borderBottom: `1px solid ${'#EBEBE9'}` }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116' }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)' }}>
                   💰 {lang === 'fr' ? 'Comparaison des coûts : université directe vs passerelle' : 'Cost comparison: direct university vs bridge path'}
                 </p>
               </div>
@@ -461,10 +461,10 @@ export default function OrientationType() {
                       {[
                         { label: lang === 'fr' ? 'Parcours' : 'Path', align: 'left' },
                         { label: lang === 'fr' ? 'Durée' : 'Duration', align: 'center' },
-                        { label: lang === 'fr' ? 'Frais de scolarité' : 'Tuition', align: 'center', color: '#6B6F76' },
-                        { label: lang === 'fr' ? 'Économie estimée' : 'Est. savings', align: 'center', color: '#3A3D40' },
+                        { label: lang === 'fr' ? 'Frais de scolarité' : 'Tuition', align: 'center', color: 'var(--text-muted)' },
+                        { label: lang === 'fr' ? 'Économie estimée' : 'Est. savings', align: 'center', color: 'var(--text-body)' },
                       ].map((h, i) => (
-                        <th key={i} style={{ padding: '10px 14px', background: '#F7F7F5', border: `1px solid ${'#EBEBE9'}`, textAlign: h.align, color: h.color || '#6B6F76', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                        <th key={i} style={{ padding: '10px 14px', background: 'var(--bg-subtle)', border: `1px solid ${'#EBEBE9'}`, textAlign: h.align, color: h.color || '#6B6F76', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                           {h.label}
                         </th>
                       ))}
@@ -476,23 +476,23 @@ export default function OrientationType() {
                       { path: { fr: '⚡ AEC seule (6–18 mois)', en: '⚡ AEC only (6–18 months)' }, duree: '6–18 mois', frais: '5 000–12 000 $ total', savings: lang === 'fr' ? '~80 000 $ vs univ. 4 ans' : '~$80,000 vs 4yr univ.', highlight: false },
                     ].map((r, i) => (
                       <tr key={i} style={{ background: r.highlight ? `${'#0E1116'}05` : 'transparent' }}>
-                        <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, color: '#0E1116', fontWeight: r.highlight ? 600 : 400 }}>{r.path[lang] || r.path.fr}</td>
-                        <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: '#6B6F76' }}>{r.duree}</td>
-                        <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: '#6B6F76', fontWeight: 500 }}>{r.frais}</td>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, color: 'var(--text-h1)', fontWeight: r.highlight ? 600 : 400 }}>{r.path[lang] || r.path.fr}</td>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: 'var(--text-muted)' }}>{r.duree}</td>
+                        <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: 'var(--text-muted)', fontWeight: 500 }}>{r.frais}</td>
                         <td style={{ padding: '12px 14px', border: `1px solid ${'#EBEBE9'}`, textAlign: 'center', color: r.savings === '—' ? '#6B6F76' : '#3A3D40', fontWeight: r.savings !== '—' ? 600 : 400 }}>{r.savings}</td>
                       </tr>
                     ))}
                   </thead>
                 </table>
               </div>
-              <p style={{ fontSize: 11, color: '#6B6F76', padding: '10px 14px', fontStyle: 'italic' }}>
+              <p style={{ fontSize: 11, color: 'var(--text-muted)', padding: '10px 14px', fontStyle: 'italic' }}>
                 * {lang === 'fr' ? 'Estimations 2025 pour étudiants internationaux. Varie selon l\'université et le programme.' : '* 2025 estimates for international students. Varies by university and program.'}
               </p>
             </div>
 
             {/* Conseil final */}
             <div style={{ marginTop: 24, padding: '16px 20px', background: `${'#0E1116'}08`, border: `1px solid ${'#0E1116'}20`, borderRadius: 14 }}>
-              <p style={{ fontSize: 14, color: '#3A3D40', lineHeight: 1.7 }}>
+              <p style={{ fontSize: 14, color: 'var(--text-body)', lineHeight: 1.7 }}>
                 {lang === 'fr' ? "Le meilleur chemin n'est pas le plus rapide — c'est celui qui correspond à ton projet de vie. Prends le temps de te renseigner auprès des conseillers d'orientation de l'université ou du collège de ton choix."
                   : "The best path isn't the fastest — it's the one that fits your life project. Take time to consult advisors at the university or college of your choice."}
               </p>

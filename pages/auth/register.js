@@ -147,22 +147,22 @@ export default function Register() {
     }
   }
 
-  const inp  = { width: '100%', padding: '11px 14px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116', fontSize: 15, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark' }
-  const lbl  = { display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
+  const inp  = { width: '100%', padding: '11px 14px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)', fontSize: 15, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark' }
+  const lbl  = { display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
   const chip = (active) => ({ padding: '7px 15px', borderRadius: 20, border: `1px solid ${active ? '#0E111660' : '#EBEBE9'}`, background: active ? '#0E111618' : 'transparent', color: active ? '#3A3D40' : '#6B6F76', fontSize: 13, cursor: 'pointer', transition: 'all 0.15s' })
 
   // ── Écran bienvenue — compte activé immédiatement ──────────────
   if (welcome) return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 420, textAlign: 'center' }}>
         <div style={{ fontSize: 52, marginBottom: 20 }}>🎉</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0E1116', marginBottom: 12 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-h1)', marginBottom: 12 }}>
           {lang === 'fr'
             ? `Bienvenue sur Novae${form.full_name.trim() ? `, ${form.full_name.trim().split(/\s+/)[0]}` : ''} !`
             : `Welcome to Novae${form.full_name.trim() ? `, ${form.full_name.trim().split(/\s+/)[0]}` : ''}!`}
         </h2>
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
-          <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.7 }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7 }}>
             {lang === 'fr'
               ? <>Ton compte est prêt. Commence par ta checklist d'arrivée et explore les guides gratuits pour tes premières démarches au Canada.</>
               : <>Your account is ready. Start with your arrival checklist and explore free guides for your first steps in Canada.</>}
@@ -177,17 +177,17 @@ export default function Register() {
 
   // ── Écran succès — confirmation email ──────────────────────────
   if (success) return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 420, textAlign: 'center' }}>
         <div style={{ fontSize: 52, marginBottom: 20 }}>📬</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#0E1116', marginBottom: 12 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-h1)', marginBottom: 12 }}>
           {lang === 'fr' ? 'Bienvenue sur Novae !' : 'Welcome to Novae!'}
         </h2>
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
-          <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.7 }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px', marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7 }}>
             {lang === 'fr'
-              ? <>Un email de confirmation a été envoyé à <strong style={{ color: '#0E1116' }}>{sentEmail}</strong>.<br />Clique sur le lien pour activer ton compte.<br /><br />Tu ne le trouves pas ? Vérifie tes <strong>spams</strong>.<br /><br />Un message de bienvenue t'attend une fois ton compte activé.</>
-              : <>A confirmation email was sent to <strong style={{ color: '#0E1116' }}>{sentEmail}</strong>.<br />Click the link to activate your account.<br /><br />Can't find it? Check your <strong>spam folder</strong>.<br /><br />A welcome message awaits you once your account is active.</>}
+              ? <>Un email de confirmation a été envoyé à <strong style={{ color: 'var(--text-h1)' }}>{sentEmail}</strong>.<br />Clique sur le lien pour activer ton compte.<br /><br />Tu ne le trouves pas ? Vérifie tes <strong>spams</strong>.<br /><br />Un message de bienvenue t'attend une fois ton compte activé.</>
+              : <>A confirmation email was sent to <strong style={{ color: 'var(--text-h1)' }}>{sentEmail}</strong>.<br />Click the link to activate your account.<br /><br />Can't find it? Check your <strong>spam folder</strong>.<br /><br />A welcome message awaits you once your account is active.</>}
           </p>
         </div>
         <Link href="/auth/login" style={{ display: 'inline-block', padding: '11px 24px', background: '#0E1116', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
@@ -198,7 +198,7 @@ export default function Register() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 460 }}>
 
         {/* Logo */}
@@ -206,7 +206,7 @@ export default function Register() {
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0E1116', letterSpacing: -0.3, marginBottom: 4 }}>{t.register_title}</h1>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-h1)', letterSpacing: -0.3, marginBottom: 4 }}>{t.register_title}</h1>
         </div>
 
         {/* Barre progression */}
@@ -216,12 +216,12 @@ export default function Register() {
           ))}
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '26px 26px 22px' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '26px 26px 22px' }}>
 
           {/* ── ÉTAPE 1 ── */}
           {step === 1 && (
             <>
-              <button onClick={handleGoogle} style={{ width: '100%', padding: '11px', borderRadius: 10, border: '1px solid #EBEBE9', background: 'transparent', color: '#0E1116', fontSize: 14, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 18 }}>
+              <button onClick={handleGoogle} style={{ width: '100%', padding: '11px', borderRadius: 10, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-h1)', fontSize: 14, fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 18 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24">
                   <path fill="#0E1116" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="#3A3D40" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -232,9 +232,9 @@ export default function Register() {
               </button>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-                <div style={{ flex: 1, height: 1, background: '#EBEBE9' }} />
-                <span style={{ fontSize: 12, color: '#6B6F76' }}>{lang === 'fr' ? 'ou' : 'or'}</span>
-                <div style={{ flex: 1, height: 1, background: '#EBEBE9' }} />
+                <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{lang === 'fr' ? 'ou' : 'or'}</span>
+                <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
               </div>
 
               <label style={lbl}>{t.register_name}</label>
@@ -257,9 +257,9 @@ export default function Register() {
                 {t.continue} →
               </button>
 
-              <p style={{ textAlign: 'center', fontSize: 13, color: '#6B6F76', marginTop: 18 }}>
+              <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--text-muted)', marginTop: 18 }}>
                 {t.register_have_account}{' '}
-                <Link href="/auth/login" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>{t.nav_login}</Link>
+                <Link href="/auth/login" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>{t.nav_login}</Link>
               </p>
             </>
           )}
@@ -341,7 +341,7 @@ export default function Register() {
               )}
 
               <div style={{ display: 'flex', gap: 8, marginTop: 22 }}>
-                <button onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 10, color: '#6B6F76', fontSize: 15, cursor: 'pointer' }}>
+                <button onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-muted)', fontSize: 15, cursor: 'pointer' }}>
                   ← {t.back}
                 </button>
                 <button onClick={submit} disabled={!step2ok || loading}
@@ -350,8 +350,8 @@ export default function Register() {
                 </button>
               </div>
 
-              <p style={{ textAlign: 'center', fontSize: 13, color: '#6B6F76', marginTop: 16 }}>
-                <Link href="/auth/register-mentor" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>{t.register_as_mentor}</Link>
+              <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--text-muted)', marginTop: 16 }}>
+                <Link href="/auth/register-mentor" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>{t.register_as_mentor}</Link>
               </p>
             </>
           )}

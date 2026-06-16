@@ -11,7 +11,7 @@ const QUIZ_DATA = {
   codes_sociaux: {
     titre: { fr: 'Codes sociaux', en: 'Social Codes' },
     emoji: '🤝',
-    color: '#0E1116',
+    color: 'var(--text-h1)',
     questions: [
       {
         q: { fr: "Au Canada, quand quelqu'un te tient la porte, tu dois :", en: "In Canada, when someone holds the door for you, you should:" },
@@ -63,7 +63,7 @@ const QUIZ_DATA = {
   hiver: {
     titre: { fr: "Survivre à l'hiver", en: 'Surviving Winter' },
     emoji: '❄️',
-    color: '#6B6F76',
+    color: 'var(--text-muted)',
     questions: [
       {
         q: { fr: "En hiver canadien (-20°C), la règle vestimentaire est :", en: "In Canadian winter (-20°C), the dressing rule is:" },
@@ -115,7 +115,7 @@ const QUIZ_DATA = {
   travail: {
     titre: { fr: 'Culture du travail', en: 'Work Culture' },
     emoji: '💼',
-    color: '#6B6F76',
+    color: 'var(--text-muted)',
     questions: [
       {
         q: { fr: "Tu arrives à un entretien d'embauche. L'heure recommandée :", en: "You're going to a job interview. The recommended arrival time:" },
@@ -167,7 +167,7 @@ const QUIZ_DATA = {
   finances: {
     titre: { fr: 'Finances et banque', en: 'Finance & Banking' },
     emoji: '💳',
-    color: '#0E1116',
+    color: 'var(--text-h1)',
     questions: [
       {
         q: { fr: "Pour construire ta cote de crédit rapidement au Canada :", en: "To build your credit score quickly in Canada:" },
@@ -224,9 +224,9 @@ const QUIZ_DATA = {
 const getPct = (score, total) => total > 0 ? Math.round((score / total) * 100) : 0
 
 const getResultat = (pct, lang) => {
-  if (pct >= 80) return { label: lang==='fr'?'Expert canadien !':'Canadian Expert!', color:'#3A3D40' }
-  if (pct >= 60) return { label: lang==='fr'?'🌟 Tu apprends vite !':'🌟 Fast learner!', color:'#6B6F76' }
-  if (pct >= 40) return { label: lang==='fr'?'📚 Continue à explorer':'📚 Keep exploring', color:'#6B6F76' }
+  if (pct >= 80) return { label: lang==='fr'?'Expert canadien !':'Canadian Expert!', color:'var(--text-body)' }
+  if (pct >= 60) return { label: lang==='fr'?'🌟 Tu apprends vite !':'🌟 Fast learner!', color:'var(--text-muted)' }
+  if (pct >= 40) return { label: lang==='fr'?'📚 Continue à explorer':'📚 Keep exploring', color:'var(--text-muted)' }
   return { label: lang==='fr'?'💡 La culture canadienne te réserve encore des surprises !':'💡 Canadian culture still has surprises for you!', color:'#DC2626' }
 }
 
@@ -319,13 +319,13 @@ export default function QuizCulture() {
 
   // ── ÉCRAN SÉLECTION ──────────────────────────────────────────
   if (ecran === 'selection') return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth:680, margin:'0 auto', padding:'36px 20px 80px' }}>
-        <h1 style={{ fontSize:26, fontWeight:800, color:'#0E1116', letterSpacing:-0.5, marginBottom:6 }}>
+        <h1 style={{ fontSize:26, fontWeight:800, color:'var(--text-h1)', letterSpacing:-0.5, marginBottom:6 }}>
           🎮 {lang==='fr'?'Quiz culture canadienne':'Canadian Culture Quiz'}
         </h1>
-        <p style={{ fontSize:14, color:'#6B6F76', marginBottom:32, lineHeight:1.6 }}>
+        <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:32, lineHeight:1.6 }}>
           {lang==='fr'
             ? 'Teste tes connaissances sur les codes sociaux, l\'hiver, le travail et les finances au Canada.'
             : 'Test your knowledge of social codes, winter, work and finances in Canada.'}
@@ -336,18 +336,18 @@ export default function QuizCulture() {
             const meilleur = scores[id]
             return (
               <button key={id} onClick={()=>demarrer(id)}
-                style={{ display:'flex', alignItems:'center', gap:16, padding:'18px 20px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, cursor:'pointer', textAlign:'left', transition:'border-color 0.15s' }}>
+                style={{ display:'flex', alignItems:'center', gap:16, padding:'18px 20px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, cursor:'pointer', textAlign:'left', transition:'border-color 0.15s' }}>
                 <div style={{ width:52, height:52, borderRadius:14, background:cat.color+'20', border:`1.5px solid ${cat.color}40`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:26, flexShrink:0 }}>
                   {cat.emoji}
                 </div>
                 <div style={{ flex:1 }}>
-                  <p style={{ fontSize:16, fontWeight:700, color:'#0E1116', marginBottom:4 }}>{cat.titre[lang]||cat.titre.fr}</p>
-                  <p style={{ fontSize:12, color:'#6B6F76' }}>{cat.questions.length} {lang==='fr'?'questions':'questions'}</p>
+                  <p style={{ fontSize:16, fontWeight:700, color:'var(--text-h1)', marginBottom:4 }}>{cat.titre[lang]||cat.titre.fr}</p>
+                  <p style={{ fontSize:12, color:'var(--text-muted)' }}>{cat.questions.length} {lang==='fr'?'questions':'questions'}</p>
                 </div>
                 {meilleur !== undefined ? (
                   <div style={{ textAlign:'right', flexShrink:0 }}>
                     <p style={{ fontSize:20, fontWeight:800, color: meilleur>=80?'#3A3D40':meilleur>=60?'#6B6F76':'#DC2626' }}>{meilleur}%</p>
-                    <p style={{ fontSize:10, color:'#6B6F76' }}>{lang==='fr'?'Meilleur score':'Best score'}</p>
+                    <p style={{ fontSize:10, color:'var(--text-muted)' }}>{lang==='fr'?'Meilleur score':'Best score'}</p>
                   </div>
                 ) : (
                   <span style={{ fontSize:12, color:cat.color, fontWeight:600, flexShrink:0 }}>
@@ -361,18 +361,18 @@ export default function QuizCulture() {
 
         {/* Badge Expert si toutes les catégories ≥ 60% */}
         {Object.keys(QUIZ_DATA).every(k => (scores[k] || 0) >= 60) && (
-          <div style={{ marginTop:24, padding:'18px 22px', background:'#F7F7F5', border:'1px solid #3A3D4040', borderRadius:14, textAlign:'center' }}>
+          <div style={{ marginTop:24, padding:'18px 22px', background:'var(--bg-subtle)', border:'1px solid #3A3D4040', borderRadius:14, textAlign:'center' }}>
             <p style={{ fontSize:28, marginBottom:8 }}>🏆</p>
-            <p style={{ fontSize:16, fontWeight:800, color:'#3A3D40', marginBottom:6 }}>
+            <p style={{ fontSize:16, fontWeight:800, color:'var(--text-body)', marginBottom:6 }}>
               {lang==='fr'?'Expert culture canadienne !':'Canadian Culture Expert!'}
             </p>
-            <p style={{ fontSize:13, color:'#6B6F76' }}>
+            <p style={{ fontSize:13, color:'var(--text-muted)' }}>
               {lang==='fr'?'Tu as complété les 4 catégories. Partage ce badge avec ta communauté !':'You completed all 4 categories. Share this badge with your community!'}
             </p>
           </div>
         )}
 
-        <p style={{ fontSize:12, color:'#6B6F76', textAlign:'center', marginTop:24 }}>
+        <p style={{ fontSize:12, color:'var(--text-muted)', textAlign:'center', marginTop:24 }}>
           {lang==='fr'?'Tes scores sont sauvegardés automatiquement.':'Your scores are saved automatically.'}
         </p>
       </main>
@@ -381,31 +381,31 @@ export default function QuizCulture() {
 
   // ── ÉCRAN QUIZ ───────────────────────────────────────────────
   if (ecran === 'quiz') return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth:640, margin:'0 auto', padding:'32px 20px 80px' }}>
 
         {/* Header */}
         <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:24 }}>
-          <button onClick={autreCategorie} style={{ padding:'6px 12px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:8, color:'#6B6F76', fontSize:12, cursor:'pointer' }}>
+          <button onClick={autreCategorie} style={{ padding:'6px 12px', background:'transparent', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:12, cursor:'pointer' }}>
             ← {lang==='fr'?'Catégories':'Categories'}
           </button>
           <div style={{ flex:1 }}>
             <p style={{ fontSize:13, fontWeight:700, color:cat.color }}>{cat.emoji} {cat.titre[lang]||cat.titre.fr}</p>
           </div>
-          <p style={{ fontSize:13, color:'#6B6F76', fontWeight:600 }}>
+          <p style={{ fontSize:13, color:'var(--text-muted)', fontWeight:600 }}>
             {qIndex+1}/{questions.length}
           </p>
         </div>
 
         {/* Barre de progression */}
-        <div style={{ height:5, background:'#EBEBE9', borderRadius:3, overflow:'hidden', marginBottom:28 }}>
+        <div style={{ height:5, background:'var(--border)', borderRadius:3, overflow:'hidden', marginBottom:28 }}>
           <div style={{ width:`${((qIndex)/(questions.length))*100}%`, height:'100%', background:cat.color, borderRadius:3, transition:'width 0.4s' }} />
         </div>
 
         {/* Question */}
         <div style={{ opacity:anim?0:1, transition:'opacity 0.18s' }}>
-          <p style={{ fontSize:18, fontWeight:700, color:'#0E1116', lineHeight:1.5, marginBottom:24 }}>
+          <p style={{ fontSize:18, fontWeight:700, color:'var(--text-h1)', lineHeight:1.5, marginBottom:24 }}>
             {qActuelle?.q?.[lang] || qActuelle?.q?.fr}
           </p>
 
@@ -443,7 +443,7 @@ export default function QuizCulture() {
           {/* Explication */}
           {montre && (
             <div style={{ padding:'14px 16px', background: choix===qActuelle.correct?'rgba(52,211,153,0.08)':'rgba(248,113,113,0.06)', border:`1px solid ${choix===qActuelle.correct?'#3A3D4030':'#DC262630'}`, borderRadius:12, marginBottom:20 }}>
-              <p style={{ fontSize:13, color:'#0E1116', lineHeight:1.7 }}>
+              <p style={{ fontSize:13, color:'var(--text-h1)', lineHeight:1.7 }}>
                 💡 {qActuelle.explication?.[lang] || qActuelle.explication?.fr}
               </p>
             </div>
@@ -465,27 +465,27 @@ export default function QuizCulture() {
 
   // ── ÉCRAN RÉSULTATS ──────────────────────────────────────────
   return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth:560, margin:'0 auto', padding:'48px 20px 80px', textAlign:'center' }}>
 
         <p style={{ fontSize:56, marginBottom:16 }}>{cat?.emoji}</p>
-        <h2 style={{ fontSize:22, fontWeight:800, color:'#0E1116', marginBottom:8 }}>
+        <h2 style={{ fontSize:22, fontWeight:800, color:'var(--text-h1)', marginBottom:8 }}>
           {resultat?.label}
         </h2>
-        <p style={{ fontSize:14, color:'#6B6F76', marginBottom:32 }}>
+        <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:32 }}>
           {cat?.titre?.[lang]} · {lang==='fr'?`${score}/${questions.length} bonnes réponses`:`${score}/${questions.length} correct answers`}
         </p>
 
         {/* Score cercle */}
         <div style={{ width:140, height:140, borderRadius:'50%', background:`${resultat?.color}15`, border:`4px solid ${resultat?.color}`, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', margin:'0 auto 32px' }}>
           <p style={{ fontSize:40, fontWeight:900, color:resultat?.color, lineHeight:1 }}>{pct}%</p>
-          <p style={{ fontSize:12, color:'#6B6F76', marginTop:4 }}>{lang==='fr'?'Score':'Score'}</p>
+          <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>{lang==='fr'?'Score':'Score'}</p>
         </div>
 
         {/* Barre score */}
-        <div style={{ height:8, background:'#EBEBE9', borderRadius:4, overflow:'hidden', marginBottom:32, maxWidth:300, margin:'0 auto 32px' }}>
-          <div style={{ width:`${pct}%`, height:'100%', background:'#F7F7F5', borderRadius:4, transition:'width 0.8s' }} />
+        <div style={{ height:8, background:'var(--border)', borderRadius:4, overflow:'hidden', marginBottom:32, maxWidth:300, margin:'0 auto 32px' }}>
+          <div style={{ width:`${pct}%`, height:'100%', background:'var(--bg-subtle)', borderRadius:4, transition:'width 0.8s' }} />
         </div>
 
         <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap' }}>
@@ -494,12 +494,12 @@ export default function QuizCulture() {
             ↺ {lang==='fr'?'Recommencer':'Try again'}
           </button>
           <button onClick={autreCategorie}
-            style={{ padding:'12px 24px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:10, color:'#6B6F76', fontWeight:600, fontSize:14, cursor:'pointer' }}>
+            style={{ padding:'12px 24px', background:'transparent', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-muted)', fontWeight:600, fontSize:14, cursor:'pointer' }}>
             {lang==='fr'?'Autre catégorie →':'Another category →'}
           </button>
         </div>
 
-        <p style={{ fontSize:12, color:'#6B6F76', marginTop:24 }}>
+        <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:24 }}>
           {lang==='fr'?'Score sauvegardé automatiquement.':'Score saved automatically.'}
         </p>
       </main>

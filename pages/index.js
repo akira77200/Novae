@@ -12,7 +12,7 @@ const PILIERS = [
     descFr: 'Checklist d\'arrivée · Coffre-fort documents · Calendrier d\'échéances · Guide d\'arrivée au Canada.',
     descEn: 'Arrival checklist · Document vault · Deadline calendar · Canada arrival guide.',
     href: '/dashboard',
-    color: '#0E1116',
+    color: 'var(--text-h1)',
     colorLight: '#6B6F76',
     bg: 'rgba(21,101,192,0.10)',
     border: 'rgba(21,101,192,0.28)',
@@ -25,7 +25,7 @@ const PILIERS = [
     descFr: 'Mon orientation · Bourses & universités · Comparateur · Simulateur budget · Calendrier académique.',
     descEn: 'My path · Scholarships & universities · Comparator · Budget simulator · Academic calendar.',
     href: '/mon-avenir',
-    color: '#3A3D40',
+    color: 'var(--text-body)',
     colorLight: '#6B6F76',
     bg: 'rgba(106,27,154,0.10)',
     border: 'rgba(106,27,154,0.28)',
@@ -38,7 +38,7 @@ const PILIERS = [
     descFr: 'Mentors · Créateur CV canadien · Simulation entrevue · Réseau professionnel.',
     descEn: 'Mentors · Canadian resume builder · Interview simulator · Professional network.',
     href: '/mentors',
-    color: '#3A3D40',
+    color: 'var(--text-body)',
     colorLight: '#6B6F76',
     bg: 'rgba(230,81,0,0.10)',
     border: 'rgba(230,81,0,0.28)',
@@ -51,7 +51,7 @@ const PILIERS = [
     descFr: 'Vie quotidienne · Mes tâches · Bien-être · Parrainage · Culture canadienne · Quiz culture.',
     descEn: 'Daily life · My tasks · Wellbeing · Peer mentoring · Canadian culture · Culture quiz.',
     href: '/day-to-day',
-    color: '#0E1116',
+    color: 'var(--text-h1)',
     colorLight: '#0E1116',
     bg: 'rgba(30,58,95,0.12)',
     border: 'rgba(45,106,79,0.30)',
@@ -106,7 +106,7 @@ export default function Home() {
       <div style={{ minHeight:'100vh', background:'#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
         <div style={{ textAlign:'center' }}>
           <div style={{ width:48, height:48, borderRadius:14, background:'#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, fontWeight:800, color:'#fff', margin:'0 auto 16px' }}>N</div>
-          <p style={{ color:'#6B6F76', fontSize:14 }}>Connexion en cours…</p>
+          <p style={{ color:'var(--text-muted)', fontSize:14 }}>Connexion en cours…</p>
         </div>
       </div>
     )
@@ -119,7 +119,7 @@ export default function Home() {
     user ? href : `/auth/login?redirect=${encodeURIComponent(href)}`
 
   return (
-    <div style={{ minHeight:'100vh', background: '#FAFAF9', fontFamily:'system-ui,-apple-system,sans-serif', color: '#0E1116' }}>
+    <div style={{ minHeight:'100vh', background: 'var(--bg-page)', fontFamily:'system-ui,-apple-system,sans-serif', color: 'var(--text-h1)' }}>
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section style={{ position:'relative', overflow:'hidden', padding:'100px 24px 80px' }}>
@@ -131,29 +131,29 @@ export default function Home() {
           {/* Badge */}
           <div style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'6px 14px', borderRadius:100, border:`1px solid ${'#0E1116'}40`, background:'#0E111612', marginBottom:28 }}>
             <span style={{ fontSize:13 }}>🌍</span>
-            <span style={{ fontSize:13, color: '#3A3D40', fontWeight:600, letterSpacing:0.3 }}>
+            <span style={{ fontSize:13, color: 'var(--text-body)', fontWeight:600, letterSpacing:0.3 }}>
               {isFr ? 'Pour les nouveaux arrivants au Canada' : 'For newcomers to Canada'}
             </span>
           </div>
 
           {/* Title */}
           <h1 style={{ fontSize:'clamp(2rem,5vw,3.6rem)', fontWeight:800, lineHeight:1.12, letterSpacing:-1.5, margin:'0 0 20px' }}>
-            <span style={{ color: '#0E1116' }}>
+            <span style={{ color: 'var(--text-h1)' }}>
               {isFr ? 'Réussis ton parcours' : 'Succeed in your journey'}
             </span>
             <br />
-            <span style={{ background:'#F7F7F5', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+            <span style={{ background:'var(--bg-subtle)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
               {isFr ? 'au Canada' : 'in Canada'}
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: '#6B6F76', lineHeight:1.7, maxWidth:580, margin:'0 auto 10px', fontWeight:500 }}>
+          <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: 'var(--text-muted)', lineHeight:1.7, maxWidth:580, margin:'0 auto 10px', fontWeight:500 }}>
             {isFr
               ? 'La plateforme qui accompagne les étudiants internationaux au Canada'
               : 'The platform that supports international students in Canada'}
           </p>
-          <p style={{ fontSize:'clamp(0.9rem,1.8vw,1rem)', color: '#6B6F76', lineHeight:1.7, maxWidth:540, margin:'0 auto 36px' }}>
+          <p style={{ fontSize:'clamp(0.9rem,1.8vw,1rem)', color: 'var(--text-muted)', lineHeight:1.7, maxWidth:540, margin:'0 auto 36px' }}>
             {isFr
               ? "De l'orientation à la carrière — ton parcours complet, peu importe d'où tu viens."
               : 'From orientation to career — your complete journey, wherever you come from.'}
@@ -166,7 +166,7 @@ export default function Home() {
                 <Link href="/dashboard" style={{ padding:'14px 28px', borderRadius:12, background: '#0E1116', color:'#fff', fontWeight:700, fontSize:15, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8 }}>
                   {isFr ? 'Mon tableau de bord' : 'My dashboard'} →
                 </Link>
-                <Link href="/mon-avenir" style={{ padding:'14px 28px', borderRadius:12, border:'1.5px solid #EBEBE9', background:'transparent', color: '#6B6F76', fontWeight:600, fontSize:15, textDecoration:'none' }}>
+                <Link href="/mon-avenir" style={{ padding:'14px 28px', borderRadius:12, border:'1.5px solid var(--border)', background:'transparent', color: 'var(--text-muted)', fontWeight:600, fontSize:15, textDecoration:'none' }}>
                   {isFr ? 'Découvrir mon avenir' : 'Discover my future'}
                 </Link>
               </>
@@ -175,7 +175,7 @@ export default function Home() {
                 <Link href="/auth/register" style={{ padding:'14px 28px', borderRadius:12, background: '#0E1116', color:'#fff', fontWeight:700, fontSize:15, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8 }}>
                   {isFr ? 'Commencer gratuitement' : 'Get started for free'} →
                 </Link>
-                <Link href="/auth/login" style={{ padding:'14px 28px', borderRadius:12, border:'1.5px solid #EBEBE9', background:'transparent', color: '#6B6F76', fontWeight:600, fontSize:15, textDecoration:'none' }}>
+                <Link href="/auth/login" style={{ padding:'14px 28px', borderRadius:12, border:'1.5px solid var(--border)', background:'transparent', color: 'var(--text-muted)', fontWeight:600, fontSize:15, textDecoration:'none' }}>
                   {isFr ? 'Se connecter' : 'Sign in'}
                 </Link>
               </>
@@ -190,7 +190,7 @@ export default function Home() {
           <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
             {isFr ? '4 piliers pour réussir' : '4 pillars to succeed'}
           </h2>
-          <p style={{ color: '#6B6F76', fontSize:15 }}>
+          <p style={{ color: 'var(--text-muted)', fontSize:15 }}>
             {isFr ? 'Un écosystème complet pensé pour toi' : 'A complete ecosystem designed for you'}
           </p>
         </div>
@@ -219,7 +219,7 @@ export default function Home() {
                     {isFr ? p.titleFr : p.titleEn}
                   </h3>
                 </div>
-                <p style={{ fontSize:13, color: '#6B6F76', lineHeight:1.65, margin:0 }}>
+                <p style={{ fontSize:13, color: 'var(--text-muted)', lineHeight:1.65, margin:0 }}>
                   {isFr ? p.descFr : p.descEn}
                 </p>
                 {p.items && (
@@ -241,14 +241,14 @@ export default function Home() {
       </section>
 
       {/* ── STATS ─────────────────────────────────────────────────────── */}
-      <section style={{ padding:'52px 24px', background: isDark ? '#FFFFFF' : '#F7F7F5', borderTop:'1px solid #EBEBE9', borderBottom:'1px solid #EBEBE9' }}>
+      <section style={{ padding:'52px 24px', background: isDark ? '#FFFFFF' : '#F7F7F5', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
         <div style={{ maxWidth:700, margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20, textAlign:'center' }}>
           {STATS.map((s, i) => (
             <div key={i} className="stat-item">
-              <div style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:800, color: '#3A3D40', letterSpacing:-1, lineHeight:1 }}>
+              <div style={{ fontSize:'clamp(1.8rem,4vw,2.6rem)', fontWeight:800, color: 'var(--text-body)', letterSpacing:-1, lineHeight:1 }}>
                 {isFr ? s.numFr : s.numEn}
               </div>
-              <div style={{ fontSize:13, color: '#6B6F76', marginTop:6 }}>
+              <div style={{ fontSize:13, color: 'var(--text-muted)', marginTop:6 }}>
                 {isFr ? s.labelFr : s.labelEn}
               </div>
             </div>
@@ -263,7 +263,7 @@ export default function Home() {
             <h2 style={{ fontSize:'clamp(1.3rem,3vw,1.9rem)', fontWeight:700, letterSpacing:-0.5, marginBottom:14 }}>
               {isFr ? 'Prêt à commencer ?' : 'Ready to start?'}
             </h2>
-            <p style={{ color: '#6B6F76', fontSize:15, marginBottom:28 }}>
+            <p style={{ color: 'var(--text-muted)', fontSize:15, marginBottom:28 }}>
               {isFr ? 'Rejoins des milliers de nouveaux arrivants qui réussissent au Canada.' : 'Join thousands of newcomers succeeding in Canada.'}
             </p>
             <Link href="/auth/register" style={{ display:'inline-block', padding:'15px 36px', borderRadius:12, background: '#0E1116', color:'#fff', fontWeight:700, fontSize:16, textDecoration:'none' }}>
@@ -279,7 +279,7 @@ export default function Home() {
           <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
             {isFr ? 'Nos abonnements' : 'Our plans'}
           </h2>
-          <p style={{ color: '#6B6F76', fontSize:15 }}>
+          <p style={{ color: 'var(--text-muted)', fontSize:15 }}>
             {isFr ? 'Choisis le plan qui correspond à tes besoins' : 'Choose the plan that fits your needs'}
           </p>
         </div>
@@ -296,11 +296,11 @@ export default function Home() {
             animationDelay: '0ms',
           }}>
             <div style={{ marginBottom:20 }}>
-              <h3 style={{ fontSize:18, fontWeight:700, color: '#0E1116', margin:'0 0 8px' }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: 'var(--text-h1)', margin:'0 0 8px' }}>
                 {isFr ? 'Gratuit' : 'Free'}
               </h3>
-              <p style={{ fontSize:32, fontWeight:800, color: '#0E1116', margin:0 }}>
-                0<span style={{ fontSize:16, fontWeight:400, color: '#6B6F76' }}>$/{isFr ? 'mois' : 'mo'}</span>
+              <p style={{ fontSize:32, fontWeight:800, color: 'var(--text-h1)', margin:0 }}>
+                0<span style={{ fontSize:16, fontWeight:400, color: 'var(--text-muted)' }}>$/{isFr ? 'mois' : 'mo'}</span>
               </p>
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
@@ -322,8 +322,8 @@ export default function Home() {
             </div>
             <Link href="/auth/register" style={{
               display:'block', padding:'12px', borderRadius:10,
-              border:'1px solid #EBEBE9', background:'transparent',
-              color: '#0E1116', fontWeight:600, fontSize:14,
+              border:'1px solid var(--border)', background:'transparent',
+              color: 'var(--text-h1)', fontWeight:600, fontSize:14,
               textDecoration:'none', textAlign:'center',
             }}>
               {isFr ? 'Commencer gratuitement' : 'Get started for free'}
@@ -350,11 +350,11 @@ export default function Home() {
               {isFr ? 'Populaire' : 'Popular'}
             </div>
             <div style={{ marginBottom:20 }}>
-              <h3 style={{ fontSize:18, fontWeight:700, color: '#0E1116', margin:'0 0 8px' }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: 'var(--text-h1)', margin:'0 0 8px' }}>
                 Starter
               </h3>
-              <p style={{ fontSize:32, fontWeight:800, color: '#0E1116', margin:0 }}>
-                9.99<span style={{ fontSize:16, fontWeight:400, color: '#6B6F76' }}>$/{isFr ? 'mois' : 'mo'}</span>
+              <p style={{ fontSize:32, fontWeight:800, color: 'var(--text-h1)', margin:0 }}>
+                9.99<span style={{ fontSize:16, fontWeight:400, color: 'var(--text-muted)' }}>$/{isFr ? 'mois' : 'mo'}</span>
               </p>
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
@@ -403,11 +403,11 @@ export default function Home() {
               ⭐ Premium
             </div>
             <div style={{ marginBottom:20 }}>
-              <h3 style={{ fontSize:18, fontWeight:700, color: '#0E1116', margin:'0 0 8px' }}>
+              <h3 style={{ fontSize:18, fontWeight:700, color: 'var(--text-h1)', margin:'0 0 8px' }}>
                 Premium
               </h3>
-              <p style={{ fontSize:32, fontWeight:800, color: '#0E1116', margin:0 }}>
-                19.99<span style={{ fontSize:16, fontWeight:400, color: '#6B6F76' }}>$/{isFr ? 'mois' : 'mo'}</span>
+              <p style={{ fontSize:32, fontWeight:800, color: 'var(--text-h1)', margin:0 }}>
+                19.99<span style={{ fontSize:16, fontWeight:400, color: 'var(--text-muted)' }}>$/{isFr ? 'mois' : 'mo'}</span>
               </p>
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
@@ -420,7 +420,7 @@ export default function Home() {
                 isFr ? '✅ Support prioritaire' : '✅ Priority support',
                 isFr ? '✅ Nouvelles fonctionnalités en avant-première' : '✅ Early access to new features',
               ].map((item, i) => (
-                <p key={i} style={{ fontSize:13, color: '#0E1116', margin:0 }}>
+                <p key={i} style={{ fontSize:13, color: 'var(--text-h1)', margin:0 }}>
                   {item}
                 </p>
               ))}
@@ -456,11 +456,11 @@ export default function Home() {
       `}</style>
 
       {/* ── FOOTER ────────────────────────────────────────────────────── */}
-      <footer style={{ borderTop:'1px solid #EBEBE9', padding:'32px 24px', background: isDark ? '#FFFFFF' : '#F7F7F5' }}>
+      <footer style={{ borderTop:'1px solid var(--border)', padding:'32px 24px', background: isDark ? '#FFFFFF' : '#F7F7F5' }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', flexWrap:'wrap', gap:16, alignItems:'center', justifyContent:'space-between' }}>
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
             <div style={{ width:28, height:28, borderRadius:8, background: '#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:800, color:'#fff' }}>N</div>
-            <span style={{ fontWeight:700, fontSize:15, color: '#0E1116' }}>novae</span>
+            <span style={{ fontWeight:700, fontSize:15, color: 'var(--text-h1)' }}>novae</span>
           </div>
           <div style={{ display:'flex', flexWrap:'wrap', gap:16 }}>
             {[
@@ -477,12 +477,12 @@ export default function Home() {
               { href:'/entrevue',              fr:'Entrevue IA',       en:'Mock Interview'  },
               { href:'/bug-report',            fr:'Signaler un bug 🐛', en:'Report a bug 🐛' },
             ].map(l => (
-              <Link key={l.href} href={l.href} style={{ fontSize:12, color: '#6B6F76', textDecoration:'none' }}>
+              <Link key={l.href} href={l.href} style={{ fontSize:12, color: 'var(--text-muted)', textDecoration:'none' }}>
                 {isFr ? l.fr : l.en}
               </Link>
             ))}
           </div>
-          <div style={{ fontSize:12, color: '#6B6F76' }}>
+          <div style={{ fontSize:12, color: 'var(--text-muted)' }}>
             © {new Date().getFullYear()} Novae · {isFr ? 'Fait avec ❤️ pour les nouveaux arrivants' : 'Made with ❤️ for newcomers'}
           </div>
         </div>

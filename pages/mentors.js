@@ -146,22 +146,22 @@ export default function Mentors() {
 
   // ── Loading ─────────────────────────────────────────────────────
   if (authLoading) return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{ width: 40, height: 40, borderRadius: 10, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
-        <p style={{ color: '#6B6F76', fontSize: 14 }}>{t.loading}</p>
+        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>{t.loading}</p>
       </div>
     </div>
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
 
       {/* Overlay paiement */}
       {paying && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <p style={{ color: '#0E1116', fontSize: 16, fontWeight: 600 }}>
+          <p style={{ color: 'var(--text-h1)', fontSize: 16, fontWeight: 600 }}>
             {lang === 'fr' ? 'Redirection vers le paiement...' : 'Redirecting to payment...'}
           </p>
         </div>
@@ -171,40 +171,40 @@ export default function Mentors() {
       {mOpen && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
           onClick={() => setMOpen(null)}>
-          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 18, width: '100%', maxWidth: 440, overflow: 'hidden' }}
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, width: '100%', maxWidth: 440, overflow: 'hidden' }}
             onClick={e => e.stopPropagation()}>
 
             {/* En-tête modal */}
-            <div style={{ padding: '22px 24px 18px', borderBottom: '1px solid #EBEBE9', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div style={{ padding: '22px 24px 18px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{ width: 50, height: 50, borderRadius: '50%', background: '#0E111620', border: `1.5px solid ${'#0E1116'}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, color: '#3A3D40', flexShrink: 0 }}>
+                <div style={{ width: 50, height: 50, borderRadius: '50%', background: '#0E111620', border: `1.5px solid ${'#0E1116'}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, color: 'var(--text-body)', flexShrink: 0 }}>
                   {(mOpen.full_name || '?')[0].toUpperCase()}
                 </div>
                 <div>
-                  <p style={{ fontWeight: 700, fontSize: 17, color: '#0E1116' }}>{mOpen.full_name}</p>
-                  <p style={{ fontSize: 13, color: '#6B6F76', marginTop: 2 }}>{mOpen.pays_origine} → {mOpen.ville_accueil}</p>
+                  <p style={{ fontWeight: 700, fontSize: 17, color: 'var(--text-h1)' }}>{mOpen.full_name}</p>
+                  <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>{mOpen.pays_origine} → {mOpen.ville_accueil}</p>
                   {mOpen.note_moyenne > 0 && (
-                    <p style={{ fontSize: 12, color: '#6B6F76', marginTop: 2 }}>★ {Number(mOpen.note_moyenne).toFixed(1)} · {mOpen.sessions_total} sessions</p>
+                    <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>★ {Number(mOpen.note_moyenne).toFixed(1)} · {mOpen.sessions_total} sessions</p>
                   )}
                 </div>
               </div>
-              <button onClick={() => setMOpen(null)} style={{ width: 30, height: 30, borderRadius: '50%', border: '1px solid #EBEBE9', background: 'transparent', color: '#6B6F76', cursor: 'pointer', fontSize: 14 }}>✕</button>
+              <button onClick={() => setMOpen(null)} style={{ width: 30, height: 30, borderRadius: '50%', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>✕</button>
             </div>
 
             <div style={{ padding: '18px 24px' }}>
               {/* Sujet */}
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Sujet de la session' : 'Session topic'}
               </p>
               <input
                 value={sujet}
                 onChange={e => setSujet(e.target.value)}
                 placeholder={mOpen.sujets?.[0] || (lang === 'fr' ? 'Ex: Renouvellement permis, Logement...' : 'E.g.: Permit renewal, Housing...')}
-                style={{ width: '100%', padding: '10px 13px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 9, color: '#0E1116', fontSize: 14, outline: 'none', boxSizing: 'border-box', marginBottom: 18, colorScheme: 'dark' }}
+                style={{ width: '100%', padding: '10px 13px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-h1)', fontSize: 14, outline: 'none', boxSizing: 'border-box', marginBottom: 18, colorScheme: 'dark' }}
               />
 
               {/* Durée */}
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10 }}>
                 {lang === 'fr' ? 'Durée' : 'Duration'}
               </p>
               <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
@@ -213,7 +213,7 @@ export default function Mentors() {
                   return (
                     <button key={d} onClick={() => setDuree(d)} style={{ flex: 1, padding: '13px', borderRadius: 10, border: `1px solid ${duree === d ? '#0E111660' : '#EBEBE9'}`, background: duree === d ? '#0E111615' : 'transparent', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
                       <span style={{ fontSize: 18, fontWeight: 700, color: duree === d ? '#3A3D40' : '#0E1116' }}>{tarif.toFixed(2)} $</span>
-                      <span style={{ fontSize: 12, color: '#6B6F76' }}>{d} min · CAD</span>
+                      <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{d} min · CAD</span>
                     </button>
                   )
                 })}
@@ -221,7 +221,7 @@ export default function Mentors() {
 
               {!user && (
                 <div style={{ padding: '10px 14px', background: '#6B6F7610', border: `1px solid ${'#6B6F76'}30`, borderRadius: 9, marginBottom: 14 }}>
-                  <p style={{ fontSize: 13, color: '#6B6F76' }}>
+                  <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
                     {lang === 'fr' ? '👤 Connecte-toi pour réserver une session.' : '👤 Sign in to book a session.'}
                   </p>
                 </div>
@@ -230,7 +230,7 @@ export default function Mentors() {
               <button onClick={() => reserver(mOpen)} style={{ width: '100%', padding: '13px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>
                 🔒 {user ? t.mentor_book : (lang === 'fr' ? 'Se connecter pour réserver' : 'Sign in to book')}
               </button>
-              <p style={{ textAlign: 'center', fontSize: 12, color: '#6B6F76', marginTop: 8 }}>{t.refund_policy}</p>
+              <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>{t.refund_policy}</p>
             </div>
           </div>
         </div>
@@ -241,16 +241,16 @@ export default function Mentors() {
         {/* ── HEADER ── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 14, marginBottom: 28 }}>
           <div>
-            <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 6 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-h1)', letterSpacing: -0.5, marginBottom: 6 }}>
               🤝 {lang === 'fr' ? 'Trouve ton mentor' : 'Find your mentor'}
             </h1>
-            <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6 }}>
               {profile?.ville_accueil
                 ? (lang === 'fr' ? `Mentors disponibles pour toi à ${profile.ville_accueil}` : `Mentors available for you in ${profile.ville_accueil}`)
                 : (lang === 'fr' ? '30 ou 45 minutes avec quelqu\'un qui a vécu ce que tu vis.' : '30 or 45 minutes with someone who lived what you\'re living.')}
             </p>
           </div>
-          <a href="/auth/register-mentor" style={{ padding: '10px 20px', background: '#0E111618', border: `1px solid ${'#0E1116'}40`, borderRadius: 10, color: '#3A3D40', fontWeight: 600, fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <a href="/auth/register-mentor" style={{ padding: '10px 20px', background: '#0E111618', border: `1px solid ${'#0E1116'}40`, borderRadius: 10, color: 'var(--text-body)', fontWeight: 600, fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap' }}>
             {lang === 'fr' ? 'Devenir mentor →' : 'Become a mentor →'}
           </a>
         </div>
@@ -259,23 +259,23 @@ export default function Mentors() {
         {!progSujet && (
           <div style={{ padding: '12px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 10, marginBottom: 18, display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 16 }}>💡</span>
-            <p style={{ fontSize: 13, color: '#6B6F76', flex: 1, margin: 0 }}>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', flex: 1, margin: 0 }}>
               {lang === 'fr'
                 ? 'Découvre ton orientation idéale pour trouver des mentors dans ton secteur.'
                 : 'Discover your ideal orientation to find mentors in your sector.'}
             </p>
-            <a href="/mon-avenir" style={{ fontSize: 13, color: '#3A3D40', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            <a href="/mon-avenir" style={{ fontSize: 13, color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? 'Mon Avenir →' : 'My Future →'}
             </a>
           </div>
         )}
 
         {/* ── FILTRES ── */}
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '16px 18px', marginBottom: 24 }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 18px', marginBottom: 24 }}>
 
           {/* Villes */}
           <div style={{ marginBottom: 14 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
               {lang === 'fr' ? 'Ville' : 'City'}
             </p>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -289,7 +289,7 @@ export default function Mentors() {
 
           {/* Sujets */}
           <div style={{ marginBottom: 14 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
               {lang === 'fr' ? 'Sujet' : 'Topic'}
             </p>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -308,7 +308,7 @@ export default function Mentors() {
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-end' }}>
 
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Langue' : 'Language'}
               </p>
               <div style={{ display: 'flex', gap: 5 }}>
@@ -324,7 +324,7 @@ export default function Mentors() {
             </div>
 
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Niveau' : 'Level'}
               </p>
               <div style={{ display: 'flex', gap: 5 }}>
@@ -340,7 +340,7 @@ export default function Mentors() {
             </div>
 
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Prix' : 'Price'}
               </p>
               <div style={{ display: 'flex', gap: 5 }}>
@@ -357,11 +357,11 @@ export default function Mentors() {
             </div>
 
             <div style={{ marginLeft: 'auto' }}>
-              <p style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Trier par' : 'Sort by'}
               </p>
               <select value={tri} onChange={e => setTri(e.target.value)}
-                style={{ padding: '7px 12px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 8, color: '#0E1116', fontSize: 13, outline: 'none', cursor: 'pointer', colorScheme: 'dark' }}>
+                style={{ padding: '7px 12px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-h1)', fontSize: 13, outline: 'none', cursor: 'pointer', colorScheme: 'dark' }}>
                 <option value="note">{lang === 'fr' ? 'Meilleure note' : 'Best rating'}</option>
                 <option value="prix_asc">{lang === 'fr' ? 'Prix croissant' : 'Price ↑'}</option>
                 <option value="recent">{lang === 'fr' ? 'Plus récent' : 'Most recent'}</option>
@@ -373,7 +373,7 @@ export default function Mentors() {
 
         {/* ── COMPTEUR RÉSULTATS ── */}
         {ready && (
-          <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 18 }}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 18 }}>
             {mentorsFiltres.length === 0
               ? (lang === 'fr' ? 'Aucun mentor pour ces critères' : 'No mentors for these filters')
               : lang === 'fr'
@@ -384,12 +384,12 @@ export default function Mentors() {
 
         {/* ── ÉTAT VIDE ── */}
         {ready && mentorsFiltres.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '56px 24px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16 }}>
+          <div style={{ textAlign: 'center', padding: '56px 24px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16 }}>
             <p style={{ fontSize: 40, marginBottom: 16 }}>🤝</p>
-            <p style={{ fontWeight: 700, fontSize: 18, color: '#0E1116', marginBottom: 8 }}>
+            <p style={{ fontWeight: 700, fontSize: 18, color: 'var(--text-h1)', marginBottom: 8 }}>
               {lang === 'fr' ? 'Aucun mentor disponible' : 'No mentors available'}
             </p>
-            <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.7, marginBottom: 24, maxWidth: 380, margin: '0 auto 24px' }}>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 24, maxWidth: 380, margin: '0 auto 24px' }}>
               {lang === 'fr'
                 ? 'Aucun mentor ne correspond à ces critères. Essaie de modifier les filtres ou deviens le premier mentor de ta région.'
                 : 'No mentor matches these filters. Try adjusting them or become the first mentor in your area.'}
@@ -398,12 +398,12 @@ export default function Mentors() {
               {lang === 'fr' ? 'Devenir le premier mentor →' : 'Become the first mentor →'}
             </a>
             {progSujet && (
-              <p style={{ fontSize: 13, color: '#6B6F76', marginTop: 16 }}>
+              <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 16 }}>
                 {lang === 'fr'
                   ? `Pas encore de mentor en "${progSujet}". Tu veux devenir le premier ? →`
                   : `No mentor in "${progSujet}" yet. Want to be the first? →`}
                 {' '}
-                <a href="/parrainage" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
+                <a href="/parrainage" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>
                   {lang === 'fr' ? 'Programme de parrainage' : 'Referral program'}
                 </a>
               </p>
@@ -415,7 +415,7 @@ export default function Mentors() {
         {!ready && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {[1, 2, 3].map(i => (
-              <div key={i} style={{ height: 180, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, opacity: 0.5 }} />
+              <div key={i} style={{ height: 180, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, opacity: 0.5 }} />
             ))}
           </div>
         )}
@@ -432,35 +432,35 @@ export default function Mentors() {
               const langues = Array.isArray(m.langues) ? m.langues : []
 
               return (
-                <div key={m.id} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '20px 22px', transition: 'border-color 0.15s' }}>
+                <div key={m.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '20px 22px', transition: 'border-color 0.15s' }}>
                   <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
                     {/* Avatar */}
-                    <div style={{ width: 54, height: 54, borderRadius: '50%', background: '#0E111620', border: `2px solid ${'#0E1116'}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 20, color: '#3A3D40', flexShrink: 0 }}>
+                    <div style={{ width: 54, height: 54, borderRadius: '50%', background: '#0E111620', border: `2px solid ${'#0E1116'}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 20, color: 'var(--text-body)', flexShrink: 0 }}>
                       {(m.full_name || '?')[0].toUpperCase()}
                     </div>
 
                     {/* Infos principales */}
                     <div style={{ flex: 1, minWidth: 200 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>
-                        <p style={{ fontWeight: 700, fontSize: 16, color: '#0E1116' }}>{m.full_name}</p>
+                        <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text-h1)' }}>{m.full_name}</p>
                         {m.note_moyenne > 0 && (
-                          <span style={{ fontSize: 13, color: '#6B6F76' }}>★ {Number(m.note_moyenne).toFixed(1)}</span>
+                          <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>★ {Number(m.note_moyenne).toFixed(1)}</span>
                         )}
                         {progSujet && (m.sujets || []).includes(progSujet) && (
-                          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#0E111620', color: '#0E1116', border: '1px solid #0E111640', fontWeight: 600 }}>
+                          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#0E111620', color: 'var(--text-h1)', border: '1px solid #0E111640', fontWeight: 600 }}>
                             🎯 {lang === 'fr' ? 'Recommandé pour toi' : 'Recommended for you'}
                           </span>
                         )}
                         {m.avis_count > 0 && (
-                          <span style={{ fontSize: 12, color: '#6B6F76' }}>({m.avis_count} {lang === 'fr' ? 'avis' : 'reviews'})</span>
+                          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>({m.avis_count} {lang === 'fr' ? 'avis' : 'reviews'})</span>
                         )}
                         {m.sessions_total > 0 && (
-                          <span style={{ fontSize: 12, color: '#6B6F76' }}>· {m.sessions_total} sessions</span>
+                          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>· {m.sessions_total} sessions</span>
                         )}
                       </div>
 
-                      <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 10 }}>
+                      <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 10 }}>
                         🌍 {m.pays_origine} → {m.ville_accueil}
                         {m.annee_arrivee ? ` · ${lang === 'fr' ? 'Arrivé en' : 'Arrived'} ${m.annee_arrivee}` : ''}
                       </p>
@@ -469,12 +469,12 @@ export default function Mentors() {
                       {sujets.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 8 }}>
                           {sujets.slice(0, 5).map(s => (
-                            <span key={s} style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: '#0E111612', color: '#3A3D40', border: `1px solid ${'#0E1116'}20` }}>
+                            <span key={s} style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: '#0E111612', color: 'var(--text-body)', border: `1px solid ${'#0E1116'}20` }}>
                               {s}
                             </span>
                           ))}
                           {sujets.length > 5 && (
-                            <span style={{ fontSize: 11, color: '#6B6F76' }}>+{sujets.length - 5}</span>
+                            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>+{sujets.length - 5}</span>
                           )}
                         </div>
                       )}
@@ -482,12 +482,12 @@ export default function Mentors() {
                       {/* Langues + Niveau */}
                       <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 10 }}>
                         {langues.length > 0 && (
-                          <span style={{ fontSize: 12, color: '#6B6F76' }}>
+                          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
                             🗣️ {langues.map(l => l.toUpperCase()).join(' · ')}
                           </span>
                         )}
                         {m.niveau && (
-                          <span style={{ fontSize: 12, color: '#6B6F76' }}>
+                          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
                             🎓 {niveauLabel(m.niveau)}
                           </span>
                         )}
@@ -496,12 +496,12 @@ export default function Mentors() {
                       {/* Bio */}
                       {bio.length > 0 && (
                         <div style={{ marginBottom: 14 }}>
-                          <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7 }}>
+                          <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.7 }}>
                             {isExpanded ? bio : bioShort}
                           </p>
                           {bio.length > 120 && (
                             <button onClick={() => setExpanded(p => ({ ...p, [m.id]: !p[m.id] }))}
-                              style={{ background: 'none', border: 'none', color: '#3A3D40', fontSize: 12, cursor: 'pointer', padding: 0, marginTop: 2 }}>
+                              style={{ background: 'none', border: 'none', color: 'var(--text-body)', fontSize: 12, cursor: 'pointer', padding: 0, marginTop: 2 }}>
                               {isExpanded ? (lang === 'fr' ? 'voir moins' : 'see less') : (lang === 'fr' ? 'voir plus' : 'read more')}
                             </button>
                           )}
@@ -512,13 +512,13 @@ export default function Mentors() {
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
                         <div style={{ display: 'flex', gap: 16 }}>
                           <div>
-                            <p style={{ fontSize: 11, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 2 }}>30 min</p>
+                            <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 2 }}>30 min</p>
                             <p style={{ fontSize: 17, fontWeight: 700, color: tarif30 === 0 ? '#3A3D40' : '#3A3D40' }}>
                               {formatTarif(tarif30)}
                             </p>
                           </div>
                           <div>
-                            <p style={{ fontSize: 11, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 2 }}>45 min</p>
+                            <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 2 }}>45 min</p>
                             <p style={{ fontSize: 17, fontWeight: 700, color: tarif45 === 0 ? '#3A3D40' : '#3A3D40' }}>
                               {formatTarif(tarif45)}
                             </p>
@@ -545,10 +545,10 @@ export default function Mentors() {
         {ready && (
           <div style={{ marginTop: 40, padding: '28px 28px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
             <div>
-              <p style={{ fontWeight: 700, fontSize: 16, color: '#0E1116', marginBottom: 4 }}>
+              <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text-h1)', marginBottom: 4 }}>
                 {lang === 'fr' ? 'Tu as de l\'expérience à partager ?' : 'Do you have experience to share?'}
               </p>
-              <p style={{ fontSize: 13, color: '#6B6F76' }}>
+              <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
                 {lang === 'fr' ? 'Rejoins les mentors Novae · Garde 70% de chaque session.' : 'Join Novae mentors · Keep 70% of every session.'}
               </p>
             </div>

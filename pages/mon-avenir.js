@@ -786,13 +786,13 @@ export default function MonAvenir() {
   ]
 
   if (authLoading) return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', display:'flex', alignItems:'center', justifyContent:'center' }}>
-      <p style={{ color:'#6B6F76', fontSize:14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <p style={{ color:'var(--text-muted)', fontSize:14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
     </div>
   )
 
   return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
 
 
       <style>{`
@@ -807,10 +807,10 @@ export default function MonAvenir() {
       <main style={{ maxWidth:820, margin:'0 auto', padding:'36px 20px 80px' }}>
 
         {/* Header */}
-        <h1 style={{ fontSize:28, fontWeight:800, color:'#0E1116', letterSpacing:-0.5, marginBottom:6 }}>
+        <h1 style={{ fontSize:28, fontWeight:800, color:'var(--text-h1)', letterSpacing:-0.5, marginBottom:6 }}>
           {lang === 'fr' ? 'Mon Avenir' : 'My Future'}
         </h1>
-        <p style={{ fontSize:15, color:'#6B6F76', marginBottom:28, lineHeight:1.6 }}>
+        <p style={{ fontSize:15, color:'var(--text-muted)', marginBottom:28, lineHeight:1.6 }}>
           {lang === 'fr' ? 'Découvre les programmes qui te correspondent et construis ta vision.' : 'Discover the programs that match you and build your vision.'}
         </p>
 
@@ -833,7 +833,7 @@ export default function MonAvenir() {
         </div>
 
         {/* Tabs — style identique dashboard.js */}
-        <div style={{ display:'flex', gap:4, marginBottom:28, background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:12, padding:4 }}>
+        <div style={{ display:'flex', gap:4, marginBottom:28, background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:12, padding:4 }}>
           {TABS.map(tb => (
             <button key={tb.id} onClick={() => setTab(tb.id)} style={{ flex:1, padding:'10px 12px', borderRadius:8, border:'none', fontSize:13, fontWeight:500, cursor:'pointer', transition:'all 0.15s', background: tab === tb.id ? '#0E1116' : 'transparent', color: tab === tb.id ? '#fff' : '#6B6F76' }}>
               {lang === 'fr' ? tb.fr : tb.en}
@@ -848,12 +848,12 @@ export default function MonAvenir() {
           <>
             {/* ── PHASE 2 : CHARGEMENT ── */}
             {orientPhase === 'loading' && (
-              <div style={{ textAlign:'center', padding:'80px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:20 }}>
+              <div style={{ textAlign:'center', padding:'80px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:20 }}>
                 <div style={{ fontSize:48, marginBottom:24 }}></div>
-                <p style={{ fontSize:18, fontWeight:700, color:'#0E1116', marginBottom:12 }}>
+                <p style={{ fontSize:18, fontWeight:700, color:'var(--text-h1)', marginBottom:12 }}>
                   {lang === 'fr' ? 'Analyse de ton profil en cours...' : 'Analyzing your profile...'}
                 </p>
-                <p style={{ fontSize:14, color:'#3A3D40', marginBottom:32, minHeight:24, transition:'all 0.3s' }}>
+                <p style={{ fontSize:14, color:'var(--text-body)', marginBottom:32, minHeight:24, transition:'all 0.3s' }}>
                   {lang === 'fr' ? LOAD_MSGS_FR[loadMsgIdx] : LOAD_MSGS_EN[loadMsgIdx]}
                 </p>
                 <div style={{ display:'flex', justifyContent:'center', gap:8 }}>
@@ -871,12 +871,12 @@ export default function MonAvenir() {
                 {/* Barre de progression */}
                 <div style={{ marginBottom:24 }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8 }}>
-                    <p style={{ fontSize:13, fontWeight:600, color:'#6B6F76' }}>
+                    <p style={{ fontSize:13, fontWeight:600, color:'var(--text-muted)' }}>
                       {lang === 'fr' ? `Question ${orientStep + 1} sur 6` : `Question ${orientStep + 1} of 6`}
                     </p>
-                    <p style={{ fontSize:12, color:'#6B6F76' }}>{Math.round((orientStep / 6) * 100)}%</p>
+                    <p style={{ fontSize:12, color:'var(--text-muted)' }}>{Math.round((orientStep / 6) * 100)}%</p>
                   </div>
-                  <div style={{ height:5, background:'#EBEBE9', borderRadius:3, overflow:'hidden' }}>
+                  <div style={{ height:5, background:'var(--border)', borderRadius:3, overflow:'hidden' }}>
                     <div style={{ width:`${(orientStep / 6) * 100}%`, height:'100%', background:'#3A3D40', borderRadius:3, transition:'width 0.4s ease' }} />
                   </div>
                 </div>
@@ -889,11 +889,11 @@ export default function MonAvenir() {
 
                 {/* ── Q0 : Matières fortes ── */}
                 {orientStep === 0 && (
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:'#0E1116', marginBottom:6 }}>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:'var(--text-h1)', marginBottom:6 }}>
                       {lang === 'fr' ? '📚 Tes matières fortes' : '📚 Your strong subjects'}
                     </p>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>
                       {lang === 'fr' ? 'Choisis jusqu\'à 3 matières' : 'Select up to 3 subjects'}
                     </p>
                     <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:22 }}>
@@ -908,7 +908,7 @@ export default function MonAvenir() {
                         )
                       })}
                     </div>
-                    <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>
+                    <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>
                       {lang === 'fr' ? 'Tu peux aussi décrire ce que tu aimes en tes propres mots :' : 'You can also describe what you enjoy in your own words:'}
                     </p>
                     <textarea
@@ -916,18 +916,18 @@ export default function MonAvenir() {
                       onChange={e => setOD('matieresTexte', e.target.value)}
                       placeholder={lang === 'fr' ? "Ex: J'adore comprendre comment les systèmes fonctionnent, résoudre des énigmes..." : 'Ex: I love understanding how systems work, solving puzzles...'}
                       rows={3}
-                      style={{ width:'100%', padding:'12px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:12, color:'#0E1116', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                      style={{ width:'100%', padding:'12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:12, color:'var(--text-h1)', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
                     />
                   </div>
                 )}
 
                 {/* ── Q1 : Ce que tu aimes faire ── */}
                 {orientStep === 1 && (
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:'#0E1116', marginBottom:6 }}>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:'var(--text-h1)', marginBottom:6 }}>
                       {lang === 'fr' ? '⚡ Ce que tu aimes vraiment faire' : '⚡ What you truly love doing'}
                     </p>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>
                       {lang === 'fr' ? 'Choix unique' : 'Single choice'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:22 }}>
@@ -938,7 +938,7 @@ export default function MonAvenir() {
                         </button>
                       ))}
                     </div>
-                    <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>
+                    <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>
                       {lang === 'fr' ? 'Décris une activité où tu perds la notion du temps :' : 'Describe an activity where you lose track of time:'}
                     </p>
                     <textarea
@@ -946,18 +946,18 @@ export default function MonAvenir() {
                       onChange={e => setOD('activiteTexte', e.target.value)}
                       placeholder={lang === 'fr' ? "Ex: Quand je code, quand j'aide quelqu'un à résoudre un problème..." : 'Ex: When I code, when I help someone solve a problem...'}
                       rows={3}
-                      style={{ width:'100%', padding:'12px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:12, color:'#0E1116', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                      style={{ width:'100%', padding:'12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:12, color:'var(--text-h1)', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
                     />
                   </div>
                 )}
 
                 {/* ── Q2 : Rapport au risque ── */}
                 {orientStep === 2 && (
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:'#0E1116', marginBottom:6 }}>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:'var(--text-h1)', marginBottom:6 }}>
                       {lang === 'fr' ? '🎯 Ton rapport au risque' : '🎯 Your relationship with risk'}
                     </p>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>
                       {lang === 'fr' ? 'Choix unique' : 'Single choice'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom: orientData.risque === 'autre' ? 16 : 0 }}>
@@ -974,7 +974,7 @@ export default function MonAvenir() {
                         onChange={e => setOD('risqueTexte', e.target.value)}
                         placeholder={lang === 'fr' ? 'Décris ton rapport au risque...' : 'Describe your relationship with risk...'}
                         rows={3}
-                        style={{ width:'100%', padding:'12px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:12, color:'#0E1116', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                        style={{ width:'100%', padding:'12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:12, color:'var(--text-h1)', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
                       />
                     )}
                   </div>
@@ -982,11 +982,11 @@ export default function MonAvenir() {
 
                 {/* ── Q3 : Horizon ── */}
                 {orientStep === 3 && (
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:'#0E1116', marginBottom:6 }}>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:'var(--text-h1)', marginBottom:6 }}>
                       {lang === 'fr' ? '🌍 Ton horizon après les études' : '🌍 Your horizon after graduation'}
                     </p>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>
                       {lang === 'fr' ? 'Choix unique' : 'Single choice'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom: orientData.horizon === 'autre' ? 16 : 0 }}>
@@ -1003,7 +1003,7 @@ export default function MonAvenir() {
                         onChange={e => setOD('horizonTexte', e.target.value)}
                         placeholder={lang === 'fr' ? 'Ex: Je veux créer une entreprise entre le Canada et mon pays...' : 'Ex: I want to build a company bridging Canada and my home country...'}
                         rows={3}
-                        style={{ width:'100%', padding:'12px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:12, color:'#0E1116', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
+                        style={{ width:'100%', padding:'12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:12, color:'var(--text-h1)', fontSize:14, outline:'none', resize:'vertical', boxSizing:'border-box', fontFamily:'system-ui,sans-serif' }}
                       />
                     )}
                   </div>
@@ -1011,17 +1011,17 @@ export default function MonAvenir() {
 
                 {/* ── Q4 : Pays d'origine ── */}
                 {orientStep === 4 && (
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:'#0E1116', marginBottom:6 }}>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:'var(--text-h1)', marginBottom:6 }}>
                       {lang === 'fr' ? '🌏 Ton pays d\'origine' : '🌏 Your country of origin'}
                     </p>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>
                       {lang === 'fr' ? 'Sélectionne dans la liste' : 'Select from the list'}
                     </p>
                     <select
                       value={orientData.pays}
                       onChange={e => { setOD('pays', e.target.value); if (e.target.value !== 'Autre') setOD('paysAutre2', '') }}
-                      style={{ width:'100%', maxWidth:380, padding:'12px 14px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:10, color: orientData.pays ? '#0E1116' : '#6B6F76', fontSize:14, outline:'none', colorScheme:'dark' }}
+                      style={{ width:'100%', maxWidth:380, padding:'12px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, color: orientData.pays ? '#0E1116' : '#6B6F76', fontSize:14, outline:'none', colorScheme:'dark' }}
                     >
                       <option value="">{lang === 'fr' ? '-- Sélectionne ton pays --' : '-- Select your country --'}</option>
                       {Object.entries(PAYS_PAR_REGION).map(([region, pays]) => (
@@ -1036,7 +1036,7 @@ export default function MonAvenir() {
                         placeholder={lang === 'fr' ? 'Écris ton pays ici...' : 'Write your country here...'}
                         value={orientData.paysAutre2}
                         onChange={e => setOD('paysAutre2', e.target.value)}
-                        style={{ marginTop:10, width:'100%', maxWidth:380, padding:'10px 14px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:10, color:'#0E1116', fontSize:14, outline:'none', boxSizing:'border-box' }}
+                        style={{ marginTop:10, width:'100%', maxWidth:380, padding:'10px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-h1)', fontSize:14, outline:'none', boxSizing:'border-box' }}
                       />
                     )}
                   </div>
@@ -1044,11 +1044,11 @@ export default function MonAvenir() {
 
                 {/* ── Q5 : Budget ── */}
                 {orientStep === 5 && (
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, padding:'28px 24px' }}>
-                    <p style={{ fontSize:20, fontWeight:800, color:'#0E1116', marginBottom:6 }}>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, padding:'28px 24px' }}>
+                    <p style={{ fontSize:20, fontWeight:800, color:'var(--text-h1)', marginBottom:6 }}>
                       {lang === 'fr' ? '💰 Ton budget annuel estimé' : '💰 Your estimated annual budget'}
                     </p>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>
                       {lang === 'fr' ? 'Études + vie courante (CAD)' : 'Studies + living expenses (CAD)'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
@@ -1065,7 +1065,7 @@ export default function MonAvenir() {
                 {/* Navigation */}
                 <div style={{ display:'flex', justifyContent:'space-between', gap:10, marginTop:20 }}>
                   <button onClick={() => setOrientStep(s => Math.max(0, s - 1))} disabled={orientStep === 0}
-                    style={{ padding:'11px 22px', borderRadius:10, border:'1px solid #EBEBE9', background:'transparent', color: orientStep === 0 ? '#EBEBE9' : '#6B6F76', fontSize:14, cursor: orientStep === 0 ? 'not-allowed' : 'pointer' }}>
+                    style={{ padding:'11px 22px', borderRadius:10, border:'1px solid var(--border)', background:'transparent', color: orientStep === 0 ? '#EBEBE9' : '#6B6F76', fontSize:14, cursor: orientStep === 0 ? 'not-allowed' : 'pointer' }}>
                     ← {lang === 'fr' ? 'Retour' : 'Back'}
                   </button>
 
@@ -1090,18 +1090,18 @@ export default function MonAvenir() {
 
                 {/* Header résultats */}
                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:10 }}>
-                  <p style={{ fontSize:16, fontWeight:700, color:'#0E1116' }}>
+                  <p style={{ fontSize:16, fontWeight:700, color:'var(--text-h1)' }}>
                     🎯 {lang === 'fr' ? 'Ton analyse personnalisée' : 'Your personalized analysis'}
                   </p>
                   <button onClick={refaireOrientation}
-                    style={{ padding:'7px 16px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:8, color:'#6B6F76', fontSize:12, cursor:'pointer' }}>
+                    style={{ padding:'7px 16px', background:'transparent', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:12, cursor:'pointer' }}>
                     ↺ {lang === 'fr' ? 'Refaire l\'analyse' : 'Redo analysis'}
                   </button>
                 </div>
 
                 {/* SECTION A — Ce qu'on a compris */}
-                <div className="fade-up" style={{ background:'#F7F7F5', border:`1px solid ${'#0E1116'}40`, borderRadius:16, padding:'24px' }}>
-                  <p style={{ fontSize:14, fontWeight:700, color:'#3A3D40', marginBottom:16 }}>
+                <div className="fade-up" style={{ background:'var(--bg-subtle)', border:`1px solid ${'#0E1116'}40`, borderRadius:16, padding:'24px' }}>
+                  <p style={{ fontSize:14, fontWeight:700, color:'var(--text-body)', marginBottom:16 }}>
                     ✨ {lang === 'fr' ? 'Ce qu\'on a compris de toi' : 'What we understood about you'}
                   </p>
 
@@ -1116,24 +1116,24 @@ export default function MonAvenir() {
                   <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
                     {orientAnalyse.traits_dominants?.length > 0 && (
                       <div>
-                        <p style={{ fontSize:11, fontWeight:700, color:'#3A3D40', textTransform:'uppercase', letterSpacing:0.8, marginBottom:8 }}>
+                        <p style={{ fontSize:11, fontWeight:700, color:'var(--text-body)', textTransform:'uppercase', letterSpacing:0.8, marginBottom:8 }}>
                           {lang === 'fr' ? 'Traits dominants' : 'Dominant traits'}
                         </p>
                         <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
                           {orientAnalyse.traits_dominants.map((t,i) => (
-                            <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'#0E111630', color:'#3A3D40', border:`1px solid ${'#0E1116'}40` }}>{t}</span>
+                            <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'#0E111630', color:'var(--text-body)', border:`1px solid ${'#0E1116'}40` }}>{t}</span>
                           ))}
                         </div>
                       </div>
                     )}
                     {orientAnalyse.valeurs_profondes?.length > 0 && (
                       <div>
-                        <p style={{ fontSize:11, fontWeight:700, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.8, marginBottom:8 }}>
+                        <p style={{ fontSize:11, fontWeight:700, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.8, marginBottom:8 }}>
                           {lang === 'fr' ? 'Valeurs profondes' : 'Core values'}
                         </p>
                         <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
                           {orientAnalyse.valeurs_profondes.map((v,i) => (
-                            <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'#6B6F76', border:'1px solid rgba(96,165,250,0.3)' }}>{v}</span>
+                            <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'var(--text-muted)', border:'1px solid rgba(96,165,250,0.3)' }}>{v}</span>
                           ))}
                         </div>
                       </div>
@@ -1144,13 +1144,13 @@ export default function MonAvenir() {
                     <div style={{ marginTop:16, display:'flex', gap:16, flexWrap:'wrap' }}>
                       {orientAnalyse.type_environnement && (
                         <div style={{ flex:1, minWidth:140, padding:'10px 14px', background:'rgba(0,0,0,0.2)', borderRadius:10 }}>
-                          <p style={{ fontSize:11, color:'#3A3D40', fontWeight:600, marginBottom:4 }}>🏢 {lang === 'fr' ? 'Environnement' : 'Environment'}</p>
+                          <p style={{ fontSize:11, color:'var(--text-body)', fontWeight:600, marginBottom:4 }}>🏢 {lang === 'fr' ? 'Environnement' : 'Environment'}</p>
                           <p style={{ fontSize:13, color:'#FAFAF8' }}>{orientAnalyse.type_environnement}</p>
                         </div>
                       )}
                       {orientAnalyse.style_travail && (
                         <div style={{ flex:1, minWidth:140, padding:'10px 14px', background:'rgba(0,0,0,0.2)', borderRadius:10 }}>
-                          <p style={{ fontSize:11, color:'#3A3D40', fontWeight:600, marginBottom:4 }}>⚡ {lang === 'fr' ? 'Style de travail' : 'Work style'}</p>
+                          <p style={{ fontSize:11, color:'var(--text-body)', fontWeight:600, marginBottom:4 }}>⚡ {lang === 'fr' ? 'Style de travail' : 'Work style'}</p>
                           <p style={{ fontSize:13, color:'#FAFAF8' }}>{orientAnalyse.style_travail}</p>
                         </div>
                       )}
@@ -1161,7 +1161,7 @@ export default function MonAvenir() {
                 {/* SECTION B — 3 programmes recommandés */}
                 {orientAnalyse.programmes_recommandes?.length > 0 && (
                   <div className="fade-up fade-up-1">
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:14 }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:14 }}>
                       📚 {lang === 'fr' ? 'Tes 3 programmes recommandés' : 'Your top 3 programs'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
@@ -1169,13 +1169,13 @@ export default function MonAvenir() {
                         const progData = PROGRAMMES.find(p => p.id === rec.id)
                         const barColors = ['#3A3D40', '#6B6F76', '#9A9D9F']
                         return (
-                          <div key={i} style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px' }}>
+                          <div key={i} style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px' }}>
                             <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
                               <span style={{ fontSize:28 }}>{progData?.emoji || '📋'}</span>
                               <div style={{ flex:1 }}>
-                                <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:2 }}>{progData ? progData.nom[lang] : rec.id}</p>
+                                <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:2 }}>{progData ? progData.nom[lang] : rec.id}</p>
                                 <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                                  <div style={{ flex:1, height:6, background:'#EBEBE9', borderRadius:3, overflow:'hidden' }}>
+                                  <div style={{ flex:1, height:6, background:'var(--border)', borderRadius:3, overflow:'hidden' }}>
                                     <div style={{ width:`${rec.score || 80}%`, height:'100%', background:barColors[i], borderRadius:3, transition:'width 0.8s ease' }} />
                                   </div>
                                   <p style={{ fontSize:12, fontWeight:700, color:barColors[i], flexShrink:0 }}>{rec.score || 80}%</p>
@@ -1184,19 +1184,19 @@ export default function MonAvenir() {
                             </div>
                             {rec.raison && (
                               <div style={{ padding:'10px 14px', background:'#0E111608', borderRadius:10, marginBottom:10 }}>
-                                <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.65 }}>💡 {rec.raison}</p>
+                                <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.65 }}>💡 {rec.raison}</p>
                               </div>
                             )}
                             <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
                               {rec.avertissement && (
-                                <p style={{ fontSize:12, color:'#6B6F76', flex:1, minWidth:200 }}>⚠️ {rec.avertissement}</p>
+                                <p style={{ fontSize:12, color:'var(--text-muted)', flex:1, minWidth:200 }}>⚠️ {rec.avertissement}</p>
                               )}
                               {rec.alternative && (
-                                <p style={{ fontSize:12, color:'#6B6F76', flex:1, minWidth:200 }}>↳ {rec.alternative}</p>
+                                <p style={{ fontSize:12, color:'var(--text-muted)', flex:1, minWidth:200 }}>↳ {rec.alternative}</p>
                               )}
                             </div>
                             <button onClick={() => { setSelectedProg(rec.id); setTab('secteur') }}
-                              style={{ marginTop:12, padding:'8px 16px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:9, color:'#3A3D40', fontWeight:600, fontSize:12, cursor:'pointer' }}>
+                              style={{ marginTop:12, padding:'8px 16px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:9, color:'var(--text-body)', fontWeight:600, fontSize:12, cursor:'pointer' }}>
                               {lang === 'fr' ? 'Explorer ce programme →' : 'Explore this program →'}
                             </button>
                           </div>
@@ -1208,18 +1208,18 @@ export default function MonAvenir() {
 
                 {/* SECTION C — Questions de réflexion */}
                 {orientAnalyse.questions_reflexion?.length > 0 && (
-                  <div className="fade-up fade-up-2" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:14 }}>
+                  <div className="fade-up fade-up-2" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:14 }}>
                       🤔 {lang === 'fr' ? 'Questions pour aller plus loin' : 'Questions to go further'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                       {orientAnalyse.questions_reflexion.map((q,i) => (
                         <div key={i} style={{ padding:'12px 16px', background:'#0E111608', borderLeft:'3px solid #0E1116', borderRadius:'0 10px 10px 0' }}>
-                          <p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.65 }}>{q}</p>
+                          <p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.65 }}>{q}</p>
                         </div>
                       ))}
                     </div>
-                    <a href="/mentors" style={{ display:'inline-block', marginTop:14, padding:'9px 18px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:9, color:'#3A3D40', fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                    <a href="/mentors" style={{ display:'inline-block', marginTop:14, padding:'9px 18px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:9, color:'var(--text-body)', fontWeight:600, fontSize:13, textDecoration:'none' }}>
                       🤝 {lang === 'fr' ? 'Parler à un mentor →' : 'Talk to a mentor →'}
                     </a>
                   </div>
@@ -1227,25 +1227,25 @@ export default function MonAvenir() {
 
                 {/* SECTION D — Cheminement suggéré */}
                 {orientAnalyse.plan_suggere && (
-                  <div className="fade-up fade-up-3" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:16 }}>
+                  <div className="fade-up fade-up-3" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>
                       🛤️ {lang === 'fr' ? 'Ton cheminement suggéré' : 'Your suggested path'}
                     </p>
                     <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
                       {orientAnalyse.plan_suggere.annee_1_2 && (
                         <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
                           <span style={{ width:28, height:28, borderRadius:'50%', background:'#0E1116', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>1-2</span>
-                          <div><p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', marginBottom:3 }}>{lang === 'fr' ? 'Années 1-2 — Focus' : 'Years 1-2 — Focus'}</p><p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.6 }}>{orientAnalyse.plan_suggere.annee_1_2}</p></div>
+                          <div><p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', marginBottom:3 }}>{lang === 'fr' ? 'Années 1-2 — Focus' : 'Years 1-2 — Focus'}</p><p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.6 }}>{orientAnalyse.plan_suggere.annee_1_2}</p></div>
                         </div>
                       )}
                       {orientAnalyse.plan_suggere.competences_cles?.length > 0 && (
                         <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
                           <span style={{ width:28, height:28, borderRadius:'50%', background:'#0E1116', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>⚡</span>
                           <div>
-                            <p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', marginBottom:6 }}>{lang === 'fr' ? 'Compétences clés à développer' : 'Key skills to develop'}</p>
+                            <p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', marginBottom:6 }}>{lang === 'fr' ? 'Compétences clés à développer' : 'Key skills to develop'}</p>
                             <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
                               {orientAnalyse.plan_suggere.competences_cles.map((c,i) => (
-                                <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(21,101,192,0.12)', color:'#6B6F76', border:'1px solid rgba(96,165,250,0.2)' }}>{c}</span>
+                                <span key={i} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(21,101,192,0.12)', color:'var(--text-muted)', border:'1px solid rgba(96,165,250,0.2)' }}>{c}</span>
                               ))}
                             </div>
                           </div>
@@ -1254,12 +1254,12 @@ export default function MonAvenir() {
                       {orientAnalyse.plan_suggere.premier_emploi && (
                         <div style={{ display:'flex', gap:14, alignItems:'flex-start' }}>
                           <span style={{ width:28, height:28, borderRadius:'50%', background:'#0E1116', color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, flexShrink:0 }}>💼</span>
-                          <div><p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', marginBottom:3 }}>{lang === 'fr' ? 'Premier emploi réaliste' : 'Realistic first job'}</p><p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.6 }}>{orientAnalyse.plan_suggere.premier_emploi}</p></div>
+                          <div><p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', marginBottom:3 }}>{lang === 'fr' ? 'Premier emploi réaliste' : 'Realistic first job'}</p><p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.6 }}>{orientAnalyse.plan_suggere.premier_emploi}</p></div>
                         </div>
                       )}
                       {orientAnalyse.plan_suggere.vision_5_ans && (
-                        <div style={{ padding:'14px 16px', background:'#F7F7F5', borderRadius:12, marginTop:4 }}>
-                          <p style={{ fontSize:12, fontWeight:700, color:'#3A3D40', marginBottom:4 }}>{lang === 'fr' ? 'Vision 5 ans' : '5-year vision'}</p>
+                        <div style={{ padding:'14px 16px', background:'var(--bg-subtle)', borderRadius:12, marginTop:4 }}>
+                          <p style={{ fontSize:12, fontWeight:700, color:'var(--text-body)', marginBottom:4 }}>{lang === 'fr' ? 'Vision 5 ans' : '5-year vision'}</p>
                           <p style={{ fontSize:14, color:'#FAFAF8', lineHeight:1.7, fontStyle:'italic' }}>{orientAnalyse.plan_suggere.vision_5_ans}</p>
                         </div>
                       )}
@@ -1278,7 +1278,7 @@ export default function MonAvenir() {
           <>
             {/* Sélecteur programme groupé */}
             <div style={{ marginBottom:24 }}>
-              <p style={{ fontSize:11, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.8, marginBottom:14 }}>
+              <p style={{ fontSize:11, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.8, marginBottom:14 }}>
                 {lang === 'fr' ? 'Choisis un programme' : 'Select a program'}
               </p>
               {Object.entries(DOMAINES_LABELS).map(([domaine, label]) => {
@@ -1286,7 +1286,7 @@ export default function MonAvenir() {
                 if (!progs.length) return null
                 return (
                   <div key={domaine} style={{ marginBottom:16 }}>
-                    <p style={{ fontSize:12, fontWeight:700, color:'#6B6F76', marginBottom:8 }}>{lang === 'fr' ? label.fr : label.en}</p>
+                    <p style={{ fontSize:12, fontWeight:700, color:'var(--text-muted)', marginBottom:8 }}>{lang === 'fr' ? label.fr : label.en}</p>
                     <div style={{ display:'flex', gap:7, flexWrap:'wrap' }}>
                       {progs.map(p => (
                         <button key={p.id} onClick={() => selectProg(p.id)} style={{ ...chip(selectedProg === p.id), padding:'6px 13px', fontSize:12 }}>
@@ -1300,7 +1300,7 @@ export default function MonAvenir() {
             </div>
 
             {!selectedProg && (
-              <div style={{ textAlign:'center', padding:'48px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16, color:'#6B6F76' }}>
+              <div style={{ textAlign:'center', padding:'48px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, color:'var(--text-muted)' }}>
                 <p style={{ fontSize:36, marginBottom:12 }}>📚</p>
                 <p style={{ fontSize:15 }}>{lang === 'fr' ? 'Sélectionne un programme ci-dessus pour voir la fiche détaillée.' : 'Select a program above to see the detailed profile.'}</p>
               </div>
@@ -1317,28 +1317,28 @@ export default function MonAvenir() {
                 <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
 
                   {/* BLOC A — C'est quoi vraiment */}
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:12 }}>{lang === 'fr' ? `C'est quoi vraiment — ${prog.nom.fr}` : `What is really — ${prog.nom.en}`}</p>
-                    <p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.8 }}>{info.cest_quoi}</p>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:12 }}>{lang === 'fr' ? `C'est quoi vraiment — ${prog.nom.fr}` : `What is really — ${prog.nom.en}`}</p>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.8 }}>{info.cest_quoi}</p>
                   </div>
 
                   {/* BLOC B — Le monde */}
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:14 }}>🌍 {lang === 'fr' ? 'Ce que ça change dans le monde' : 'How it changes the world'}</p>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:14 }}>🌍 {lang === 'fr' ? 'Ce que ça change dans le monde' : 'How it changes the world'}</p>
                     <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
                       {info.monde.map((m, i) => (
-                        <div key={i} style={{ padding:'12px 14px', background:'#F7F7F5', borderRadius:10, borderLeft:'3px solid #0E1116' }}>
-                          <p style={{ fontSize:12, fontWeight:700, color:'#3A3D40', marginBottom:4 }}>{m.ctx}</p>
-                          <p style={{ fontSize:13, color:'#6B6F76', marginBottom:3 }}>→ {m.action}</p>
-                          <p style={{ fontSize:13, color:'#3A3D40', fontWeight:500 }}>✓ {m.impact}</p>
+                        <div key={i} style={{ padding:'12px 14px', background:'var(--bg-subtle)', borderRadius:10, borderLeft:'3px solid #0E1116' }}>
+                          <p style={{ fontSize:12, fontWeight:700, color:'var(--text-body)', marginBottom:4 }}>{m.ctx}</p>
+                          <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:3 }}>→ {m.action}</p>
+                          <p style={{ fontSize:13, color:'var(--text-body)', fontWeight:500 }}>✓ {m.impact}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* BLOC C — Canada */}
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:14 }}>🍁 {lang === 'fr' ? 'Où aller et quoi viser au Canada' : 'Where to go and what to aim for in Canada'}</p>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:14 }}>🍁 {lang === 'fr' ? 'Où aller et quoi viser au Canada' : 'Where to go and what to aim for in Canada'}</p>
 
                     {/* Table villes */}
                     <div style={{ overflowX:'auto', marginBottom:18 }}>
@@ -1346,16 +1346,16 @@ export default function MonAvenir() {
                         <thead>
                           <tr>
                             {[lang === 'fr' ? 'Ville' : 'City', lang === 'fr' ? 'Secteur dominant' : 'Main sector', lang === 'fr' ? 'Salaire moyen' : 'Average salary'].map((h,i) => (
-                              <th key={i} style={{ padding:'9px 14px', background:'#F7F7F5', border:'1px solid #EBEBE9', textAlign:'left', color:'#6B6F76', fontSize:11, textTransform:'uppercase', letterSpacing:0.5, fontWeight:600 }}>{h}</th>
+                              <th key={i} style={{ padding:'9px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', textAlign:'left', color:'var(--text-muted)', fontSize:11, textTransform:'uppercase', letterSpacing:0.5, fontWeight:600 }}>{h}</th>
                             ))}
                           </tr>
                         </thead>
                         <tbody>
                           {info.villes.map((row, i) => (
                             <tr key={i} style={{ background: i % 2 === 0 ? '#FFFFFF' : 'transparent' }}>
-                              <td style={{ padding:'9px 14px', border:'1px solid #EBEBE9', fontWeight:600, color:'#0E1116' }}>{row.v}</td>
-                              <td style={{ padding:'9px 14px', border:'1px solid #EBEBE9', color:'#6B6F76' }}>{row.s}</td>
-                              <td style={{ padding:'9px 14px', border:'1px solid #EBEBE9', fontWeight:700, color:'#3A3D40' }}>{row.r}</td>
+                              <td style={{ padding:'9px 14px', border:'1px solid var(--border)', fontWeight:600, color:'var(--text-h1)' }}>{row.v}</td>
+                              <td style={{ padding:'9px 14px', border:'1px solid var(--border)', color:'var(--text-muted)' }}>{row.s}</td>
+                              <td style={{ padding:'9px 14px', border:'1px solid var(--border)', fontWeight:700, color:'var(--text-body)' }}>{row.r}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -1363,30 +1363,30 @@ export default function MonAvenir() {
                     </div>
 
                     {/* Métiers actuels */}
-                    <p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Métiers actuels' : 'Current jobs'}</p>
+                    <p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Métiers actuels' : 'Current jobs'}</p>
                     <div style={{ display:'flex', flexWrap:'wrap', gap:7, marginBottom:16 }}>
-                      {info.metiers_now.map(m => <span key={m} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(59,130,246,0.12)', color:'#3A3D40', border:`1px solid ${'#0E1116'}25` }}>{m}</span>)}
+                      {info.metiers_now.map(m => <span key={m} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(59,130,246,0.12)', color:'var(--text-body)', border:`1px solid ${'#0E1116'}25` }}>{m}</span>)}
                     </div>
 
                     {/* Métiers futurs */}
-                    <p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Métiers dans 10 ans' : 'Jobs in 10 years'}</p>
+                    <p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Métiers dans 10 ans' : 'Jobs in 10 years'}</p>
                     <div style={{ display:'flex', flexWrap:'wrap', gap:7, marginBottom:16 }}>
-                      {info.metiers_futur.map(m => <span key={m} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(96,165,250,0.12)', color:'#6B6F76', border:'1px solid rgba(96,165,250,0.2)' }}>{m}</span>)}
+                      {info.metiers_futur.map(m => <span key={m} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'rgba(96,165,250,0.12)', color:'var(--text-muted)', border:'1px solid rgba(96,165,250,0.2)' }}>{m}</span>)}
                     </div>
 
                     {/* Chemin type */}
                     <div style={{ padding:'12px 16px', background:'#0E111608', border:`1px solid ${'#0E1116'}20`, borderRadius:10 }}>
-                      <p style={{ fontSize:12, fontWeight:700, color:'#3A3D40', marginBottom:4 }}>{lang === 'fr' ? 'Chemin type' : 'Typical path'}</p>
-                      <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.7 }}>{info.chemin}</p>
+                      <p style={{ fontSize:12, fontWeight:700, color:'var(--text-body)', marginBottom:4 }}>{lang === 'fr' ? 'Chemin type' : 'Typical path'}</p>
+                      <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.7 }}>{info.chemin}</p>
                     </div>
                   </div>
 
                   {/* BLOC D — Retour au pays */}
-                  <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                    <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:12 }}>{lang === 'fr' ? 'Le retour au pays' : 'Back home'}</p>
+                  <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                    <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:12 }}>{lang === 'fr' ? 'Le retour au pays' : 'Back home'}</p>
                     {!ficheRetour ? (
-                      <div style={{ textAlign:'center', padding:'20px', background:'#F7F7F5', borderRadius:10 }}>
-                        <p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.7, marginBottom:14 }}>
+                      <div style={{ textAlign:'center', padding:'20px', background:'var(--bg-subtle)', borderRadius:10 }}>
+                        <p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.7, marginBottom:14 }}>
                           {lang === 'fr'
                             ? (profile?.pays_origine ? `Les données spécifiques pour ${profile.pays_origine} × ${prog.nom.fr} ne sont pas encore disponibles — mais ton expertise sera précieuse dans ton pays.` : "Renseigne ton pays d'origine dans ton profil pour voir les opportunités spécifiques →")
                             : (profile?.pays_origine ? `Specific data for ${profile.pays_origine} × ${prog.nom.en} is not yet available — but your expertise will be valuable back home.` : 'Add your country of origin in your profile to see specific opportunities →')}
@@ -1399,27 +1399,27 @@ export default function MonAvenir() {
                           <span style={{ padding:'4px 12px', borderRadius:20, fontSize:12, fontWeight:600, background: ficheRetour.statut === 'Mature' ? 'rgba(52,211,153,0.12)' : ficheRetour.statut === 'En développement' ? 'rgba(251,191,36,0.12)' : 'rgba(96,165,250,0.12)', color: ficheRetour.statut === 'Mature' ? '#3A3D40' : ficheRetour.statut === 'En développement' ? '#6B6F76' : '#6B6F76', border:`1px solid currentColor` }}>
                             {ficheRetour.statut}
                           </span>
-                          <p style={{ fontSize:14, fontWeight:600, color:'#0E1116' }}>{paysFiche.key} × {prog.nom[lang]}</p>
+                          <p style={{ fontSize:14, fontWeight:600, color:'var(--text-h1)' }}>{paysFiche.key} × {prog.nom[lang]}</p>
                         </div>
 
-                        <p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? '3 opportunités concrètes' : '3 concrete opportunities'}</p>
+                        <p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? '3 opportunités concrètes' : '3 concrete opportunities'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:14 }}>
                           {ficheRetour.opportunites.map((opp, i) => (
-                            <div key={i} style={{ display:'flex', gap:10, padding:'10px 14px', background:'#F7F7F5', borderRadius:9 }}>
-                              <span style={{ color:'#3A3D40', fontWeight:700, flexShrink:0 }}>{i + 1}.</span>
-                              <p style={{ fontSize:13, color:'#0E1116', lineHeight:1.6 }}>{opp}</p>
+                            <div key={i} style={{ display:'flex', gap:10, padding:'10px 14px', background:'var(--bg-subtle)', borderRadius:9 }}>
+                              <span style={{ color:'var(--text-body)', fontWeight:700, flexShrink:0 }}>{i + 1}.</span>
+                              <p style={{ fontSize:13, color:'var(--text-h1)', lineHeight:1.6 }}>{opp}</p>
                             </div>
                           ))}
                         </div>
 
                         <div style={{ padding:'12px 16px', background:'rgba(251,191,36,0.07)', border:'1px solid rgba(251,191,36,0.2)', borderRadius:10, marginBottom:12 }}>
-                          <p style={{ fontSize:12, fontWeight:700, color:'#6B6F76', marginBottom:4 }}>💡 {lang === 'fr' ? 'Le manque identifié' : 'The identified gap'}</p>
-                          <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.6 }}>{ficheRetour.manque}</p>
+                          <p style={{ fontSize:12, fontWeight:700, color:'var(--text-muted)', marginBottom:4 }}>💡 {lang === 'fr' ? 'Le manque identifié' : 'The identified gap'}</p>
+                          <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.6 }}>{ficheRetour.manque}</p>
                         </div>
 
-                        <p style={{ fontSize:12, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Acteurs à connaître' : 'Key players'}</p>
+                        <p style={{ fontSize:12, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.5, marginBottom:8 }}>{lang === 'fr' ? 'Acteurs à connaître' : 'Key players'}</p>
                         <div style={{ display:'flex', flexWrap:'wrap', gap:7 }}>
-                          {ficheRetour.acteurs.map(a => <span key={a} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'#0E111610', color:'#3A3D40', border:`1px solid ${'#0E1116'}20` }}>{a}</span>)}
+                          {ficheRetour.acteurs.map(a => <span key={a} style={{ fontSize:12, padding:'4px 12px', borderRadius:20, background:'#0E111610', color:'var(--text-body)', border:`1px solid ${'#0E1116'}20` }}>{a}</span>)}
                         </div>
                       </div>
                     )}
@@ -1436,36 +1436,36 @@ export default function MonAvenir() {
         {tab === 'vision' && (
           <>
             {!visionProg || !visionPays ? (
-              <div style={{ textAlign:'center', padding:'56px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16 }}>
+              <div style={{ textAlign:'center', padding:'56px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16 }}>
                 <div style={{ width:44, height:44, borderRadius:12, background:"#F7F7F5", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-                <p style={{ fontWeight:700, fontSize:18, color:'#0E1116', marginBottom:10 }}>
+                <p style={{ fontWeight:700, fontSize:18, color:'var(--text-h1)', marginBottom:10 }}>
                   {lang === 'fr' ? 'Complète d\'abord ton profil' : 'Complete your profile first'}
                 </p>
-                <p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.7, maxWidth:420, margin:'0 auto 24px' }}>
+                <p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.7, maxWidth:420, margin:'0 auto 24px' }}>
                   {lang === 'fr'
                     ? 'Complète d\'abord le quiz d\'orientation et renseigne ton pays d\'origine dans ton profil pour générer ta vision personnalisée.'
                     : 'First complete the orientation quiz and add your country of origin in your profile to generate your personalized vision.'}
                 </p>
                 <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
                   {!visionProg && <button onClick={() => setTab('orientation')} style={{ padding:'10px 22px', background:'#0E1116', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, border:'none', cursor:'pointer' }}>{lang === 'fr' ? 'Faire le quiz →' : 'Take the quiz →'}</button>}
-                  {!visionPays && <a href="/profile_1" style={{ padding:'10px 22px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:9, color:'#3A3D40', fontWeight:600, fontSize:14, textDecoration:'none' }}>{lang === 'fr' ? 'Compléter mon profil →' : 'Complete my profile →'}</a>}
+                  {!visionPays && <a href="/profile_1" style={{ padding:'10px 22px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:9, color:'var(--text-body)', fontWeight:600, fontSize:14, textDecoration:'none' }}>{lang === 'fr' ? 'Compléter mon profil →' : 'Complete my profile →'}</a>}
                 </div>
               </div>
             ) : (
               <div>
 
                 {/* Barre info programme/pays + PDF si résultats */}
-                <div className="no-print" style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', marginBottom:24, padding:'14px 18px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:12 }}>
-                  {(() => { const prog = PROGRAMMES.find(p => p.id === visionProg); return prog ? <><span style={{ fontSize:22 }}>{prog.emoji}</span><span style={{ fontSize:14, fontWeight:600, color:'#0E1116' }}>{prog.nom[lang]}</span></> : null })()}
+                <div className="no-print" style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', marginBottom:24, padding:'14px 18px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:12 }}>
+                  {(() => { const prog = PROGRAMMES.find(p => p.id === visionProg); return prog ? <><span style={{ fontSize:22 }}>{prog.emoji}</span><span style={{ fontSize:14, fontWeight:600, color:'var(--text-h1)' }}>{prog.nom[lang]}</span></> : null })()}
                   <span style={{ color:'#EBEBE9' }}>·</span>
-                  <span style={{ fontSize:14, color:'#6B6F76' }}>🌍 {visionPays}</span>
+                  <span style={{ fontSize:14, color:'var(--text-muted)' }}>🌍 {visionPays}</span>
                   {vision && !visLoading && (
                     <div style={{ marginLeft:'auto', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:4 }}>
-                      <button onClick={telechargerVisionPDF} style={{ padding:'8px 16px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:8, color:'#3A3D40', fontWeight:600, fontSize:13, cursor:'pointer' }}>
+                      <button onClick={telechargerVisionPDF} style={{ padding:'8px 16px', background:'#0E111615', border:`1px solid ${'#0E1116'}35`, borderRadius:8, color:'var(--text-body)', fontWeight:600, fontSize:13, cursor:'pointer' }}>
                         📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
                       </button>
                       {isIOS && (
-                        <p style={{ fontSize:11, color:'#6B6F76', lineHeight:1.5, maxWidth:260, textAlign:'right' }}>
+                        <p style={{ fontSize:11, color:'var(--text-muted)', lineHeight:1.5, maxWidth:260, textAlign:'right' }}>
                           💡 {lang === 'fr'
                             ? 'Sur iPhone : autorise les popups si demandé (Réglages → Safari → Bloquer les fenêtres publicitaires → Désactiver pour ce site)'
                             : 'On iPhone: allow popups if prompted (Settings → Safari → Block Pop-ups → Disable for this site)'}
@@ -1479,10 +1479,10 @@ export default function MonAvenir() {
                 {visionCache && !vision && !visLoading && (
                   <div style={{ display:'flex', alignItems:'center', gap:12, flexWrap:'wrap', padding:'14px 18px', background:'#0E111610', border:`1px solid ${'#0E1116'}30`, borderRadius:12, marginBottom:16 }}>
                     <div style={{ flex:1, minWidth:180 }}>
-                      <p style={{ fontSize:13, fontWeight:700, color:'#3A3D40', marginBottom:2 }}>
+                      <p style={{ fontSize:13, fontWeight:700, color:'var(--text-body)', marginBottom:2 }}>
                         💾 {lang === 'fr' ? 'Vision précédente disponible' : 'Previous vision available'}
                       </p>
-                      <p style={{ fontSize:12, color:'#6B6F76' }}>
+                      <p style={{ fontSize:12, color:'var(--text-muted)' }}>
                         {lang === 'fr' ? `Générée le ${new Date(visionCache.date).toLocaleDateString('fr-CA')}` : `Generated on ${new Date(visionCache.date).toLocaleDateString('en-CA')}`}
                       </p>
                     </div>
@@ -1492,7 +1492,7 @@ export default function MonAvenir() {
                         {lang === 'fr' ? '↺ Reprendre' : '↺ Restore'}
                       </button>
                       <button onClick={() => { setVisionCache(null); try { localStorage.removeItem('novae_vision_complete') } catch {} }}
-                        style={{ padding:'7px 11px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:8, color:'#6B6F76', fontSize:12, cursor:'pointer' }}>
+                        style={{ padding:'7px 11px', background:'transparent', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:12, cursor:'pointer' }}>
                         ✕
                       </button>
                     </div>
@@ -1504,8 +1504,8 @@ export default function MonAvenir() {
                   <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
                     {/* Intro */}
                     <div style={{ padding:'16px 20px', background:'#0E111608', border:`1px solid ${'#0E1116'}20`, borderRadius:12 }}>
-                      <p style={{ fontSize:14, fontWeight:700, color:'#3A3D40', marginBottom:4 }}>✨ {lang === 'fr' ? 'Dis-moi qui tu es vraiment' : 'Tell me who you really are'}</p>
-                      <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.7, margin:0 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:'var(--text-body)', marginBottom:4 }}>✨ {lang === 'fr' ? 'Dis-moi qui tu es vraiment' : 'Tell me who you really are'}</p>
+                      <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.7, margin:0 }}>
                         {lang === 'fr'
                           ? 'Plus tu partages, plus ta vision sera personnalisée. L\'IA citera tes propres mots dans ses recommandations.'
                           : 'The more you share, the more personalized your vision will be. The AI will quote your own words in its recommendations.'}
@@ -1514,10 +1514,10 @@ export default function MonAvenir() {
 
                     {/* Q1 — Passion */}
                     <div>
-                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#3A3D40', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'var(--text-body)', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
                         {lang === 'fr' ? '❤️ Ta passion profonde' : '❤️ Your deep passion'}
                       </label>
-                      <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>
+                      <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>
                         {lang === 'fr' ? 'Qu\'est-ce qui te passionne vraiment ?' : 'What truly drives and excites you?'}
                       </p>
                       <textarea
@@ -1527,7 +1527,7 @@ export default function MonAvenir() {
                         placeholder={lang === 'fr'
                           ? 'Ex : J\'adore comprendre comment les données peuvent prédire des comportements. Je passe des heures à analyser des tendances...'
                           : 'Ex: I love understanding how data can predict human behavior. I spend hours analyzing trends...'}
-                        style={{ width:'100%', padding:'12px 14px', background:'#F7F7F5', border:`1.5px solid ${visionForm.passion.length >= 20 ? '#0E111660' : '#EBEBE9'}`, borderRadius:10, color:'#0E1116', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box', transition:'border-color 0.2s' }}
+                        style={{ width:'100%', padding:'12px 14px', background:'var(--bg-subtle)', border:`1.5px solid ${visionForm.passion.length >= 20 ? '#0E111660' : '#EBEBE9'}`, borderRadius:10, color:'var(--text-h1)', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box', transition:'border-color 0.2s' }}
                       />
                       <p style={{ fontSize:11, color: visionForm.passion.length >= 20 ? '#3A3D40' : '#6B6F76', textAlign:'right', marginTop:4 }}>
                         {visionForm.passion.length}/20 {lang === 'fr' ? 'caractères min.' : 'chars min.'}
@@ -1536,10 +1536,10 @@ export default function MonAvenir() {
 
                     {/* Q2 — Défi */}
                     <div>
-                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
                         {lang === 'fr' ? '🌍 Ton plus grand défi' : '🌍 Your biggest challenge'}
                       </label>
-                      <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>
+                      <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>
                         {lang === 'fr' ? 'Quel problème dans ton pays ou dans le monde t\'empêche de dormir ?' : 'What problem in your country or the world keeps you up at night?'}
                       </p>
                       <textarea
@@ -1549,16 +1549,16 @@ export default function MonAvenir() {
                         placeholder={lang === 'fr'
                           ? 'Ex : Dans mon pays, 60% des agriculteurs perdent leurs récoltes faute d\'information météo fiable. Je veux changer ça...'
                           : 'Ex: In my country, 60% of farmers lose their harvests due to unreliable weather information. I want to change that...'}
-                        style={{ width:'100%', padding:'12px 14px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:10, color:'#0E1116', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
+                        style={{ width:'100%', padding:'12px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-h1)', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
                       />
                     </div>
 
                     {/* Q3 — Impact */}
                     <div>
-                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#0E1116', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'var(--text-h1)', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
                         {lang === 'fr' ? 'Ton impact rêvé' : 'Your dream impact'}
                       </label>
-                      <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>
+                      <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>
                         {lang === 'fr' ? 'Dans 10 ans, quelle trace veux-tu avoir laissée ?' : 'In 10 years, what impact do you want to have made?'}
                       </p>
                       <textarea
@@ -1568,16 +1568,16 @@ export default function MonAvenir() {
                         placeholder={lang === 'fr'
                           ? 'Ex : J\'aimerais avoir créé une technologie qui permet à 1 million de personnes d\'accéder à des soins de qualité...'
                           : "Ex: I'd like to have created a technology that gives 1 million people access to quality healthcare..."}
-                        style={{ width:'100%', padding:'12px 14px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:10, color:'#0E1116', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
+                        style={{ width:'100%', padding:'12px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-h1)', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
                       />
                     </div>
 
                     {/* Q4 — Contexte */}
                     <div>
-                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
+                      <label style={{ display:'block', fontSize:12, fontWeight:700, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.6, marginBottom:6 }}>
                         {lang === 'fr' ? '🧭 Ton contexte personnel' : '🧭 Your personal context'}
                       </label>
-                      <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>
+                      <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>
                         {lang === 'fr' ? 'Parle-moi de ton parcours et de ce qui te rend unique' : 'Tell me about your journey and what makes you unique'}
                       </p>
                       <textarea
@@ -1587,7 +1587,7 @@ export default function MonAvenir() {
                         placeholder={lang === 'fr'
                           ? 'Ex : J\'ai grandi dans une famille d\'agriculteurs au Sénégal. J\'ai fait mes études en France avant de venir au Canada. Je parle 3 langues...'
                           : 'Ex: I grew up in a farming family in Senegal. I studied in France before coming to Canada. I speak 3 languages...'}
-                        style={{ width:'100%', padding:'12px 14px', background:'#F7F7F5', border:'1px solid #EBEBE9', borderRadius:10, color:'#0E1116', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
+                        style={{ width:'100%', padding:'12px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-h1)', fontSize:13, lineHeight:1.7, resize:'vertical', outline:'none', boxSizing:'border-box' }}
                       />
                     </div>
 
@@ -1607,10 +1607,10 @@ export default function MonAvenir() {
 
                 {/* ── CHARGEMENT ── */}
                 {visLoading && (
-                  <div style={{ textAlign:'center', padding:'60px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16 }}>
+                  <div style={{ textAlign:'center', padding:'60px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16 }}>
                     <div style={{ width:44, height:44, borderRadius:12, background:"#F7F7F5", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-                    <p style={{ fontSize:16, fontWeight:700, color:'#0E1116', marginBottom:8 }}>{lang === 'fr' ? 'Génération de ta vision...' : 'Generating your vision...'}</p>
-                    <p style={{ fontSize:13, color:'#6B6F76', marginBottom:28 }}>{lang === 'fr' ? 'L\'IA analyse ton profil en profondeur (30-45 sec)' : 'AI is deeply analyzing your profile (30-45 sec)'}</p>
+                    <p style={{ fontSize:16, fontWeight:700, color:'var(--text-h1)', marginBottom:8 }}>{lang === 'fr' ? 'Génération de ta vision...' : 'Generating your vision...'}</p>
+                    <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:28 }}>{lang === 'fr' ? 'L\'IA analyse ton profil en profondeur (30-45 sec)' : 'AI is deeply analyzing your profile (30-45 sec)'}</p>
                     <div style={{ display:'flex', justifyContent:'center', gap:8 }}>
                       {[0,1,2].map(i => <div key={i} style={{ width:10, height:10, borderRadius:'50%', background:'#3A3D40', animation:`novaDot 1.4s infinite ${i*0.2}s` }} />)}
                     </div>
@@ -1622,7 +1622,7 @@ export default function MonAvenir() {
                   <div id="vision-print" style={{ display:'flex', flexDirection:'column', gap:20 }}>
 
                     {/* SECTION 0 — "Ce qu'on a compris de toi" */}
-                    <div className="fade-up" style={{ padding:'22px 24px', background:'#F7F7F5', borderRadius:16 }}>
+                    <div className="fade-up" style={{ padding:'22px 24px', background:'var(--bg-subtle)', borderRadius:16 }}>
                       <p style={{ fontSize:11, fontWeight:700, color:'rgba(255,255,255,0.6)', textTransform:'uppercase', letterSpacing:1, marginBottom:12 }}>
                         💎 {lang === 'fr' ? 'Ce qu\'on a compris de toi' : 'What we understood about you'}
                       </p>
@@ -1631,7 +1631,7 @@ export default function MonAvenir() {
                       )}
                       {vision.insight_unique && (
                         <div style={{ padding:'12px 16px', background:'rgba(96,165,250,0.2)', border:'1px solid rgba(96,165,250,0.35)', borderRadius:10 }}>
-                          <p style={{ fontSize:11, fontWeight:700, color:'#9A9D9F', marginBottom:6 }}>💡 {lang === 'fr' ? 'Ce que tu n\'as peut-être pas réalisé :' : 'What you may not have realized:'}</p>
+                          <p style={{ fontSize:11, fontWeight:700, color:'var(--text-faint)', marginBottom:6 }}>💡 {lang === 'fr' ? 'Ce que tu n\'as peut-être pas réalisé :' : 'What you may not have realized:'}</p>
                           <p style={{ fontSize:13, color:'rgba(255,255,255,0.9)', lineHeight:1.7, margin:0 }}>{vision.insight_unique}</p>
                         </div>
                       )}
@@ -1639,25 +1639,25 @@ export default function MonAvenir() {
 
                     {/* SECTION 1 — Métiers aujourd'hui */}
                     {(vision.metiers_actuels || []).length > 0 && (
-                      <div className="fade-up fade-up-1" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:16 }}>💼 {lang === 'fr' ? 'Tes métiers aujourd\'hui' : 'Your careers today'}</p>
+                      <div className="fade-up fade-up-1" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>💼 {lang === 'fr' ? 'Tes métiers aujourd\'hui' : 'Your careers today'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
                           {vision.metiers_actuels.map((m, i) => (
-                            <div key={i} style={{ padding:'14px 16px', background:'#F7F7F5', borderRadius:10, borderLeft:'3px solid #0E1116' }}>
+                            <div key={i} style={{ padding:'14px 16px', background:'var(--bg-subtle)', borderRadius:10, borderLeft:'3px solid #0E1116' }}>
                               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12, flexWrap:'wrap', marginBottom:8 }}>
-                                <p style={{ fontWeight:700, fontSize:14, color:'#0E1116', margin:0 }}>{m.titre}</p>
-                                {m.salaire_canada && <span style={{ fontSize:12, padding:'4px 10px', borderRadius:20, background:'#3A3D4012', color:'#3A3D40', border:`1px solid ${'#3A3D40'}25`, whiteSpace:'nowrap', fontWeight:600, flexShrink:0 }}>{m.salaire_canada}</span>}
+                                <p style={{ fontWeight:700, fontSize:14, color:'var(--text-h1)', margin:0 }}>{m.titre}</p>
+                                {m.salaire_canada && <span style={{ fontSize:12, padding:'4px 10px', borderRadius:20, background:'#3A3D4012', color:'var(--text-body)', border:`1px solid ${'#3A3D40'}25`, whiteSpace:'nowrap', fontWeight:600, flexShrink:0 }}>{m.salaire_canada}</span>}
                               </div>
                               {(m.lien_avec_passion) && (
-                                <p style={{ fontSize:12, color:'#3A3D40', fontStyle:'italic', marginBottom:8 }}>
+                                <p style={{ fontSize:12, color:'var(--text-body)', fontStyle:'italic', marginBottom:8 }}>
                                   🔗 {lang === 'fr' ? 'Lien avec ta passion :' : 'Link to your passion:'} {m.lien_avec_passion}
                                 </p>
                               )}
-                              <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.6, marginBottom: (m.entreprises_types||[]).length > 0 ? 8 : 0 }}>{m.description}</p>
+                              <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.6, marginBottom: (m.entreprises_types||[]).length > 0 ? 8 : 0 }}>{m.description}</p>
                               {(m.entreprises_types||[]).length > 0 && (
                                 <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
                                   {m.entreprises_types.map((e, j) => (
-                                    <span key={j} style={{ fontSize:11, padding:'3px 9px', borderRadius:20, background:'#0E111612', color:'#3A3D40', border:`1px solid ${'#0E1116'}25` }}>{e}</span>
+                                    <span key={j} style={{ fontSize:11, padding:'3px 9px', borderRadius:20, background:'#0E111612', color:'var(--text-body)', border:`1px solid ${'#0E1116'}25` }}>{e}</span>
                                   ))}
                                 </div>
                               )}
@@ -1669,22 +1669,22 @@ export default function MonAvenir() {
 
                     {/* SECTION 2 — Métiers dans 10 ans */}
                     {(vision.metiers_futur || []).length > 0 && (
-                      <div className="fade-up fade-up-2" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:16 }}>{lang === 'fr' ? 'Tes métiers dans 10 ans' : 'Your careers in 10 years'}</p>
+                      <div className="fade-up fade-up-2" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>{lang === 'fr' ? 'Tes métiers dans 10 ans' : 'Your careers in 10 years'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom: vision.impact_ia ? 16 : 0 }}>
                           {vision.metiers_futur.map((m, i) => (
                             <div key={i} style={{ padding:'14px 16px', background:'rgba(96,165,250,0.06)', borderRadius:10, border:'1px solid rgba(96,165,250,0.15)' }}>
                               <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8, flexWrap:'wrap' }}>
-                                <p style={{ fontWeight:700, fontSize:14, color:'#6B6F76', margin:0 }}>{m.titre}</p>
-                                {m.horizon && <span style={{ fontSize:11, padding:'2px 8px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'#6B6F76' }}>{m.horizon}</span>}
+                                <p style={{ fontWeight:700, fontSize:14, color:'var(--text-muted)', margin:0 }}>{m.titre}</p>
+                                {m.horizon && <span style={{ fontSize:11, padding:'2px 8px', borderRadius:20, background:'rgba(96,165,250,0.15)', color:'var(--text-muted)' }}>{m.horizon}</span>}
                               </div>
                               {(m.pourquoi_pour_lui || m.pourquoi_emerge) && (
-                                <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.6, marginBottom:8 }}>
-                                  <strong style={{ color:'#0E1116' }}>{lang === 'fr' ? 'Pourquoi ce métier pour TOI :' : 'Why this career for YOU:'}</strong> {m.pourquoi_pour_lui || m.pourquoi_emerge}
+                                <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.6, marginBottom:8 }}>
+                                  <strong style={{ color:'var(--text-h1)' }}>{lang === 'fr' ? 'Pourquoi ce métier pour TOI :' : 'Why this career for YOU:'}</strong> {m.pourquoi_pour_lui || m.pourquoi_emerge}
                                 </p>
                               )}
                               {m.comment_y_arriver && (
-                                <p style={{ fontSize:12, color:'#3A3D40', borderTop:'1px solid #EBEBE9', paddingTop:8, marginBottom:0 }}>
+                                <p style={{ fontSize:12, color:'var(--text-body)', borderTop:'1px solid var(--border)', paddingTop:8, marginBottom:0 }}>
                                   ✅ {m.comment_y_arriver}
                                 </p>
                               )}
@@ -1693,8 +1693,8 @@ export default function MonAvenir() {
                         </div>
                         {vision.impact_ia && (
                           <div style={{ padding:'14px 16px', background:'rgba(251,191,36,0.07)', border:'1px solid rgba(251,191,36,0.2)', borderRadius:10 }}>
-                            <p style={{ fontSize:12, fontWeight:700, color:'#0E1116', marginBottom:6 }}>🤖 {lang === 'fr' ? 'Impact de l\'IA sur ce secteur' : 'AI impact on this sector'}</p>
-                            <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.7, margin:0 }}>{vision.impact_ia}</p>
+                            <p style={{ fontSize:12, fontWeight:700, color:'var(--text-h1)', marginBottom:6 }}>🤖 {lang === 'fr' ? 'Impact de l\'IA sur ce secteur' : 'AI impact on this sector'}</p>
+                            <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.7, margin:0 }}>{vision.impact_ia}</p>
                           </div>
                         )}
                       </div>
@@ -1702,33 +1702,33 @@ export default function MonAvenir() {
 
                     {/* SECTION 3 — Idées startup */}
                     {(vision.startups || []).length > 0 && (
-                      <div className="fade-up fade-up-3" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:16 }}>💡 {lang === 'fr' ? 'Tes idées de startup' : 'Your startup ideas'}</p>
+                      <div className="fade-up fade-up-3" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>💡 {lang === 'fr' ? 'Tes idées de startup' : 'Your startup ideas'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
                           {vision.startups.map((s, i) => (
-                            <div key={i} style={{ padding:'16px 18px', background:'#F7F7F5', borderRadius:12, borderLeft:`3px solid ${i === 0 ? '#3A3D40' : i === 1 ? '#6B6F76' : '#0E1116'}` }}>
-                              <p style={{ fontWeight:700, fontSize:15, color:'#0E1116', marginBottom:10 }}>🏢 {s.nom}</p>
-                              <p style={{ fontSize:13, color:'#6B6F76', marginBottom:6 }}>
-                                <strong style={{ color:'#0E1116' }}>{lang === 'fr' ? 'Problème résolu :' : 'Problem solved:'}</strong> {s.probleme_resolu || s.probleme}
+                            <div key={i} style={{ padding:'16px 18px', background:'var(--bg-subtle)', borderRadius:12, borderLeft:`3px solid ${i === 0 ? '#3A3D40' : i === 1 ? '#6B6F76' : '#0E1116'}` }}>
+                              <p style={{ fontWeight:700, fontSize:15, color:'var(--text-h1)', marginBottom:10 }}>🏢 {s.nom}</p>
+                              <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:6 }}>
+                                <strong style={{ color:'var(--text-h1)' }}>{lang === 'fr' ? 'Problème résolu :' : 'Problem solved:'}</strong> {s.probleme_resolu || s.probleme}
                               </p>
-                              <p style={{ fontSize:13, color:'#6B6F76', marginBottom:6 }}>
-                                <strong style={{ color:'#0E1116' }}>{lang === 'fr' ? 'Solution :' : 'Solution:'}</strong> {s.solution}
+                              <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:6 }}>
+                                <strong style={{ color:'var(--text-h1)' }}>{lang === 'fr' ? 'Solution :' : 'Solution:'}</strong> {s.solution}
                               </p>
                               {(s.marche_cible || s.marche) && (
-                                <p style={{ fontSize:13, color:'#6B6F76', marginBottom:8 }}>
-                                  <strong style={{ color:'#0E1116' }}>{lang === 'fr' ? 'Marché cible :' : 'Target market:'}</strong> {s.marche_cible || s.marche}
+                                <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:8 }}>
+                                  <strong style={{ color:'var(--text-h1)' }}>{lang === 'fr' ? 'Marché cible :' : 'Target market:'}</strong> {s.marche_cible || s.marche}
                                 </p>
                               )}
                               {(s.pourquoi_lui || s.pourquoi_toi) && (
-                                <p style={{ fontSize:13, color:'#3A3D40', marginBottom:10 }}>💡 {s.pourquoi_lui || s.pourquoi_toi}</p>
+                                <p style={{ fontSize:13, color:'var(--text-body)', marginBottom:10 }}>💡 {s.pourquoi_lui || s.pourquoi_toi}</p>
                               )}
                               {s.premier_pas && (
                                 <div style={{ padding:'10px 14px', background:'rgba(59,130,246,0.08)', border:'1px solid rgba(59,130,246,0.25)', borderRadius:8, marginBottom:8 }}>
-                                  <p style={{ fontSize:12, fontWeight:700, color:'#0E1116', marginBottom:4 }}>{lang === 'fr' ? 'Premier pas cette semaine :' : 'First step this week:'}</p>
-                                  <p style={{ fontSize:13, color:'#0E1116', margin:0, lineHeight:1.6 }}>{s.premier_pas}</p>
+                                  <p style={{ fontSize:12, fontWeight:700, color:'var(--text-h1)', marginBottom:4 }}>{lang === 'fr' ? 'Premier pas cette semaine :' : 'First step this week:'}</p>
+                                  <p style={{ fontSize:13, color:'var(--text-h1)', margin:0, lineHeight:1.6 }}>{s.premier_pas}</p>
                                 </div>
                               )}
-                              <p style={{ fontSize:12, color:'#6B6F76', fontStyle:'italic', margin:0 }}>
+                              <p style={{ fontSize:12, color:'var(--text-muted)', fontStyle:'italic', margin:0 }}>
                                 {lang === 'fr' ? 'Modèle mondial :' : 'Global model:'} {s.exemple_mondial}
                               </p>
                             </div>
@@ -1739,20 +1739,20 @@ export default function MonAvenir() {
 
                     {/* SECTION 4 — Plan 5 ans */}
                     {(vision.plan_5_ans || vision.plan_5ans) && (
-                      <div className="fade-up" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:16 }}>📅 {lang === 'fr' ? 'Ton plan en 5 ans' : 'Your 5-year plan'}</p>
+                      <div className="fade-up" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>📅 {lang === 'fr' ? 'Ton plan en 5 ans' : 'Your 5-year plan'}</p>
                         {(() => {
                           const plan = vision.plan_5_ans || vision.plan_5ans
                           return [
-                            { label: lang === 'fr' ? 'Années 1-2' : 'Years 1-2', text: plan.annee_1_2, color: '#3A3D40', bg: '#0E111610' },
-                            { label: lang === 'fr' ? 'Années 3-4' : 'Years 3-4', text: plan.annee_3_4, color: '#6B6F76', bg: 'rgba(96,165,250,0.08)' },
-                            { label: lang === 'fr' ? 'Année 5' : 'Year 5', text: plan.annee_5, color: '#0E1116', bg: 'rgba(59,130,246,0.08)' },
+                            { label: lang === 'fr' ? 'Années 1-2' : 'Years 1-2', text: plan.annee_1_2, color: 'var(--text-body)', bg: '#0E111610' },
+                            { label: lang === 'fr' ? 'Années 3-4' : 'Years 3-4', text: plan.annee_3_4, color: 'var(--text-muted)', bg: 'rgba(96,165,250,0.08)' },
+                            { label: lang === 'fr' ? 'Année 5' : 'Year 5', text: plan.annee_5, color: 'var(--text-h1)', bg: 'rgba(59,130,246,0.08)' },
                           ].map((row, i) => (
                             <div key={i} style={{ display:'flex', gap:14, marginBottom: i < 2 ? 14 : 0, paddingBottom: i < 2 ? 14 : 0, borderBottom: i < 2 ? '1px solid #EBEBE9' : 'none' }}>
                               <div style={{ width:84, flexShrink:0, paddingTop:2 }}>
                                 <span style={{ display:'inline-block', padding:'4px 10px', borderRadius:20, fontSize:11, fontWeight:700, background:row.bg, color:row.color }}>{row.label}</span>
                               </div>
-                              <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.7, margin:0 }}>{row.text}</p>
+                              <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.7, margin:0 }}>{row.text}</p>
                             </div>
                           ))
                         })()}
@@ -1761,15 +1761,15 @@ export default function MonAvenir() {
 
                     {/* SECTION 5 — Ressources clés */}
                     {(vision.ressources_cles || []).length > 0 && (
-                      <div className="fade-up" style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px 22px' }}>
-                        <p style={{ fontSize:15, fontWeight:700, color:'#0E1116', marginBottom:16 }}>📚 {lang === 'fr' ? 'Ressources clés pour toi' : 'Key resources for you'}</p>
+                      <div className="fade-up" style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px 22px' }}>
+                        <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:16 }}>📚 {lang === 'fr' ? 'Ressources clés pour toi' : 'Key resources for you'}</p>
                         <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                           {vision.ressources_cles.map((r, i) => (
-                            <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'12px 14px', background:'#F7F7F5', borderRadius:10 }}>
-                              <span style={{ fontSize:11, padding:'3px 8px', borderRadius:20, background:'#0E111612', color:'#3A3D40', border:`1px solid ${'#0E1116'}25`, whiteSpace:'nowrap', flexShrink:0, marginTop:2 }}>{r.type}</span>
+                            <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'12px 14px', background:'var(--bg-subtle)', borderRadius:10 }}>
+                              <span style={{ fontSize:11, padding:'3px 8px', borderRadius:20, background:'#0E111612', color:'var(--text-body)', border:`1px solid ${'#0E1116'}25`, whiteSpace:'nowrap', flexShrink:0, marginTop:2 }}>{r.type}</span>
                               <div>
-                                <p style={{ fontSize:13, fontWeight:700, color:'#0E1116', margin:'0 0 3px' }}>{r.nom}</p>
-                                <p style={{ fontSize:12, color:'#6B6F76', margin:0, lineHeight:1.6 }}>{r.pourquoi_lui || r.pourquoi}</p>
+                                <p style={{ fontSize:13, fontWeight:700, color:'var(--text-h1)', margin:'0 0 3px' }}>{r.nom}</p>
+                                <p style={{ fontSize:12, color:'var(--text-muted)', margin:0, lineHeight:1.6 }}>{r.pourquoi_lui || r.pourquoi}</p>
                               </div>
                             </div>
                           ))}
@@ -1779,7 +1779,7 @@ export default function MonAvenir() {
 
                     {/* SECTION 6 — Message final */}
                     {(vision.message_final || vision.message_motivation) && (
-                      <div className="fade-up" style={{ padding:'24px 26px', background:'#F7F7F5', borderRadius:16, textAlign:'center' }}>
+                      <div className="fade-up" style={{ padding:'24px 26px', background:'var(--bg-subtle)', borderRadius:16, textAlign:'center' }}>
                         <p style={{ fontSize:22, marginBottom:12 }}>💬</p>
                         <p style={{ color:'#fff', fontSize:15, lineHeight:1.9, fontStyle:'italic', margin:0 }}>
                           {vision.message_final || vision.message_motivation}
@@ -1791,7 +1791,7 @@ export default function MonAvenir() {
                     <div className="no-print" style={{ textAlign:'center', paddingTop:8 }}>
                       <button
                         onClick={() => { setVision(null); setVisError('') }}
-                        style={{ padding:'10px 24px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:10, color:'#6B6F76', fontSize:13, cursor:'pointer' }}>
+                        style={{ padding:'10px 24px', background:'transparent', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-muted)', fontSize:13, cursor:'pointer' }}>
                         🔄 {lang === 'fr' ? 'Modifier mes réponses & régénérer' : 'Edit my answers & regenerate'}
                       </button>
                     </div>

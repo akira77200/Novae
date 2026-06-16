@@ -78,6 +78,11 @@ function AppLayout({ Component, pageProps }) {
   const { theme } = useApp()
   const isPublic = PUBLIC_PAGES.includes(router.pathname)
 
+  // Synchronise le state React "theme" vers l'attribut DOM data-theme
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
@@ -155,6 +160,8 @@ function AppContent({ Component, pageProps }) {
           --accent-soft: rgba(14,17,22,0.08);
 
           /* ── Badges statut ── */
+          --bg-subtle:         #F7F7F5;
+
           --badge-done-bg:   #F0F0EE;
           --badge-done-text: #3A3D40;
           --badge-todo-bg:   #F7F7F5;
@@ -245,6 +252,59 @@ function AppContent({ Component, pageProps }) {
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: rgba(14,17,22,0.12); border-radius: 2px; }
         ::selection { background: rgba(14,17,22,0.10); }
+
+        /* ── Dark mode — Palette Nordique Sombre ── */
+        [data-theme="dark"] {
+          --bg-page:           #15171A;
+          --bg-card:           #1C1F23;
+          --bg-subtle:         #202326;
+          --bg-sidebar:        #0A0B0D;
+          --bg-sidebar-hover:  rgba(255,255,255,0.06);
+          --bg-sidebar-active: rgba(255,255,255,0.08);
+
+          --text-h1:             #F2F2F0;
+          --text-body:           #C7C8C6;
+          --text-muted:          #8A8D90;
+          --text-faint:          #5E6164;
+          --text-sidebar:        #8A8D90;
+          --text-sidebar-active: #F2F2F0;
+
+          --border:        #2A2D31;
+          --border-strong: #3A3D41;
+
+          --accent:      #F2F2F0;
+          --accent-soft: rgba(242,242,240,0.08);
+
+          --badge-done-bg:   #262925;
+          --badge-done-text: #C7C8C6;
+          --badge-todo-bg:   #211F1A;
+          --badge-todo-text: #B0ADA3;
+
+          --shadow-card:  none;
+          --shadow-hover: 0 1px 2px rgba(0,0,0,0.3);
+
+          --novae-bg:            #15171A;
+          --novae-surface:       #1C1F23;
+          --novae-surface-2:     #202326;
+          --novae-border:        #2A2D31;
+          --novae-text:          #F2F2F0;
+          --novae-text-secondary:#8A8D90;
+          --novae-text-muted:    #5E6164;
+          --novae-primary:       #F2F2F0;
+          --novae-primary-light: #C7C8C6;
+          --novae-primary-pale:  #262925;
+          --novae-bg-dark:       #0A0B0D;
+          --novae-surface-dark:  #0A0B0D;
+          --novae-surface-2-dark:#1C1F23;
+          --btn-primary-bg:      #F2F2F0;
+          --btn-premium-bg:      #0E1116;
+          --color-primary:       #F2F2F0;
+          --color-primary-light: #262925;
+          --text-primary:        #F2F2F0;
+          --text-secondary:      #8A8D90;
+          --border-default:      #2A2D31;
+        }
+        [data-theme="dark"] body { background: var(--bg-page); color: var(--text-body); }
       `}</style>
 
       <AppLayout Component={Component} pageProps={pageProps} />

@@ -36,7 +36,7 @@ function BienetreWidget({ C, lang, sb }) {
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '12px 16px', background: '#0E111607', border: '1px solid #0E111620', borderRadius: 12, marginBottom: 16, flexWrap: 'wrap' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ fontSize: 20 }}>🌱</span>
-        <p style={{ fontSize: 13, color: '#0E1116', fontWeight: 500 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-h1)', fontWeight: 500 }}>
           {lang === 'fr' ? 'Check-in bien-être — 1 minute' : 'Wellbeing check-in — 1 minute'}
         </p>
       </div>
@@ -52,10 +52,10 @@ function BienetreWidget({ C, lang, sb }) {
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', background: scoreColor + '08', border: `1px solid ${scoreColor}25`, borderRadius: 12, marginBottom: 16 }}>
       <span style={{ fontSize: 22 }}>{SCORE_EMOJIS_DB[checkin.score - 1]}</span>
       <div style={{ flex: 1 }}>
-        <div style={{ height: 5, background: '#EBEBE9', borderRadius: 3, overflow: 'hidden' }}>
+        <div style={{ height: 5, background: 'var(--border)', borderRadius: 3, overflow: 'hidden' }}>
           <div style={{ width: `${(checkin.score / 5) * 100}%`, height: '100%', background: scoreColor, borderRadius: 3 }} />
         </div>
-        <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 4 }}>
+        <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
           {lang === 'fr' ? `Semaine ${numSem}/52` : `Week ${numSem}/52`}
           {checkin.note ? ` · "${checkin.note}"` : ''}
         </p>
@@ -152,12 +152,12 @@ const WHY_MSG = {
 }
 
 const CAT_STYLE = {
-  admin:    { label:'Admin',      labelEn:'Admin',     color:'#3A3D40', bg:'#F0F0EE' },
-  banque:   { label:'Banque',     labelEn:'Banking',   color:'#3A3D40', bg:'#F0F0EE' },
-  sante:    { label:'Santé',      labelEn:'Health',    color:'#3A3D40', bg:'#EBEBE9'  },
-  logement: { label:'Logement',   labelEn:'Housing',   color:'#3A3D40', bg:'#EBEBE9' },
-  social:   { label:'Social',     labelEn:'Social',    color:'#6B6F76', bg:'#F7F7F5' },
-  univ:     { label:'Université', labelEn:'University',color:'#3A3D40', bg:'#F0F0EE'  },
+  admin:    { label:'Admin',      labelEn:'Admin',     color:'var(--text-body)', bg:'#F0F0EE' },
+  banque:   { label:'Banque',     labelEn:'Banking',   color:'var(--text-body)', bg:'#F0F0EE' },
+  sante:    { label:'Santé',      labelEn:'Health',    color:'var(--text-body)', bg:'#EBEBE9'  },
+  logement: { label:'Logement',   labelEn:'Housing',   color:'var(--text-body)', bg:'#EBEBE9' },
+  social:   { label:'Social',     labelEn:'Social',    color:'var(--text-muted)', bg:'#F7F7F5' },
+  univ:     { label:'Université', labelEn:'University',color:'var(--text-body)', bg:'#F0F0EE'  },
 }
 
 const getProvince = (ville) => {
@@ -329,10 +329,10 @@ export default function Dashboard() {
   }
 
   if (authLoading) return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
       <div style={{ textAlign:'center' }}>
         <div style={{ width:40, height:40, borderRadius:10, background:'#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, fontWeight:800, color:'#fff', margin:'0 auto 14px' }}>N</div>
-        <p style={{ color:'#6B6F76', fontSize:14 }}>{t.loading}</p>
+        <p style={{ color:'var(--text-muted)', fontSize:14 }}>{t.loading}</p>
       </div>
     </div>
   )
@@ -355,18 +355,18 @@ export default function Dashboard() {
     if (!user) return null
     const pts = []
     // 1. Profil (30 pts)
-    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: '#3A3D40', href: '/profile_1' })
+    pts.push({ label: lang === 'fr' ? 'Profil complété'  : 'Profile',    labelEn: 'Profile',    pts: Math.round((completion / 100) * 30), max: 30, color: 'var(--text-body)', href: '/profile_1' })
     // 2. Checklist (25 pts)
     const pctCheck = taches.length > 0 ? faites.length / taches.length : 0
-    pts.push({ label: lang === 'fr' ? 'Tâches checklist' : 'Checklist',  labelEn: 'Checklist',  pts: Math.round(pctCheck * 25),          max: 25, color: '#3A3D40', href: null })
+    pts.push({ label: lang === 'fr' ? 'Tâches checklist' : 'Checklist',  labelEn: 'Checklist',  pts: Math.round(pctCheck * 25),          max: 25, color: 'var(--text-body)', href: null })
     // 3. Documents (20 pts)
     const ptsDoc = scoreDoc === null ? null : Math.min(Math.round((scoreDoc / 5) * 20), 20)
-    pts.push({ label: lang === 'fr' ? 'Documents ajoutés': 'Documents',  labelEn: 'Documents',  pts: ptsDoc ?? 0, max: 20, color: '#3A3D40', href: '/documents', loading: scoreDoc === null })
+    pts.push({ label: lang === 'fr' ? 'Documents ajoutés': 'Documents',  labelEn: 'Documents',  pts: ptsDoc ?? 0, max: 20, color: 'var(--text-body)', href: '/documents', loading: scoreDoc === null })
     // 4. CV créé (15 pts)
     const hasCv = typeof window !== 'undefined' && !!localStorage.getItem('novae_cv_nom')
-    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: '#3A3D40', href: '/cv' })
+    pts.push({ label: lang === 'fr' ? 'CV créé'           : 'Resume',    labelEn: 'Resume',     pts: hasCv ? 15 : 0,                       max: 15, color: 'var(--text-body)', href: '/cv' })
     // 5. Mon Avenir (10 pts)
-    pts.push({ label: lang === 'fr' ? 'Projet d\'avenir'  : 'Future plan',labelEn:'Future plan', pts: monAvenirResult ? 10 : 0,             max: 10, color: '#6B6F76', href: '/mon-avenir' })
+    pts.push({ label: lang === 'fr' ? 'Projet d\'avenir'  : 'Future plan',labelEn:'Future plan', pts: monAvenirResult ? 10 : 0,             max: 10, color: 'var(--text-muted)', href: '/mon-avenir' })
     return pts
   }
   const scoreItems = calcScore()
@@ -393,9 +393,9 @@ export default function Dashboard() {
 
   const isDark = theme === 'dark'
   const cardStyle = {
-    background: '#FFFFFF',
+    background: 'var(--bg-card)',
     borderRadius: 8,
-    border: '1px solid #EBEBE9',
+    border: '1px solid var(--border)',
     boxShadow: 'none',
     padding: '20px 22px',
     marginBottom: 12,
@@ -410,45 +410,45 @@ export default function Dashboard() {
   ]
 
   return (
-    <div style={{ color: '#0E1116' }}>
+    <div style={{ color: 'var(--text-h1)' }}>
 
       {paying && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', backdropFilter:'blur(4px)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <p style={{ color:'#0E1116', fontSize:16, fontWeight:600 }}>{lang === 'fr' ? 'Redirection vers le paiement...' : 'Redirecting to payment...'}</p>
+          <p style={{ color:'var(--text-h1)', fontSize:16, fontWeight:600 }}>{lang === 'fr' ? 'Redirection vers le paiement...' : 'Redirecting to payment...'}</p>
         </div>
       )}
 
       {/* Modal mentor */}
       {mOpen && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.65)', backdropFilter:'blur(6px)', zIndex:50, display:'flex', alignItems:'center', justifyContent:'center', padding:20 }} onClick={() => setMOpen(null)}>
-          <div style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:18, width:'100%', maxWidth:420, overflow:'hidden' }} onClick={e => e.stopPropagation()}>
-            <div style={{ padding:'22px 24px 18px', borderBottom:'1px solid #EBEBE9', display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+          <div style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:18, width:'100%', maxWidth:420, overflow:'hidden' }} onClick={e => e.stopPropagation()}>
+            <div style={{ padding:'22px 24px 18px', borderBottom:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
               <div style={{ display:'flex', alignItems:'center', gap:14 }}>
-                <div style={{ width:50, height:50, borderRadius:'50%', background:'#0E111620', border:'1.5px solid #0E111640', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:18, color:'#3A3D40' }}>{(mOpen.full_name||'?')[0].toUpperCase()}</div>
+                <div style={{ width:50, height:50, borderRadius:'50%', background:'#0E111620', border:'1.5px solid #0E111640', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:18, color:'var(--text-body)' }}>{(mOpen.full_name||'?')[0].toUpperCase()}</div>
                 <div>
-                  <p style={{ fontWeight:700, fontSize:17, color:'#0E1116' }}>{mOpen.full_name}</p>
-                  <p style={{ fontSize:13, color:'#6B6F76', marginTop:2 }}>{mOpen.pays_origine} → {mOpen.ville_accueil}</p>
-                  {mOpen.note_moyenne > 0 && <p style={{ fontSize:12, color:'#6B6F76', marginTop:2 }}>★ {Number(mOpen.note_moyenne).toFixed(1)} · {mOpen.sessions_total} sessions</p>}
+                  <p style={{ fontWeight:700, fontSize:17, color:'var(--text-h1)' }}>{mOpen.full_name}</p>
+                  <p style={{ fontSize:13, color:'var(--text-muted)', marginTop:2 }}>{mOpen.pays_origine} → {mOpen.ville_accueil}</p>
+                  {mOpen.note_moyenne > 0 && <p style={{ fontSize:12, color:'var(--text-muted)', marginTop:2 }}>★ {Number(mOpen.note_moyenne).toFixed(1)} · {mOpen.sessions_total} sessions</p>}
                 </div>
               </div>
-              <button onClick={() => setMOpen(null)} style={{ width:30, height:30, borderRadius:'50%', border:'1px solid #EBEBE9', background:'transparent', color:'#6B6F76', cursor:'pointer', fontSize:14 }}>✕</button>
+              <button onClick={() => setMOpen(null)} style={{ width:30, height:30, borderRadius:'50%', border:'1px solid var(--border)', background:'transparent', color:'var(--text-muted)', cursor:'pointer', fontSize:14 }}>✕</button>
             </div>
             <div style={{ padding:'18px 24px' }}>
-              {mOpen.bio && <p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.7, marginBottom:18 }}>{mOpen.bio}</p>}
-              <p style={{ fontSize:11, fontWeight:600, color:'#6B6F76', textTransform:'uppercase', letterSpacing:0.8, marginBottom:10 }}>{lang === 'fr' ? 'Durée' : 'Duration'}</p>
+              {mOpen.bio && <p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.7, marginBottom:18 }}>{mOpen.bio}</p>}
+              <p style={{ fontSize:11, fontWeight:600, color:'var(--text-muted)', textTransform:'uppercase', letterSpacing:0.8, marginBottom:10 }}>{lang === 'fr' ? 'Durée' : 'Duration'}</p>
               <div style={{ display:'flex', gap:10, marginBottom:20 }}>
                 {[30,45].map(d => {
                   const tarif = ((d === 30 ? mOpen.tarif_30min : mOpen.tarif_45min) || (d === 30 ? 1499 : 1999)) / 100
                   return (
                     <button key={d} onClick={() => setDuree(d)} style={{ flex:1, padding:'13px', borderRadius:10, border:`1px solid ${duree === d ? '#0E111660' : '#EBEBE9'}`, background: duree === d ? '#0E111615' : 'transparent', cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
                       <span style={{ fontSize:18, fontWeight:700, color: duree === d ? '#3A3D40' : '#0E1116' }}>{tarif.toFixed(2)} $</span>
-                      <span style={{ fontSize:12, color:'#6B6F76' }}>{d} min · CAD</span>
+                      <span style={{ fontSize:12, color:'var(--text-muted)' }}>{d} min · CAD</span>
                     </button>
                   )
                 })}
               </div>
               <button onClick={() => reserver(mOpen)} style={{ width:'100%', padding:'13px', background:'#0E1116', border:'none', borderRadius:10, color:'#fff', fontWeight:600, fontSize:15, cursor:'pointer' }}>🔒 {t.mentor_book}</button>
-              <p style={{ textAlign:'center', fontSize:12, color:'#6B6F76', marginTop:8 }}>{t.refund_policy}</p>
+              <p style={{ textAlign:'center', fontSize:12, color:'var(--text-muted)', marginTop:8 }}>{t.refund_policy}</p>
             </div>
           </div>
         </div>
@@ -461,8 +461,8 @@ export default function Dashboard() {
 
         {/* ── STEPPER PARCOURS ── */}
         {user && (
-          <div style={{ marginBottom: 20, padding: '16px 20px', background: '#FFFFFF', borderRadius: 8, border: '1px solid #EBEBE9' }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: '#9A9D9F', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 14 }}>
+          <div style={{ marginBottom: 20, padding: '16px 20px', background: 'var(--bg-card)', borderRadius: 8, border: '1px solid var(--border)' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-faint)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 14 }}>
               {lang === 'fr' ? 'Ton parcours' : 'Your journey'}
             </p>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -500,7 +500,7 @@ export default function Dashboard() {
 
         {/* ── HEADER PERSONNALISÉ ── */}
         {profile && prenom ? (
-          <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 28, padding: '24px 28px', background: '#FFFFFF', borderRadius: 12, border: '1px solid #EBEBE9' }}>
+          <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 28, padding: '24px 28px', background: 'var(--bg-card)', borderRadius: 12, border: '1px solid var(--border)' }}>
             {/* Skyline SVG décoratif */}
             <svg
               style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '45%', opacity: 0.08, pointerEvents: 'none', zIndex: 0 }}
@@ -521,10 +521,10 @@ export default function Dashboard() {
             </svg>
             {/* Contenu header */}
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0E1116', letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: 4 }}>
+              <h1 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-h1)', letterSpacing: '-0.03em', lineHeight: 1.2, marginBottom: 4 }}>
                 {lang === 'fr' ? `Bienvenue, ${prenom} 👋` : `Welcome, ${prenom} 👋`}
               </h1>
-              <p style={{ fontSize: 13, fontWeight: 400, color: '#6B6F76', marginTop: 4 }}>
+              <p style={{ fontSize: 13, fontWeight: 400, color: 'var(--text-muted)', marginTop: 4 }}>
                 {[
                   profile.statut === 'etudiant'    ? (lang === 'fr' ? 'Étudiant(e)' : 'Student')      : null,
                   profile.statut === 'travailleur' ? (lang === 'fr' ? 'Travailleur(se)' : 'Worker')   : null,
@@ -538,16 +538,16 @@ export default function Dashboard() {
           </div>
         ) : user ? (
           <div style={{ marginBottom: 28 }}>
-            <h1 style={{ fontSize: 28, fontWeight: 800, color: '#0E1116', letterSpacing: '-0.03em', marginBottom: 8 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-h1)', letterSpacing: '-0.03em', marginBottom: 8 }}>
               {lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}
             </h1>
-            <a href="/profile_1" style={{ fontSize: 13, color: '#6B6F76', textDecoration: 'none' }}>
+            <a href="/profile_1" style={{ fontSize: 13, color: 'var(--text-muted)', textDecoration: 'none' }}>
               {lang === 'fr' ? '→ Complète ton profil pour personnaliser ton expérience' : '→ Complete your profile for a personalized experience'}
             </a>
           </div>
         ) : (
-          <div style={{ padding: '12px 18px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 12, marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
-            <p style={{ fontSize: 13, color: '#6B6F76' }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
+          <div style={{ padding: '12px 18px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 12, marginBottom: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{lang === 'fr' ? 'Crée un compte pour sauvegarder ta progression.' : 'Create an account to save your progress.'}</p>
             <a href="/auth/register" style={{ padding: '7px 16px', background: '#0E1116', border: 'none', borderRadius: 6, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>{lang === 'fr' ? "S'inscrire gratuitement →" : 'Sign up for free →'}</a>
           </div>
         )}
@@ -556,14 +556,14 @@ export default function Dashboard() {
         {user && completion < 80 && (
           <div style={{ padding:'14px 18px', background:'#6B6F7608', border:'1px solid #6B6F7625', borderRadius:12, marginBottom:20, display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
             <div style={{ flex:1 }}>
-              <p style={{ fontSize:13, fontWeight:600, color:'#6B6F76', marginBottom:6 }}>
+              <p style={{ fontSize:13, fontWeight:600, color:'var(--text-muted)', marginBottom:6 }}>
                 {lang === 'fr' ? `Profil complété à ${completion}%` : `Profile ${completion}% complete`}
               </p>
               <div style={{ height:6, background:'#6B6F7620', borderRadius:3, overflow:'hidden' }}>
                 <div style={{ width:`${completion}%`, height:'100%', background:'#6B6F76', borderRadius:3, transition:'width 0.5s' }} />
               </div>
             </div>
-            <a href="/profile_1" style={{ padding:'7px 14px', background:'#6B6F7615', border:'1px solid #6B6F7635', borderRadius:8, color:'#6B6F76', fontWeight:600, fontSize:13, textDecoration:'none', whiteSpace:'nowrap' }}>
+            <a href="/profile_1" style={{ padding:'7px 14px', background:'#6B6F7615', border:'1px solid #6B6F7635', borderRadius:8, color:'var(--text-muted)', fontWeight:600, fontSize:13, textDecoration:'none', whiteSpace:'nowrap' }}>
               {lang === 'fr' ? 'Compléter mon profil →' : 'Complete profile →'}
             </a>
           </div>
@@ -574,31 +574,31 @@ export default function Dashboard() {
           <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'12px 16px', borderRadius:11, border:'1px solid', marginBottom:10, borderColor: a.type === 'urgent' ? '#DC2626' : a.type === 'warning' ? '#6B6F76' : '#0E111650', background: a.type === 'urgent' ? 'rgba(220,38,38,0.06)' : a.type === 'warning' ? '#F7F7F5' : '#0E111608' }}>
             <span style={{ fontSize:16 }}>{a.type === 'urgent' ? '🔴' : a.type === 'warning' ? '⚠️' : 'ℹ️'}</span>
             <div style={{ flex:1 }}>
-              <p style={{ fontWeight:600, fontSize:13, color:'#0E1116', marginBottom:2 }}>{a.titre}</p>
-              <p style={{ fontSize:12, color:'#6B6F76' }}>{a.message}</p>
+              <p style={{ fontWeight:600, fontSize:13, color:'var(--text-h1)', marginBottom:2 }}>{a.titre}</p>
+              <p style={{ fontSize:12, color:'var(--text-muted)' }}>{a.message}</p>
             </div>
-            {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:'#0E111618', border:'1px solid #0E111635', borderRadius:7, color:'#3A3D40', fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>{lang === 'fr' ? 'Agir →' : 'Act →'}</a>}
+            {a.lien && <a href={a.lien} target="_blank" rel="noreferrer" style={{ padding:'6px 12px', background:'#0E111618', border:'1px solid #0E111635', borderRadius:7, color:'var(--text-body)', fontSize:12, fontWeight:600, whiteSpace:'nowrap' }}>{lang === 'fr' ? 'Agir →' : 'Act →'}</a>}
           </div>
         ))}
 
         {/* ── PROCHAINE ACTION RECOMMANDÉE ── */}
         {user && nextAction && (
-          <div style={{ padding: '20px 22px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
+          <div style={{ padding: '20px 22px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
               <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#0E1116', flexShrink: 0 }} />
-              <p style={{ fontSize: 10, fontWeight: 700, color: '#9A9D9F', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>
                 {lang === 'fr' ? 'Prochaine étape' : 'Next step'}
               </p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-              <div style={{ width: 44, height: 44, background: '#F7F7F5', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
+              <div style={{ width: 44, height: 44, background: 'var(--bg-subtle)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
                 {nextAction.icone}
               </div>
               <div style={{ flex: 1, minWidth: 160 }}>
-                <p style={{ fontSize: 15, fontWeight: 600, color: '#0E1116', letterSpacing: '-0.01em', marginBottom: 4 }}>
+                <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-h1)', letterSpacing: '-0.01em', marginBottom: 4 }}>
                   {lang === 'fr' ? nextAction.titre : (nextAction.titre_en || nextAction.titre)}
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 400, color: '#6B6F76', lineHeight: 1.5 }}>
+                <p style={{ fontSize: 13, fontWeight: 400, color: 'var(--text-muted)', lineHeight: 1.5 }}>
                   {WHY_MSG[nextAction.cat]?.[lang] || ''}
                 </p>
               </div>
@@ -617,19 +617,19 @@ export default function Dashboard() {
 
         {/* ── SCORE PRÉPARATION DOSSIER ── */}
         {user && scoreItems && (
-          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 2px rgba(15,23,42,0.04), 0 2px 8px rgba(15,23,42,0.03)' }}>
             {/* Header score */}
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
               <div>
-                <p style={{ fontSize: 16, fontWeight: 600, color: '#0E1116', letterSpacing: '-0.01em', marginBottom: 4 }}>
+                <p style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-h1)', letterSpacing: '-0.01em', marginBottom: 4 }}>
                   {lang === 'fr' ? 'Score de préparation' : 'Readiness Score'}
                 </p>
-                <p style={{ fontSize: 12, fontWeight: 400, color: '#9A9D9F' }}>{lang === 'fr' ? "Ton dossier d'immigration en un coup d'œil" : 'Your immigration file at a glance'}</p>
+                <p style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-faint)' }}>{lang === 'fr' ? "Ton dossier d'immigration en un coup d'œil" : 'Your immigration file at a glance'}</p>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, justifyContent: 'flex-end' }}>
-                  <span style={{ fontSize: 48, fontWeight: 700, color: '#0E1116', letterSpacing: '-0.04em', lineHeight: 1 }}>{scoreTotal}</span>
-                  <span style={{ fontSize: 18, fontWeight: 500, color: '#9A9D9F', paddingBottom: 6, marginLeft: 2 }}>/100</span>
+                  <span style={{ fontSize: 48, fontWeight: 700, color: 'var(--text-h1)', letterSpacing: '-0.04em', lineHeight: 1 }}>{scoreTotal}</span>
+                  <span style={{ fontSize: 18, fontWeight: 500, color: 'var(--text-faint)', paddingBottom: 6, marginLeft: 2 }}>/100</span>
                 </div>
                 <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: scoreTotal >= 80 ? '#F0F0EE' : '#F7F7F5', color: scoreTotal >= 80 ? '#3A3D40' : '#6B6F76' }}>
                   {scoreBadge}
@@ -638,7 +638,7 @@ export default function Dashboard() {
             </div>
 
             {/* Barre globale */}
-            <div style={{ height: 3, background: '#EBEBE9', borderRadius: 999, overflow: 'hidden', marginBottom: 16 }}>
+            <div style={{ height: 3, background: 'var(--border)', borderRadius: 999, overflow: 'hidden', marginBottom: 16 }}>
               <div style={{ width: `${scoreTotal}%`, height: '100%', background: '#0E1116', borderRadius: 999, transition: 'width 0.6s ease' }} />
             </div>
 
@@ -651,15 +651,15 @@ export default function Dashboard() {
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: i < scoreItems.length - 1 ? '1px solid #F7F7F5' : 'none', cursor: item.href ? 'pointer' : 'default' }}>
                     {done
                       ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: '#0E1116', flexShrink: 0 }}><span style={{ color: '#fff', fontSize: 11, fontWeight: 800 }}>✓</span></span>
-                      : <span style={{ display: 'inline-block', width: 20, height: 20, borderRadius: '50%', border: '1.5px solid #EBEBE9', flexShrink: 0 }} />
+                      : <span style={{ display: 'inline-block', width: 20, height: 20, borderRadius: '50%', border: '1.5px solid var(--border)', flexShrink: 0 }} />
                     }
-                    <p style={{ fontSize: 14, fontWeight: 500, color: '#3A3D40', flex: 1 }}>{item.label}</p>
+                    <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-body)', flex: 1 }}>{item.label}</p>
                     {item.loading
-                      ? <span style={{ fontSize: 13, fontWeight: 500, color: '#9A9D9F' }}>…</span>
-                      : <span style={{ fontSize: 13, fontWeight: 500, color: '#9A9D9F' }}>{item.pts}/{item.max}</span>
+                      ? <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-faint)' }}>…</span>
+                      : <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-faint)' }}>{item.pts}/{item.max}</span>
                     }
-                    {done && <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: '#F0F0EE', color: '#3A3D40' }}>{lang === 'fr' ? 'Terminé' : 'Done'}</span>}
-                    {!done && item.href && <span style={{ fontSize: 12, fontWeight: 600, color: '#6B6F76' }}>+{extra}</span>}
+                    {done && <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 999, background: 'var(--badge-done-bg)', color: 'var(--text-body)' }}>{lang === 'fr' ? 'Terminé' : 'Done'}</span>}
+                    {!done && item.href && <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>+{extra}</span>}
                   </div>
                 )
                 return item.href && !done
@@ -669,7 +669,7 @@ export default function Dashboard() {
             </div>
 
             {scoreTotal < 100 && (
-              <p style={{ fontSize: 12, color: '#9A9D9F', marginTop: 12, textAlign: 'center' }}>
+              <p style={{ fontSize: 12, color: 'var(--text-faint)', marginTop: 12, textAlign: 'center' }}>
                 ℹ️ {lang === 'fr' ? 'Clique sur une ligne pour compléter ce point.' : 'Click a line to complete that item.'}
               </p>
             )}
@@ -679,13 +679,13 @@ export default function Dashboard() {
         {/* ── MINI-CARDS SCORE + DEPUIS ARRIVÉE ── */}
         {user && scoreItems && (
           <div style={{ display: 'flex', gap: 10, marginBottom: 12 }}>
-            <div style={{ flex: 1, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 8, padding: '10px 12px' }}>
-              <p style={{ fontSize: 10, fontWeight: 600, color: '#9A9D9F', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 4 }}>Score</p>
-              <p style={{ fontSize: 18, fontWeight: 700, color: '#0E1116' }}>{scoreTotal}<span style={{ fontSize: 12, fontWeight: 400, color: '#9A9D9F' }}>/100</span></p>
+            <div style={{ flex: 1, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 12px' }}>
+              <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-faint)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 4 }}>Score</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-h1)' }}>{scoreTotal}<span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-faint)' }}>/100</span></p>
             </div>
-            <div style={{ flex: 1, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 8, padding: '10px 12px' }}>
-              <p style={{ fontSize: 10, fontWeight: 600, color: '#9A9D9F', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 4 }}>{lang === 'fr' ? 'Depuis arrivée' : 'Since arrival'}</p>
-              <p style={{ fontSize: 18, fontWeight: 700, color: '#0E1116' }}>{jouDisplayVal}</p>
+            <div style={{ flex: 1, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 12px' }}>
+              <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-faint)', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: 4 }}>{lang === 'fr' ? 'Depuis arrivée' : 'Since arrival'}</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-h1)' }}>{jouDisplayVal}</p>
             </div>
           </div>
         )}
@@ -701,26 +701,26 @@ export default function Dashboard() {
               <div style={{ display:'flex', alignItems:'center', gap:12 }}>
                 <span style={{ fontSize:22 }}>{monAvenirResult.top?.[0]?.emoji || '📊'}</span>
                 <div>
-                  <p style={{ fontSize:13, fontWeight:700, color:'#0E1116' }}>
+                  <p style={{ fontSize:13, fontWeight:700, color:'var(--text-h1)' }}>
                     {lang === 'fr' ? 'Ton orientation' : 'Your path'} : {monAvenirResult.top?.[0]?.nom?.[lang] || '—'}
                   </p>
-                  <p style={{ fontSize:12, color:'#6B6F76' }}>
+                  <p style={{ fontSize:12, color:'var(--text-muted)' }}>
                     {lang === 'fr' ? 'Compatibilité' : 'Match'} {monAvenirResult.top?.[0]?.pct || 0}%
                   </p>
                 </div>
               </div>
-              <a href="/mon-avenir" style={{ padding:'7px 16px', background:'#0E111615', border:'1px solid #0E111635', borderRadius:8, color:'#3A3D40', fontWeight:600, fontSize:13, textDecoration:'none', whiteSpace:'nowrap' }}>
+              <a href="/mon-avenir" style={{ padding:'7px 16px', background:'#0E111615', border:'1px solid #0E111635', borderRadius:8, color:'var(--text-body)', fontWeight:600, fontSize:13, textDecoration:'none', whiteSpace:'nowrap' }}>
                 {lang === 'fr' ? 'Explorer ma vision →' : 'Explore my vision →'}
               </a>
             </div>
           ) : (
             /* Quiz pas encore fait — carte CTA */
-            <div style={{ padding:'20px 22px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, marginBottom:16, display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:14 }}>
+            <div style={{ padding:'20px 22px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, marginBottom:16, display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:14 }}>
               <div>
-                <p style={{ fontWeight:700, fontSize:15, color:'#0E1116', marginBottom:4 }}>
+                <p style={{ fontWeight:700, fontSize:15, color:'var(--text-h1)', marginBottom:4 }}>
                   🎯 {lang === 'fr' ? "As-tu défini ton projet d'avenir ?" : 'Have you defined your future project?'}
                 </p>
-                <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.6 }}>
+                <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.6 }}>
                   {lang === 'fr' ? "Découvre les programmes qui correspondent à ton profil et les opportunités dans ton pays d'origine." : 'Discover the programs that match your profile and opportunities in your home country.'}
                 </p>
               </div>
@@ -736,12 +736,12 @@ export default function Dashboard() {
           <>
             {/* Profil assez complet mais pas encore de reco → bouton générer */}
             {!profile.ai_recommendations && completion >= 60 && (
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, flexWrap:'wrap', padding:'18px 22px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, marginBottom:20 }}>
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, flexWrap:'wrap', padding:'18px 22px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, marginBottom:20 }}>
                 <div>
-                  <p style={{ fontWeight:700, fontSize:15, color:'#0E1116', marginBottom:4 }}>
+                  <p style={{ fontWeight:700, fontSize:15, color:'var(--text-h1)', marginBottom:4 }}>
                     ✨ {lang === 'fr' ? 'Recommandations personnalisées' : 'Personalized Recommendations'}
                   </p>
-                  <p style={{ fontSize:13, color:'#6B6F76' }}>
+                  <p style={{ fontSize:13, color:'var(--text-muted)' }}>
                     {lang === 'fr' ? 'Génère des conseils, livres et ressources adaptés à ton profil.' : 'Generate advice, books and resources tailored to your profile.'}
                   </p>
                 </div>
@@ -768,16 +768,16 @@ export default function Dashboard() {
                   {/* BLOC 2 — Livres recommandés */}
                   {rec.books?.length > 0 && (
                     <div style={{ marginBottom:20 }}>
-                      <p style={{ fontSize:14, fontWeight:700, color:'#0E1116', marginBottom:12 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:'var(--text-h1)', marginBottom:12 }}>
                         📚 {lang === 'fr' ? 'Livres recommandés pour toi' : 'Books recommended for you'}
                       </p>
                       <div style={{ display:'flex', gap:12, overflowX:'auto', paddingBottom:6 }}>
                         {rec.books.map((b, i) => (
-                          <div key={i} style={{ minWidth:200, maxWidth:220, flexShrink:0, background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:12, padding:'16px 14px' }}>
+                          <div key={i} style={{ minWidth:200, maxWidth:220, flexShrink:0, background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:12, padding:'16px 14px' }}>
                             <span style={{ fontSize:26, display:'block', marginBottom:10 }}>{b.emoji}</span>
-                            <p style={{ fontSize:13, fontWeight:700, color:'#0E1116', marginBottom:3, lineHeight:1.4 }}>{b.title}</p>
-                            <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>{b.author}</p>
-                            <p style={{ fontSize:12, color:'#3A3D40', lineHeight:1.5 }}>{b.why}</p>
+                            <p style={{ fontSize:13, fontWeight:700, color:'var(--text-h1)', marginBottom:3, lineHeight:1.4 }}>{b.title}</p>
+                            <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>{b.author}</p>
+                            <p style={{ fontSize:12, color:'var(--text-body)', lineHeight:1.5 }}>{b.why}</p>
                           </div>
                         ))}
                       </div>
@@ -787,17 +787,17 @@ export default function Dashboard() {
                   {/* BLOC 3 — Conseils personnalisés */}
                   {rec.tips?.length > 0 && (
                     <div style={{ marginBottom:20 }}>
-                      <p style={{ fontSize:14, fontWeight:700, color:'#0E1116', marginBottom:12 }}>
+                      <p style={{ fontSize:14, fontWeight:700, color:'var(--text-h1)', marginBottom:12 }}>
                         💡 {lang === 'fr' ? 'Conseils pour toi' : 'Tips for you'}
                       </p>
                       <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
                         {rec.tips.map((tip, i) => {
                           const bs =
-                            tip.category === 'finance'    ? { bg:'#F0F0EE', color:'#0E1116'   } :
-                            tip.category === 'social'     ? { bg:'#F0F0EE', color:'#3A3D40'   } :
-                            tip.category === 'academique' ? { bg:'#F0F0EE', color:'#3A3D40'   } :
+                            tip.category === 'finance'    ? { bg:'#F0F0EE', color:'var(--text-h1)'   } :
+                            tip.category === 'social'     ? { bg:'#F0F0EE', color:'var(--text-body)'   } :
+                            tip.category === 'academique' ? { bg:'#F0F0EE', color:'var(--text-body)'   } :
                             tip.category === 'sante'      ? { bg:'#F7F7F5', color:'#DC2626'     } :
-                            { bg:'#F7F7F5', color:'#6B6F76' }
+                            { bg:'#F7F7F5', color:'var(--text-muted)' }
                           return (
                             <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:8, padding:'10px 16px', background:bs.bg, borderRadius:99 }}>
                               <span style={{ fontSize:15, flexShrink:0, lineHeight:1.5 }}>{tip.emoji}</span>
@@ -811,7 +811,7 @@ export default function Dashboard() {
 
                   {/* Bouton régénérer */}
                   <button onClick={genererRecommandations} disabled={genLoading}
-                    style={{ padding:'6px 14px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:8, color:'#6B6F76', fontSize:12, cursor: genLoading ? 'not-allowed' : 'pointer', marginTop:4 }}>
+                    style={{ padding:'6px 14px', background:'transparent', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:12, cursor: genLoading ? 'not-allowed' : 'pointer', marginTop:4 }}>
                     {genLoading ? '...' : (lang === 'fr' ? '↻ Régénérer' : '↻ Regenerate')}
                   </button>
 
@@ -829,16 +829,16 @@ export default function Dashboard() {
             { val:taches.length - faites.length,    label: t.dash_remaining },
             { val:jouDisplayVal,                    label: jouDisplayLabel  },
           ].map((s, i) => (
-            <div key={i} style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:8, padding:'14px 16px' }}>
-              <p style={{ fontSize:28, fontWeight:700, color:'#0E1116', marginBottom:3, lineHeight:1 }}>{s.val}</p>
-              <p style={{ fontSize:10, fontWeight:500, color:'#9A9D9F', textTransform:'uppercase', letterSpacing:'0.06em' }}>{s.label}</p>
-              {s.bar != null && <div style={{ height:3, background:'#EBEBE9', borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:'#0E1116', borderRadius:3, transition:'width 0.5s' }} /></div>}
+            <div key={i} style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:8, padding:'14px 16px' }}>
+              <p style={{ fontSize:28, fontWeight:700, color:'var(--text-h1)', marginBottom:3, lineHeight:1 }}>{s.val}</p>
+              <p style={{ fontSize:10, fontWeight:500, color:'var(--text-faint)', textTransform:'uppercase', letterSpacing:'0.06em' }}>{s.label}</p>
+              {s.bar != null && <div style={{ height:3, background:'var(--border)', borderRadius:3, marginTop:8, overflow:'hidden' }}><div style={{ width:`${s.bar}%`, height:'100%', background:'#0E1116', borderRadius:3, transition:'width 0.5s' }} /></div>}
             </div>
           ))}
         </div>
 
         {/* ── TABS ── */}
-        <div style={{ display:'flex', gap:4, marginBottom:22, background:'#F7F7F5', borderRadius:8, padding:4 }}>
+        <div style={{ display:'flex', gap:4, marginBottom:22, background:'var(--bg-subtle)', borderRadius:8, padding:4 }}>
           {TABS.map(tb => (
             <button key={tb.id} onClick={() => setTab(tb.id)} style={{ flex:1, padding:'8px 16px', borderRadius:6, border:'none', fontSize:13, fontWeight: tab === tb.id ? 600 : 500, cursor:'pointer', transition:'all 0.15s', background: tab === tb.id ? '#0E1116' : 'transparent', color: tab === tb.id ? '#FFFFFF' : '#6B6F76' }}>
               {tb.label}
@@ -850,7 +850,7 @@ export default function Dashboard() {
         {tab === 'checklist' && (
           <div ref={checklistRef}>
             {province && (
-              <p style={{ fontSize:12, color:'#6B6F76', marginBottom:14 }}>
+              <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:14 }}>
                 📍 {lang === 'fr' ? `Tâches adaptées pour ${profile?.ville_accueil} (${province === 'QC' ? 'Québec' : 'Ontario'})` : `Tasks adapted for ${profile?.ville_accueil} (${province === 'QC' ? 'Quebec' : 'Ontario'})`}
               </p>
             )}
@@ -862,12 +862,12 @@ export default function Dashboard() {
               ))}
             </div>
             {!ready ? (
-              <p style={{ textAlign:'center', color:'#6B6F76', padding:'32px', fontSize:14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
+              <p style={{ textAlign:'center', color:'var(--text-muted)', padding:'32px', fontSize:14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
             ) : (
               <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
                 {tF.length === 0 && taches.length === 0 && !province ? (
-                  <div style={{ textAlign:'center', padding:'32px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:8 }}>
-                    <p style={{ fontSize:14, color:'#6B6F76', marginBottom:12 }}>
+                  <div style={{ textAlign:'center', padding:'32px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:8 }}>
+                    <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:12 }}>
                       {lang === 'fr' ? 'Renseigne ta ville dans ton profil pour voir les tâches adaptées.' : 'Add your city in your profile to see adapted tasks.'}
                     </p>
                     <a href="/profile_1" style={{ padding:'8px 18px', background:'#0E1116', border:'none', borderRadius:6, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
@@ -875,16 +875,16 @@ export default function Dashboard() {
                     </a>
                   </div>
                 ) : tF.length === 0 ? (
-                  <p style={{ textAlign:'center', color:'#6B6F76', padding:'32px', fontSize:14 }}>{lang === 'fr' ? 'Aucune tâche dans cette catégorie.' : 'No tasks in this category.'}</p>
+                  <p style={{ textAlign:'center', color:'var(--text-muted)', padding:'32px', fontSize:14 }}>{lang === 'fr' ? 'Aucune tâche dans cette catégorie.' : 'No tasks in this category.'}</p>
                 ) : (
                   tF.map(tache => {
                     const done  = faites.includes(tache.id)
                     const cat   = CAT_STYLE[tache.cat] || CAT_STYLE.admin
                     const titre = lang === 'fr' ? tache.titre : (tache.titre_en || tache.titre)
                     return (
-                      <div key={tache.id} onClick={() => toggleTache(tache.id)} style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 16px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:8, cursor:'pointer', opacity: done ? 0.5 : 1, transition:'opacity 0.15s', marginBottom:8 }}>
+                      <div key={tache.id} onClick={() => toggleTache(tache.id)} style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 16px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:8, cursor:'pointer', opacity: done ? 0.5 : 1, transition:'opacity 0.15s', marginBottom:8 }}>
                         {/* Icône SVG neutre dans cercle léger */}
-                        <div style={{ width:36, height:36, background:'#F7F7F5', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                        <div style={{ width:36, height:36, background:'var(--bg-subtle)', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6F76" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
                           </svg>
@@ -894,14 +894,14 @@ export default function Dashboard() {
                           {done && <span style={{ color:'#FFFFFF', fontSize:10, fontWeight:800 }}>✓</span>}
                         </div>
                         <div style={{ flex:1, minWidth:0 }}>
-                          <p style={{ fontSize:14, fontWeight:600, color:'#0E1116', marginBottom:5, textDecoration: done ? 'line-through' : 'none' }}>{titre}</p>
+                          <p style={{ fontSize:14, fontWeight:600, color:'var(--text-h1)', marginBottom:5, textDecoration: done ? 'line-through' : 'none' }}>{titre}</p>
                           <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
-                            <span style={{ fontSize:11, fontWeight:500, padding:'3px 9px', borderRadius:999, background:'#F7F7F5', color:'#6B6F76' }}>{lang === 'fr' ? cat.label : cat.labelEn}</span>
-                            {tache.prio === 'critique' && <span style={{ fontSize:11, fontWeight:600, padding:'3px 9px', borderRadius:999, background:'#F7F7F5', color:'#3A3D40' }}>{lang === 'fr' ? 'Critique' : 'Critical'}</span>}
+                            <span style={{ fontSize:11, fontWeight:500, padding:'3px 9px', borderRadius:999, background:'var(--bg-subtle)', color:'var(--text-muted)' }}>{lang === 'fr' ? cat.label : cat.labelEn}</span>
+                            {tache.prio === 'critique' && <span style={{ fontSize:11, fontWeight:600, padding:'3px 9px', borderRadius:999, background:'var(--bg-subtle)', color:'var(--text-body)' }}>{lang === 'fr' ? 'Critique' : 'Critical'}</span>}
                           </div>
                         </div>
                         {tache.lien && !done && (
-                          <a href={tache.lien} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ padding:'5px 8px', background:'transparent', border:'1px solid #EBEBE9', borderRadius:6, color:'#9A9D9F', fontSize:13, flexShrink:0 }}>↗</a>
+                          <a href={tache.lien} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ padding:'5px 8px', background:'transparent', border:'1px solid var(--border)', borderRadius:6, color:'var(--text-faint)', fontSize:13, flexShrink:0 }}>↗</a>
                         )}
                       </div>
                     )
@@ -915,15 +915,15 @@ export default function Dashboard() {
         {/* ── MENTORS ── */}
         {tab === 'mentors' && (
           <>
-            <p style={{ fontSize:18, fontWeight:700, color:'#0E1116', marginBottom:6 }}>{t.mentor_title}</p>
-            <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20, lineHeight:1.6 }}>
+            <p style={{ fontSize:18, fontWeight:700, color:'var(--text-h1)', marginBottom:6 }}>{t.mentor_title}</p>
+            <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20, lineHeight:1.6 }}>
               {lang === 'fr' ? "30 ou 45 minutes avec quelqu'un qui a vécu ce que tu vis." : '30 or 45 minutes with someone who lived what you\'re living.'}
             </p>
             {mentors.length === 0 ? (
-              <div style={{ textAlign:'center', padding:'48px 24px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:16 }}>
+              <div style={{ textAlign:'center', padding:'48px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16 }}>
                 <p style={{ fontSize:36, marginBottom:14 }}>🤝</p>
-                <p style={{ fontWeight:600, fontSize:16, color:'#0E1116', marginBottom:8 }}>{t.mentor_empty}</p>
-                <p style={{ fontSize:13, color:'#6B6F76', lineHeight:1.6, marginBottom:22 }}>{lang === 'fr' ? 'Les mentors sont vérifiés avant activation.' : 'Mentors are verified before activation.'}</p>
+                <p style={{ fontWeight:600, fontSize:16, color:'var(--text-h1)', marginBottom:8 }}>{t.mentor_empty}</p>
+                <p style={{ fontSize:13, color:'var(--text-muted)', lineHeight:1.6, marginBottom:22 }}>{lang === 'fr' ? 'Les mentors sont vérifiés avant activation.' : 'Mentors are verified before activation.'}</p>
                 <a href="/auth/register-mentor" style={{ padding:'10px 22px', background:'#0E1116', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, textDecoration:'none' }}>{t.mentor_become} →</a>
               </div>
             ) : (
@@ -932,21 +932,21 @@ export default function Dashboard() {
                   const tarif  = ((m.tarif_30min || 1499) / 100).toFixed(2)
                   const sujets = Array.isArray(m.sujets) ? m.sujets : []
                   return (
-                    <div key={m.id} style={{ display:'flex', alignItems:'center', gap:14, padding:'16px 18px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14 }}>
-                      <div style={{ width:46, height:46, borderRadius:'50%', background:'#0E111618', border:'1.5px solid #0E111635', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:17, color:'#3A3D40', flexShrink:0 }}>
+                    <div key={m.id} style={{ display:'flex', alignItems:'center', gap:14, padding:'16px 18px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14 }}>
+                      <div style={{ width:46, height:46, borderRadius:'50%', background:'#0E111618', border:'1.5px solid #0E111635', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:17, color:'var(--text-body)', flexShrink:0 }}>
                         {(m.full_name||'?')[0].toUpperCase()}
                       </div>
                       <div style={{ flex:1 }}>
-                        <p style={{ fontWeight:600, fontSize:15, color:'#0E1116', marginBottom:2 }}>{m.full_name}</p>
-                        <p style={{ fontSize:12, color:'#6B6F76', marginBottom:7 }}>{m.pays_origine} → {m.ville_accueil}</p>
+                        <p style={{ fontWeight:600, fontSize:15, color:'var(--text-h1)', marginBottom:2 }}>{m.full_name}</p>
+                        <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:7 }}>{m.pays_origine} → {m.ville_accueil}</p>
                         <div style={{ display:'flex', flexWrap:'wrap', gap:5 }}>
-                          {sujets.map(s => <span key={s} style={{ fontSize:11, padding:'2px 9px', background:'#0E111610', color:'#3A3D40', borderRadius:20, border:'1px solid #0E111620' }}>{s}</span>)}
+                          {sujets.map(s => <span key={s} style={{ fontSize:11, padding:'2px 9px', background:'#0E111610', color:'var(--text-body)', borderRadius:20, border:'1px solid #0E111620' }}>{s}</span>)}
                         </div>
                       </div>
                       <div style={{ textAlign:'right', flexShrink:0 }}>
-                        <p style={{ fontSize:20, fontWeight:700, color:'#3A3D40' }}>{tarif} $</p>
-                        <p style={{ fontSize:11, color:'#6B6F76', marginBottom:6 }}>CAD · 30 min</p>
-                        {m.note_moyenne > 0 && <p style={{ fontSize:12, color:'#6B6F76', marginBottom:8 }}>★ {Number(m.note_moyenne).toFixed(1)}</p>}
+                        <p style={{ fontSize:20, fontWeight:700, color:'var(--text-body)' }}>{tarif} $</p>
+                        <p style={{ fontSize:11, color:'var(--text-muted)', marginBottom:6 }}>CAD · 30 min</p>
+                        {m.note_moyenne > 0 && <p style={{ fontSize:12, color:'var(--text-muted)', marginBottom:8 }}>★ {Number(m.note_moyenne).toFixed(1)}</p>}
                         <button onClick={() => { setMOpen(m); setDuree(30) }} style={{ padding:'8px 16px', background:'#0E1116', border:'none', borderRadius:8, color:'#fff', fontWeight:600, fontSize:13, cursor:'pointer' }}>{t.mentor_book}</button>
                       </div>
                     </div>
@@ -960,22 +960,22 @@ export default function Dashboard() {
         {/* ── GUIDES ── */}
         {tab === 'guides' && (
           <>
-            <p style={{ fontSize:18, fontWeight:700, color:'#0E1116', marginBottom:6 }}>{t.ebook_title}</p>
-            <p style={{ fontSize:14, color:'#6B6F76', marginBottom:20 }}>{lang === 'fr' ? 'Télécharge et lis gratuitement.' : 'Download and read for free.'}</p>
+            <p style={{ fontSize:18, fontWeight:700, color:'var(--text-h1)', marginBottom:6 }}>{t.ebook_title}</p>
+            <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:20 }}>{lang === 'fr' ? 'Télécharge et lis gratuitement.' : 'Download and read for free.'}</p>
             {guides.length === 0 ? (
-              <p style={{ color:'#6B6F76', textAlign:'center', padding:'32px' }}>{lang === 'fr' ? 'Aucun guide disponible.' : 'No guides available.'}</p>
+              <p style={{ color:'var(--text-muted)', textAlign:'center', padding:'32px' }}>{lang === 'fr' ? 'Aucun guide disponible.' : 'No guides available.'}</p>
             ) : (
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:14 }}>
                 {guides.map(g => (
-                  <div key={g.id} style={{ background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:14, padding:'20px' }}>
+                  <div key={g.id} style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, padding:'20px' }}>
                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
                       <span style={{ fontSize:10, fontWeight:700, padding:'3px 10px', borderRadius:20, background:g.gratuit ? '#3A3D4018' : '#0E111618', color:g.gratuit ? '#3A3D40' : '#3A3D40', letterSpacing:0.5 }}>
                         {g.gratuit ? (lang === 'fr' ? 'GRATUIT' : 'FREE') : `${(3.99).toFixed(2)} $`}
                       </span>
-                      <span style={{ fontSize:11, color:'#6B6F76' }}>⏱ {g.temps_lecture} min</span>
+                      <span style={{ fontSize:11, color:'var(--text-muted)' }}>⏱ {g.temps_lecture} min</span>
                     </div>
-                    <p style={{ fontWeight:600, fontSize:15, color:'#0E1116', marginBottom:8, lineHeight:1.4 }}>{lang === 'fr' ? g.titre : (g.titre_en || g.titre)}</p>
-                    <p style={{ fontSize:13, color:'#6B6F76', marginBottom:14, lineHeight:1.6 }}>{g.resume}</p>
+                    <p style={{ fontWeight:600, fontSize:15, color:'var(--text-h1)', marginBottom:8, lineHeight:1.4 }}>{lang === 'fr' ? g.titre : (g.titre_en || g.titre)}</p>
+                    <p style={{ fontSize:13, color:'var(--text-muted)', marginBottom:14, lineHeight:1.6 }}>{g.resume}</p>
                     <button onClick={() => {
                       const contenu = lang === 'fr' ? g.contenu : (g.contenu_en || g.contenu)
                       const blob = new Blob([contenu], { type:'text/plain;charset=utf-8' })
@@ -983,7 +983,7 @@ export default function Dashboard() {
                       const a = document.createElement('a')
                       a.href = url; a.download = `novae-${g.slug}.txt`; a.click()
                       URL.revokeObjectURL(url)
-                    }} style={{ width:'100%', padding:'10px', background:'#0E111615', border:'1px solid #0E111630', borderRadius:9, color:'#3A3D40', fontWeight:600, fontSize:13, cursor:'pointer' }}>
+                    }} style={{ width:'100%', padding:'10px', background:'#0E111615', border:'1px solid #0E111630', borderRadius:9, color:'var(--text-body)', fontWeight:600, fontSize:13, cursor:'pointer' }}>
                       {t.ebook_read} →
                     </button>
                   </div>
@@ -996,25 +996,25 @@ export default function Dashboard() {
         {/* ── TODO ── */}
         {tab === 'todo' && (
           <>
-            <p style={{ fontSize:18, fontWeight:700, color:'#0E1116', marginBottom:20 }}>{t.todo_title}</p>
+            <p style={{ fontSize:18, fontWeight:700, color:'var(--text-h1)', marginBottom:20 }}>{t.todo_title}</p>
             <div style={{ display:'flex', gap:8, marginBottom:24 }}>
               <input value={todoInput} onChange={e => setTodoInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && addTodo()}
                 placeholder={t.todo_placeholder}
-                style={{ flex:1, padding:'11px 14px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:10, color:'#0E1116', fontSize:14, outline:'none', colorScheme:'dark' }} />
+                style={{ flex:1, padding:'11px 14px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:10, color:'var(--text-h1)', fontSize:14, outline:'none', colorScheme:'dark' }} />
               <button onClick={addTodo} disabled={!todoInput.trim()} style={{ padding:'11px 18px', background: todoInput.trim() ? '#0E1116' : '#EBEBE9', border:'none', borderRadius:10, color: todoInput.trim() ? '#fff' : '#6B6F76', fontWeight:600, fontSize:14, cursor: todoInput.trim() ? 'pointer' : 'not-allowed' }}>
                 {t.todo_add}
               </button>
             </div>
             {todos.length === 0 ? (
-              <p style={{ textAlign:'center', color:'#6B6F76', padding:'32px', fontSize:14 }}>{t.todo_empty}</p>
+              <p style={{ textAlign:'center', color:'var(--text-muted)', padding:'32px', fontSize:14 }}>{t.todo_empty}</p>
             ) : (
               <div style={{ display:'flex', flexDirection:'column', gap:7 }}>
                 {todos.map(todo => (
-                  <div key={todo.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 14px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:10, opacity: todo.complete ? 0.5 : 1 }}>
+                  <div key={todo.id} style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 14px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:10, opacity: todo.complete ? 0.5 : 1 }}>
                     <button onClick={() => toggleTodo(todo.id)} style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${todo.complete ? '#3A3D40' : '#EBEBE9'}`, background: todo.complete ? '#3A3D40' : 'transparent', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', flexShrink:0 }}>
                       {todo.complete && <span style={{ color:'#FAFAF9', fontSize:11, fontWeight:800 }}>✓</span>}
                     </button>
-                    <p style={{ flex:1, fontSize:14, color:'#0E1116', textDecoration: todo.complete ? 'line-through' : 'none' }}>{todo.titre}</p>
+                    <p style={{ flex:1, fontSize:14, color:'var(--text-h1)', textDecoration: todo.complete ? 'line-through' : 'none' }}>{todo.titre}</p>
                     <button onClick={() => deleteTodo(todo.id)} style={{ padding:'4px 9px', background:'#DC262612', border:'1px solid #DC262625', borderRadius:7, color:'#DC2626', fontSize:12, cursor:'pointer' }}>✕</button>
                   </div>
                 ))}
@@ -1025,18 +1025,18 @@ export default function Dashboard() {
 
         {/* ── RESSOURCES UTILES (bas de page) ── */}
         {user && profile?.ai_recommendations?.resources?.length > 0 && (
-          <div style={{ marginTop: 36, paddingTop: 28, borderTop: '1px solid #EBEBE9' }}>
-            <p style={{ fontSize: 16, fontWeight: 700, color: '#0E1116', marginBottom: 14 }}>
+          <div style={{ marginTop: 36, paddingTop: 28, borderTop: '1px solid var(--border)' }}>
+            <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 14 }}>
               🔗 {lang === 'fr' ? 'Ressources utiles' : 'Useful Resources'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {profile.ai_recommendations.resources.map((r, i) => (
                 <a key={i} href={r.url} target="_blank" rel="noreferrer"
-                  style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 16px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 10, textDecoration: 'none' }}>
+                  style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '12px 16px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, textDecoration: 'none' }}>
                   <span style={{ fontSize: 18, flexShrink: 0 }}>{r.emoji}</span>
                   <div>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: '#3A3D40', marginBottom: 2 }}>{r.name} ↗</p>
-                    <p style={{ fontSize: 12, color: '#6B6F76' }}>{r.description}</p>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body)', marginBottom: 2 }}>{r.name} ↗</p>
+                    <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>{r.description}</p>
                   </div>
                 </a>
               ))}
@@ -1053,10 +1053,10 @@ export default function Dashboard() {
           {/* Vue d'ensemble */}
           <div style={cardStyle}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h3 style={{ fontWeight: 600, fontSize: 14, color: '#0E1116', margin: 0 }}>
+              <h3 style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-h1)', margin: 0 }}>
                 {lang === 'fr' ? "Vue d'ensemble" : 'Overview'}
               </h3>
-              <span style={{ fontSize: 18, color: '#9A9D9F' }}>↗</span>
+              <span style={{ fontSize: 18, color: 'var(--text-faint)' }}>↗</span>
             </div>
             {[
               { label: lang === 'fr' ? 'Points complétés'  : 'Points completed',  value: `${scoreTotal} / 100` },
@@ -1069,8 +1069,8 @@ export default function Dashboard() {
                 padding: '8px 0',
                 borderBottom: i < arr.length - 1 ? '1px solid #FAFAF9' : 'none',
               }}>
-                <span style={{ fontSize: 13, fontWeight: 400, color: '#6B6F76' }}>{stat.label}</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#0E1116' }}>{stat.value}</span>
+                <span style={{ fontSize: 13, fontWeight: 400, color: 'var(--text-muted)' }}>{stat.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-h1)' }}>{stat.value}</span>
               </div>
             ))}
           </div>
@@ -1079,11 +1079,11 @@ export default function Dashboard() {
           <div style={cardStyle}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 16 }}>💡</span>
-              <p style={{ fontWeight: 600, fontSize: 14, color: '#0E1116' }}>
+              <p style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-h1)' }}>
                 {lang === 'fr' ? 'Conseil du jour' : "Today's tip"}
               </p>
             </div>
-            <p style={{ fontSize: 12, fontWeight: 400, color: '#6B6F76', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-muted)', lineHeight: 1.6 }}>
               {lang === 'fr'
                 ? "Assure-toi que toutes tes informations sont à jour. Un dossier complet augmente considérablement tes chances de succès."
                 : "Make sure all your information is up to date. A complete file greatly increases your chances of success."}
@@ -1094,16 +1094,16 @@ export default function Dashboard() {
           <div style={cardStyle}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
               <span style={{ fontSize: 16 }}>🎧</span>
-              <p style={{ fontWeight: 600, fontSize: 14, color: '#0E1116' }}>
+              <p style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-h1)' }}>
                 {lang === 'fr' ? "Besoin d'aide ?" : 'Need help?'}
               </p>
             </div>
-            <p style={{ fontSize: 12, color: '#6B6F76', lineHeight: 1.5, marginBottom: 14 }}>
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 14 }}>
               {lang === 'fr'
                 ? "Consulte notre centre d'aide ou contacte un conseiller spécialisé."
                 : "Check our help center or contact a specialized advisor."}
             </p>
-            <a href="/arrivee" style={{ display: 'block', padding: '9px 16px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 8, color: '#3A3D40', fontSize: 13, fontWeight: 500, textDecoration: 'none', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
+            <a href="/arrivee" style={{ display: 'block', padding: '9px 16px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-body)', fontSize: 13, fontWeight: 500, textDecoration: 'none', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
               {lang === 'fr' ? "Obtenir de l'aide" : 'Get help'}
             </a>
           </div>

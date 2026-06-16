@@ -101,31 +101,31 @@ export default function ResetPassword() {
   }
 
   const inp = {
-    width: '100%', padding: '11px 14px', background: '#F7F7F5',
-    border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116',
+    width: '100%', padding: '11px 14px', background: 'var(--bg-subtle)',
+    border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)',
     fontSize: 15, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark',
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
 
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0E1116', letterSpacing: -0.3, marginBottom: 6 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-h1)', letterSpacing: -0.3, marginBottom: 6 }}>
             {lang === 'fr' ? 'Nouveau mot de passe' : 'New password'}
           </h1>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '28px 28px 24px' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '28px 28px 24px' }}>
 
           {/* ── Vérification en cours ── */}
           {sessionReady === null && (
             <div style={{ textAlign: 'center', padding: '24px 0' }}>
               <div style={{ fontSize: 28, marginBottom: 12 }}>⏳</div>
-              <p style={{ fontSize: 14, color: '#6B6F76' }}>
+              <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>
                 {lang === 'fr' ? 'Vérification du lien en cours...' : 'Verifying link...'}
               </p>
             </div>
@@ -135,10 +135,10 @@ export default function ResetPassword() {
           {sessionReady === false && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 12 }}>⏱️</div>
-              <p style={{ fontSize: 15, fontWeight: 600, color: '#0E1116', marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-h1)', marginBottom: 8 }}>
                 {lang === 'fr' ? 'Ce lien a expiré' : 'This link has expired'}
               </p>
-              <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7, marginBottom: 20 }}>
+              <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 20 }}>
                 {lang === 'fr'
                   ? 'Le lien de réinitialisation est valide 60 minutes. Demande un nouveau lien pour continuer.'
                   : 'The reset link is valid for 60 minutes. Request a new link to continue.'}
@@ -154,14 +154,14 @@ export default function ResetPassword() {
           {success && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
-              <p style={{ fontSize: 15, fontWeight: 700, color: '#0E1116', marginBottom: 6 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 6 }}>
                 {lang === 'fr' ? 'Mot de passe mis à jour !' : 'Password updated!'}
               </p>
-              <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 16 }}>
+              <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
                 {lang === 'fr' ? `Redirection dans ${countdown} seconde${countdown > 1 ? 's' : ''}...` : `Redirecting in ${countdown}s...`}
               </p>
               {/* Barre de progression */}
-              <div style={{ width: '100%', height: 5, background: '#EBEBE9', borderRadius: 3, overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: 5, background: 'var(--border)', borderRadius: 3, overflow: 'hidden' }}>
                 <div style={{ height: '100%', background: '#0E1116', borderRadius: 3, width: `${(countdown / 8) * 100}%`, transition: 'width 1s linear' }} />
               </div>
             </div>
@@ -170,13 +170,13 @@ export default function ResetPassword() {
           {/* ── Formulaire ── */}
           {sessionReady === true && !success && (
             <form onSubmit={handleSubmit}>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7 }}>
                 {lang === 'fr' ? 'Nouveau mot de passe' : 'New password'}
               </label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••••" style={{ ...inp, marginBottom: 6 }} autoComplete="new-password" />
               {password && !passOk && <p style={{ fontSize: 11, color: '#DC2626', marginBottom: 8 }}>{lang === 'fr' ? 'Minimum 8 caractères' : 'Minimum 8 characters'}</p>}
 
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }}>
                 {lang === 'fr' ? 'Confirmer le mot de passe' : 'Confirm password'}
               </label>
               <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} required placeholder="••••••••" style={{ ...inp, marginBottom: 6 }} autoComplete="new-password" />

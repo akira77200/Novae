@@ -24,14 +24,14 @@ const LANGUES_OPTIONS = ['Français','English','Arabe','Espagnol','Portugais','W
 function Field({ label, value, onChange, placeholder, type = 'text', rows, style: extra }) {
   const { C } = useApp()
   const base = {
-    width: '100%', padding: '9px 12px', background: '#F7F7F5',
-    border: '1px solid #EBEBE9', borderRadius: 9,
-    color: '#0E1116', fontSize: 13, outline: 'none', boxSizing: 'border-box',
+    width: '100%', padding: '9px 12px', background: 'var(--bg-subtle)',
+    border: '1px solid var(--border)', borderRadius: 9,
+    color: 'var(--text-h1)', fontSize: 13, outline: 'none', boxSizing: 'border-box',
     fontFamily: 'system-ui,sans-serif', ...extra,
   }
   return (
     <div style={{ marginBottom: 14 }}>
-      {label && <label style={{ fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 5 }}>{label}</label>}
+      {label && <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, display: 'block', marginBottom: 5 }}>{label}</label>}
       {rows
         ? <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows} style={{ ...base, resize: 'vertical' }} />
         : <input type={type} value={value} onChange={onChange} placeholder={placeholder} style={base} />
@@ -47,24 +47,24 @@ function CVPreview({ data, lang }) {
   const competencesFin = ai?.competences_triees?.length ? ai.competences_triees : competences
 
   return (
-    <div id="cv-to-print" style={{ background: '#fff', color: '#0E1116', fontFamily: 'Georgia, "Times New Roman", serif', padding: '40px 48px', maxWidth: 794, margin: '0 auto', minHeight: 1123, boxSizing: 'border-box', fontSize: 12, lineHeight: 1.5 }}>
+    <div id="cv-to-print" style={{ background: '#fff', color: 'var(--text-h1)', fontFamily: 'Georgia, "Times New Roman", serif', padding: '40px 48px', maxWidth: 794, margin: '0 auto', minHeight: 1123, boxSizing: 'border-box', fontSize: 12, lineHeight: 1.5 }}>
 
       {/* En-tête */}
       <div style={{ borderBottom: '2.5px solid #0E1116', paddingBottom: 16, marginBottom: 18 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#0E1116', margin: 0, letterSpacing: -0.5, fontFamily: 'system-ui, sans-serif' }}>{nom || (lang === 'fr' ? 'Votre Nom' : 'Your Name')}</h1>
-        {poste_cible && <p style={{ fontSize: 14, color: '#0E1116', fontWeight: 600, marginTop: 3, fontFamily: 'system-ui, sans-serif' }}>{poste_cible}</p>}
+        <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-h1)', margin: 0, letterSpacing: -0.5, fontFamily: 'system-ui, sans-serif' }}>{nom || (lang === 'fr' ? 'Votre Nom' : 'Your Name')}</h1>
+        {poste_cible && <p style={{ fontSize: 14, color: 'var(--text-h1)', fontWeight: 600, marginTop: 3, fontFamily: 'system-ui, sans-serif' }}>{poste_cible}</p>}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 18px', marginTop: 8 }}>
           {email     && <span style={{ fontSize: 11, color: '#444' }}>✉ {email}</span>}
           {telephone && <span style={{ fontSize: 11, color: '#444' }}>📞 {telephone}</span>}
           {ville     && <span style={{ fontSize: 11, color: '#444' }}>📍 {ville}</span>}
-          {linkedin  && <span style={{ fontSize: 11, color: '#0E1116' }}>🔗 {linkedin}</span>}
+          {linkedin  && <span style={{ fontSize: 11, color: 'var(--text-h1)' }}>🔗 {linkedin}</span>}
         </div>
       </div>
 
       {/* Résumé professionnel */}
       {(resume || ai?.resume) && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#0E1116', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-h1)', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Résumé professionnel' : 'Professional Summary'}
           </h2>
           <p style={{ fontSize: 12, color: '#333', lineHeight: 1.65 }}>{ai?.resume || resume}</p>
@@ -74,7 +74,7 @@ function CVPreview({ data, lang }) {
       {/* Expériences */}
       {experiences?.length > 0 && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#0E1116', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 10, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-h1)', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 10, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Expériences professionnelles' : 'Work Experience'}
           </h2>
           {experiences.map((e, i) => {
@@ -82,10 +82,10 @@ function CVPreview({ data, lang }) {
             return (
               <div key={e.id} style={{ marginBottom: 14 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 4 }}>
-                  <p style={{ fontWeight: 700, fontSize: 13, color: '#0E1116', fontFamily: 'system-ui, sans-serif' }}>{e.poste || '—'}</p>
-                  <p style={{ fontSize: 11, color: '#6B6F76', fontStyle: 'italic' }}>{e.debut}{(e.debut || e.fin) ? ' – ' : ''}{e.actuel ? (lang === 'fr' ? 'Présent' : 'Present') : e.fin}</p>
+                  <p style={{ fontWeight: 700, fontSize: 13, color: 'var(--text-h1)', fontFamily: 'system-ui, sans-serif' }}>{e.poste || '—'}</p>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic' }}>{e.debut}{(e.debut || e.fin) ? ' – ' : ''}{e.actuel ? (lang === 'fr' ? 'Présent' : 'Present') : e.fin}</p>
                 </div>
-                <p style={{ fontSize: 12, color: '#0E1116', fontWeight: 600, marginBottom: bul.length ? 5 : 0 }}>{e.entreprise}</p>
+                <p style={{ fontSize: 12, color: 'var(--text-h1)', fontWeight: 600, marginBottom: bul.length ? 5 : 0 }}>{e.entreprise}</p>
                 {bul.length > 0
                   ? <ul style={{ paddingLeft: 18, margin: 0 }}>{bul.map((b, j) => <li key={j} style={{ fontSize: 12, color: '#333', lineHeight: 1.6, marginBottom: 2 }}>{b}</li>)}</ul>
                   : e.description && <p style={{ fontSize: 12, color: '#444', lineHeight: 1.6, paddingLeft: 4 }}>{e.description}</p>
@@ -99,7 +99,7 @@ function CVPreview({ data, lang }) {
       {/* Formation */}
       {formation && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#0E1116', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-h1)', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Formation' : 'Education'}
           </h2>
           <p style={{ fontSize: 12, color: '#333', lineHeight: 1.65, whiteSpace: 'pre-line' }}>{formation}</p>
@@ -109,7 +109,7 @@ function CVPreview({ data, lang }) {
       {/* Compétences */}
       {competencesFin?.length > 0 && (
         <div style={{ marginBottom: 18 }}>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#0E1116', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 8, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-h1)', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 8, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Compétences' : 'Skills'}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 12px' }}>
@@ -123,7 +123,7 @@ function CVPreview({ data, lang }) {
       {/* Langues */}
       {langues?.length > 0 && (
         <div>
-          <h2 style={{ fontSize: 12, fontWeight: 700, color: '#0E1116', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
+          <h2 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-h1)', textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 7, fontFamily: 'system-ui, sans-serif' }}>
             {lang === 'fr' ? 'Langues' : 'Languages'}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 16px' }}>
@@ -351,8 +351,8 @@ export default function CV() {
   }
 
   if (!mounted || authLoading) return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'system-ui,sans-serif' }}>
-      <p style={{ color: '#6B6F76', fontSize: 14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'system-ui,sans-serif' }}>
+      <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>{lang === 'fr' ? 'Chargement...' : 'Loading...'}</p>
     </div>
   )
 
@@ -364,23 +364,23 @@ export default function CV() {
   ]
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
 
       {/* ── Modal limite atteinte ── */}
       {limitModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
           onClick={() => setLimitModal(false)}>
-          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 18, width: '100%', maxWidth: 420, overflow: 'hidden' }}
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, width: '100%', maxWidth: 420, overflow: 'hidden' }}
             onClick={e => e.stopPropagation()}>
-            <div style={{ padding: '22px 24px 18px', borderBottom: '1px solid #EBEBE9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <p style={{ fontWeight: 700, fontSize: 16, color: '#0E1116' }}>
+            <div style={{ padding: '22px 24px 18px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ fontWeight: 700, fontSize: 16, color: 'var(--text-h1)' }}>
                 {lang === 'fr' ? 'Limite atteinte' : 'Limit reached'}
               </p>
-              <button onClick={() => setLimitModal(false)} style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid #EBEBE9', background: 'transparent', color: '#6B6F76', cursor: 'pointer', fontSize: 13 }}>✕</button>
+              <button onClick={() => setLimitModal(false)} style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13 }}>✕</button>
             </div>
             <div style={{ padding: '20px 24px' }}>
-              <p style={{ fontSize: 14, color: '#0E1116', lineHeight: 1.7, marginBottom: 20 }}>
+              <p style={{ fontSize: 14, color: 'var(--text-h1)', lineHeight: 1.7, marginBottom: 20 }}>
                 {lang === 'fr'
                   ? `Tu as atteint ta limite de ${planLimits.cv} CV${planLimits.cv > 1 ? 's' : ''} pour le plan ${userPlan}. Passe au plan Starter pour générer plus de CVs.`
                   : `You've reached your limit of ${planLimits.cv} resume${planLimits.cv > 1 ? 's' : ''} for the ${userPlan} plan. Upgrade to Starter to generate more resumes.`}
@@ -397,13 +397,13 @@ export default function CV() {
       {expModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
           onClick={() => setExpModal(null)}>
-          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 18, width: '100%', maxWidth: 460, overflow: 'hidden' }}
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 18, width: '100%', maxWidth: 460, overflow: 'hidden' }}
             onClick={e => e.stopPropagation()}>
-            <div style={{ padding: '18px 22px 14px', borderBottom: '1px solid #EBEBE9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <p style={{ fontWeight: 700, fontSize: 15, color: '#0E1116' }}>
+            <div style={{ padding: '18px 22px 14px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ fontWeight: 700, fontSize: 15, color: 'var(--text-h1)' }}>
                 {expModal === 'new' ? (lang === 'fr' ? 'Nouvelle expérience' : 'New experience') : (lang === 'fr' ? 'Modifier l\'expérience' : 'Edit experience')}
               </p>
-              <button onClick={() => setExpModal(null)} style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid #EBEBE9', background: 'transparent', color: '#6B6F76', cursor: 'pointer', fontSize: 13 }}>✕</button>
+              <button onClick={() => setExpModal(null)} style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 13 }}>✕</button>
             </div>
             <div style={{ padding: '18px 22px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 14px' }}>
@@ -412,7 +412,7 @@ export default function CV() {
                 <Field label={lang === 'fr' ? 'Début (mois/année)' : 'Start date'} value={expForm.debut} onChange={e => setExpForm(p => ({ ...p, debut: e.target.value }))} placeholder="Janv. 2022" />
                 <div>
                   <Field label={lang === 'fr' ? 'Fin' : 'End date'} value={expForm.fin} onChange={e => setExpForm(p => ({ ...p, fin: e.target.value }))} placeholder="Déc. 2023" extra={{ opacity: expForm.actuel ? 0.4 : 1 }} />
-                  <label style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: '#6B6F76', marginTop: -8, marginBottom: 14, cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: 'var(--text-muted)', marginTop: -8, marginBottom: 14, cursor: 'pointer' }}>
                     <input type="checkbox" checked={expForm.actuel} onChange={e => setExpForm(p => ({ ...p, actuel: e.target.checked, fin: '' }))} />
                     {lang === 'fr' ? 'Poste actuel' : 'Current role'}
                   </label>
@@ -420,7 +420,7 @@ export default function CV() {
               </div>
               <Field label={lang === 'fr' ? 'Description (l\'IA améliorera tes bullet points)' : 'Description (AI will enhance your bullets)'} value={expForm.description} onChange={e => setExpForm(p => ({ ...p, description: e.target.value }))} placeholder={lang === 'fr' ? "Décris tes responsabilités et réalisations..." : "Describe your responsibilities and achievements..."} rows={3} />
               <div style={{ display: 'flex', gap: 10, marginTop: 4 }}>
-                <button onClick={() => setExpModal(null)} style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 9, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                <button onClick={() => setExpModal(null)} style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                   {lang === 'fr' ? 'Annuler' : 'Cancel'}
                 </button>
                 <button onClick={sauvegarderExp} style={{ flex: 2, padding: '10px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
@@ -466,10 +466,10 @@ export default function CV() {
         {/* ── HEADER ── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h1 style={{ fontSize: 26, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 4 }}>
+            <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--text-h1)', letterSpacing: -0.5, marginBottom: 4 }}>
               📄 {lang === 'fr' ? 'Guide CV canadien' : 'Canadian Resume Guide'}
             </h1>
-            <p style={{ fontSize: 14, color: '#6B6F76' }}>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>
               {lang === 'fr' ? 'Contenu optimisé par IA · Format Canva · Adapté au Canada' : 'AI-optimized content · Canva template · Canada-ready'}
             </p>
           </div>
@@ -484,19 +484,19 @@ export default function CV() {
         {!progChoisi && (
           <div style={{ padding: '12px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 16 }}>💡</span>
-            <p style={{ fontSize: 13, color: '#6B6F76', flex: 1, margin: 0 }}>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', flex: 1, margin: 0 }}>
               {lang === 'fr'
                 ? 'Définis ton orientation pour personnaliser ton CV selon ton secteur cible.'
                 : 'Set your orientation to tailor your resume to your target sector.'}
             </p>
-            <a href="/mon-avenir" style={{ fontSize: 13, color: '#3A3D40', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            <a href="/mon-avenir" style={{ fontSize: 13, color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? 'Mon Avenir →' : 'My Future →'}
             </a>
           </div>
         )}
 
         {/* ── STEPPER ── */}
-        <div style={{ display: 'flex', gap: 4, marginBottom: 32, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, padding: 4 }}>
+        <div style={{ display: 'flex', gap: 4, marginBottom: 32, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 4 }}>
           {ETAPES.map(e => (
             <button key={e.id} onClick={() => e.id < etape && setEtape(e.id)}
               style={{ flex: 1, padding: '9px 8px', borderRadius: 8, border: 'none', fontSize: 12, fontWeight: 600, cursor: e.id < etape ? 'pointer' : 'default', transition: 'all 0.15s', background: etape === e.id ? '#0E1116' : e.id < etape ? '#0E111620' : 'transparent', color: etape === e.id ? '#fff' : e.id < etape ? '#3A3D40' : '#6B6F76' }}>
@@ -507,8 +507,8 @@ export default function CV() {
 
         {/* ══ ÉTAPE 1 — Informations personnelles ══ */}
         {etape === 1 && (
-          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px' }}>
-            <p style={{ fontSize: 15, fontWeight: 700, color: '#0E1116', marginBottom: 20 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px' }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 20 }}>
               👤 {lang === 'fr' ? 'Informations personnelles' : 'Personal Information'}
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0 20px' }}>
@@ -521,20 +521,20 @@ export default function CV() {
             </div>
 
             {/* Compétences */}
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116', marginBottom: 12, marginTop: 6 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 12, marginTop: 6 }}>
               🛠 {lang === 'fr' ? 'Compétences clés' : 'Key Skills'}
             </p>
             <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
               <input value={compInput} onChange={e => setCompInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && ajouterComp()}
                 placeholder={lang === 'fr' ? 'Ajouter une compétence...' : 'Add a skill...'}
-                style={{ flex: 1, padding: '8px 12px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 9, color: '#0E1116', fontSize: 13, outline: 'none' }} />
+                style={{ flex: 1, padding: '8px 12px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-h1)', fontSize: 13, outline: 'none' }} />
               <button onClick={() => ajouterComp()} style={{ padding: '8px 16px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>+</button>
             </div>
             {/* Suggestions */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
               {COMPETENCES_SUGGESTIONS.filter(s => !competences.includes(s)).slice(0, 10).map(s => (
                 <button key={s} onClick={() => ajouterComp(s)}
-                  style={{ fontSize: 11, padding: '4px 10px', borderRadius: 20, border: '1px solid #EBEBE9', background: 'transparent', color: '#6B6F76', cursor: 'pointer' }}>
+                  style={{ fontSize: 11, padding: '4px 10px', borderRadius: 20, border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer' }}>
                   + {s}
                 </button>
               ))}
@@ -543,16 +543,16 @@ export default function CV() {
             {competences.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 16 }}>
                 {competences.map(c => (
-                  <span key={c} style={{ fontSize: 12, padding: '4px 12px', borderRadius: 20, background: '#0E111615', color: '#3A3D40', border: `1px solid ${'#0E1116'}30`, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span key={c} style={{ fontSize: 12, padding: '4px 12px', borderRadius: 20, background: '#0E111615', color: 'var(--text-body)', border: `1px solid ${'#0E1116'}30`, display: 'flex', alignItems: 'center', gap: 6 }}>
                     {c}
-                    <button onClick={() => retirerComp(c)} style={{ background: 'none', border: 'none', color: '#3A3D40', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
+                    <button onClick={() => retirerComp(c)} style={{ background: 'none', border: 'none', color: 'var(--text-body)', cursor: 'pointer', fontSize: 12, padding: 0, lineHeight: 1 }}>✕</button>
                   </span>
                 ))}
               </div>
             )}
 
             {/* Langues */}
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#0E1116', marginBottom: 10 }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 10 }}>
               🌍 {lang === 'fr' ? 'Langues' : 'Languages'}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 24 }}>
@@ -574,18 +574,18 @@ export default function CV() {
         {etape === 2 && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: '#0E1116' }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)' }}>
                 💼 {lang === 'fr' ? 'Expériences professionnelles' : 'Work Experience'}
               </p>
-              <button onClick={ouvrirNouvelleExp} style={{ padding: '8px 16px', background: '#0E111615', border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: '#3A3D40', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={ouvrirNouvelleExp} style={{ padding: '8px 16px', background: '#0E111615', border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: 'var(--text-body)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 + {lang === 'fr' ? 'Ajouter' : 'Add'}
               </button>
             </div>
 
             {experiences.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px 24px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, marginBottom: 20 }}>
+              <div style={{ textAlign: 'center', padding: '40px 24px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 20 }}>
                 <div style={{ width:44, height:44, borderRadius:12, background:"#F7F7F5", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:12 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M2 12h20"/></svg></div>
-                <p style={{ color: '#6B6F76', fontSize: 14, marginBottom: 16 }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 16 }}>
                   {lang === 'fr' ? "Aucune expérience ajoutée. Tu peux passer cette étape." : 'No experience added. You can skip this step.'}
                 </p>
                 <button onClick={ouvrirNouvelleExp} style={{ padding: '9px 20px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
@@ -595,15 +595,15 @@ export default function CV() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
                 {experiences.map((e, i) => (
-                  <div key={e.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '14px 18px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12 }}>
+                  <div key={e.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '14px 18px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12 }}>
                     <div style={{ width: 36, height: 36, borderRadius: 9, background: '#0E111615', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>💼</div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 2 }}>{e.poste || lang === 'fr' ? '(Poste non renseigné)' : '(Untitled)'}</p>
-                      <p style={{ fontSize: 12, color: '#3A3D40', marginBottom: 2 }}>{e.entreprise}</p>
-                      <p style={{ fontSize: 11, color: '#6B6F76' }}>{e.debut}{e.debut ? ' – ' : ''}{e.actuel ? (lang === 'fr' ? 'Présent' : 'Present') : e.fin}</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 2 }}>{e.poste || lang === 'fr' ? '(Poste non renseigné)' : '(Untitled)'}</p>
+                      <p style={{ fontSize: 12, color: 'var(--text-body)', marginBottom: 2 }}>{e.entreprise}</p>
+                      <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{e.debut}{e.debut ? ' – ' : ''}{e.actuel ? (lang === 'fr' ? 'Présent' : 'Present') : e.fin}</p>
                     </div>
                     <div style={{ display: 'flex', gap: 7 }}>
-                      <button onClick={() => ouvrirEditionExp(e)} style={{ padding: '5px 10px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 7, color: '#3A3D40', fontSize: 12, cursor: 'pointer' }}>✏️</button>
+                      <button onClick={() => ouvrirEditionExp(e)} style={{ padding: '5px 10px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 7, color: 'var(--text-body)', fontSize: 12, cursor: 'pointer' }}>✏️</button>
                       <button onClick={() => supprimerExp(e.id)} style={{ padding: '5px 10px', background: '#DC262610', border: `1px solid ${'#DC2626'}25`, borderRadius: 7, color: '#DC2626', fontSize: 12, cursor: 'pointer' }}>🗑</button>
                     </div>
                   </div>
@@ -612,7 +612,7 @@ export default function CV() {
             )}
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => setEtape(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 10, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={() => setEtape(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 ← {lang === 'fr' ? 'Retour' : 'Back'}
               </button>
               <button onClick={() => setEtape(3)} style={{ flex: 3, padding: '12px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
@@ -624,8 +624,8 @@ export default function CV() {
 
         {/* ══ ÉTAPE 3 — Formation & résumé manuel ══ */}
         {etape === 3 && (
-          <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px' }}>
-            <p style={{ fontSize: 15, fontWeight: 700, color: '#0E1116', marginBottom: 20 }}>
+          <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px' }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 20 }}>
               🎓 {lang === 'fr' ? 'Formation & résumé' : 'Education & Summary'}
             </p>
 
@@ -648,7 +648,7 @@ export default function CV() {
             {/* Capsule info IA */}
             <div style={{ display: 'flex', gap: 10, padding: '12px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 10, marginBottom: 24 }}>
               <span style={{ fontSize: 18 }}>✨</span>
-              <p style={{ fontSize: 13, color: '#3A3D40', lineHeight: 1.6 }}>
+              <p style={{ fontSize: 13, color: 'var(--text-body)', lineHeight: 1.6 }}>
                 {lang === 'fr'
                   ? "L'IA va générer un résumé professionnel percutant et transformer tes descriptions en bullet points d'impact pour le marché canadien."
                   : "AI will generate a compelling professional summary and transform your descriptions into high-impact bullet points for the Canadian market."}
@@ -658,7 +658,7 @@ export default function CV() {
             {aiErr && <p style={{ fontSize: 13, color: '#DC2626', marginBottom: 12 }}>⚠ {aiErr}</p>}
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => setEtape(2)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 10, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={() => setEtape(2)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 ← {lang === 'fr' ? 'Retour' : 'Back'}
               </button>
               <button onClick={generer} disabled={generating}
@@ -677,13 +677,13 @@ export default function CV() {
 
             {/* Barre d'actions */}
             <div className="no-print" style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
-              <button onClick={() => setEtape(1)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 9, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={() => setEtape(1)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 ✏️ {lang === 'fr' ? 'Modifier mes infos' : 'Edit my info'}
               </button>
-              <button onClick={() => setEtape(3)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 9, color: '#6B6F76', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={() => setEtape(3)} style={{ padding: '9px 16px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 ← {lang === 'fr' ? 'Modifier' : 'Edit'}
               </button>
-              <button onClick={generer} disabled={generating} style={{ padding: '9px 16px', background: '#0E111615', border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: '#3A3D40', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={generer} disabled={generating} style={{ padding: '9px 16px', background: '#0E111615', border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: 'var(--text-body)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 {generating ? '...' : (lang === 'fr' ? '↺ Régénérer' : '↺ Regenerate')}
               </button>
               <button onClick={imprimerGuide} style={{ marginLeft: 'auto', padding: '9px 18px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
@@ -695,9 +695,9 @@ export default function CV() {
 
               {/* ─ A — Résumé professionnel ─ */}
               {aiData.resume_professionnel && (
-                <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '20px 22px' }}>
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '20px 22px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', margin: 0 }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', margin: 0 }}>
                       A — {lang === 'fr' ? 'Résumé professionnel' : 'Professional Summary'}
                     </p>
                     <button onClick={() => copierTexte(aiData.resume_professionnel, 'resume')}
@@ -705,16 +705,16 @@ export default function CV() {
                       {copied === 'resume' ? (lang === 'fr' ? '✓ Copié' : '✓ Copied') : (lang === 'fr' ? '📋 Copier' : '📋 Copy')}
                     </button>
                   </div>
-                  <div style={{ padding: '14px 16px', background: '#F7F7F5', borderRadius: 10, borderLeft: '3px solid #0E1116' }}>
-                    <p style={{ fontSize: 14, lineHeight: 1.8, color: '#0E1116', margin: 0 }}>{aiData.resume_professionnel}</p>
+                  <div style={{ padding: '14px 16px', background: 'var(--bg-subtle)', borderRadius: 10, borderLeft: '3px solid #0E1116' }}>
+                    <p style={{ fontSize: 14, lineHeight: 1.8, color: 'var(--text-h1)', margin: 0 }}>{aiData.resume_professionnel}</p>
                   </div>
                 </div>
               )}
 
               {/* ─ B — Expériences optimisées ─ */}
               {(aiData.experiences_optimisees || []).length > 0 && (
-                <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '20px 22px' }}>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 16 }}>
+                <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '20px 22px' }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 16 }}>
                     B — {lang === 'fr' ? 'Expériences optimisées' : 'Optimized Experience'}
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -722,12 +722,12 @@ export default function CV() {
                       const bulletsText = (e.bullets || []).join('\n')
                       const blockId = `exp-${i}`
                       return (
-                        <div key={i} style={{ padding: '14px 16px', background: '#F7F7F5', borderRadius: 10 }}>
+                        <div key={i} style={{ padding: '14px 16px', background: 'var(--bg-subtle)', borderRadius: 10 }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
                             <div>
-                              <p style={{ fontWeight: 700, fontSize: 14, color: '#0E1116', margin: '0 0 4px' }}>{e.poste_optimise || e.poste}</p>
+                              <p style={{ fontWeight: 700, fontSize: 14, color: 'var(--text-h1)', margin: '0 0 4px' }}>{e.poste_optimise || e.poste}</p>
                               {e.poste_optimise && e.poste !== e.poste_optimise && (
-                                <p style={{ fontSize: 11, color: '#6B6F76', margin: 0 }}>{lang === 'fr' ? 'Original :' : 'Original:'} {e.poste}</p>
+                                <p style={{ fontSize: 11, color: 'var(--text-muted)', margin: 0 }}>{lang === 'fr' ? 'Original :' : 'Original:'} {e.poste}</p>
                               )}
                             </div>
                             <button onClick={() => copierTexte(bulletsText, blockId)}
@@ -737,7 +737,7 @@ export default function CV() {
                           </div>
                           <ul style={{ margin: 0, paddingLeft: 18 }}>
                             {(e.bullets || []).map((b, j) => (
-                              <li key={j} style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7, marginBottom: 4 }}>{b}</li>
+                              <li key={j} style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 4 }}>{b}</li>
                             ))}
                           </ul>
                         </div>
@@ -748,8 +748,8 @@ export default function CV() {
               )}
 
               {/* ─ C — Conseils canadiens + Mots-clés ATS ─ */}
-              <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '20px 22px' }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', marginBottom: 16 }}>
+              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '20px 22px' }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 16 }}>
                   C — {lang === 'fr' ? 'Conseils pour le marché canadien' : 'Canadian Market Tips'}
                 </p>
 
@@ -757,8 +757,8 @@ export default function CV() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
                     {aiData.conseils_canadiens.map((c, i) => (
                       <div key={i} style={{ display: 'flex', gap: 10, padding: '10px 14px', background: '#0E111608', border: `1px solid ${'#0E1116'}18`, borderRadius: 9 }}>
-                        <span style={{ color: '#3A3D40', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
-                        <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.6, margin: 0 }}>{c}</p>
+                        <span style={{ color: 'var(--text-body)', fontWeight: 700, flexShrink: 0 }}>{i + 1}.</span>
+                        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>{c}</p>
                       </div>
                     ))}
                   </div>
@@ -766,12 +766,12 @@ export default function CV() {
 
                 {(aiData.mots_cles_secteur || []).length > 0 && (
                   <div>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
                       🔍 {lang === 'fr' ? 'Mots-clés ATS pour ton secteur' : 'ATS keywords for your sector'}
                     </p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
                       {aiData.mots_cles_secteur.map((m, i) => (
-                        <span key={i} style={{ fontSize: 12, padding: '4px 12px', borderRadius: 20, background: '#0E111612', color: '#3A3D40', border: `1px solid ${'#0E1116'}25`, fontWeight: 500 }}>
+                        <span key={i} style={{ fontSize: 12, padding: '4px 12px', borderRadius: 20, background: '#0E111612', color: 'var(--text-body)', border: `1px solid ${'#0E1116'}25`, fontWeight: 500 }}>
                           {m}
                         </span>
                       ))}
@@ -781,13 +781,13 @@ export default function CV() {
 
                 {aiData.competences_classees && (
                   <div style={{ marginTop: 18 }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
                       🛠 {lang === 'fr' ? 'Compétences classées' : 'Classified skills'}
                     </p>
                     {[
-                      { label: lang === 'fr' ? 'Techniques' : 'Technical', items: aiData.competences_classees.techniques, color: '#6B6F76' },
-                      { label: lang === 'fr' ? 'Langues' : 'Languages', items: aiData.competences_classees.langues, color: '#3A3D40' },
-                      { label: lang === 'fr' ? 'Soft skills' : 'Soft Skills', items: aiData.competences_classees.soft_skills, color: '#0E1116' },
+                      { label: lang === 'fr' ? 'Techniques' : 'Technical', items: aiData.competences_classees.techniques, color: 'var(--text-muted)' },
+                      { label: lang === 'fr' ? 'Langues' : 'Languages', items: aiData.competences_classees.langues, color: 'var(--text-body)' },
+                      { label: lang === 'fr' ? 'Soft skills' : 'Soft Skills', items: aiData.competences_classees.soft_skills, color: 'var(--text-h1)' },
                     ].map((group, gi) => (group.items || []).length > 0 && (
                       <div key={gi} style={{ marginBottom: 10 }}>
                         <span style={{ fontSize: 11, fontWeight: 700, color: group.color, marginRight: 8 }}>{group.label} :</span>
@@ -801,9 +801,9 @@ export default function CV() {
               </div>
 
               {/* ─ D — Aperçu CV + Téléchargement PDF ─ */}
-              <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '20px 22px' }}>
+              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '20px 22px' }}>
                 <div className="no-print" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', margin: 0 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', margin: 0 }}>
                     D — {lang === 'fr' ? 'Ton CV — Aperçu' : 'Your Resume — Preview'}
                   </p>
                   <div>
@@ -812,7 +812,7 @@ export default function CV() {
                       📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
                     </button>
                     {isIOS && (
-                      <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 6, lineHeight: 1.5, maxWidth: 260 }}>
+                      <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6, lineHeight: 1.5, maxWidth: 260 }}>
                         💡 {lang === 'fr'
                           ? 'Sur iPhone : autorise les popups si demandé (Réglages → Safari → Bloquer les fenêtres publicitaires → Désactiver pour ce site)'
                           : 'On iPhone: allow popups if prompted (Settings → Safari → Block Pop-ups → Disable for this site)'}
@@ -820,7 +820,7 @@ export default function CV() {
                     )}
                   </div>
                 </div>
-                <div id="cv-print-wrapper" style={{ overflowX: 'auto', borderRadius: 10, border: '1px solid #EBEBE9' }}>
+                <div id="cv-print-wrapper" style={{ overflowX: 'auto', borderRadius: 10, border: '1px solid var(--border)' }}>
                   <CVPreview
                     data={{
                       nom, email, telephone, ville, linkedin,
@@ -848,12 +848,12 @@ export default function CV() {
                 {/* Conseils canadiens (masqués à l'impression) */}
                 {(aiData?.conseils_canadiens || []).length > 0 && (
                   <div className="no-print" style={{ marginTop: 14, padding: '12px 14px', background: '#0E111608', border: `1px solid ${'#0E1116'}18`, borderRadius: 10 }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, color: '#3A3D40', marginBottom: 8 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-body)', marginBottom: 8 }}>
                       💡 {lang === 'fr' ? 'Conseils pour le marché canadien' : 'Tips for the Canadian market'}
                     </p>
                     <ul style={{ margin: 0, paddingLeft: 18 }}>
                       {aiData.conseils_canadiens.map((c, i) => (
-                        <li key={i} style={{ fontSize: 12, color: '#6B6F76', lineHeight: 1.6, marginBottom: 4 }}>{c}</li>
+                        <li key={i} style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 4 }}>{c}</li>
                       ))}
                     </ul>
                   </div>

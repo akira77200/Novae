@@ -73,9 +73,9 @@ const CHECKLIST = [
 ]
 
 const PHASES = [
-  { id: 'h72',   fr: 'Les 72 premières heures', en: 'First 72 hours', icon: '⚡', color: '#0E1116' },
-  { id: 'week1', fr: 'La première semaine',     en: 'First week',     icon: '📅', color: '#6B6F76' },
-  { id: 'month1',fr: 'Le premier mois',         en: 'First month',    icon: '🗓️', color: '#6B6F76' },
+  { id: 'h72',   fr: 'Les 72 premières heures', en: 'First 72 hours', icon: '⚡', color: 'var(--text-h1)' },
+  { id: 'week1', fr: 'La première semaine',     en: 'First week',     icon: '📅', color: 'var(--text-muted)' },
+  { id: 'month1',fr: 'Le premier mois',         en: 'First month',    icon: '🗓️', color: 'var(--text-muted)' },
 ]
 
 export default function Arrivee() {
@@ -109,7 +109,7 @@ export default function Arrivee() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
 
       <main style={{ maxWidth: 760, margin: '0 auto', padding: '36px 20px 80px' }}>
@@ -117,21 +117,21 @@ export default function Arrivee() {
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
           🛬 {lang === 'fr' ? 'Guide d\'arrivée' : 'Arrival Guide'}
         </h1>
-        <p style={{ fontSize: 15, color: '#6B6F76', marginBottom: 32, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>
           {lang === 'fr' ? 'Ton plan d\'action étape par étape. Garde-le sur ton téléphone.' : 'Your step-by-step action plan. Keep it on your phone.'}
         </p>
 
         {/* ── CHECKLIST 30 JOURS ── */}
-        <div style={{ marginBottom: 36, background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '20px 22px' }}>
+        <div style={{ marginBottom: 36, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '20px 22px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 8 }}>
-            <h2 style={{ fontSize: 17, fontWeight: 700, color: '#0E1116', margin: 0 }}>
+            <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-h1)', margin: 0 }}>
               📋 {lang === 'fr' ? 'Checklist — 30 premiers jours' : 'Checklist — First 30 days'}
             </h2>
             <span style={{ fontSize: 13, fontWeight: 600, color: nbDone === CHECKLIST.length ? '#0E1116' : '#6B6F76' }}>
               {nbDone}/{CHECKLIST.length} {lang === 'fr' ? 'complétés' : 'completed'}
             </span>
           </div>
-          <div style={{ width: '100%', height: 6, background: '#EBEBE9', borderRadius: 3, marginBottom: 16, overflow: 'hidden' }}>
+          <div style={{ width: '100%', height: 6, background: 'var(--border)', borderRadius: 3, marginBottom: 16, overflow: 'hidden' }}>
             <div style={{ height: '100%', width: `${(nbDone / CHECKLIST.length) * 100}%`, background: '#0E1116', borderRadius: 3, transition: 'width 0.3s' }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -170,17 +170,17 @@ export default function Arrivee() {
 
         {/* Timeline */}
         <div style={{ position: 'relative', paddingLeft: 32 }}>
-          <div style={{ position: 'absolute', left: 10, top: 10, bottom: 10, width: 2, background: '#F7F7F5' }} />
+          <div style={{ position: 'absolute', left: 10, top: 10, bottom: 10, width: 2, background: 'var(--bg-subtle)' }} />
           {items.map((item, i) => (
             <div key={i} style={{ position: 'relative', marginBottom: 20 }}>
               <div style={{ position: 'absolute', left: -32, top: 12, width: 22, height: 22, borderRadius: '50%', background: `${col}20`, border: `2px solid ${col}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11 }}>
                 {item.icon}
               </div>
-              <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 13, padding: '16px 18px' }}>
+              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 13, padding: '16px 18px' }}>
                 <p style={{ fontWeight: 700, fontSize: 15, color: col, marginBottom: 10 }}>{item.moment}</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                   {item.tasks.map((task, j) => (
-                    <div key={j} style={{ display: 'flex', gap: 10, fontSize: 14, color: '#6B6F76', lineHeight: 1.55 }}>
+                    <div key={j} style={{ display: 'flex', gap: 10, fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.55 }}>
                       <span style={{ color: col, flexShrink: 0 }}>→</span>{task}
                     </div>
                   ))}
@@ -195,16 +195,16 @@ export default function Arrivee() {
           <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>
             📚 {isFr ? 'Guides gratuits complets' : 'Free complete guides'}
           </h2>
-          <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 20, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 20, lineHeight: 1.6 }}>
             {isFr
               ? 'Ouvre le guide complet dans un nouvel onglet et enregistre-le en PDF.'
               : 'Open the complete guide in a new tab and save it as PDF.'}
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
             {GUIDES_LIST.map(g => (
-              <div key={g.type} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 13, padding: '16px 18px' }}>
+              <div key={g.type} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 13, padding: '16px 18px' }}>
                 <p style={{ fontSize: 22, marginBottom: 8 }}>{g.icon}</p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#0E1116', marginBottom: 12, lineHeight: 1.4 }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-h1)', marginBottom: 12, lineHeight: 1.4 }}>
                   {isFr ? g.fr : g.en}
                 </p>
                 <button
@@ -222,7 +222,7 @@ export default function Arrivee() {
                   📄 {isFr ? 'Ouvrir le guide PDF' : 'Open PDF guide'}
                 </button>
                 {isIOS && (
-                  <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 6, lineHeight: 1.5 }}>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6, lineHeight: 1.5 }}>
                     💡 {isFr
                       ? 'Sur iPhone : autorise les popups si demandé (Réglages → Safari → Bloquer les fenêtres publicitaires → Désactiver pour ce site)'
                       : 'On iPhone: allow popups if prompted (Settings → Safari → Block Pop-ups → Disable for this site)'}
@@ -231,7 +231,7 @@ export default function Arrivee() {
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 12, color: '#6B6F76', marginTop: 14 }}>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 14 }}>
             {isFr
               ? '💡 Dans le nouvel onglet, clique sur « Imprimer / Enregistrer en PDF ».'
               : '💡 In the new tab, click "Print / Save as PDF".'}
@@ -239,7 +239,7 @@ export default function Arrivee() {
         </div>
 
         {/* Urgence numbers */}
-        <div style={{ marginTop: 28, background: '#FFFFFF', border: `1px solid rgba(248,113,113,0.3)`, borderRadius: 14, padding: '18px 20px' }}>
+        <div style={{ marginTop: 28, background: 'var(--bg-card)', border: `1px solid rgba(248,113,113,0.3)`, borderRadius: 14, padding: '18px 20px' }}>
           <p style={{ fontWeight: 700, fontSize: 14, color: '#DC2626', marginBottom: 12 }}>
             🆘 {lang === 'fr' ? 'Numéros utiles' : 'Useful numbers'}
           </p>
@@ -251,8 +251,8 @@ export default function Arrivee() {
               { fr: 'Service Canada', en: 'Service Canada',  num: '1-800-206-7218' },
             ].map((c, i) => (
               <div key={i} style={{ padding: '10px 14px', background: '#DC262608', borderRadius: 9 }}>
-                <p style={{ fontSize: 11, color: '#6B6F76', marginBottom: 2 }}>{lang === 'fr' ? c.fr : c.en}</p>
-                <p style={{ fontSize: 15, fontWeight: 700, color: '#0E1116' }}>{c.num}</p>
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 2 }}>{lang === 'fr' ? c.fr : c.en}</p>
+                <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)' }}>{c.num}</p>
               </div>
             ))}
           </div>

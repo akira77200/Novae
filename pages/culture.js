@@ -60,10 +60,10 @@ const DATA = {
 }
 
 const SECTIONS = [
-  { id: 'communication', fr: 'Communication', en: 'Communication', icon: '🗣️', color: '#0E1116' },
-  { id: 'university',    fr: 'Université',    en: 'University',    icon: '🎓', color: '#6B6F76' },
-  { id: 'work',          fr: 'Travail',       en: 'Work',          icon: '💼', color: '#6B6F76' },
-  { id: 'social',        fr: 'Social',        en: 'Social',        icon: '👥', color: '#9A9D9F' },
+  { id: 'communication', fr: 'Communication', en: 'Communication', icon: '🗣️', color: 'var(--text-h1)' },
+  { id: 'university',    fr: 'Université',    en: 'University',    icon: '🎓', color: 'var(--text-muted)' },
+  { id: 'work',          fr: 'Travail',       en: 'Work',          icon: '💼', color: 'var(--text-muted)' },
+  { id: 'social',        fr: 'Social',        en: 'Social',        icon: '👥', color: 'var(--text-faint)' },
 ]
 
 export default function Culture() {
@@ -75,14 +75,14 @@ export default function Culture() {
   const secColor = sec?.color || '#3A3D40'
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 760, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>
           🇨🇦 {lang === 'fr' ? 'Culture canadienne' : 'Canadian Culture'}
         </h1>
-        <p style={{ fontSize: 15, color: '#6B6F76', marginBottom: 32, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>
           {lang === 'fr' ? 'Comprends les codes pour mieux t\'intégrer.' : 'Understand the codes to integrate better.'}
         </p>
 
@@ -104,19 +104,19 @@ export default function Culture() {
         {/* Cards */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {items.map((item, i) => (
-            <div key={i} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 14, padding: '18px 20px', display: 'flex', gap: 14, position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 3, background: '#F7F7F5' }} />
+            <div key={i} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, padding: '18px 20px', display: 'flex', gap: 14, position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 3, background: 'var(--bg-subtle)' }} />
               <span style={{ fontSize: 26, flexShrink: 0 }}>{item.icon}</span>
               <div>
-                <p style={{ fontWeight: 600, fontSize: 15, color: '#0E1116', marginBottom: 8 }}>{item.titre}</p>
-                <p style={{ fontSize: 14, color: '#6B6F76', lineHeight: 1.75 }}>{item.texte}</p>
+                <p style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-h1)', marginBottom: 8 }}>{item.titre}</p>
+                <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.75 }}>{item.texte}</p>
               </div>
             </div>
           ))}
         </div>
 
         <div style={{ marginTop: 28, padding: '14px 18px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 12, marginBottom: 28 }}>
-          <p style={{ fontSize: 13, color: '#3A3D40', lineHeight: 1.65 }}>
+          <p style={{ fontSize: 13, color: 'var(--text-body)', lineHeight: 1.65 }}>
             💡 {lang === 'fr'
               ? "L'intégration culturelle n'est pas une trahison de tes racines — c'est la capacité de fonctionner dans deux cultures simultanément."
               : "Cultural integration is not a betrayal of your roots — it's the ability to function in two cultures simultaneously."}
@@ -124,26 +124,26 @@ export default function Culture() {
         </div>
 
         {/* ── SECTION QUIZ ── */}
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px' }}>
-          <p style={{ fontSize: 16, fontWeight: 800, color: '#0E1116', marginBottom: 6 }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px' }}>
+          <p style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-h1)', marginBottom: 6 }}>
             🎮 {lang === 'fr' ? 'Teste tes connaissances' : 'Test your knowledge'}
           </p>
-          <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 20, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 20, lineHeight: 1.6 }}>
             {lang === 'fr'
               ? 'Quiz interactif sur les codes sociaux, l\'hiver, le travail et les finances au Canada.'
               : 'Interactive quiz on social codes, winter, work and finances in Canada.'}
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 20 }}>
             {[
-              { id:'codes_sociaux', emoji:'🤝', fr:'Codes sociaux',    en:'Social Codes',    color:'#0E1116' },
-              { id:'hiver',         emoji:'❄️', fr:"Survivre à l'hiver", en:'Surviving Winter', color:'#6B6F76' },
-              { id:'travail',       emoji:'💼', fr:'Culture du travail',en:'Work Culture',    color:'#6B6F76' },
-              { id:'finances',      emoji:'💳', fr:'Finances & banque', en:'Finance & Banking',color:'#0E1116' },
+              { id:'codes_sociaux', emoji:'🤝', fr:'Codes sociaux',    en:'Social Codes',    color:'var(--text-h1)' },
+              { id:'hiver',         emoji:'❄️', fr:"Survivre à l'hiver", en:'Surviving Winter', color:'var(--text-muted)' },
+              { id:'travail',       emoji:'💼', fr:'Culture du travail',en:'Work Culture',    color:'var(--text-muted)' },
+              { id:'finances',      emoji:'💳', fr:'Finances & banque', en:'Finance & Banking',color:'var(--text-h1)' },
             ].map(q => (
               <a key={q.id} href={`/quiz-culture?cat=${q.id}`}
                 style={{ display:'flex', alignItems:'center', gap:10, padding:'12px 14px', background:q.color+'10', border:`1px solid ${q.color}30`, borderRadius:11, textDecoration:'none' }}>
                 <span style={{ fontSize:20 }}>{q.emoji}</span>
-                <p style={{ fontSize:13, fontWeight:600, color:'#0E1116' }}>{lang==='fr'?q.fr:q.en}</p>
+                <p style={{ fontSize:13, fontWeight:600, color:'var(--text-h1)' }}>{lang==='fr'?q.fr:q.en}</p>
               </a>
             ))}
           </div>
@@ -154,14 +154,14 @@ export default function Culture() {
         </div>
 
         {/* ── Intégration communautaire ── */}
-        <div style={{ marginTop: 24, padding: '14px 18px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ marginTop: 24, padding: '14px 18px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 20 }}>🤝</span>
-          <p style={{ fontSize: 13, color: '#6B6F76', flex: 1, margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', flex: 1, margin: 0, lineHeight: 1.6 }}>
             {lang === 'fr'
               ? 'Tu veux approfondir ton intégration avec quelqu\'un qui a vécu ce que tu vis ?'
               : 'Want to deepen your integration with someone who\'s been through it?'}
           </p>
-          <a href="/parrainage" style={{ fontSize: 13, color: '#3A3D40', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <a href="/parrainage" style={{ fontSize: 13, color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>
             {lang === 'fr' ? 'Trouver un parrain →' : 'Find a peer mentor →'}
           </a>
         </div>

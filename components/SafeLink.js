@@ -35,7 +35,7 @@ export default function SafeLink({
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        style={{ color: '#0E1116', textDecoration: 'underline', fontWeight: 500, ...style }}
+        style={{ color: 'var(--text-h1)', textDecoration: 'underline', fontWeight: 500, ...style }}
       >
         {children || name} →
       </a>

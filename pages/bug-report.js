@@ -69,19 +69,19 @@ export default function BugReport() {
   }
 
   const inp = {
-    width: '100%', padding: '11px 14px', background: '#F7F7F5',
-    border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116',
+    width: '100%', padding: '11px 14px', background: 'var(--bg-subtle)',
+    border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)',
     fontSize: 14, outline: 'none', boxSizing: 'border-box',
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 520, margin: '0 auto', padding: '36px 20px 80px' }}>
         <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8 }}>
           🐛 {isFr ? 'Signaler un bug' : 'Report a bug'}
         </h1>
-        <p style={{ fontSize: 14, color: '#6B6F76', marginBottom: 28, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 28, lineHeight: 1.6 }}>
           {isFr
             ? 'Décris le problème rencontré. Notre équipe le traitera rapidement.'
             : 'Describe the issue you encountered. Our team will look into it quickly.'}
@@ -93,13 +93,13 @@ export default function BugReport() {
             <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>
               {isFr ? 'Merci ! Ton rapport a été envoyé.' : 'Thank you! Your report was submitted.'}
             </p>
-            <Link href="/" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
+            <Link href="/" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>
               {isFr ? '← Retour à l\'accueil' : '← Back to home'}
             </Link>
           </div>
         ) : (
-          <form onSubmit={submit} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: 24 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+          <form onSubmit={submit} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 24 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
               Email
             </label>
             <input
@@ -110,7 +110,7 @@ export default function BugReport() {
               style={{ ...inp, marginBottom: 18 }}
             />
 
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
               {isFr ? 'Page concernée' : 'Affected page'}
             </label>
             <select value={page} onChange={e => setPage(e.target.value)} style={{ ...inp, marginBottom: 18, cursor: 'pointer' }}>
@@ -120,7 +120,7 @@ export default function BugReport() {
               ))}
             </select>
 
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.6 }}>
               {isFr ? 'Description du bug' : 'Bug description'}
             </label>
             <textarea

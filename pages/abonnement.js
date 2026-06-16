@@ -49,7 +49,7 @@ const PLANS = [
     price: 9.99,
     periodFr: 'mois',
     periodEn: 'mo',
-    color: '#0E1116',
+    color: 'var(--text-h1)',
     badge: 'Populaire',
     badgeEn: 'Popular',
     featuresFr: [
@@ -87,7 +87,7 @@ const PLANS = [
     price: 19.99,
     periodFr: 'mois',
     periodEn: 'mo',
-    color: '#0E1116',
+    color: 'var(--text-h1)',
     badge: '⭐ Premium',
     featuresFr: [
       'Tout le plan Starter',
@@ -168,17 +168,17 @@ export default function Abonnement() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
       
 
       <main style={{ maxWidth:1100, margin:'0 auto', padding:'40px 20px 80px' }}>
 
         {/* Header */}
         <div style={{ textAlign:'center', marginBottom:48 }}>
-          <h1 style={{ fontSize:'clamp(2rem,4vw,3rem)', fontWeight:800, color:'#0E1116', letterSpacing:-0.5, marginBottom:12 }}>
+          <h1 style={{ fontSize:'clamp(2rem,4vw,3rem)', fontWeight:800, color:'var(--text-h1)', letterSpacing:-0.5, marginBottom:12 }}>
             {isFr ? 'Choisis ton plan' : 'Choose your plan'}
           </h1>
-          <p style={{ fontSize:16, color:'#6B6F76', lineHeight:1.6, maxWidth:560, margin:'0 auto' }}>
+          <p style={{ fontSize:16, color:'var(--text-muted)', lineHeight:1.6, maxWidth:560, margin:'0 auto' }}>
             {isFr
               ? 'Débloque tout le potentiel de Novae avec un plan adapté à tes besoins.'
               : 'Unlock the full potential of Novae with a plan tailored to your needs.'}
@@ -223,12 +223,12 @@ export default function Abonnement() {
 
               {/* Plan name & price */}
               <div style={{ marginBottom:24 }}>
-                <h3 style={{ fontSize:20, fontWeight:700, color:'#0E1116', margin:'0 0 8px' }}>
+                <h3 style={{ fontSize:20, fontWeight:700, color:'var(--text-h1)', margin:'0 0 8px' }}>
                   {isFr ? plan.nameFr : plan.nameEn}
                 </h3>
-                <p style={{ fontSize:36, fontWeight:800, color:'#0E1116', margin:0 }}>
+                <p style={{ fontSize:36, fontWeight:800, color:'var(--text-h1)', margin:0 }}>
                   {plan.price === 0 ? '0' : plan.price.toFixed(2)}
-                  <span style={{ fontSize:16, fontWeight:400, color:'#6B6F76' }}>
+                  <span style={{ fontSize:16, fontWeight:400, color:'var(--text-muted)' }}>
                     ${isFr ? `/${plan.periodFr}` : `/${plan.periodEn}`}
                   </span>
                 </p>
@@ -237,14 +237,14 @@ export default function Abonnement() {
               {/* Features */}
               <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:28 }}>
                 {(isFr ? plan.featuresFr : plan.featuresEn).map((feature, j) => (
-                  <p key={j} style={{ fontSize:14, color:'#0E1116', margin:0, display:'flex', alignItems:'center', gap:8 }}>
+                  <p key={j} style={{ fontSize:14, color:'var(--text-h1)', margin:0, display:'flex', alignItems:'center', gap:8 }}>
                     <span style={{ color:plan.color, fontSize:16 }}>✓</span>
                     {feature}
                   </p>
                 ))}
                 {(isFr ? plan.excludedFr : plan.excludedEn).map((feature, j) => (
-                  <p key={j} style={{ fontSize:14, color:'#6B6F76', margin:0, display:'flex', alignItems:'center', gap:8 }}>
-                    <span style={{ color:'#6B6F76', fontSize:16 }}>✕</span>
+                  <p key={j} style={{ fontSize:14, color:'var(--text-muted)', margin:0, display:'flex', alignItems:'center', gap:8 }}>
+                    <span style={{ color:'var(--text-muted)', fontSize:16 }}>✕</span>
                     {feature}
                   </p>
                 ))}
@@ -254,8 +254,8 @@ export default function Abonnement() {
               {plan.href ? (
                 <a href={plan.href} style={{
                   display:'block', padding:'14px', borderRadius:12,
-                  border:'1px solid #EBEBE9', background:'transparent',
-                  color:'#0E1116', fontWeight:700, fontSize:15,
+                  border:'1px solid var(--border)', background:'transparent',
+                  color:'var(--text-h1)', fontWeight:700, fontSize:15,
                   textDecoration:'none', textAlign:'center',
                 }}>
                   {isFr ? plan.ctaFr : plan.ctaEn}
@@ -283,7 +283,7 @@ export default function Abonnement() {
 
         {/* FAQ */}
         <div style={{ maxWidth:680, margin:'60px auto 0' }}>
-          <h2 style={{ fontSize:22, fontWeight:700, color:'#0E1116', marginBottom:24, textAlign:'center' }}>
+          <h2 style={{ fontSize:22, fontWeight:700, color:'var(--text-h1)', marginBottom:24, textAlign:'center' }}>
             {isFr ? 'Questions fréquentes' : 'Frequently asked questions'}
           </h2>
           <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
@@ -307,11 +307,11 @@ export default function Abonnement() {
                 aEn: 'Yes, you can switch between plans at any time from your dashboard.',
               },
             ].map((faq, i) => (
-              <div key={i} style={{ padding:'20px', background:'#FFFFFF', border:'1px solid #EBEBE9', borderRadius:12 }}>
-                <p style={{ fontSize:15, fontWeight:600, color:'#0E1116', marginBottom:8 }}>
+              <div key={i} style={{ padding:'20px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:12 }}>
+                <p style={{ fontSize:15, fontWeight:600, color:'var(--text-h1)', marginBottom:8 }}>
                   {isFr ? faq.qFr : faq.qEn}
                 </p>
-                <p style={{ fontSize:14, color:'#6B6F76', lineHeight:1.6, margin:0 }}>
+                <p style={{ fontSize:14, color:'var(--text-muted)', lineHeight:1.6, margin:0 }}>
                   {isFr ? faq.aFr : faq.aEn}
                 </p>
               </div>

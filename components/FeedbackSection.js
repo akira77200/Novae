@@ -42,7 +42,7 @@ export default function FeedbackSection({ page }) {
 
   if (envoye) {
     return (
-      <div style={{ textAlign: 'center', padding: '20px', color: '#3A3D40', fontSize: '0.9rem' }}>
+      <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-body)', fontSize: '0.9rem' }}>
         ✅ {lang === 'fr' ? 'Merci pour ton retour !' : 'Thank you for your feedback!'}
       </div>
     )
@@ -51,20 +51,20 @@ export default function FeedbackSection({ page }) {
   return (
     <div style={{
       marginTop: '60px',
-      borderTop: '1px solid #EBEBE9',
+      borderTop: '1px solid var(--border)',
       padding: '24px 0',
     }}>
 
       {/* ── Boutons initiaux ── */}
       {!mode && (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#6B6F76', fontSize: '0.85rem', marginBottom: '12px' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '12px' }}>
             {lang === 'fr' ? 'Cette page t\'a été utile ?' : 'Was this page helpful?'}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <button
               onClick={() => setMode('note')}
-              style={{ ...btnBase, border: `1px solid ${'#0E1116'}40`, color: '#3A3D40' }}
+              style={{ ...btnBase, border: `1px solid ${'#0E1116'}40`, color: 'var(--text-body)' }}
             >
               ⭐ {lang === 'fr' ? 'Donner une note' : 'Rate this page'}
             </button>
@@ -76,7 +76,7 @@ export default function FeedbackSection({ page }) {
             </button>
             <button
               onClick={() => setMode('suggestion')}
-              style={{ ...btnBase, border: `1px solid #0E111640`, color: '#0E1116' }}
+              style={{ ...btnBase, border: `1px solid #0E111640`, color: 'var(--text-h1)' }}
             >
               💡 {lang === 'fr' ? 'Suggérer une amélioration' : 'Suggest improvement'}
             </button>
@@ -87,7 +87,7 @@ export default function FeedbackSection({ page }) {
       {/* ── Mode Note ── */}
       {mode === 'note' && (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#6B6F76', fontSize: '0.85rem', marginBottom: '12px' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '12px' }}>
             {lang === 'fr' ? 'Note cette page :' : 'Rate this page:'}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '16px' }}>
@@ -121,9 +121,9 @@ export default function FeedbackSection({ page }) {
                   maxWidth: '400px',
                   padding: '10px',
                   borderRadius: '8px',
-                  border: '1px solid #EBEBE9',
+                  border: '1px solid var(--border)',
                   background: 'transparent',
-                  color: '#0E1116',
+                  color: 'var(--text-h1)',
                   fontSize: '0.85rem',
                   resize: 'vertical',
                   display: 'block',
@@ -152,7 +152,7 @@ export default function FeedbackSection({ page }) {
             </>
           )}
           <div style={{ marginTop: 12 }}>
-            <button onClick={() => { setMode(null); setNote(0) }} style={{ ...btnBase, border: '1px solid #EBEBE9', color: '#6B6F76', fontSize: '0.78rem' }}>
+            <button onClick={() => { setMode(null); setNote(0) }} style={{ ...btnBase, border: '1px solid var(--border)', color: 'var(--text-muted)', fontSize: '0.78rem' }}>
               {lang === 'fr' ? 'Annuler' : 'Cancel'}
             </button>
           </div>
@@ -162,7 +162,7 @@ export default function FeedbackSection({ page }) {
       {/* ── Mode Bug ou Suggestion ── */}
       {(mode === 'bug' || mode === 'suggestion') && (
         <div style={{ maxWidth: '500px', margin: '0 auto' }}>
-          <p style={{ color: '#6B6F76', fontSize: '0.85rem', marginBottom: '8px', textAlign: 'center' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '8px', textAlign: 'center' }}>
             {mode === 'bug'
               ? (lang === 'fr' ? 'Décris le problème que tu as rencontré :' : 'Describe the problem you encountered:')
               : (lang === 'fr' ? 'Quelle amélioration suggères-tu ?' : 'What improvement do you suggest?')}
@@ -182,7 +182,7 @@ export default function FeedbackSection({ page }) {
               borderRadius: '8px',
               border: `1px solid ${mode === 'bug' ? '#DC262640' : '#0E111640'}`,
               background: 'transparent',
-              color: '#0E1116',
+              color: 'var(--text-h1)',
               fontSize: '0.85rem',
               resize: 'vertical',
               marginBottom: '12px',
@@ -196,12 +196,12 @@ export default function FeedbackSection({ page }) {
               onClick={() => { setMode(null); setTexte('') }}
               style={{
                 background: 'none',
-                border: '1px solid #EBEBE9',
+                border: '1px solid var(--border)',
                 padding: '8px 16px',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontSize: '0.85rem',
-                color: '#6B6F76',
+                color: 'var(--text-muted)',
               }}
             >
               {lang === 'fr' ? 'Annuler' : 'Cancel'}

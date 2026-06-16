@@ -56,34 +56,34 @@ export default function Todo() {
   const completed = todos.filter(t => t.complete)
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 660, margin: '0 auto', padding: '36px 20px 80px' }}>
 
         <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: -0.5, marginBottom: 6 }}>{t.todo_title}</h1>
-        <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 4, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 4, lineHeight: 1.6 }}>
           {lang === 'fr'
             ? 'Tes tâches personnelles libres — pour le suivi officiel d\'immigration, consulte ton'
             : 'Your personal free-form tasks — for official immigration tracking, check your'}
           {' '}
-          <a href="/dashboard" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
+          <a href="/dashboard" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>
             {lang === 'fr' ? 'Dashboard' : 'Dashboard'}
           </a>.
         </p>
-        {!user && <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 24, marginTop: 8 }}>
+        {!user && <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 24, marginTop: 8 }}>
           {lang === 'fr' ? 'Connecte-toi pour sauvegarder tes tâches.' : 'Sign in to save your tasks.'}
         </p>}
 
         {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginBottom: 28 }}>
           {[
-            { val: todos.length,     label: 'Total',                     color: '#3A3D40' },
-            { val: pending.length,   label: lang === 'fr' ? 'À faire' : 'To do', color: '#6B6F76'  },
-            { val: completed.length, label: lang === 'fr' ? 'Faites' : 'Done',   color: '#3A3D40'  },
+            { val: todos.length,     label: 'Total',                     color: 'var(--text-body)' },
+            { val: pending.length,   label: lang === 'fr' ? 'À faire' : 'To do', color: 'var(--text-muted)'  },
+            { val: completed.length, label: lang === 'fr' ? 'Faites' : 'Done',   color: 'var(--text-body)'  },
           ].map((s, i) => (
-            <div key={i} style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
+            <div key={i} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
               <p style={{ fontSize: 26, fontWeight: 700, color: s.color }}>{s.val}</p>
-              <p style={{ fontSize: 11, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6 }}>{s.label}</p>
+              <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6 }}>{s.label}</p>
             </div>
           ))}
         </div>
@@ -92,20 +92,20 @@ export default function Todo() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 28 }}>
           <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && add()}
             placeholder={t.todo_placeholder}
-            style={{ flex: 1, padding: '11px 14px', background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none', colorScheme: 'dark' }} />
+            style={{ flex: 1, padding: '11px 14px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)', fontSize: 14, outline: 'none', colorScheme: 'dark' }} />
           <button onClick={add} disabled={!input.trim()} style={{ padding: '11px 18px', background: input.trim() ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: input.trim() ? '#fff' : '#6B6F76', fontWeight: 600, fontSize: 14, cursor: input.trim() ? 'pointer' : 'not-allowed' }}>
             {t.todo_add}
           </button>
         </div>
 
         {todos.length === 0 && !loading && (
-          <p style={{ textAlign: 'center', color: '#6B6F76', padding: '40px', fontSize: 14 }}>{t.todo_empty}</p>
+          <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px', fontSize: 14 }}>{t.todo_empty}</p>
         )}
 
         {/* À faire */}
         {pending.length > 0 && (
           <div style={{ marginBottom: 24 }}>
-            <p style={{ fontSize: 11, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600, marginBottom: 10 }}>
+            <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600, marginBottom: 10 }}>
               {lang === 'fr' ? 'À faire' : 'To do'} · {pending.length}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -117,7 +117,7 @@ export default function Todo() {
         {/* Faites */}
         {completed.length > 0 && (
           <div>
-            <p style={{ fontSize: 11, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600, marginBottom: 10 }}>
+            <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600, marginBottom: 10 }}>
               {lang === 'fr' ? 'Faites' : 'Done'} · {completed.length}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -134,11 +134,11 @@ function TodoItem({ todo, C, onToggle, onDelete }) {
   const [hov, setHov] = useState(false)
   return (
     <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', background: hov ? '#F7F7F5' : '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 10, opacity: todo.complete ? 0.5 : 1, transition: 'all 0.15s' }}>
+      style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', background: hov ? '#F7F7F5' : '#FFFFFF', border: '1px solid var(--border)', borderRadius: 10, opacity: todo.complete ? 0.5 : 1, transition: 'all 0.15s' }}>
       <button onClick={() => onToggle(todo.id)} style={{ width: 20, height: 20, borderRadius: 6, border: `1.5px solid ${todo.complete ? '#3A3D40' : '#EBEBE9'}`, background: todo.complete ? '#3A3D40' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
         {todo.complete && <span style={{ color: '#FAFAF9', fontSize: 11, fontWeight: 800 }}>✓</span>}
       </button>
-      <p style={{ flex: 1, fontSize: 14, color: '#0E1116', textDecoration: todo.complete ? 'line-through' : 'none' }}>{todo.titre}</p>
+      <p style={{ flex: 1, fontSize: 14, color: 'var(--text-h1)', textDecoration: todo.complete ? 'line-through' : 'none' }}>{todo.titre}</p>
       {hov && <button onClick={() => onDelete(todo.id)} style={{ padding: '4px 9px', background: '#DC262612', border: `1px solid ${'#DC2626'}25`, borderRadius: 7, color: '#DC2626', fontSize: 12, cursor: 'pointer' }}>✕</button>}
     </div>
   )

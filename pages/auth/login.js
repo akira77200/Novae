@@ -58,17 +58,17 @@ export default function Login() {
 
   const inp = {
     width: '100%', padding: '11px 14px',
-    background: '#F7F7F5', border: '1px solid #EBEBE9',
-    borderRadius: 10, color: '#0E1116', fontSize: 15, outline: 'none',
+    background: 'var(--bg-subtle)', border: '1px solid var(--border)',
+    borderRadius: 10, color: 'var(--text-h1)', fontSize: 15, outline: 'none',
     boxSizing: 'border-box', colorScheme: 'dark',
   }
   const lbl = {
-    display: 'block', fontSize: 12, fontWeight: 600, color: '#6B6F76',
+    display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)',
     textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16,
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
 
         {/* Logo */}
@@ -76,16 +76,16 @@ export default function Login() {
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 auto 14px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: '#0E1116', letterSpacing: -0.5, marginBottom: 6 }}>{t.login_title}</h1>
-          <p style={{ fontSize: 14, color: '#6B6F76' }}>{lang === 'fr' ? 'Bienvenue sur Novae' : 'Welcome to Novae'}</p>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-h1)', letterSpacing: -0.5, marginBottom: 6 }}>{t.login_title}</h1>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>{lang === 'fr' ? 'Bienvenue sur Novae' : 'Welcome to Novae'}</p>
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '28px 28px 24px' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '28px 28px 24px' }}>
 
           {/* Google */}
           <button onClick={handleGoogle} style={{
-            width: '100%', padding: '11px', borderRadius: 10, border: '1px solid #EBEBE9',
-            background: 'transparent', color: '#0E1116', fontSize: 14, fontWeight: 500,
+            width: '100%', padding: '11px', borderRadius: 10, border: '1px solid var(--border)',
+            background: 'transparent', color: 'var(--text-h1)', fontSize: 14, fontWeight: 500,
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 20,
           }}>
             <svg width="18" height="18" viewBox="0 0 24 24">
@@ -98,9 +98,9 @@ export default function Login() {
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-            <div style={{ flex: 1, height: 1, background: '#EBEBE9' }} />
-            <span style={{ fontSize: 12, color: '#6B6F76' }}>{lang === 'fr' ? 'ou' : 'or'}</span>
-            <div style={{ flex: 1, height: 1, background: '#EBEBE9' }} />
+            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{lang === 'fr' ? 'ou' : 'or'}</span>
+            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
           </div>
 
           <form onSubmit={handleLogin}>
@@ -124,7 +124,7 @@ export default function Login() {
 
             {/* Mot de passe oublié */}
             <div style={{ textAlign: 'right', marginTop: 8, marginBottom: 20 }}>
-              <Link href="/auth/forgot-password" style={{ fontSize: 12, color: '#6B6F76', textDecoration: 'none' }}>
+              <Link href="/auth/forgot-password" style={{ fontSize: 12, color: 'var(--text-muted)', textDecoration: 'none' }}>
                 {t.login_forgot}
               </Link>
             </div>
@@ -150,9 +150,9 @@ export default function Login() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', fontSize: 13, color: '#6B6F76', marginTop: 20 }}>
+          <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--text-muted)', marginTop: 20 }}>
             {t.login_no_account}{' '}
-            <Link href="/auth/register" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
+            <Link href="/auth/register" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>
               {t.login_signup}
             </Link>
           </p>

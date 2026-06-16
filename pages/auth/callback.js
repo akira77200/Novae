@@ -82,10 +82,10 @@ export default function AuthCallback() {
       {err ? (
         <div style={{ textAlign: 'center' }}>
           <p style={{ color: '#DC2626', fontSize: 14, marginBottom: 8 }}>⚠️ {err}</p>
-          <p style={{ color: '#6B6F76', fontSize: 12 }}>Redirection vers la connexion...</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: 12 }}>Redirection vers la connexion...</p>
         </div>
       ) : (
-        <p style={{ color: '#9A9D9F', fontSize: 14 }}>Connexion en cours...</p>
+        <p style={{ color: 'var(--text-faint)', fontSize: 14 }}>Connexion en cours...</p>
       )}
     </div>
   )

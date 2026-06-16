@@ -61,22 +61,22 @@ export default function RegisterMentor() {
     } finally { setLoading(false) }
   }
 
-  const inp = { width: '100%', padding: '11px 14px', background: '#F7F7F5', border: '1px solid #EBEBE9', borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark' }
-  const lbl = { display: 'block', fontSize: 11, fontWeight: 600, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
+  const inp = { width: '100%', padding: '11px 14px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)', fontSize: 14, outline: 'none', boxSizing: 'border-box', colorScheme: 'dark' }
+  const lbl = { display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 7, marginTop: 16 }
 
   if (success) return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'system-ui,sans-serif' }}>
       <div style={{ textAlign: 'center', maxWidth: 440 }}>
         <div style={{ fontSize: 56, marginBottom: 20 }}>✅</div>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#0E1116', marginBottom: 12 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 12 }}>
           {isFr ? 'Candidature envoyée' : 'Application submitted'}
         </h1>
-        <p style={{ fontSize: 15, color: '#6B6F76', lineHeight: 1.7, marginBottom: 10 }}>
+        <p style={{ fontSize: 15, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 10 }}>
           {isFr
-            ? <>Ton profil mentor a été créé. Il sera activé sous <strong style={{ color: '#0E1116' }}>48 heures</strong> après vérification.</>
-            : <>Your mentor profile has been created. It will be activated within <strong style={{ color: '#0E1116' }}>48 hours</strong> after review.</>}
+            ? <>Ton profil mentor a été créé. Il sera activé sous <strong style={{ color: 'var(--text-h1)' }}>48 heures</strong> après vérification.</>
+            : <>Your mentor profile has been created. It will be activated within <strong style={{ color: 'var(--text-h1)' }}>48 hours</strong> after review.</>}
         </p>
-        <p style={{ fontSize: 13, color: '#6B6F76', lineHeight: 1.7, marginBottom: 28 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 28 }}>
           {isFr
             ? 'Une fois activé, tu apparaîtras dans la liste des mentors et tu pourras recevoir des réservations.'
             : 'Once activated, you will appear in the mentor list and can start receiving bookings.'}
@@ -89,17 +89,17 @@ export default function RegisterMentor() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', fontFamily: 'system-ui,sans-serif', padding: '36px 20px 60px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', fontFamily: 'system-ui,sans-serif', padding: '36px 20px 60px' }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
 
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <div style={{ width: 40, height: 40, borderRadius: 10, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, color: '#fff', margin: '0 auto 12px' }}>N</div>
           </Link>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0E1116', marginBottom: 4 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 4 }}>
             {isFr ? 'Devenir mentor' : 'Become a mentor'}
           </h1>
-          <p style={{ fontSize: 13, color: '#6B6F76' }}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
             {isFr
               ? 'Aide les nouveaux arrivants · Gagne 70% de chaque session'
               : 'Help newcomers · Earn 70% of each session'}
@@ -110,11 +110,11 @@ export default function RegisterMentor() {
           {[1,2].map(i => <div key={i} style={{ flex: 1, height: 3, borderRadius: 3, background: i <= step ? '#0E1116' : '#EBEBE9', transition: 'background 0.3s' }} />)}
         </div>
 
-        <div style={{ background: '#FFFFFF', border: '1px solid #EBEBE9', borderRadius: 16, padding: '24px 24px 20px' }}>
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 24px 20px' }}>
 
           {step === 1 && (
             <>
-              <p style={{ fontSize: 14, fontWeight: 600, color: '#0E1116', marginBottom: 4 }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-h1)', marginBottom: 4 }}>
                 {isFr ? 'Étape 1 — Ton compte' : 'Step 1 — Your account'}
               </p>
               <label style={lbl}>{isFr ? 'Nom complet *' : 'Full name *'}</label>
@@ -127,9 +127,9 @@ export default function RegisterMentor() {
                 style={{ width: '100%', padding: '12px', background: step1ok ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: step1ok ? '#fff' : '#6B6F76', fontWeight: 600, fontSize: 15, cursor: step1ok ? 'pointer' : 'not-allowed', marginTop: 20 }}>
                 {isFr ? 'Continuer →' : 'Continue →'}
               </button>
-              <p style={{ textAlign: 'center', fontSize: 13, color: '#6B6F76', marginTop: 14 }}>
+              <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--text-muted)', marginTop: 14 }}>
                 {isFr ? 'Déjà un compte ?' : 'Already have an account?'}{' '}
-                <Link href="/auth/login" style={{ color: '#3A3D40', fontWeight: 600, textDecoration: 'none' }}>
+                <Link href="/auth/login" style={{ color: 'var(--text-body)', fontWeight: 600, textDecoration: 'none' }}>
                   {isFr ? 'Connexion' : 'Login'}
                 </Link>
               </p>
@@ -138,7 +138,7 @@ export default function RegisterMentor() {
 
           {step === 2 && (
             <>
-              <p style={{ fontSize: 14, fontWeight: 600, color: '#0E1116', marginBottom: 4 }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-h1)', marginBottom: 4 }}>
                 {isFr ? 'Étape 2 — Ton profil mentor' : 'Step 2 — Your mentor profile'}
               </p>
 
@@ -191,12 +191,12 @@ export default function RegisterMentor() {
                 <div>
                   <label style={lbl}>{isFr ? 'Tarif 30 min (centimes CAD)' : 'Rate 30 min (CAD cents)'}</label>
                   <input type="number" value={form.tarif_30min} onChange={e => set('tarif_30min', e.target.value)} style={inp} />
-                  <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 3 }}>= {(parseInt(form.tarif_30min||0)/100).toFixed(2)} $ CAD</p>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 3 }}>= {(parseInt(form.tarif_30min||0)/100).toFixed(2)} $ CAD</p>
                 </div>
                 <div>
                   <label style={lbl}>{isFr ? 'Tarif 45 min (centimes CAD)' : 'Rate 45 min (CAD cents)'}</label>
                   <input type="number" value={form.tarif_45min} onChange={e => set('tarif_45min', e.target.value)} style={inp} />
-                  <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 3 }}>= {(parseInt(form.tarif_45min||0)/100).toFixed(2)} $ CAD</p>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 3 }}>= {(parseInt(form.tarif_45min||0)/100).toFixed(2)} $ CAD</p>
                 </div>
               </div>
 
@@ -206,7 +206,7 @@ export default function RegisterMentor() {
               {error && <div style={{ padding: '10px 14px', background: '#DC262615', border: `1px solid ${'#DC2626'}40`, borderRadius: 9, color: '#DC2626', fontSize: 13, marginTop: 14 }}>{error}</div>}
 
               <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
-                <button onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid #EBEBE9', borderRadius: 10, color: '#6B6F76', fontSize: 14, cursor: 'pointer' }}>
+                <button onClick={() => setStep(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-muted)', fontSize: 14, cursor: 'pointer' }}>
                   {isFr ? '← Retour' : '← Back'}
                 </button>
                 <button onClick={submit} disabled={!step2ok || loading}

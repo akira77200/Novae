@@ -35,7 +35,7 @@ export default function Logout() {
       fontFamily: 'system-ui,sans-serif',
     }}>
       <div style={{ width: 44, height: 44, borderRadius: 12, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 16 }}>N</div>
-      <p style={{ color: '#9A9D9F', fontSize: 15 }}>{lang === 'fr' ? 'Déconnexion...' : 'Signing out...'}</p>
+      <p style={{ color: 'var(--text-faint)', fontSize: 15 }}>{lang === 'fr' ? 'Déconnexion...' : 'Signing out...'}</p>
     </div>
   )
 }

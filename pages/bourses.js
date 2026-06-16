@@ -260,11 +260,11 @@ const ALL_PROGRAMMES_UNIV = ['Tous', 'Informatique', 'Ingénierie', 'Médecine',
 
 const NIVEAU_LABEL = { licence: 'Licence / Baccalauréat', master: 'Master / Maîtrise', doctorat: 'Doctorat / PhD' }
 const TYPE_COLOR   = {
-  gouvernement: { color: '#0E1116', bg: 'rgba(59,130,246,0.12)'   },
-  universite:   { color: '#6B6F76', bg: 'rgba(96,165,250,0.12)'   },
-  international:{ color: '#6B6F76', bg: 'rgba(251,191,36,0.12)'   },
-  fondation:    { color: '#0E1116', bg: 'rgba(59,130,246,0.12)'   },
-  pays_origine: { color: '#9A9D9F', bg: 'rgba(181,131,141,0.12)'  },
+  gouvernement: { color: 'var(--text-h1)', bg: 'rgba(59,130,246,0.12)'   },
+  universite:   { color: 'var(--text-muted)', bg: 'rgba(96,165,250,0.12)'   },
+  international:{ color: 'var(--text-muted)', bg: 'rgba(251,191,36,0.12)'   },
+  fondation:    { color: 'var(--text-h1)', bg: 'rgba(59,130,246,0.12)'   },
+  pays_origine: { color: 'var(--text-faint)', bg: 'rgba(181,131,141,0.12)'  },
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -330,16 +330,16 @@ export default function Bourses() {
   }, [fProvince, fLangueU, fProgramme, rechercheU, triU])
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAF9', color: '#0E1116', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-page)', color: 'var(--text-h1)', fontFamily: 'system-ui,sans-serif' }}>
       
       <main style={{ maxWidth: 860, margin: '0 auto', padding: '32px 20px 80px' }}>
 
         {/* ── Header ── */}
         <div style={{ marginBottom: 28 }}>
-          <h1 style={{ fontSize: 26, fontWeight: 800, color: '#0E1116', letterSpacing: -0.5, marginBottom: 4 }}>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--text-h1)', letterSpacing: -0.5, marginBottom: 4 }}>
             🎓 {lang === 'fr' ? 'Bourses & Universités' : 'Scholarships & Universities'}
           </h1>
-          <p style={{ fontSize: 14, color: '#6B6F76' }}>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>
             {lang === 'fr'
               ? `${BOURSES.length} bourses · ${UNIVERSITES.length} universités canadiennes`
               : `${BOURSES.length} scholarships · ${UNIVERSITES.length} Canadian universities`}
@@ -347,7 +347,7 @@ export default function Bourses() {
         </div>
 
         {/* ── Onglets principaux ── */}
-        <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 12, padding: 4 }}>
+        <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 12, padding: 4 }}>
           {[
             { id: 'bourses',    fr: '🏆 Bourses d\'études', en: '🏆 Scholarships'   },
             { id: 'universites',fr: '🏛️ Universités',       en: '🏛️ Universities'   },
@@ -367,17 +367,17 @@ export default function Bourses() {
             {/* Mes bourses suivies */}
             {favorites.length > 0 && (
               <div style={{ marginBottom: 24, padding: '16px 18px', background: `${'#0E1116'}08`, border: `1px solid ${'#0E1116'}25`, borderRadius: 14 }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#3A3D40', marginBottom: 12 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-body)', marginBottom: 12 }}>
                   ⭐ {lang === 'fr' ? `Mes bourses suivies (${favorites.length})` : `My tracked scholarships (${favorites.length})`}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                   {BOURSES.filter(b => favorites.includes(b.id)).map(b => (
-                    <div key={b.id} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 20 }}>
+                    <div key={b.id} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 20 }}>
                       <span>{b.icone}</span>
-                      <span style={{ fontSize: 12, color: '#0E1116', fontWeight: 500 }}>{lang === 'fr' ? b.nom : (b.nom_en || b.nom)}</span>
-                      <span style={{ fontSize: 11, color: '#6B6F76' }}>⏰ {b.deadline}</span>
+                      <span style={{ fontSize: 12, color: 'var(--text-h1)', fontWeight: 500 }}>{lang === 'fr' ? b.nom : (b.nom_en || b.nom)}</span>
+                      <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>⏰ {b.deadline}</span>
                       <button onClick={(e) => toggleFav(b.id, e)}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6B6F76', fontSize: 12, padding: '0 2px' }}>✕</button>
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: 12, padding: '0 2px' }}>✕</button>
                     </div>
                   ))}
                 </div>
@@ -388,7 +388,7 @@ export default function Bourses() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 22 }}>
               <input value={recherche} onChange={e => setRecherche(e.target.value)}
                 placeholder={lang === 'fr' ? '🔍  Rechercher une bourse...' : '🔍  Search scholarships...'}
-                style={{ padding: '10px 14px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none' }} />
+                style={{ padding: '10px 14px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 10, color: 'var(--text-h1)', fontSize: 14, outline: 'none' }} />
 
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {ALL_TYPES_BOURSES.map(t => (
@@ -410,7 +410,7 @@ export default function Bourses() {
             </div>
 
             {/* Compteur */}
-            <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 16 }}>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
               {boursesFiltrees.length} {lang === 'fr' ? 'bourse(s) trouvée(s)' : 'scholarship(s) found'}
             </p>
 
@@ -423,33 +423,33 @@ export default function Bourses() {
                 const isFav   = favorites.includes(b.id)
 
                 return (
-                  <div key={b.id} style={{ background: '#FFFFFF', border: `1px solid ${matchPO ? '#0E111640' : '#EBEBE9'}`, borderRadius: 14, overflow: 'hidden', transition: 'border-color 0.15s' }}>
+                  <div key={b.id} style={{ background: 'var(--bg-card)', border: `1px solid ${matchPO ? '#0E111640' : '#EBEBE9'}`, borderRadius: 14, overflow: 'hidden', transition: 'border-color 0.15s' }}>
                     {/* Header carte */}
                     <div style={{ padding: '16px 18px', cursor: 'pointer' }} onClick={() => setExpanded(isOpen ? null : b.id)}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                         <span style={{ fontSize: 24, flexShrink: 0, marginTop: 2 }}>{b.icone}</span>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 5 }}>
-                            <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', lineHeight: 1.4 }}>{lang === 'fr' ? b.nom : (b.nom_en || b.nom)}</p>
+                            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', lineHeight: 1.4 }}>{lang === 'fr' ? b.nom : (b.nom_en || b.nom)}</p>
                             {b.new && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${'#DC2626'}15`, color: '#DC2626', letterSpacing: 0.4, flexShrink: 0 }}>{lang === 'fr' ? 'NOUVEAU' : 'NEW'}</span>}
-                            {matchPO && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${'#0E1116'}15`, color: '#3A3D40', letterSpacing: 0.4, flexShrink: 0 }}>✓ {lang === 'fr' ? 'TON PAYS' : 'YOUR COUNTRY'}</span>}
+                            {matchPO && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${'#0E1116'}15`, color: 'var(--text-body)', letterSpacing: 0.4, flexShrink: 0 }}>✓ {lang === 'fr' ? 'TON PAYS' : 'YOUR COUNTRY'}</span>}
                           </div>
-                          <p style={{ fontSize: 12, color: '#6B6F76', marginBottom: 8 }}>{b.organisme}</p>
+                          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>{b.organisme}</p>
                           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                             <span style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: tc.bg, color: tc.color, fontWeight: 500 }}>
                               {ALL_TYPES_BOURSES.find(t => t.id === b.type)?.[lang === 'fr' ? 'fr' : 'en'] || b.type}
                             </span>
                             {b.niveau.map(n => (
-                              <span key={n} style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(96,165,250,0.10)', color: '#6B6F76', fontWeight: 500 }}>
+                              <span key={n} style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(96,165,250,0.10)', color: 'var(--text-muted)', fontWeight: 500 }}>
                                 {n}
                               </span>
                             ))}
                             {b.montant && (
-                              <span style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(52,211,153,0.10)', color: '#3A3D40', fontWeight: 600 }}>
+                              <span style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(52,211,153,0.10)', color: 'var(--text-body)', fontWeight: 600 }}>
                                 {b.montant.toLocaleString()} $ {b.montant_devise}/{b.duree}
                               </span>
                             )}
-                            <span style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(251,191,36,0.10)', color: '#6B6F76', fontWeight: 500 }}>
+                            <span style={{ fontSize: 11, padding: '2px 9px', borderRadius: 20, background: 'rgba(251,191,36,0.10)', color: 'var(--text-muted)', fontWeight: 500 }}>
                               ⏰ {b.deadline}
                             </span>
                           </div>
@@ -459,35 +459,35 @@ export default function Bourses() {
                           style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, flexShrink: 0, marginTop: 2, opacity: isFav ? 1 : 0.35, transition: 'opacity 0.15s' }}>
                           ⭐
                         </button>
-                        <span style={{ color: '#6B6F76', fontSize: 14, flexShrink: 0, marginTop: 4 }}>{isOpen ? '▲' : '▼'}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: 14, flexShrink: 0, marginTop: 4 }}>{isOpen ? '▲' : '▼'}</span>
                       </div>
                     </div>
 
                     {/* Détail expandable */}
                     {isOpen && (
                       <div style={{ padding: '0 18px 18px', borderTop: `1px solid ${'#EBEBE9'}` }}>
-                        <p style={{ fontSize: 13, color: '#0E1116', lineHeight: 1.7, marginTop: 14, marginBottom: 12 }}>
+                        <p style={{ fontSize: 13, color: 'var(--text-h1)', lineHeight: 1.7, marginTop: 14, marginBottom: 12 }}>
                           {lang === 'fr' ? b.description : (b.description_en || b.description)}
                         </p>
                         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 14 }}>
                           <div>
-                            <p style={{ fontSize: 10, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Deadline' : 'Deadline'}</p>
-                            <p style={{ fontSize: 13, color: '#6B6F76', fontWeight: 600 }}>📅 {b.deadline}</p>
+                            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Deadline' : 'Deadline'}</p>
+                            <p style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600 }}>📅 {b.deadline}</p>
                           </div>
                           <div>
-                            <p style={{ fontSize: 10, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Durée' : 'Duration'}</p>
-                            <p style={{ fontSize: 13, color: '#0E1116', fontWeight: 500 }}>⏱ {b.duree}</p>
+                            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Durée' : 'Duration'}</p>
+                            <p style={{ fontSize: 13, color: 'var(--text-h1)', fontWeight: 500 }}>⏱ {b.duree}</p>
                           </div>
                           {b.domaines.length > 0 && (
                             <div>
-                              <p style={{ fontSize: 10, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Domaines' : 'Fields'}</p>
-                              <p style={{ fontSize: 12, color: '#0E1116' }}>{b.domaines.join(', ')}</p>
+                              <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Domaines' : 'Fields'}</p>
+                              <p style={{ fontSize: 12, color: 'var(--text-h1)' }}>{b.domaines.join(', ')}</p>
                             </div>
                           )}
                           {b.pays_origine && (
                             <div>
-                              <p style={{ fontSize: 10, fontWeight: 700, color: '#6B6F76', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Pays éligibles' : 'Eligible countries'}</p>
-                              <p style={{ fontSize: 12, color: '#0E1116' }}>{b.pays_origine.join(', ')}</p>
+                              <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 3 }}>{lang === 'fr' ? 'Pays éligibles' : 'Eligible countries'}</p>
+                              <p style={{ fontSize: 12, color: 'var(--text-h1)' }}>{b.pays_origine.join(', ')}</p>
                             </div>
                           )}
                         </div>
@@ -495,7 +495,7 @@ export default function Bourses() {
                           style={{ display: 'inline-block', padding: '9px 20px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>
                           {lang === 'fr' ? 'Voir les conditions →' : 'See eligibility →'}
                         </a>
-                        <p style={{ fontSize: 11, color: '#6B6F76', marginTop: 8, fontStyle: 'italic' }}>
+                        <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8, fontStyle: 'italic' }}>
                           ℹ️ {lang === 'fr'
                             ? 'Ce lien mène vers la page d\'accueil du site officiel. Recherche le nom de la bourse une fois sur le site.'
                             : 'This link leads to the official website homepage. Search for the scholarship name once on the site.'}
@@ -507,9 +507,9 @@ export default function Bourses() {
               })}
 
               {boursesFiltrees.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '48px 24px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 16 }}>
+                <div style={{ textAlign: 'center', padding: '48px 24px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 16 }}>
                   <p style={{ fontSize: 36, marginBottom: 12 }}>🔍</p>
-                  <p style={{ fontSize: 15, color: '#0E1116', fontWeight: 600, marginBottom: 8 }}>
+                  <p style={{ fontSize: 15, color: 'var(--text-h1)', fontWeight: 600, marginBottom: 8 }}>
                     {lang === 'fr' ? 'Aucune bourse trouvée' : 'No scholarships found'}
                   </p>
                   <button onClick={() => { setRecherche(''); setFType('Tous'); setFNiveau('Tous') }}
@@ -531,7 +531,7 @@ export default function Bourses() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 22 }}>
               <input value={rechercheU} onChange={e => setRechercheU(e.target.value)}
                 placeholder={lang === 'fr' ? '🔍  Rechercher une université...' : '🔍  Search universities...'}
-                style={{ padding: '10px 14px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 10, color: '#0E1116', fontSize: 14, outline: 'none' }} />
+                style={{ padding: '10px 14px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 10, color: 'var(--text-h1)', fontSize: 14, outline: 'none' }} />
 
               {/* Province */}
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -546,15 +546,15 @@ export default function Bourses() {
               {/* Langue + Programme + Tri */}
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
                 <select value={fLangueU} onChange={e => setFLangueU(e.target.value)}
-                  style={{ padding: '7px 12px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: '#0E1116', fontSize: 13, outline: 'none' }}>
+                  style={{ padding: '7px 12px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: 'var(--text-h1)', fontSize: 13, outline: 'none' }}>
                   {ALL_LANGUES_UNIV.map(l => <option key={l.id} value={l.id}>{lang === 'fr' ? l.fr : l.en}</option>)}
                 </select>
                 <select value={fProgramme} onChange={e => setFProgramme(e.target.value)}
-                  style={{ padding: '7px 12px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: '#0E1116', fontSize: 13, outline: 'none' }}>
+                  style={{ padding: '7px 12px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: 'var(--text-h1)', fontSize: 13, outline: 'none' }}>
                   {ALL_PROGRAMMES_UNIV.map(p => <option key={p} value={p}>{p === 'Tous' ? (lang === 'fr' ? 'Tous programmes' : 'All programs') : p}</option>)}
                 </select>
                 <select value={triU} onChange={e => setTriU(e.target.value)}
-                  style={{ padding: '7px 12px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: '#0E1116', fontSize: 13, outline: 'none' }}>
+                  style={{ padding: '7px 12px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 9, color: 'var(--text-h1)', fontSize: 13, outline: 'none' }}>
                   <option value="rang">{lang === 'fr' ? 'Trier : Rang QS' : 'Sort: QS Rank'}</option>
                   <option value="frais_asc">{lang === 'fr' ? 'Trier : Frais ↑' : 'Sort: Fees ↑'}</option>
                   <option value="alpha">{lang === 'fr' ? 'Trier : A → Z' : 'Sort: A → Z'}</option>
@@ -563,25 +563,25 @@ export default function Bourses() {
             </div>
 
             {/* Compteur */}
-            <p style={{ fontSize: 13, color: '#6B6F76', marginBottom: 16 }}>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
               {univFiltrees.length} {lang === 'fr' ? 'université(s) trouvée(s)' : 'university(ies) found'}
             </p>
 
             {/* Grille universités */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 14 }}>
               {univFiltrees.map(u => (
-                <div key={u.id} style={{ background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 14, padding: '18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div key={u.id} style={{ background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 14, padding: '18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {/* En-tête */}
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                     <div style={{ width: 42, height: 42, borderRadius: 10, background: `${'#0E1116'}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{u.logo}</div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 14, fontWeight: 700, color: '#0E1116', lineHeight: 1.35, marginBottom: 3 }}>{u.nom}</p>
-                      <p style={{ fontSize: 12, color: '#6B6F76' }}>📍 {u.ville}, {u.province}</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', lineHeight: 1.35, marginBottom: 3 }}>{u.nom}</p>
+                      <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>📍 {u.ville}, {u.province}</p>
                     </div>
                     {u.rang_qs && (
                       <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                        <p style={{ fontSize: 10, color: '#6B6F76', marginBottom: 1 }}>QS World</p>
-                        <p style={{ fontSize: 16, fontWeight: 800, color: '#3A3D40' }}>#{u.rang_qs}</p>
+                        <p style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 1 }}>QS World</p>
+                        <p style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-body)' }}>#{u.rang_qs}</p>
                       </div>
                     )}
                   </div>
@@ -591,7 +591,7 @@ export default function Bourses() {
                     <span style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: u.langue === 'fr' ? 'rgba(96,165,250,0.12)' : u.langue === 'bi' ? 'rgba(167,139,250,0.12)' : 'rgba(251,191,36,0.12)', color: u.langue === 'fr' ? '#6B6F76' : u.langue === 'bi' ? '#6B6F76' : '#6B6F76', fontWeight: 600 }}>
                       {u.langue === 'fr' ? '🇫🇷 Français' : u.langue === 'bi' ? '🔀 Bilingue' : '🇬🇧 English'}
                     </span>
-                    <span style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: 'rgba(52,211,153,0.10)', color: '#3A3D40', fontWeight: 500 }}>
+                    <span style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: 'rgba(52,211,153,0.10)', color: 'var(--text-body)', fontWeight: 500 }}>
                       ~{u.frais_intl.toLocaleString()} $/an
                     </span>
                   </div>
@@ -599,25 +599,25 @@ export default function Bourses() {
                   {/* Programmes */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {u.programmes.slice(0, 5).map(p => (
-                      <span key={p} style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: '#F7F7F5', color: '#6B6F76', border: `1px solid ${'#EBEBE9'}` }}>{p}</span>
+                      <span key={p} style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: 'var(--bg-subtle)', color: 'var(--text-muted)', border: `1px solid ${'#EBEBE9'}` }}>{p}</span>
                     ))}
                     {u.programmes.length > 5 && (
-                      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, color: '#6B6F76' }}>+{u.programmes.length - 5}</span>
+                      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, color: 'var(--text-muted)' }}>+{u.programmes.length - 5}</span>
                     )}
                   </div>
 
                   {/* CTA */}
                   <a href={u.lien} target="_blank" rel="noreferrer"
-                    style={{ display: 'block', textAlign: 'center', padding: '9px', background: `${'#0E1116'}12`, border: `1px solid ${'#0E1116'}25`, borderRadius: 9, color: '#3A3D40', fontWeight: 600, fontSize: 13, textDecoration: 'none', marginTop: 'auto' }}>
+                    style={{ display: 'block', textAlign: 'center', padding: '9px', background: `${'#0E1116'}12`, border: `1px solid ${'#0E1116'}25`, borderRadius: 9, color: 'var(--text-body)', fontWeight: 600, fontSize: 13, textDecoration: 'none', marginTop: 'auto' }}>
                     {lang === 'fr' ? 'Visiter le site →' : 'Visit website →'}
                   </a>
                 </div>
               ))}
 
               {univFiltrees.length === 0 && (
-                <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '48px 24px', background: '#FFFFFF', border: `1px solid ${'#EBEBE9'}`, borderRadius: 16 }}>
+                <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '48px 24px', background: 'var(--bg-card)', border: `1px solid ${'#EBEBE9'}`, borderRadius: 16 }}>
                   <p style={{ fontSize: 36, marginBottom: 12 }}>🏛️</p>
-                  <p style={{ fontSize: 15, color: '#0E1116', fontWeight: 600, marginBottom: 8 }}>
+                  <p style={{ fontSize: 15, color: 'var(--text-h1)', fontWeight: 600, marginBottom: 8 }}>
                     {lang === 'fr' ? 'Aucune université trouvée' : 'No universities found'}
                   </p>
                   <button onClick={() => { setRechercheU(''); setFProvince('Toutes'); setFLangueU('Toutes'); setFProgramme('Tous') }}

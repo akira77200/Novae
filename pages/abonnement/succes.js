@@ -74,10 +74,10 @@ export default function AbonnementSucces() {
 
   if (loading) {
     return (
-      <div style={{ minHeight:'100vh', background:'#FAFAF9', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
+      <div style={{ minHeight:'100vh', background:'var(--bg-page)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
         <div style={{ textAlign:'center' }}>
           <div style={{ width:48, height:48, borderRadius:14, background:'#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, fontWeight:800, color:'#fff', margin:'0 auto 16px' }}>N</div>
-          <p style={{ color:'#6B6F76', fontSize:14 }}>{isFr ? 'Chargement...' : 'Loading...'}</p>
+          <p style={{ color:'var(--text-muted)', fontSize:14 }}>{isFr ? 'Chargement...' : 'Loading...'}</p>
         </div>
       </div>
     )
@@ -89,7 +89,7 @@ export default function AbonnementSucces() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#FAFAF9', color:'#0E1116', fontFamily:'system-ui,sans-serif' }}>
+    <div style={{ minHeight:'100vh', background:'var(--bg-page)', color:'var(--text-h1)', fontFamily:'system-ui,sans-serif' }}>
       
 
       <main style={{ maxWidth:560, margin:'0 auto', padding:'80px 20px', textAlign:'center' }}>
@@ -100,7 +100,7 @@ export default function AbonnementSucces() {
             <h1 style={{ fontSize:24, fontWeight:700, color:'#DC2626', marginBottom:12 }}>
               {isFr ? 'Erreur lors du traitement' : 'Error processing payment'}
             </h1>
-            <p style={{ fontSize:14, color:'#6B6F76', marginBottom:24 }}>
+            <p style={{ fontSize:14, color:'var(--text-muted)', marginBottom:24 }}>
               {error}
             </p>
             <a href="/abonnement" style={{ display:'inline-block', padding:'12px 24px', borderRadius:10, background:'#0E1116', color:'#fff', fontWeight:600, fontSize:14, textDecoration:'none' }}>
@@ -110,10 +110,10 @@ export default function AbonnementSucces() {
         ) : (
           <div>
             <div style={{ fontSize:64, marginBottom:24 }}>🎉</div>
-            <h1 style={{ fontSize:'clamp(1.8rem,4vw,2.4rem)', fontWeight:800, color:'#0E1116', marginBottom:12, letterSpacing:-0.5 }}>
+            <h1 style={{ fontSize:'clamp(1.8rem,4vw,2.4rem)', fontWeight:800, color:'var(--text-h1)', marginBottom:12, letterSpacing:-0.5 }}>
               {isFr ? `Bienvenue sur le plan ${planNames[plan] || plan} !` : `Welcome to the ${planNames[plan] || plan} plan!`}
             </h1>
-            <p style={{ fontSize:16, color:'#6B6F76', lineHeight:1.6, marginBottom:32 }}>
+            <p style={{ fontSize:16, color:'var(--text-muted)', lineHeight:1.6, marginBottom:32 }}>
               {isFr
                 ? 'Ton abonnement est maintenant actif. Tu peux profiter de toutes les fonctionnalités incluses dans ton plan.'
                 : 'Your subscription is now active. You can enjoy all the features included in your plan.'}

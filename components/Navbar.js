@@ -141,13 +141,13 @@ export default function Navbar() {
             <div style={{ fontWeight: 600, fontSize: 12, color: '#FAFAF8', marginBottom: 4 }}>
               {isFr ? 'Passer Premium' : 'Go Premium'}
             </div>
-            <div style={{ fontSize: 11, color: '#6B6F76', lineHeight: 1.5, marginBottom: 10 }}>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 10 }}>
               {isFr ? 'Débloquez toutes les fonctionnalités.' : 'Unlock all features.'}
             </div>
             <button
               onClick={() => { router.push('/abonnement'); onLinkClick && onLinkClick() }}
               style={{
-                background: '#FAFAF8', color: '#0E1116',
+                background: '#FAFAF8', color: 'var(--text-h1)',
                 border: 'none', borderRadius: 6,
                 padding: '6px 12px', fontSize: 12, fontWeight: 600,
                 cursor: 'pointer', width: '100%',
@@ -165,7 +165,7 @@ export default function Navbar() {
             display: 'flex', alignItems: 'center', gap: 9,
             width: '100%', padding: '7px 10px', borderRadius: 6,
             border: 'none', background: 'transparent',
-            color: '#6B6F76', fontSize: 13, cursor: 'pointer', marginBottom: 6,
+            color: 'var(--text-muted)', fontSize: 13, cursor: 'pointer', marginBottom: 6,
           }}
         >
           {theme === 'dark' ? <IconSun /> : <IconMoon />}
@@ -183,16 +183,16 @@ export default function Navbar() {
                 {profile?.full_name || user.email?.split('@')[0] || 'Profil'}
               </span>
             </Link>
-            <button onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6B6F76', fontSize: 11, flexShrink: 0, padding: '2px 4px' }} title={isFr ? 'Déconnexion' : 'Logout'}>
+            <button onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: 11, flexShrink: 0, padding: '2px 4px' }} title={isFr ? 'Déconnexion' : 'Logout'}>
               {isFr ? 'Déco' : 'Out'}
             </button>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-            <Link href="/auth/login" onClick={onLinkClick} style={{ display: 'block', padding: '7px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: '#6B6F76', fontSize: 12, fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
+            <Link href="/auth/login" onClick={onLinkClick} style={{ display: 'block', padding: '7px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'var(--text-muted)', fontSize: 12, fontWeight: 500, textDecoration: 'none', textAlign: 'center' }}>
               {isFr ? 'Connexion' : 'Login'}
             </Link>
-            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '7px', borderRadius: 6, background: '#FAFAF8', color: '#0E1116', fontSize: 12, fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
+            <Link href="/auth/register" onClick={onLinkClick} style={{ display: 'block', padding: '7px', borderRadius: 6, background: '#FAFAF8', color: 'var(--text-h1)', fontSize: 12, fontWeight: 600, textDecoration: 'none', textAlign: 'center' }}>
               {isFr ? "S'inscrire" : 'Sign up'}
             </Link>
           </div>
@@ -209,7 +209,7 @@ export default function Navbar() {
       <aside style={{
         position: 'fixed', top: 0, left: 0,
         width: 'var(--sidebar-width)', height: '100vh',
-        background: '#0E1116',
+        background: 'var(--bg-sidebar)',
         borderRight: '1px solid rgba(255,255,255,0.06)',
         display: 'flex', flexDirection: 'column',
         zIndex: 100, overflowY: 'auto',
@@ -218,13 +218,13 @@ export default function Navbar() {
       </aside>
 
       {/* Hamburger mobile */}
-      <button className="hamburger-btn" onClick={() => setMobileOpen(true)} style={{ display: 'none', position: 'fixed', top: 16, left: 16, zIndex: 150, width: 38, height: 38, borderRadius: 8, border: '1px solid rgba(255,255,255,0.10)', background: '#0E1116', color: '#FAFAF8', fontSize: 16, alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} aria-label="Menu">☰</button>
+      <button className="hamburger-btn" onClick={() => setMobileOpen(true)} style={{ display: 'none', position: 'fixed', top: 16, left: 16, zIndex: 150, width: 38, height: 38, borderRadius: 8, border: '1px solid rgba(255,255,255,0.10)', background: 'var(--bg-sidebar)', color: '#FAFAF8', fontSize: 16, alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} aria-label="Menu">☰</button>
 
       {/* Overlay mobile */}
       {mobileOpen && <div onClick={() => setMobileOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 190, background: 'rgba(0,0,0,0.50)', backdropFilter: 'blur(3px)' }} />}
 
       {/* Sidebar mobile */}
-      <aside style={{ position: 'fixed', top: 0, left: 0, width: 'var(--sidebar-width)', height: '100vh', background: '#0E1116', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', zIndex: 200, overflowY: 'auto', transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)', transition: 'transform 0.25s ease' }} className="sidebar-mobile">
+      <aside style={{ position: 'fixed', top: 0, left: 0, width: 'var(--sidebar-width)', height: '100vh', background: 'var(--bg-sidebar)', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', zIndex: 200, overflowY: 'auto', transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)', transition: 'transform 0.25s ease' }} className="sidebar-mobile">
         <button onClick={() => setMobileOpen(false)} style={{ position: 'absolute', top: 14, right: 10, background: 'none', border: 'none', color: 'rgba(255,255,255,0.45)', fontSize: 16, cursor: 'pointer' }}>✕</button>
         {sidebarContent(() => setMobileOpen(false))}
       </aside>
