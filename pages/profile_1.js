@@ -48,7 +48,7 @@ export default function Profile() {
     // Récupère une session fraîche pour éviter le skew d'horloge Supabase
     const { data: { session } } = await sb.auth.getSession()
     if (!session) {
-      setError('Session expirée. Reconnecte-toi.')
+      setError(lang === 'fr' ? 'Session expirée. Reconnecte-toi.' : 'Session expired. Please sign in again.')
       setSaving(false)
       return
     }
@@ -88,7 +88,7 @@ export default function Profile() {
     <div style={{minHeight:'100vh',background:'#FAFAF9',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'system-ui,sans-serif'}}>
       <div style={{textAlign:'center'}}>
         <div style={{width:40,height:40,borderRadius:10,background:'#0E1116',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,fontWeight:800,color:'#fff',margin:'0 auto 14px'}}>N</div>
-        <p style={{color:'#6B6F76',fontSize:14}}>Chargement du profil...</p>
+        <p style={{color:'#6B6F76',fontSize:14}}>{lang === 'fr' ? 'Chargement du profil...' : 'Loading profile...'}</p>
       </div>
     </div>
   )
