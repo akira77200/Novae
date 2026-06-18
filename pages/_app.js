@@ -107,20 +107,26 @@ function AppLayout({ Component, pageProps }) {
   return (
     <div style={{ display: 'flex' }}>
       <Navbar />
-      <main style={{
-        marginLeft: 'var(--sidebar-width)',
+      <main className="novae-main" style={{
         minHeight: '100vh',
         flex: 1,
         background: 'var(--bg-page)',
-        transition: 'margin-left 0.2s ease',
-        padding: '36px 40px',
       }}>
         <Component {...pageProps} />
       </main>
 
       <style jsx global>{`
+        .novae-main {
+          margin-left: var(--sidebar-width);
+          padding: 36px 40px;
+          transition: margin-left 0.2s ease;
+        }
         @media (max-width: 768px) {
-          main { margin-left: 0 !important; }
+          .novae-main {
+            margin-left: 0;
+            padding: 16px;
+            width: 100%;
+          }
         }
       `}</style>
     </div>

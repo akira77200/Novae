@@ -454,7 +454,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 264px', gap: 24, maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
+      <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 264px', gap: 24, maxWidth: '1200px', margin: '0 auto', alignItems: 'flex-start' }}>
 
         {/* ── COLONNE PRINCIPALE ── */}
         <div style={{ minWidth: 0 }}>
@@ -1115,6 +1115,11 @@ export default function Dashboard() {
       <style jsx global>{`
         @media (max-width: 900px) {
           .dashboard-aside { display: none !important; }
+        }
+        @media (max-width: 768px) {
+          .dashboard-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </div>
