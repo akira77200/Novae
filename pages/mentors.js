@@ -327,7 +327,7 @@ export default function Mentors() {
               <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Niveau' : 'Level'}
               </p>
-              <div style={{ display: 'flex', gap: 5 }}>
+              <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                 <button onClick={() => setFNiveau('')} style={chip(fNiveau === '')}>
                   {lang === 'fr' ? 'Tous' : 'All'}
                 </button>
@@ -343,7 +343,7 @@ export default function Mentors() {
               <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 8 }}>
                 {lang === 'fr' ? 'Prix' : 'Price'}
               </p>
-              <div style={{ display: 'flex', gap: 5 }}>
+              <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                 {[
                   { id: 'tous',    fr: 'Tous',    en: 'All'     },
                   { id: 'gratuit', fr: 'Gratuit', en: 'Free'    },

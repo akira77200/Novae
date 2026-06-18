@@ -124,7 +124,7 @@ function AppLayout({ Component, pageProps }) {
         @media (max-width: 768px) {
           .novae-main {
             margin-left: 0;
-            padding: 64px 16px 24px;
+            padding: 70px 16px 24px;
             width: 100%;
           }
         }
@@ -264,8 +264,8 @@ function AppContent({ Component, pageProps }) {
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--font); background: var(--bg-page); color: var(--text-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: var(--font); background: var(--bg-page); color: var(--text-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; }
         input, button, textarea, select { font-family: inherit; }
         a { color: inherit; }
         button { cursor: pointer; }
