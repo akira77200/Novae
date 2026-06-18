@@ -124,7 +124,7 @@ function AppLayout({ Component, pageProps }) {
         @media (max-width: 768px) {
           .novae-main {
             margin-left: 0;
-            padding: 16px;
+            padding: 64px 16px 24px;
             width: 100%;
           }
         }
@@ -138,6 +138,7 @@ function AppContent({ Component, pageProps }) {
   return (
     <AppProvider>
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0E1116" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
