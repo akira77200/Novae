@@ -73,7 +73,7 @@ const PILIERS_NAV = [
 ]
 
 export default function Navbar() {
-  const { t, lang, theme, setTheme, user, profile, userPlan, sb } = useApp()
+  const { t, lang, setLang, theme, setTheme, user, profile, userPlan, sb } = useApp()
   const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -147,7 +147,7 @@ export default function Navbar() {
             <button
               onClick={() => { router.push('/abonnement'); onLinkClick && onLinkClick() }}
               style={{
-                background: '#FAFAF8', color: 'var(--text-h1)',
+                background: 'var(--btn-premium-bg)', color: 'var(--btn-premium-color)',
                 border: 'none', borderRadius: 6,
                 padding: '6px 12px', fontSize: 12, fontWeight: 600,
                 cursor: 'pointer', width: '100%',
@@ -157,6 +157,22 @@ export default function Navbar() {
             </button>
           </div>
         )}
+
+        {/* Sélecteur de langue */}
+        <div style={{ display: 'flex', gap: 4, padding: '4px 2px 6px', alignItems: 'center' }}>
+          {['fr', 'en'].map(l => (
+            <button key={l} onClick={() => setLang(l)}
+              style={{
+                flex: 1, padding: '5px 0', borderRadius: 6, border: 'none',
+                background: lang === l ? 'rgba(255,255,255,0.10)' : 'transparent',
+                color: lang === l ? 'var(--text-sidebar-active)' : 'var(--text-sidebar)',
+                fontSize: 12, fontWeight: lang === l ? 600 : 400, cursor: 'pointer',
+                textTransform: 'uppercase', letterSpacing: 0.5,
+              }}>
+              {l}
+            </button>
+          ))}
+        </div>
 
         {/* Mode sombre */}
         <button

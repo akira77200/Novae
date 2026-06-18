@@ -149,7 +149,7 @@ export default function Parrainage() {
       <div style={{ maxWidth: 500, margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
         <p style={{ fontSize: 40, marginBottom: 16 }}>🤝</p>
         <p style={{ fontSize: 16, color: 'var(--text-h1)', fontWeight: 600, marginBottom: 8 }}>{lang === 'fr' ? 'Connexion requise' : 'Login required'}</p>
-        <a href="/auth/login" style={{ padding: '10px 24px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+        <a href="/auth/login" style={{ padding: '10px 24px', background: 'var(--btn-primary-bg)', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
           {lang === 'fr' ? 'Se connecter →' : 'Log in →'}
         </a>
       </div>
@@ -187,7 +187,7 @@ export default function Parrainage() {
                   {lang === 'fr' ? 'Annuler' : 'Cancel'}
                 </button>
                 <button onClick={demanderParrainage} disabled={sending}
-                  style={{ flex: 2, padding: '10px', background: sending ? '#EBEBE9' : '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: sending ? 'not-allowed' : 'pointer' }}>
+                  style={{ flex: 2, padding: '10px', background: sending ? 'var(--border)' : 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: sending ? 'not-allowed' : 'pointer' }}>
                   {sending ? '...' : (lang === 'fr' ? 'Envoyer la demande →' : 'Send request →')}
                 </button>
               </div>
@@ -210,7 +210,7 @@ export default function Parrainage() {
 
         {/* ── Comment ça marche (première visite) ── */}
         {premiereVisite && (
-          <div style={{ padding: '20px 22px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 14, marginBottom: 24 }}>
+          <div style={{ padding: '20px 22px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 24 }}>
             <p style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-h1)', marginBottom: 16 }}>
               {lang === 'fr' ? '💡 Comment ça marche ?' : '💡 How does it work?'}
             </p>
@@ -221,7 +221,7 @@ export default function Parrainage() {
                 { n: '3', fr: 'Échangez en ligne ou en personne. C\'est gratuit, bénévole, sans engagement.', en: 'Connect online or in person. Free, volunteer-based, no commitment.' },
               ].map(s => (
                 <div key={s.n} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#fff', flexShrink: 0 }}>{s.n}</div>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--btn-primary-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: 'var(--bg-page)', flexShrink: 0 }}>{s.n}</div>
                   <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.6, margin: 0, paddingTop: 4 }}>{lang === 'fr' ? s.fr : s.en}</p>
                 </div>
               ))}
@@ -239,7 +239,7 @@ export default function Parrainage() {
             { id: 'devenir',  fr: '⭐ Devenir parrain',        en: '⭐ Become a mentor'     },
           ].map(o => (
             <button key={o.id} onClick={() => setOnglet(o.id)}
-              style={{ flex: 1, padding: '10px 12px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: onglet === o.id ? '#0E1116' : 'transparent', color: onglet === o.id ? '#fff' : '#6B6F76' }}>
+              style={{ flex: 1, padding: '10px 12px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: onglet === o.id ? 'var(--btn-primary-bg)' : 'transparent', color: onglet === o.id ? 'var(--bg-page)' : 'var(--text-muted)' }}>
               {lang === 'fr' ? o.fr : o.en}
             </button>
           ))}
@@ -249,7 +249,7 @@ export default function Parrainage() {
         {onglet === 'trouver' && (
           <>
             {/* Concept */}
-            <div style={{ padding: '16px 18px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 12, marginBottom: 24 }}>
+            <div style={{ padding: '16px 18px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 12, marginBottom: 24 }}>
               <p style={{ fontSize: 14, color: 'var(--text-h1)', lineHeight: 1.7 }}>
                 {lang === 'fr'
                   ? '💡 Un parrain est un nouveau arrivant installé avant toi dans la même ville. Il partage son expérience gratuitement et bénévolement — quelques messages suffisent.'
@@ -279,7 +279,7 @@ export default function Parrainage() {
                   {lang === 'fr' ? 'Veux-tu devenir le premier ?' : 'Do you want to be the first?'}
                 </p>
                 <button onClick={() => setOnglet('devenir')}
-                  style={{ padding: '10px 22px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                  style={{ padding: '10px 22px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                   {lang === 'fr' ? 'Devenir parrain →' : 'Become a mentor →'}
                 </button>
               </div>
@@ -292,16 +292,16 @@ export default function Parrainage() {
                   const memeUniv = profile?.universite && p.bio?.toLowerCase().includes((profile.universite || '').toLowerCase().split(' ')[0])
 
                   return (
-                    <div key={p.id} style={{ background: 'var(--bg-card)', border: `1px solid ${memeUniv ? '#0E111640' : '#EBEBE9'}`, borderRadius: 14, padding: '18px' }}>
+                    <div key={p.id} style={{ background: 'var(--bg-card)', border: `1px solid ${memeUniv ? 'var(--btn-primary-bg)' : 'var(--border)'}`, borderRadius: 14, padding: '18px' }}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 12 }}>
                         {/* Avatar */}
-                        <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#0E111618', border: `1.5px solid ${'#0E1116'}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, color: 'var(--text-body)', flexShrink: 0 }}>
+                        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--bg-subtle)', border: '1.5px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18, color: 'var(--text-body)', flexShrink: 0 }}>
                           {(p.full_name || '?')[0].toUpperCase()}
                         </div>
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 2 }}>
                             <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)' }}>{p.full_name}</p>
-                            {memeUniv && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: '#0E111615', color: 'var(--text-body)' }}>MÊME UNIV.</span>}
+                            {memeUniv && <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: 'var(--bg-subtle)', color: 'var(--text-body)' }}>{lang === 'fr' ? 'MÊME UNIV.' : 'SAME UNIV.'}</span>}
                           </div>
                           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>
                             🌍 {p.pays_origine} → 📍 {p.ville_accueil}
@@ -318,7 +318,7 @@ export default function Parrainage() {
                       {sujets.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
                           {sujets.map(s => (
-                            <span key={s} style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, background: '#0E111610', color: 'var(--text-body)', border: `1px solid ${'#0E1116'}20` }}>
+                            <span key={s} style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, background: 'var(--bg-subtle)', color: 'var(--text-body)', border: '1px solid var(--border)' }}>
                               {SUJETS_OPTIONS.find(o => o.id === s)?.icon || '·'} {s}
                             </span>
                           ))}
@@ -331,7 +331,7 @@ export default function Parrainage() {
                       <button
                         onClick={() => !isSent && user && setModalParrain(p)}
                         disabled={isSent || !user}
-                        style={{ padding: '9px 20px', background: isSent ? '#3A3D40' : '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: isSent || !user ? 'default' : 'pointer', opacity: !user ? 0.5 : 1 }}>
+                        style={{ padding: '9px 20px', background: isSent ? 'var(--text-h1)' : 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: isSent || !user ? 'default' : 'pointer', opacity: !user ? 0.5 : 1 }}>
                         {isSent
                           ? (lang === 'fr' ? '✓ Demande envoyée' : '✓ Request sent')
                           : (lang === 'fr' ? 'Demander un parrainage →' : 'Request mentoring →')}
@@ -350,7 +350,7 @@ export default function Parrainage() {
           <>
             {/* Éligibilité */}
             {moisArriv !== null && moisArriv < 6 && (
-              <div style={{ padding: '14px 18px', background: '#6B6F7608', border: `1px solid ${'#6B6F76'}25`, borderRadius: 12, marginBottom: 20 }}>
+              <div style={{ padding: '14px 18px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 12, marginBottom: 20 }}>
                 <p style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600 }}>
                   {lang === 'fr'
                     ? `⏳ Tu es arrivé(e) il y a ${moisArriv} mois. Le parrainage est recommandé après 6 mois d'expérience — mais tu peux déjà t'inscrire !`
@@ -361,7 +361,7 @@ export default function Parrainage() {
 
             {/* Déjà parrain */}
             {dejaParrain && !savedOk ? (
-              <div style={{ padding: '20px 22px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 14, marginBottom: 24 }}>
+              <div style={{ padding: '20px 22px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 24 }}>
                 <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 8 }}>
                   ⭐ {lang === 'fr' ? 'Tu es déjà parrain Novae !' : 'You\'re already a Novae mentor!'}
                 </p>
@@ -374,14 +374,14 @@ export default function Parrainage() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     {mesFilleuls.map(f => (
                       <div key={f.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: 'var(--bg-subtle)', borderRadius: 10 }}>
-                        <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#0E111618', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, color: 'var(--text-body)' }}>
+                        <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 14, color: 'var(--text-body)' }}>
                           {(f.profiles?.full_name || '?')[0].toUpperCase()}
                         </div>
                         <div style={{ flex: 1 }}>
                           <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-h1)' }}>{f.profiles?.full_name || '—'}</p>
                           <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{f.profiles?.ville_accueil} · {f.profiles?.pays_origine}</p>
                         </div>
-                        <span style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: f.statut === 'accepte' ? '#3A3D4015' : '#6B6F7612', color: f.statut === 'accepte' ? '#3A3D40' : '#6B6F76', fontWeight: 600 }}>
+                        <span style={{ fontSize: 11, padding: '3px 9px', borderRadius: 20, background: 'var(--bg-subtle)', color: f.statut === 'accepte' ? 'var(--text-h1)' : 'var(--text-muted)', fontWeight: 600 }}>
                           {f.statut === 'en_attente' ? (lang === 'fr' ? 'En attente' : 'Pending') : f.statut === 'accepte' ? (lang === 'fr' ? 'Actif' : 'Active') : f.statut}
                         </span>
                       </div>
@@ -390,7 +390,7 @@ export default function Parrainage() {
                 )}
               </div>
             ) : savedOk ? (
-              <div style={{ padding: '20px 22px', background: '#3A3D4010', border: `1px solid ${'#3A3D40'}30`, borderRadius: 14, marginBottom: 24, textAlign: 'center' }}>
+              <div style={{ padding: '20px 22px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 24, textAlign: 'center' }}>
                 <p style={{ fontSize: 36, marginBottom: 12 }}>🎉</p>
                 <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 8 }}>
                   {lang === 'fr' ? 'Bravo ! Tu es maintenant parrain Novae.' : 'Congratulations! You\'re now a Novae mentor.'}
@@ -403,7 +403,7 @@ export default function Parrainage() {
               /* Formulaire inscription */
               <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px' }}>
                 {/* Explication */}
-                <div style={{ padding: '14px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}20`, borderRadius: 10, marginBottom: 24 }}>
+                <div style={{ padding: '14px 16px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10, marginBottom: 24 }}>
                   <p style={{ fontSize: 13, color: 'var(--text-h1)', lineHeight: 1.7 }}>
                     {lang === 'fr'
                       ? '🌱 Tu peux aider 1 à 3 nouveaux arrivants par mois. Quelques messages suffisent — ton expérience est précieuse.'
@@ -420,7 +420,7 @@ export default function Parrainage() {
                     const sel = sujets.includes(s.id)
                     return (
                       <button key={s.id} onClick={() => toggleSujet(s.id)}
-                        style={{ padding: '8px 16px', borderRadius: 20, border: `1px solid ${sel ? '#0E111660' : '#EBEBE9'}`, background: sel ? '#0E111615' : 'transparent', color: sel ? '#3A3D40' : '#6B6F76', fontSize: 13, fontWeight: sel ? 600 : 400, cursor: 'pointer', transition: 'all 0.15s' }}>
+                        style={{ padding: '8px 16px', borderRadius: 20, border: `1px solid ${sel ? 'var(--btn-primary-bg)' : 'var(--border)'}`, background: sel ? 'var(--bg-subtle)' : 'transparent', color: sel ? 'var(--text-h1)' : 'var(--text-muted)', fontSize: 13, fontWeight: sel ? 600 : 400, cursor: 'pointer', transition: 'all 0.15s' }}>
                         {s.icon} {lang === 'fr' ? s.fr : s.en}
                         {sel ? ' ✓' : ''}
                       </button>
@@ -435,9 +435,9 @@ export default function Parrainage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 28 }}>
                   {DISPOS.map(d => (
                     <button key={d.id} onClick={() => setDispo(d.id)}
-                      style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 10, border: `1px solid ${dispo === d.id ? '#0E111650' : '#EBEBE9'}`, background: dispo === d.id ? '#0E111612' : 'transparent', cursor: 'pointer', textAlign: 'left' }}>
-                      <div style={{ width: 18, height: 18, borderRadius: '50%', border: `2px solid ${dispo === d.id ? '#0E1116' : '#EBEBE9'}`, background: dispo === d.id ? '#0E1116' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        {dispo === d.id && <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />}
+                      style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 10, border: `1px solid ${dispo === d.id ? 'var(--btn-primary-bg)' : 'var(--border)'}`, background: dispo === d.id ? 'var(--bg-subtle)' : 'transparent', cursor: 'pointer', textAlign: 'left' }}>
+                      <div style={{ width: 18, height: 18, borderRadius: '50%', border: `2px solid ${dispo === d.id ? 'var(--btn-primary-bg)' : 'var(--border)'}`, background: dispo === d.id ? 'var(--btn-primary-bg)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        {dispo === d.id && <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--bg-page)' }} />}
                       </div>
                       <p style={{ fontSize: 13, color: 'var(--text-h1)', fontWeight: dispo === d.id ? 600 : 400 }}>{lang === 'fr' ? d.fr : d.en}</p>
                     </button>
@@ -445,7 +445,7 @@ export default function Parrainage() {
                 </div>
 
                 <button onClick={devenirParrain} disabled={!sujets.length || saving || !user}
-                  style={{ width: '100%', padding: '13px', background: sujets.length && !saving && user ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: sujets.length && !saving && user ? 'pointer' : 'not-allowed', opacity: !user ? 0.5 : 1 }}>
+                  style={{ width: '100%', padding: '13px', background: sujets.length && !saving && user ? 'var(--btn-primary-bg)' : 'var(--border)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 700, fontSize: 14, cursor: sujets.length && !saving && user ? 'pointer' : 'not-allowed', opacity: !user ? 0.5 : 1 }}>
                   {saving ? '...' : !user ? (lang === 'fr' ? 'Connexion requise' : 'Login required') : (lang === 'fr' ? '⭐ Devenir parrain bénévole →' : '⭐ Become a volunteer mentor →')}
                 </button>
                 {!user && (

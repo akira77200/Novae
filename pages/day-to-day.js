@@ -9,7 +9,7 @@ import SAFE_LINKS from '../lib/safeLinks'
 const MapView = dynamic(() => import('../components/MapView'), {
   ssr: false,
   loading: () => (
-    <div style={{ height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0E1116', borderRadius: '12px', color: '#888', fontSize: 14 }}>
+    <div style={{ height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-card)', borderRadius: '12px', color: 'var(--text-muted)', fontSize: 14 }}>
       Loading map...
     </div>
   ),
@@ -381,7 +381,7 @@ export default function DayToDay() {
 
         {/* Suggestion ville d'études */}
         {studyCitySuggestion && (
-          <div style={{ padding: '11px 16px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ padding: '11px 16px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 16 }}>📍</span>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', flex: 1, margin: 0 }}>
               {lang === 'fr'
@@ -389,7 +389,7 @@ export default function DayToDay() {
                 : `Studying in ${studyCitySuggestion}? Discover the cost of living there →`}
             </p>
             <button onClick={() => { setBudgetVille(Object.keys(COUT_VILLES).find(k => COUT_VILLES[k].label === studyCitySuggestion) || 'Montreal'); setActive('budget') }}
-              style={{ fontSize: 12, color: 'var(--text-body)', fontWeight: 600, background: 'transparent', border: `1px solid ${'#0E1116'}30`, borderRadius: 7, padding: '5px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              style={{ fontSize: 12, color: 'var(--text-body)', fontWeight: 600, background: 'transparent', border: '1px solid var(--border)', borderRadius: 7, padding: '5px 12px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? 'Voir →' : 'View →'}
             </button>
           </div>
@@ -409,11 +409,10 @@ export default function DayToDay() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
           {CATEGORIES.map(c => (
             <button key={c.id} onClick={() => setActive(c.id)} style={{
-              padding: '9px 16px', borderRadius: 10, border: `1px solid`,
-              fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s',
-              background: active === c.id ? `${c.color}18` : 'transparent',
-              borderColor: active === c.id ? `${c.color}50` : '#EBEBE9',
-              color: active === c.id ? c.color : '#6B6F76',
+              padding: '9px 16px', borderRadius: 10, border: '1px solid var(--border)',
+              fontSize: 13, fontWeight: active === c.id ? 600 : 500, cursor: 'pointer', transition: 'all 0.15s',
+              background: active === c.id ? 'var(--bg-subtle)' : 'transparent',
+              color: active === c.id ? 'var(--text-h1)' : 'var(--text-muted)',
             }}>
               {c.icon} {lang === 'fr' ? c.fr : c.en}
             </button>
@@ -437,21 +436,22 @@ export default function DayToDay() {
           <div style={{
             textAlign: 'center',
             padding: '40px 20px',
-            background: theme === 'dark' ? '#0E1116' : '#FAFAF9',
+            background: 'var(--bg-card)',
             borderRadius: '16px',
-            border: '2px dashed #0E111640',
+            border: '2px dashed var(--border)',
           }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🚧</div>
             <div style={{
               display: 'inline-block',
-              background: '#6B6F76',
-              color: '#fff',
+              background: 'var(--bg-subtle)',
+              color: 'var(--text-muted)',
               padding: '4px 12px',
               borderRadius: '99px',
               fontSize: '0.75rem',
               fontWeight: 700,
               letterSpacing: '0.08em',
               marginBottom: '16px',
+              border: '1px solid var(--border)',
             }}>
               {lang === 'fr' ? 'BÊTA — EN COURS DE VALIDATION' : 'BETA — UNDER VALIDATION'}
             </div>
@@ -489,7 +489,7 @@ export default function DayToDay() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 18 }}>
               {Object.entries(COUT_VILLES).map(([k, v]) => (
                 <button key={k} onClick={() => { setBudgetVille(k); setBudgetCustom({}) }}
-                  style={{ padding: '7px 16px', borderRadius: 10, border: `1px solid ${budgetVille === k ? '#0E111650' : '#EBEBE9'}`, background: budgetVille === k ? '#0E111615' : 'transparent', color: budgetVille === k ? '#3A3D40' : '#6B6F76', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                  style={{ padding: '7px 16px', borderRadius: 10, border: '1px solid var(--border)', background: budgetVille === k ? 'var(--bg-subtle)' : 'transparent', color: budgetVille === k ? 'var(--text-h1)' : 'var(--text-muted)', fontSize: 13, fontWeight: budgetVille === k ? 600 : 500, cursor: 'pointer' }}>
                   {v.label}
                 </button>
               ))}
@@ -502,7 +502,7 @@ export default function DayToDay() {
                 { id: 'studio', fr: '🏠 Studio seul',           en: '🏠 Studio alone'   },
               ].map(m => (
                 <button key={m.id} onClick={() => { setModeLogement(m.id); setBudgetCustom(p => ({ ...p, loyer: undefined })) }}
-                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: `1px solid ${modeLogement === m.id ? '#0E111650' : '#EBEBE9'}`, background: modeLogement === m.id ? '#0E111615' : 'transparent', color: modeLogement === m.id ? '#3A3D40' : '#6B6F76', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1px solid var(--border)', background: modeLogement === m.id ? 'var(--bg-subtle)' : 'transparent', color: modeLogement === m.id ? 'var(--text-h1)' : 'var(--text-muted)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                   {lang === 'fr' ? m.fr : m.en}
                 </button>
               ))}
@@ -539,7 +539,7 @@ export default function DayToDay() {
             </div>
 
             {/* Total */}
-            <div style={{ padding: '18px 22px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 14, marginBottom: 16 }}>
+            <div style={{ padding: '18px 22px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
                 <div>
                   <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 4 }}>{lang === 'fr' ? 'Total mensuel estimé' : 'Estimated monthly total'}</p>
@@ -581,7 +581,7 @@ export default function DayToDay() {
               <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:20 }}>
                 {Object.entries(LOGEMENT_DATA).map(([k,v]) => (
                   <button key={k} onClick={()=>{ setLogVille(k); setLogBudget(900) }}
-                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'#0E111650':'#EBEBE9'}`, background:logVille===k?'rgba(59,130,246,0.12)':'transparent', color:logVille===k?'#0E1116':'#6B6F76', fontSize:13, fontWeight:500, cursor:'pointer' }}>
+                    style={{ padding:'7px 16px', borderRadius:10, border:`1px solid ${logVille===k?'var(--border-strong, var(--border))':'var(--border)'}`, background:logVille===k?'var(--bg-subtle)':'transparent', color:logVille===k?'var(--text-h1)':'var(--text-muted)', fontSize:13, fontWeight:500, cursor:'pointer' }}>
                     {v.label}
                   </button>
                 ))}
@@ -595,8 +595,8 @@ export default function DayToDay() {
                 <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12, flexWrap:'wrap' }}>
                   <input type="range" min={400} max={2500} step={50} value={logBudget}
                     onChange={e=>setLogBudget(Number(e.target.value))}
-                    style={{ flex:1, minWidth:160, accentColor:'#0E1116' }} />
-                  <div style={{ padding:'8px 16px', background:'rgba(59,130,246,0.12)', border:'1px solid rgba(59,130,246,0.30)', borderRadius:10, minWidth:110, textAlign:'center' }}>
+                    style={{ flex:1, minWidth:160, accentColor:'var(--text-h1)' }} />
+                  <div style={{ padding:'8px 16px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, minWidth:110, textAlign:'center' }}>
                     <p style={{ fontSize:22, fontWeight:800, color:'var(--text-h1)', lineHeight:1 }}>{logBudget} $</p>
                     <p style={{ fontSize:10, color:'var(--text-muted)', marginTop:2 }}>CAD / {lang==='fr'?'mois':'month'}</p>
                   </div>
@@ -629,11 +629,18 @@ export default function DayToDay() {
               ) : (
                 <div style={{ display:'flex', flexDirection:'column', gap:14, marginBottom:24 }}>
                   {optionsDispo.map((opt, i) => (
-                    <div key={i} style={{ background:'var(--bg-card)', border:`1px solid ${'rgba(59,130,246,0.25)'}`, borderRadius:14, overflow:'hidden' }}>
+                    <div key={i} style={{ background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:14, overflow:'hidden' }}>
                       {/* Header */}
                       <div style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 18px', borderBottom:'1px solid var(--border)' }}>
-                        <div style={{ width:40, height:40, borderRadius:10, background:'rgba(59,130,246,0.12)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>
-                          {i===0?'🛏️':i===1?'🏠':'🏛️'}
+                        <div style={{ width:40, height:40, borderRadius:10, background:'var(--bg-subtle)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                            {i===0
+                              ? <><path d="M2 7l10-5 10 5v13H2z"/><rect x="9" y="12" width="6" height="9"/></>
+                              : i===1
+                              ? <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>
+                              : <><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></>
+                            }
+                          </svg>
                         </div>
                         <div style={{ flex:1 }}>
                           <p style={{ fontSize:15, fontWeight:700, color:'var(--text-h1)', marginBottom:2 }}>
@@ -649,33 +656,39 @@ export default function DayToDay() {
                       <div style={{ padding:'14px 18px' }}>
                         {/* Quartiers */}
                         <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginBottom:12 }}>
-                          <span style={{ fontSize:11, color:'var(--text-muted)', marginRight:4 }}>📍</span>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0, marginRight:4 }}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                           {opt.quartiers.map(q => (
-                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'rgba(59,130,246,0.08)', color:'var(--text-h1)', border:'1px solid rgba(59,130,246,0.20)', fontWeight:500 }}>{q}</span>
+                            <span key={q} style={{ fontSize:11, padding:'2px 9px', borderRadius:20, background:'var(--bg-subtle)', color:'var(--text-body)', border:'1px solid var(--border)', fontWeight:500 }}>{q}</span>
                           ))}
                         </div>
                         {/* Avantages / Inconvénients */}
                         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:12 }}>
                           <div>
                             {(lang==='fr'?opt.avantages:opt.avantages_en).map((a,j) => (
-                              <p key={j} style={{ fontSize:12, color:'var(--text-body)', marginBottom:3 }}>✅ {a}</p>
+                              <p key={j} style={{ display:'flex', alignItems:'center', gap:6, fontSize:12, color:'var(--text-body)', marginBottom:3 }}>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><polyline points="20 6 9 17 4 12"/></svg>
+                                {a}
+                              </p>
                             ))}
                           </div>
                           <div>
                             {(lang==='fr'?opt.inconvenients:opt.inconvenients_en).map((a,j) => (
-                              <p key={j} style={{ fontSize:12, color:'var(--text-muted)', marginBottom:3 }}>⚠️ {a}</p>
+                              <p key={j} style={{ display:'flex', alignItems:'center', gap:6, fontSize:12, color:'var(--text-muted)', marginBottom:3 }}>
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--text-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                {a}
+                              </p>
                             ))}
                           </div>
                         </div>
                         {/* Conseil clé */}
-                        <div style={{ padding:'9px 12px', background:'rgba(59,130,246,0.06)', border:'1px solid rgba(59,130,246,0.18)', borderRadius:8, marginBottom:12 }}>
+                        <div style={{ padding:'9px 12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:8, marginBottom:12 }}>
                           <p style={{ fontSize:12, color:'var(--text-h1)', fontWeight:600 }}>
                             💡 {lang==='fr'?opt.conseil:opt.conseil_en}
                           </p>
                         </div>
                         {/* CTA */}
                         <a href={safeLien(opt.lien)} target="_blank" rel="noreferrer"
-                          style={{ display:'inline-block', padding:'8px 18px', background:'#0E1116', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, textDecoration:'none' }}>
+                          style={{ display:'inline-block', padding:'8px 18px', background:'var(--btn-primary-bg)', border:'none', borderRadius:9, color:'var(--bg-page)', fontWeight:600, fontSize:13, textDecoration:'none' }}>
                           {lang==='fr'?'Chercher →':'Search →'}
                         </a>
                       </div>
@@ -694,11 +707,11 @@ export default function DayToDay() {
                     const checked = bailChecks.includes(i)
                     return (
                       <button key={i} onClick={()=>toggleCheck(i)}
-                        style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'10px 12px', background:checked?'#3A3D4008':'transparent', border:`1px solid ${checked?'#3A3D4030':'#EBEBE9'}`, borderRadius:10, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
-                        <div style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${checked?'#3A3D40':'#EBEBE9'}`, background:checked?'#3A3D40':'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
-                          {checked && <span style={{ color:'#FAFAF9', fontSize:11, fontWeight:800 }}>✓</span>}
+                        style={{ display:'flex', alignItems:'flex-start', gap:12, padding:'10px 12px', background:checked?'var(--bg-subtle)':'transparent', border:`1px solid ${checked?'var(--border-strong, var(--border))':'var(--border)'}`, borderRadius:10, cursor:'pointer', textAlign:'left', transition:'all 0.15s' }}>
+                        <div style={{ width:20, height:20, borderRadius:6, border:`1.5px solid ${checked?'var(--text-muted)':'var(--border)'}`, background:checked?'var(--text-muted)':'transparent', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:1 }}>
+                          {checked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--bg-card)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                         </div>
-                        <p style={{ fontSize:13, color:checked?'#0E1116':'#6B6F76', lineHeight:1.5, textDecoration:checked?'line-through':undefined }}>
+                        <p style={{ fontSize:13, color:checked?'var(--text-muted)':'var(--text-body)', lineHeight:1.5, textDecoration:checked?'line-through':undefined }}>
                           {lang==='fr'?item.fr:item.en}
                         </p>
                       </button>
@@ -706,9 +719,9 @@ export default function DayToDay() {
                   })}
                 </div>
                 {bailChecks.length === CHECKLIST_BAIL.length && (
-                  <div style={{ marginTop:14, padding:'10px 14px', background:'#3A3D4010', border:`1px solid ${'#3A3D40'}30`, borderRadius:10, textAlign:'center' }}>
+                  <div style={{ marginTop:14, padding:'10px 14px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, textAlign:'center' }}>
                     <p style={{ fontSize:13, color:'var(--text-body)', fontWeight:600 }}>
-                      ✅ {lang==='fr'?'Tu es prêt(e) à signer en toute sécurité !':'You\'re ready to sign safely!'}
+                      {lang==='fr'?'✓ Tu es prêt(e) à signer en toute sécurité !':'✓ You\'re ready to sign safely!'}
                     </p>
                   </div>
                 )}
@@ -734,7 +747,7 @@ export default function DayToDay() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 {DEVISES.map(d => (
                   <button key={d.code} onClick={() => { setDeviseCode(d.code); setMontant(String(d.ex)) }}
-                    style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 11, border: `1px solid ${deviseCode === d.code ? '#0E111650' : '#EBEBE9'}`, background: deviseCode === d.code ? '#0E111612' : '#FFFFFF', cursor: 'pointer', textAlign: 'left' }}>
+                    style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 11, border: '1px solid var(--border)', background: deviseCode === d.code ? 'var(--bg-subtle)' : 'var(--bg-card)', cursor: 'pointer', textAlign: 'left' }}>
                     <span style={{ fontSize: 20 }}>{d.drapeau}</span>
                     <div style={{ flex: 1 }}>
                       <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-h1)' }}>{d.code} — {d.nom}</p>
@@ -757,7 +770,7 @@ export default function DayToDay() {
                     type="number" min="0" value={montant}
                     onChange={e => setMontant(e.target.value)}
                     placeholder="ex. 200000"
-                    style={{ width: '100%', padding: '12px 14px', background: 'var(--bg-subtle)', border: `1px solid ${'#0E1116'}40`, borderRadius: 10, color: 'var(--text-h1)', fontSize: 18, fontWeight: 700, outline: 'none', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '12px 14px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-h1)', fontSize: 18, fontWeight: 700, outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>
                 <div style={{ padding: '0 4px 12px', color: 'var(--text-muted)', fontSize: 22 }}>→</div>
@@ -765,7 +778,7 @@ export default function DayToDay() {
                   <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 6 }}>
                     🍁 Équivalent CAD
                   </p>
-                  <div style={{ padding: '12px 14px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 10 }}>
+                  <div style={{ padding: '12px 14px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 10 }}>
                     <p style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-body)' }}>
                       {enCAD > 0 ? enCAD.toLocaleString(lang === 'fr' ? 'fr-CA' : 'en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}
                       {enCAD > 0 && <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-muted)' }}> $</span>}
@@ -791,7 +804,7 @@ export default function DayToDay() {
                       return (
                         <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 14px', background: 'var(--bg-subtle)', borderRadius: 9 }}>
                           <span style={{ fontSize: 13, color: 'var(--text-h1)' }}>{ex.label}</span>
-                          <span style={{ fontSize: 13, fontWeight: 700, color: nb >= 1 ? '#3A3D40' : '#DC2626' }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: nb >= 1 ? 'var(--text-body)' : 'var(--text-muted)' }}>
                             {nb >= 1
                               ? `${nb.toFixed(nb < 10 ? 1 : 0)}× ✓`
                               : `${(nb * 100).toFixed(0)}% ✗`}
@@ -812,7 +825,7 @@ export default function DayToDay() {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {[devise.ex / 4, devise.ex / 2, devise.ex, devise.ex * 2, devise.ex * 5].map((v, i) => (
                   <button key={i} onClick={() => setMontant(String(Math.round(v)))}
-                    style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid var(--border)', background: Number(montant) === Math.round(v) ? '#0E111615' : 'transparent', color: Number(montant) === Math.round(v) ? '#3A3D40' : '#6B6F76', fontSize: 12, cursor: 'pointer', fontWeight: 500 }}>
+                    style={{ padding: '6px 14px', borderRadius: 20, border: '1px solid var(--border)', background: Number(montant) === Math.round(v) ? 'var(--bg-subtle)' : 'transparent', color: Number(montant) === Math.round(v) ? 'var(--text-h1)' : 'var(--text-muted)', fontSize: 12, cursor: 'pointer', fontWeight: 500 }}>
                     {Math.round(v).toLocaleString()} {devise.code}
                   </button>
                 ))}

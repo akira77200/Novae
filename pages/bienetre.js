@@ -133,7 +133,7 @@ export default function Bienetre() {
       <div style={{ maxWidth: 500, margin: '80px auto', padding: '0 20px', textAlign: 'center' }}>
         <p style={{ fontSize: 40, marginBottom: 16 }}>🔒</p>
         <p style={{ fontSize: 16, color: 'var(--text-h1)', fontWeight: 600, marginBottom: 8 }}>{lang === 'fr' ? 'Connexion requise' : 'Login required'}</p>
-        <a href="/auth/login" style={{ padding: '10px 24px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+        <a href="/auth/login" style={{ padding: '10px 24px', background: 'var(--btn-primary-bg)', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
           {lang === 'fr' ? 'Se connecter →' : 'Log in →'}
         </a>
       </div>
@@ -169,9 +169,9 @@ export default function Bienetre() {
             <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
               {SCORE_EMOJIS.map((emoji, i) => (
                 <button key={i} onClick={() => setScore(i + 1)}
-                  style={{ flex: 1, padding: '12px 4px', borderRadius: 12, border: `2px solid ${score === i + 1 ? SCORE_COLOR(i + 1) : '#EBEBE9'}`, background: score === i + 1 ? SCORE_COLOR(i + 1) + '18' : '#F7F7F5', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, transition: 'all 0.15s' }}>
+                  style={{ flex: 1, padding: '12px 4px', borderRadius: 12, border: `2px solid ${score === i + 1 ? SCORE_COLOR(i + 1) : 'var(--border)'}`, background: score === i + 1 ? SCORE_COLOR(i + 1) + '18' : 'var(--bg-subtle)', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, transition: 'all 0.15s' }}>
                   <span style={{ fontSize: 26 }}>{emoji}</span>
-                  <span style={{ fontSize: 10, color: score === i + 1 ? SCORE_COLOR(i + 1) : '#6B6F76', fontWeight: 500, textAlign: 'center', lineHeight: 1.3 }}>
+                  <span style={{ fontSize: 10, color: score === i + 1 ? SCORE_COLOR(i + 1) : 'var(--text-muted)', fontWeight: 500, textAlign: 'center', lineHeight: 1.3 }}>
                     {lang === 'fr' ? SCORE_LABELS_FR[i] : SCORE_LABELS_EN[i]}
                   </span>
                 </button>
@@ -189,7 +189,7 @@ export default function Bienetre() {
                 const disabled = !selected && humeurs.length >= 2
                 return (
                   <button key={i} onClick={() => toggleHumeur(h)} disabled={disabled}
-                    style={{ padding: '7px 14px', borderRadius: 20, border: `1px solid ${selected ? '#0E111660' : '#EBEBE9'}`, background: selected ? '#0E111618' : 'transparent', color: selected ? '#3A3D40' : disabled ? '#6B6F7660' : '#6B6F76', fontSize: 13, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: selected ? 600 : 400, transition: 'all 0.15s', opacity: disabled ? 0.4 : 1 }}>
+                    style={{ padding: '7px 14px', borderRadius: 20, border: `1px solid ${selected ? 'var(--btn-primary-bg)' : 'var(--border)'}`, background: selected ? 'var(--bg-subtle)' : 'transparent', color: selected ? 'var(--text-h1)' : disabled ? 'var(--text-faint)' : 'var(--text-muted)', fontSize: 13, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: selected ? 600 : 400, transition: 'all 0.15s', opacity: disabled ? 0.4 : 1 }}>
                     {selected ? '✓ ' : ''}{h}
                   </button>
                 )
@@ -227,7 +227,7 @@ export default function Bienetre() {
             )}
 
             <button onClick={enregistrer} disabled={score === null || saving}
-              style={{ width: '100%', padding: '13px', background: score !== null && !saving ? '#0E1116' : '#EBEBE9', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: score !== null && !saving ? 'pointer' : 'not-allowed', opacity: score !== null ? 1 : 0.5 }}>
+              style={{ width: '100%', padding: '13px', background: score !== null && !saving ? 'var(--btn-primary-bg)' : 'var(--border)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 700, fontSize: 14, cursor: score !== null && !saving ? 'pointer' : 'not-allowed', opacity: score !== null ? 1 : 0.5 }}>
               {saving ? '...' : (lang === 'fr' ? '✓ Enregistrer mon check-in' : '✓ Save my check-in')}
             </button>
           </div>
@@ -235,7 +235,7 @@ export default function Bienetre() {
 
         {/* ═══ Confirmation après save ═══ */}
         {(saved || (ready && checkinSem)) && (
-          <div style={{ padding: '18px 22px', background: '#0E111610', border: `1px solid ${'#0E1116'}30`, borderRadius: 14, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+          <div style={{ padding: '18px 22px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 24, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 30 }}>{SCORE_EMOJIS[(checkinSem?.score || score || 3) - 1]}</span>
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 2 }}>
@@ -325,7 +325,7 @@ export default function Bienetre() {
 
         {/* ═══ Suggestion mentor si score bas 3 semaines consécutives ═══ */}
         {troisSemBas && (
-          <div style={{ padding: '16px 18px', background: '#0E111608', border: `1px solid ${'#0E1116'}25`, borderRadius: 14, marginBottom: 24 }}>
+          <div style={{ padding: '16px 18px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 24 }}>
             <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 8 }}>
               💚 {lang === 'fr' ? 'As-tu pensé à parler à quelqu\'un ?' : 'Have you thought about talking to someone?'}
             </p>

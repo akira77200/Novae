@@ -84,11 +84,19 @@ function AppLayout({ Component, pageProps }) {
   }, [theme])
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
+    if (!('serviceWorker' in navigator)) return
+
+    if (process.env.NODE_ENV === 'production') {
       navigator.serviceWorker
         .register('/sw.js')
         .then(() => console.log('[SW] Novae offline ready'))
         .catch(err => console.warn('[SW] Error:', err))
+    } else {
+      // Dev mode : désinscrit tous les SW existants pour éviter le cache stale
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(r => r.unregister())
+        if (registrations.length > 0) console.log(`[SW] ${registrations.length} worker(s) désinscrit(s) (dev mode)`)
+      })
     }
   }, [])
 
@@ -241,6 +249,11 @@ function AppContent({ Component, pageProps }) {
           --font-size-xl:   18px;
           --font-size-2xl:  22px;
           --font-size-3xl:  28px;
+
+          /* ── Skyline décoratif header ── */
+          --skyline-primary:   #0E1116;
+          --skyline-secondary: #0E1116;
+          --skyline-opacity:   0.08;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -257,7 +270,7 @@ function AppContent({ Component, pageProps }) {
         [data-theme="dark"] {
           --bg-page:           #15171A;
           --bg-card:           #1C1F23;
-          --bg-subtle:         #202326;
+          --bg-subtle:         #292C30;
           --bg-sidebar:        #0A0B0D;
           --bg-sidebar-hover:  rgba(255,255,255,0.06);
           --bg-sidebar-active: rgba(255,255,255,0.08);
@@ -265,19 +278,19 @@ function AppContent({ Component, pageProps }) {
           --text-h1:             #F2F2F0;
           --text-body:           #C7C8C6;
           --text-muted:          #8A8D90;
-          --text-faint:          #5E6164;
+          --text-faint:          #818181;
           --text-sidebar:        #8A8D90;
           --text-sidebar-active: #F2F2F0;
 
-          --border:        #2A2D31;
-          --border-strong: #3A3D41;
+          --border:        #383D45;
+          --border-strong: #4A5058;
 
           --accent:      #F2F2F0;
           --accent-soft: rgba(242,242,240,0.08);
 
-          --badge-done-bg:   #262925;
+          --badge-done-bg:   #273027;
           --badge-done-text: #C7C8C6;
-          --badge-todo-bg:   #211F1A;
+          --badge-todo-bg:   #322E27;
           --badge-todo-text: #B0ADA3;
 
           --shadow-card:  none;
@@ -285,26 +298,34 @@ function AppContent({ Component, pageProps }) {
 
           --novae-bg:            #15171A;
           --novae-surface:       #1C1F23;
-          --novae-surface-2:     #202326;
-          --novae-border:        #2A2D31;
+          --novae-surface-2:     #292C30;
+          --novae-border:        #383D45;
           --novae-text:          #F2F2F0;
           --novae-text-secondary:#8A8D90;
-          --novae-text-muted:    #5E6164;
+          --novae-text-muted:    #818181;
           --novae-primary:       #F2F2F0;
           --novae-primary-light: #C7C8C6;
-          --novae-primary-pale:  #262925;
+          --novae-primary-pale:  #273027;
           --novae-bg-dark:       #0A0B0D;
           --novae-surface-dark:  #0A0B0D;
           --novae-surface-2-dark:#1C1F23;
           --btn-primary-bg:      #F2F2F0;
-          --btn-premium-bg:      #0E1116;
+          --btn-premium-bg:      #F2F2F0;
+          --btn-premium-color:   #0E1116;
           --color-primary:       #F2F2F0;
           --color-primary-light: #262925;
           --text-primary:        #F2F2F0;
           --text-secondary:      #8A8D90;
-          --border-default:      #2A2D31;
+          --border-default:      #383D45;
+
+          /* ── Skyline décoratif header ── */
+          --skyline-primary:   #3A3D40;
+          --skyline-secondary: #2A2D31;
+          --skyline-opacity:   0.4;
         }
         [data-theme="dark"] body { background: var(--bg-page); color: var(--text-body); }
+        [data-theme="dark"] input::placeholder,
+        [data-theme="dark"] textarea::placeholder { color: var(--text-faint); }
       `}</style>
 
       <AppLayout Component={Component} pageProps={pageProps} />

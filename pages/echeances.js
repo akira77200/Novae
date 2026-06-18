@@ -7,11 +7,11 @@ import SAFE_LINKS from '../lib/safeLinks'
 
 // ── Urgence selon jours restants ─────────────────────────────────
 const getUrgence = (jours) => {
-  if (jours < 0)   return { label: 'Passée',   labelEn: 'Past',    color: 'var(--text-muted)', bg: 'rgba(107,114,128,0.10)', dot: '#6B6F76' }
+  if (jours < 0)   return { label: 'Passée',   labelEn: 'Past',    color: 'var(--text-muted)', bg: 'rgba(107,114,128,0.10)', dot: 'var(--text-muted)' }
   if (jours === 0) return { label: "Aujourd'hui", labelEn: 'Today', color: '#DC2626', bg: 'rgba(248,113,113,0.15)', dot: '#DC2626' }
   if (jours <= 7)  return { label: 'Urgent',    labelEn: 'Urgent',  color: '#DC2626', bg: 'rgba(248,113,113,0.10)', dot: '#DC2626' }
-  if (jours <= 30) return { label: 'Bientôt',   labelEn: 'Soon',    color: 'var(--text-muted)', bg: 'rgba(251,191,36,0.10)',  dot: '#6B6F76' }
-  return             { label: 'À venir',         labelEn: 'Upcoming',color: 'var(--text-body)', bg: 'rgba(52,211,153,0.10)',  dot: '#3A3D40' }
+  if (jours <= 30) return { label: 'Bientôt',   labelEn: 'Soon',    color: 'var(--text-muted)', bg: 'rgba(251,191,36,0.10)',  dot: 'var(--text-muted)' }
+  return             { label: 'À venir',         labelEn: 'Upcoming',color: 'var(--text-body)', bg: 'rgba(52,211,153,0.10)',  dot: 'var(--text-h1)' }
 }
 
 const joursRestants = (dateStr) => {
@@ -226,7 +226,7 @@ export default function Echeances() {
         <p style={{ fontSize: 16, color: 'var(--text-h1)', fontWeight: 600, marginBottom: 8 }}>
           {lang === 'fr' ? 'Connexion requise' : 'Login required'}
         </p>
-        <a href="/auth/login" style={{ padding: '10px 24px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+        <a href="/auth/login" style={{ padding: '10px 24px', background: 'var(--btn-primary-bg)', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
           {lang === 'fr' ? 'Se connecter →' : 'Log in →'}
         </a>
       </div>
@@ -272,7 +272,7 @@ export default function Echeances() {
                   { val: 'info',    fr: 'ℹ️ Normal',    en: 'ℹ️ Normal',   color: 'var(--text-muted)' },
                 ].map(o => (
                   <button key={o.val} onClick={() => setForm(p => ({ ...p, type: o.val }))}
-                    style={{ padding: '6px 14px', borderRadius: 8, border: `1px solid ${form.type === o.val ? o.color + '60' : '#EBEBE9'}`, background: form.type === o.val ? o.color + '15' : 'transparent', color: form.type === o.val ? o.color : '#6B6F76', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                    style={{ padding: '6px 14px', borderRadius: 8, border: `1px solid ${form.type === o.val ? o.color + '60' : 'var(--border)'}`, background: form.type === o.val ? o.color + '15' : 'transparent', color: form.type === o.val ? o.color : 'var(--text-muted)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
                     {lang === 'fr' ? o.fr : o.en}
                   </button>
                 ))}
@@ -308,7 +308,7 @@ export default function Echeances() {
                   {lang === 'fr' ? 'Annuler' : 'Cancel'}
                 </button>
                 <button onClick={sauvegarder} disabled={saving}
-                  style={{ flex: 2, padding: '11px', background: saving ? '#EBEBE9' : '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
+                  style={{ flex: 2, padding: '11px', background: saving ? 'var(--bg-subtle)' : 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
                   {saving ? '...' : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
                 </button>
               </div>
@@ -335,7 +335,7 @@ export default function Echeances() {
             </p>
           </div>
           <button onClick={() => { setForm(FORM_VIDE); setErr(''); setModal('add') }}
-            style={{ padding: '10px 20px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
+            style={{ padding: '10px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
             + {lang === 'fr' ? 'Ajouter' : 'Add'}
           </button>
         </div>
@@ -345,7 +345,7 @@ export default function Echeances() {
           {FILTRES.map(f => (
             <button key={f.id} onClick={() => setFiltre(f.id)}
               className="echeances-filtre-btn"
-              style={{ flex: 1, padding: '8px 14px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s', background: filtre === f.id ? '#0E1116' : 'transparent', color: filtre === f.id ? '#fff' : '#6B6F76', whiteSpace: 'nowrap' }}>
+              style={{ flex: 1, padding: '8px 14px', borderRadius: 8, border: 'none', fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s', background: filtre === f.id ? 'var(--btn-primary-bg)' : 'transparent', color: filtre === f.id ? 'var(--bg-page)' : 'var(--text-muted)', whiteSpace: 'nowrap' }}>
               {lang === 'fr' ? f.fr : f.en}
             </button>
           ))}
@@ -369,7 +369,7 @@ export default function Echeances() {
             </p>
             {filtre !== 'passees' && (
               <button onClick={() => { setForm(FORM_VIDE); setErr(''); setModal('add') }}
-                style={{ padding: '9px 20px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                style={{ padding: '9px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 + {lang === 'fr' ? 'Ajouter une échéance' : 'Add a deadline'}
               </button>
             )}
@@ -389,24 +389,24 @@ export default function Echeances() {
               <div key={item.id} style={{
                 display: 'flex', alignItems: 'flex-start', gap: 14,
                 padding: '16px 18px',
-                background: done ? '#FFFFFF' : urgence.bg,
-                border: `1px solid ${done ? '#EBEBE9' : urgence.dot + '30'}`,
+                background: done ? 'var(--bg-card)' : urgence.bg,
+                border: `1px solid ${done ? 'var(--border)' : urgence.dot + '30'}`,
                 borderRadius: 14,
                 opacity: done ? 0.55 : 1,
                 transition: 'opacity 0.15s',
               }}>
-                <div style={{ marginTop: 3, width: 10, height: 10, borderRadius: '50%', background: done ? '#6B6F76' : urgence.dot, flexShrink: 0 }} />
+                <div style={{ marginTop: 3, width: 10, height: 10, borderRadius: '50%', background: done ? 'var(--text-muted)' : urgence.dot, flexShrink: 0 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
                     <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-h1)', textDecoration: done ? 'line-through' : 'none' }}>
                       {TYPE_ICONS[item.type] || 'ℹ️'} {item.titre}
                     </p>
                     {isAuto && (
-                      <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: '#0E111615', color: 'var(--text-body)', letterSpacing: 0.4 }}>AUTO</span>
+                      <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: 'var(--bg-subtle)', color: 'var(--text-body)', letterSpacing: 0.4 }}>AUTO</span>
                     )}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: item.message ? 8 : 0 }}>
-                    <span style={{ fontSize: 13, color: done ? '#6B6F76' : urgence.dot, fontWeight: 600 }}>
+                    <span style={{ fontSize: 13, color: done ? 'var(--text-muted)' : urgence.dot, fontWeight: 600 }}>
                       {formatDate(item.date_echeance, lang)}
                     </span>
                     {jours !== null && !done && (
@@ -433,7 +433,7 @@ export default function Echeances() {
                   {!isAuto && (
                     <button onClick={() => toggleComplete(item)}
                       title={done ? (lang === 'fr' ? 'Marquer à faire' : 'Mark as pending') : (lang === 'fr' ? 'Marquer fait' : 'Mark done')}
-                      style={{ width: 32, height: 32, borderRadius: 8, border: `1.5px solid ${done ? '#3A3D40' : '#EBEBE9'}`, background: done ? '#3A3D40' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: done ? '#FAFAF9' : '#6B6F76', fontSize: 13, fontWeight: 800 }}>
+                      style={{ width: 32, height: 32, borderRadius: 8, border: `1.5px solid ${done ? 'var(--text-h1)' : 'var(--border)'}`, background: done ? 'var(--text-h1)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: done ? 'var(--bg-page)' : 'var(--text-muted)', fontSize: 13, fontWeight: 800 }}>
                       {done ? '✓' : '○'}
                     </button>
                   )}

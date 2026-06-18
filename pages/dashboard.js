@@ -503,21 +503,21 @@ export default function Dashboard() {
           <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 28, padding: '24px 28px', background: 'var(--bg-card)', borderRadius: 12, border: '1px solid var(--border)' }}>
             {/* Skyline SVG décoratif */}
             <svg
-              style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '45%', opacity: 0.08, pointerEvents: 'none', zIndex: 0 }}
+              style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: '45%', opacity: 'var(--skyline-opacity)', pointerEvents: 'none', zIndex: 0 }}
               viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax slice"
             >
-              <rect x="320" y="60" width="30" height="140" fill="#0E1116"/>
-              <rect x="280" y="80" width="25" height="120" fill="#0E1116"/>
-              <rect x="240" y="100" width="20" height="100" fill="#0E1116"/>
-              <rect x="200" y="70" width="28" height="130" fill="#0E1116"/>
-              <rect x="160" y="110" width="22" height="90" fill="#0E1116"/>
-              <rect x="130" y="90" width="18" height="110" fill="#0E1116"/>
-              <rect x="100" y="120" width="20" height="80" fill="#0E1116"/>
-              <rect x="60"  y="95"  width="26" height="105" fill="#0E1116"/>
-              <rect x="20"  y="130" width="24" height="70"  fill="#0E1116"/>
-              <rect x="330" y="40" width="8"  height="20"  fill="#0E1116"/>
-              <rect x="204" y="50" width="6"  height="20"  fill="#0E1116"/>
-              <rect x="283" y="62" width="5"  height="18"  fill="#0E1116"/>
+              <rect x="320" y="60" width="30" height="140" fill="var(--skyline-primary)"/>
+              <rect x="280" y="80" width="25" height="120" fill="var(--skyline-primary)"/>
+              <rect x="240" y="100" width="20" height="100" fill="var(--skyline-secondary)"/>
+              <rect x="200" y="70" width="28" height="130" fill="var(--skyline-primary)"/>
+              <rect x="160" y="110" width="22" height="90" fill="var(--skyline-secondary)"/>
+              <rect x="130" y="90" width="18" height="110" fill="var(--skyline-primary)"/>
+              <rect x="100" y="120" width="20" height="80" fill="var(--skyline-secondary)"/>
+              <rect x="60"  y="95"  width="26" height="105" fill="var(--skyline-primary)"/>
+              <rect x="20"  y="130" width="24" height="70"  fill="var(--skyline-secondary)"/>
+              <rect x="330" y="40" width="8"  height="20"  fill="var(--skyline-primary)"/>
+              <rect x="204" y="50" width="6"  height="20"  fill="var(--skyline-secondary)"/>
+              <rect x="283" y="62" width="5"  height="18"  fill="var(--skyline-secondary)"/>
             </svg>
             {/* Contenu header */}
             <div style={{ position: 'relative', zIndex: 1 }}>

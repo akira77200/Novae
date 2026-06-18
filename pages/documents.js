@@ -216,7 +216,7 @@ export default function Documents() {
         <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 24 }}>
           {lang === 'fr' ? 'Connecte-toi pour accéder à ton coffre-fort documents.' : 'Log in to access your document vault.'}
         </p>
-        <a href="/auth/login" style={{ padding: '10px 24px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
+        <a href="/auth/login" style={{ padding: '10px 24px', background: 'var(--btn-primary-bg)', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>
           {lang === 'fr' ? 'Se connecter →' : 'Log in →'}
         </a>
       </div>
@@ -263,7 +263,7 @@ export default function Documents() {
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
                 {Object.entries(STATUT_CFG).map(([k, v]) => (
                   <button key={k} onClick={() => setForm(p => ({ ...p, statut: k }))}
-                    style={{ padding: '6px 14px', borderRadius: 8, border: `1px solid ${form.statut === k ? v.color + '60' : '#EBEBE9'}`, background: form.statut === k ? v.bg : 'transparent', color: form.statut === k ? v.color : '#6B6F76', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                    style={{ padding: '6px 14px', borderRadius: 8, border: `1px solid ${form.statut === k ? v.color + '60' : 'var(--border)'}`, background: form.statut === k ? v.bg : 'transparent', color: form.statut === k ? v.color : 'var(--text-muted)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
                     {v.icon} {lang === 'fr' ? v.label : v.labelEn}
                   </button>
                 ))}
@@ -306,7 +306,7 @@ export default function Documents() {
                   {lang === 'fr' ? 'Annuler' : 'Cancel'}
                 </button>
                 <button onClick={sauvegarder} disabled={saving}
-                  style={{ flex: 2, padding: '11px', background: saving ? '#EBEBE9' : '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 14, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
+                  style={{ flex: 2, padding: '11px', background: saving ? 'var(--bg-subtle)' : 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
                   {uploading ? (lang === 'fr' ? '⬆️ Upload...' : '⬆️ Uploading...') : saving ? '...' : (lang === 'fr' ? 'Sauvegarder' : 'Save')}
                 </button>
               </div>
@@ -327,7 +327,7 @@ export default function Documents() {
               {docs.length} {lang === 'fr' ? `document${docs.length > 1 ? 's' : ''} enregistré${docs.length > 1 ? 's' : ''}` : `document${docs.length > 1 ? 's' : ''} saved`}
             </p>
           </div>
-          <button onClick={() => ouvrirAjout()} style={{ padding: '10px 20px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
+          <button onClick={() => ouvrirAjout()} style={{ padding: '10px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
             + {lang === 'fr' ? 'Ajouter' : 'Add'}
           </button>
         </div>
@@ -357,7 +357,7 @@ export default function Documents() {
               {suggestions.map(d => (
                 <button key={d.type}
                   onClick={() => ouvrirAjout({ nom: lang === 'fr' ? d.nom : (d.nom_en || d.nom), type: d.type })}
-                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', background: '#0E111610', border: `1px dashed ${'#0E1116'}40`, borderRadius: 20, color: 'var(--text-body)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', background: 'var(--bg-subtle)', border: `1px dashed var(--border)`, borderRadius: 20, color: 'var(--text-body)', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
                   <span>{d.icone}</span>
                   + {lang === 'fr' ? d.nom : (d.nom_en || d.nom)}
                 </button>
@@ -386,7 +386,7 @@ export default function Documents() {
                 const isExpired   = jExp !== null && jExp <= 0
                 const expireSoon  = jExp !== null && jExp > 0 && jExp <= 30
                 const expireWarn  = jExp !== null && jExp > 30 && jExp <= 60
-                const borderColor = isExpired ? '#DC262650' : expireSoon ? '#6B6F7650' : expireWarn ? '#6B6F7625' : '#EBEBE9'
+                const borderColor = isExpired ? 'rgba(220,38,38,0.31)' : expireSoon ? 'rgba(107,111,118,0.31)' : expireWarn ? 'rgba(107,111,118,0.14)' : 'var(--border)'
 
                 return (
                   <div key={requis.type} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: 'var(--bg-card)', border: `1px solid ${borderColor}`, borderRadius: 12, transition: 'border-color 0.15s' }}>
@@ -415,7 +415,7 @@ export default function Documents() {
                           {cfg.icon} {lang === 'fr' ? cfg.label : cfg.labelEn}
                         </span>
                         {doc?.date_expiration && (
-                          <span style={{ fontSize: 12, color: isExpired ? '#DC2626' : expireSoon ? '#6B6F76' : '#6B6F76' }}>
+                          <span style={{ fontSize: 12, color: isExpired ? '#DC2626' : 'var(--text-muted)' }}>
                             {lang === 'fr' ? 'Expire le' : 'Expires'} {new Date(doc.date_expiration).toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA')}
                           </span>
                         )}
@@ -425,13 +425,13 @@ export default function Documents() {
                     <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
                       {doc?.fichier_url && (
                         <button onClick={() => ouvrirDocument(doc.fichier_url)}
-                          style={{ padding: '6px 12px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                          style={{ padding: '6px 12px', background: 'var(--bg-subtle)', border: `1px solid var(--border)`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                           📄 {lang === 'fr' ? 'Voir' : 'View'}
                         </button>
                       )}
                       {doc ? (
                         <>
-                          <button onClick={() => ouvrirEdition(doc)} style={{ padding: '6px 12px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                          <button onClick={() => ouvrirEdition(doc)} style={{ padding: '6px 12px', background: 'var(--bg-subtle)', border: `1px solid var(--border)`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                             ✏️
                           </button>
                           <button onClick={() => supprimer(doc)} disabled={deleting === doc.id}
@@ -441,7 +441,7 @@ export default function Documents() {
                         </>
                       ) : (
                         <button onClick={() => ouvrirAjout({ nom: requis.nom, type: requis.type })}
-                          style={{ padding: '6px 14px', background: '#0E1116', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                          style={{ padding: '6px 14px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 8, color: 'var(--bg-page)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                           + {lang === 'fr' ? 'Ajouter' : 'Add'}
                         </button>
                       )}
@@ -463,7 +463,7 @@ export default function Documents() {
                     const jExp = jAvantExpiration(doc.date_expiration)
                     const alertExp = jExp !== null && jExp > 0 && jExp <= 60
                     return (
-                      <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: 'var(--bg-card)', border: `1px solid ${alertExp ? '#6B6F7640' : '#EBEBE9'}`, borderRadius: 12 }}>
+                      <div key={doc.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: 'var(--bg-card)', border: `1px solid ${alertExp ? 'rgba(107,111,118,0.25)' : 'var(--border)'}`, borderRadius: 12 }}>
                         <span style={{ fontSize: 22 }}>📄</span>
                         <div style={{ flex: 1 }}>
                           <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-h1)', marginBottom: 3 }}>{doc.nom}</p>
@@ -472,7 +472,7 @@ export default function Documents() {
                               {cfg.icon} {lang === 'fr' ? cfg.label : cfg.labelEn}
                             </span>
                             {doc.date_expiration && (
-                              <span style={{ fontSize: 12, color: alertExp ? '#6B6F76' : '#6B6F76' }}>
+                              <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
                                 {lang === 'fr' ? 'Expire le' : 'Expires'} {new Date(doc.date_expiration).toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA')}
                               </span>
                             )}
@@ -481,11 +481,11 @@ export default function Documents() {
                         <div style={{ display: 'flex', gap: 8 }}>
                           {doc.fichier_url && (
                             <button onClick={() => ouvrirDocument(doc.fichier_url)}
-                              style={{ padding: '6px 12px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                              style={{ padding: '6px 12px', background: 'var(--bg-subtle)', border: `1px solid var(--border)`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                               📄
                             </button>
                           )}
-                          <button onClick={() => ouvrirEdition(doc)} style={{ padding: '6px 12px', background: '#0E111612', border: `1px solid ${'#0E1116'}25`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, cursor: 'pointer' }}>✏️</button>
+                          <button onClick={() => ouvrirEdition(doc)} style={{ padding: '6px 12px', background: 'var(--bg-subtle)', border: `1px solid var(--border)`, borderRadius: 8, color: 'var(--text-body)', fontSize: 12, cursor: 'pointer' }}>✏️</button>
                           <button onClick={() => supprimer(doc)} disabled={deleting === doc.id}
                             style={{ padding: '6px 10px', background: '#DC262610', border: `1px solid ${'#DC2626'}25`, borderRadius: 8, color: '#DC2626', fontSize: 12, cursor: deleting === doc.id ? 'not-allowed' : 'pointer', opacity: deleting === doc.id ? 0.5 : 1 }}>🗑</button>
                         </div>
@@ -506,7 +506,7 @@ export default function Documents() {
                 <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 20 }}>
                   {lang === 'fr' ? 'Complète ton profil pour voir les documents requis.' : 'Complete your profile to see required documents.'}
                 </p>
-                <a href="/profile_1" style={{ padding: '9px 20px', background: '#0E1116', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>
+                <a href="/profile_1" style={{ padding: '9px 20px', background: 'var(--btn-primary-bg)', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>
                   {lang === 'fr' ? 'Compléter mon profil →' : 'Complete profile →'}
                 </a>
               </div>

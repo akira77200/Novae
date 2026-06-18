@@ -270,7 +270,7 @@ export default function CV() {
 
     // 2. Loader temporaire
     printWindow.document.write(
-      '<html><body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;"><p>Génération en cours...</p></body></html>'
+      `<html><body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;"><p>${lang === 'fr' ? 'Génération en cours...' : 'Generating...'}</p></body></html>`
     )
 
     // 3. Vérifier l'élément (synchrone)
@@ -385,7 +385,7 @@ export default function CV() {
                   ? `Tu as atteint ta limite de ${planLimits.cv} CV${planLimits.cv > 1 ? 's' : ''} pour le plan ${userPlan}. Passe au plan Starter pour générer plus de CVs.`
                   : `You've reached your limit of ${planLimits.cv} resume${planLimits.cv > 1 ? 's' : ''} for the ${userPlan} plan. Upgrade to Starter to generate more resumes.`}
               </p>
-              <a href="/abonnement" style={{ display: 'block', padding: '12px', borderRadius: 10, background: '#0E1116', border: 'none', color: '#fff', fontWeight: 600, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
+              <a href="/abonnement" style={{ display: 'block', padding: '12px', borderRadius: 10, background: 'var(--btn-primary-bg)', border: 'none', color: 'var(--bg-page)', fontWeight: 600, fontSize: 14, textDecoration: 'none', textAlign: 'center' }}>
                 {lang === 'fr' ? 'Voir les abonnements →' : 'View plans →'}
               </a>
             </div>
@@ -423,7 +423,7 @@ export default function CV() {
                 <button onClick={() => setExpModal(null)} style={{ flex: 1, padding: '10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                   {lang === 'fr' ? 'Annuler' : 'Cancel'}
                 </button>
-                <button onClick={sauvegarderExp} style={{ flex: 2, padding: '10px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                <button onClick={sauvegarderExp} style={{ flex: 2, padding: '10px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                   {lang === 'fr' ? 'Ajouter' : 'Add'}
                 </button>
               </div>
@@ -474,7 +474,7 @@ export default function CV() {
             </p>
           </div>
           {etape === 4 && (
-            <button onClick={imprimerGuide} style={{ padding: '10px 22px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+            <button onClick={imprimerGuide} style={{ padding: '10px 22px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
               📄 {lang === 'fr' ? 'Imprimer le guide' : 'Print guide'}
             </button>
           )}
@@ -499,7 +499,7 @@ export default function CV() {
         <div style={{ display: 'flex', gap: 4, marginBottom: 32, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 4 }}>
           {ETAPES.map(e => (
             <button key={e.id} onClick={() => e.id < etape && setEtape(e.id)}
-              style={{ flex: 1, padding: '9px 8px', borderRadius: 8, border: 'none', fontSize: 12, fontWeight: 600, cursor: e.id < etape ? 'pointer' : 'default', transition: 'all 0.15s', background: etape === e.id ? '#0E1116' : e.id < etape ? '#0E111620' : 'transparent', color: etape === e.id ? '#fff' : e.id < etape ? '#3A3D40' : '#6B6F76' }}>
+              style={{ flex: 1, padding: '9px 8px', borderRadius: 8, border: 'none', fontSize: 12, fontWeight: 600, cursor: e.id < etape ? 'pointer' : 'default', transition: 'all 0.15s', background: etape === e.id ? 'var(--btn-primary-bg)' : e.id < etape ? '#0E111620' : 'transparent', color: etape === e.id ? 'var(--bg-page)' : e.id < etape ? 'var(--text-body)' : 'var(--text-muted)' }}>
               {e.id < etape ? '✓ ' : ''}{lang === 'fr' ? e.fr : e.en}
             </button>
           ))}
@@ -528,7 +528,7 @@ export default function CV() {
               <input value={compInput} onChange={e => setCompInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && ajouterComp()}
                 placeholder={lang === 'fr' ? 'Ajouter une compétence...' : 'Add a skill...'}
                 style={{ flex: 1, padding: '8px 12px', background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 9, color: 'var(--text-h1)', fontSize: 13, outline: 'none' }} />
-              <button onClick={() => ajouterComp()} style={{ padding: '8px 16px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>+</button>
+              <button onClick={() => ajouterComp()} style={{ padding: '8px 16px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>+</button>
             </div>
             {/* Suggestions */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
@@ -558,13 +558,13 @@ export default function CV() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 24 }}>
               {LANGUES_OPTIONS.map(l => (
                 <button key={l} onClick={() => toggleLangue(l)}
-                  style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, border: `1px solid ${langues.includes(l) ? '#0E111650' : '#EBEBE9'}`, background: langues.includes(l) ? '#0E111615' : 'transparent', color: langues.includes(l) ? '#3A3D40' : '#6B6F76', cursor: 'pointer', fontWeight: langues.includes(l) ? 600 : 400 }}>
+                  style={{ fontSize: 12, padding: '6px 14px', borderRadius: 20, border: `1px solid ${langues.includes(l) ? '#0E111650' : 'var(--border)'}`, background: langues.includes(l) ? '#0E111615' : 'transparent', color: langues.includes(l) ? 'var(--text-body)' : 'var(--text-muted)', cursor: 'pointer', fontWeight: langues.includes(l) ? 600 : 400 }}>
                   {langues.includes(l) ? '✓ ' : ''}{l}
                 </button>
               ))}
             </div>
 
-            <button onClick={() => setEtape(2)} style={{ width: '100%', padding: '13px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+            <button onClick={() => setEtape(2)} style={{ width: '100%', padding: '13px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
               {lang === 'fr' ? 'Continuer → Expériences' : 'Continue → Experience'}
             </button>
           </div>
@@ -584,11 +584,11 @@ export default function CV() {
 
             {experiences.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px 24px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, marginBottom: 20 }}>
-                <div style={{ width:44, height:44, borderRadius:12, background:"#F7F7F5", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:12 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M2 12h20"/></svg></div>
+                <div style={{ width:44, height:44, borderRadius:12, background:"var(--bg-subtle)", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:12 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M2 12h20"/></svg></div>
                 <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 16 }}>
                   {lang === 'fr' ? "Aucune expérience ajoutée. Tu peux passer cette étape." : 'No experience added. You can skip this step.'}
                 </p>
-                <button onClick={ouvrirNouvelleExp} style={{ padding: '9px 20px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                <button onClick={ouvrirNouvelleExp} style={{ padding: '9px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                   + {lang === 'fr' ? 'Ajouter une expérience' : 'Add experience'}
                 </button>
               </div>
@@ -598,7 +598,7 @@ export default function CV() {
                   <div key={e.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: '14px 18px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12 }}>
                     <div style={{ width: 36, height: 36, borderRadius: 9, background: '#0E111615', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>💼</div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 2 }}>{e.poste || lang === 'fr' ? '(Poste non renseigné)' : '(Untitled)'}</p>
+                      <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-h1)', marginBottom: 2 }}>{e.poste || (lang === 'fr' ? '(Poste non renseigné)' : '(Untitled)')}</p>
                       <p style={{ fontSize: 12, color: 'var(--text-body)', marginBottom: 2 }}>{e.entreprise}</p>
                       <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{e.debut}{e.debut ? ' – ' : ''}{e.actuel ? (lang === 'fr' ? 'Présent' : 'Present') : e.fin}</p>
                     </div>
@@ -615,7 +615,7 @@ export default function CV() {
               <button onClick={() => setEtape(1)} style={{ flex: 1, padding: '12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 10, color: 'var(--text-muted)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 ← {lang === 'fr' ? 'Retour' : 'Back'}
               </button>
-              <button onClick={() => setEtape(3)} style={{ flex: 3, padding: '12px', background: '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+              <button onClick={() => setEtape(3)} style={{ flex: 3, padding: '12px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
                 {lang === 'fr' ? 'Continuer → Formation' : 'Continue → Education'}
               </button>
             </div>
@@ -662,7 +662,7 @@ export default function CV() {
                 ← {lang === 'fr' ? 'Retour' : 'Back'}
               </button>
               <button onClick={generer} disabled={generating}
-                style={{ flex: 3, padding: '12px', background: generating ? '#EBEBE9' : '#0E1116', border: 'none', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: 14, cursor: generating ? 'not-allowed' : 'pointer', opacity: generating ? 0.8 : 1 }}>
+                style={{ flex: 3, padding: '12px', background: generating ? 'var(--border)' : 'var(--btn-primary-bg)', border: 'none', borderRadius: 10, color: 'var(--bg-page)', fontWeight: 700, fontSize: 14, cursor: generating ? 'not-allowed' : 'pointer', opacity: generating ? 0.8 : 1 }}>
                 {generating
                   ? (lang === 'fr' ? '✨ Génération en cours...' : '✨ Generating...')
                   : (lang === 'fr' ? '✨ Générer mon CV →' : '✨ Generate my resume →')}
@@ -686,7 +686,7 @@ export default function CV() {
               <button onClick={generer} disabled={generating} style={{ padding: '9px 16px', background: '#0E111615', border: `1px solid ${'#0E1116'}30`, borderRadius: 9, color: 'var(--text-body)', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
                 {generating ? '...' : (lang === 'fr' ? '↺ Régénérer' : '↺ Regenerate')}
               </button>
-              <button onClick={imprimerGuide} style={{ marginLeft: 'auto', padding: '9px 18px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+              <button onClick={imprimerGuide} style={{ marginLeft: 'auto', padding: '9px 18px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
                 📄 {lang === 'fr' ? 'Imprimer ce guide' : 'Print this guide'}
               </button>
             </div>
@@ -705,7 +705,7 @@ export default function CV() {
                       {copied === 'resume' ? (lang === 'fr' ? '✓ Copié' : '✓ Copied') : (lang === 'fr' ? '📋 Copier' : '📋 Copy')}
                     </button>
                   </div>
-                  <div style={{ padding: '14px 16px', background: 'var(--bg-subtle)', borderRadius: 10, borderLeft: '3px solid #0E1116' }}>
+                  <div style={{ padding: '14px 16px', background: 'var(--bg-subtle)', borderRadius: 10, borderLeft: '3px solid var(--btn-primary-bg)' }}>
                     <p style={{ fontSize: 14, lineHeight: 1.8, color: 'var(--text-h1)', margin: 0 }}>{aiData.resume_professionnel}</p>
                   </div>
                 </div>
@@ -808,7 +808,7 @@ export default function CV() {
                   </p>
                   <div>
                     <button onClick={telechargerPDF}
-                      style={{ padding: '9px 20px', background: '#0E1116', border: 'none', borderRadius: 9, color: '#fff', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
+                      style={{ padding: '9px 20px', background: 'var(--btn-primary-bg)', border: 'none', borderRadius: 9, color: 'var(--bg-page)', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
                       📄 {lang === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
                     </button>
                     {isIOS && (

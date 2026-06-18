@@ -7,8 +7,16 @@ import SAFE_LINKS from '../lib/safeLinks'
 
 // ── Données statiques ─────────────────────────────────────────────
 const SECTEURS = [
-  'Technologie','Finance','Santé','Éducation','Gouvernement',
-  'Commerce','Construction','Médias','ONG','Autre',
+  { id: 'Technologie',  fr: 'Technologie',  en: 'Technology'   },
+  { id: 'Finance',      fr: 'Finance',       en: 'Finance'      },
+  { id: 'Santé',        fr: 'Santé',         en: 'Healthcare'   },
+  { id: 'Éducation',    fr: 'Éducation',     en: 'Education'    },
+  { id: 'Gouvernement', fr: 'Gouvernement',  en: 'Government'   },
+  { id: 'Commerce',     fr: 'Commerce',      en: 'Commerce'     },
+  { id: 'Construction', fr: 'Construction',  en: 'Construction' },
+  { id: 'Médias',       fr: 'Médias',        en: 'Media'        },
+  { id: 'ONG',          fr: 'ONG',           en: 'NGO'          },
+  { id: 'Autre',        fr: 'Autre',         en: 'Other'        },
 ]
 
 const CONTEXTES = [
@@ -228,7 +236,7 @@ export default function Reseau() {
         <p style={{ fontSize:16, color:'var(--text-h1)', fontWeight:600, marginBottom:8 }}>
           {lang==='fr' ? 'Connexion requise' : 'Login required'}
         </p>
-        <a href="/auth/login" style={{ padding:'10px 24px', background:'#0E1116', borderRadius:9, color:'#fff', fontWeight:600, fontSize:14, textDecoration:'none' }}>
+        <a href="/auth/login" style={{ padding:'10px 24px', background:'var(--btn-primary-bg)', borderRadius:9, color:'var(--bg-page)', fontWeight:600, fontSize:14, textDecoration:'none' }}>
           {lang==='fr' ? 'Se connecter →' : 'Log in →'}
         </a>
       </div>
@@ -270,7 +278,7 @@ export default function Reseau() {
                 <select value={form.secteur} onChange={e=>setForm(p=>({...p,secteur:e.target.value}))}
                   style={{ width:'100%', padding:'9px 12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:9, color:'var(--text-h1)', fontSize:13, outline:'none' }}>
                   <option value="">{lang==='fr'?'Choisir...':'Choose...'}</option>
-                  {SECTEURS.map(s => <option key={s} value={s}>{s}</option>)}
+                  {SECTEURS.map(s => <option key={s.id} value={s.id}>{lang==='fr'?s.fr:s.en}</option>)}
                 </select>
               </div>
 
@@ -284,7 +292,7 @@ export default function Reseau() {
                     const sel = form.contexte_rencontre === c.id
                     return (
                       <button key={c.id} onClick={()=>setForm(p=>({...p,contexte_rencontre:c.id}))}
-                        style={{ padding:'6px 12px', borderRadius:20, border:`1px solid ${sel?'#0E111650':'#EBEBE9'}`, background:sel?'#0E111615':'transparent', color:sel?'#3A3D40':'#6B6F76', fontSize:12, cursor:'pointer', fontWeight:sel?600:400 }}>
+                        style={{ padding:'6px 12px', borderRadius:20, border:`1px solid ${sel?'var(--border-strong)':'var(--border)'}`, background:sel?'var(--bg-subtle)':'transparent', color:sel?'var(--text-h1)':'var(--text-muted)', fontSize:12, cursor:'pointer', fontWeight:sel?600:400 }}>
                         {lang==='fr'?c.fr:c.en}
                       </button>
                     )
@@ -307,7 +315,7 @@ export default function Reseau() {
                     const sel = form.rappel_dans === r.val
                     return (
                       <button key={String(r.val)} onClick={()=>setForm(p=>({...p,rappel_dans:r.val}))}
-                        style={{ padding:'6px 14px', borderRadius:20, border:`1px solid ${sel?'#6B6F7650':'#EBEBE9'}`, background:sel?'#6B6F7612':'transparent', color:sel?'#6B6F76':'#6B6F76', fontSize:12, cursor:'pointer', fontWeight:sel?600:400 }}>
+                        style={{ padding:'6px 14px', borderRadius:20, border:`1px solid ${sel?'var(--border-strong)':'var(--border)'}`, background:sel?'var(--bg-subtle)':'transparent', color:'var(--text-muted)', fontSize:12, cursor:'pointer', fontWeight:sel?600:400 }}>
                         {lang==='fr'?r.fr:r.en}
                       </button>
                     )
@@ -325,7 +333,7 @@ export default function Reseau() {
                   {lang==='fr'?'Annuler':'Cancel'}
                 </button>
                 <button onClick={sauvegarder} disabled={saving}
-                  style={{ flex:2, padding:'11px', background:saving?'#EBEBE9':'#0E1116', border:'none', borderRadius:9, color:'#fff', fontWeight:700, fontSize:14, cursor:saving?'not-allowed':'pointer', opacity:saving?0.7:1 }}>
+                  style={{ flex:2, padding:'11px', background:saving?'var(--bg-subtle)':'var(--btn-primary-bg)', border:'none', borderRadius:9, color:saving?'var(--text-muted)':'var(--bg-page)', fontWeight:700, fontSize:14, cursor:saving?'not-allowed':'pointer', opacity:saving?0.7:1 }}>
                   {saving?'...':(lang==='fr'?'Sauvegarder':'Save')}
                 </button>
               </div>
@@ -352,7 +360,7 @@ export default function Reseau() {
             </p>
           </div>
           <button onClick={ouvrirAjout}
-            style={{ padding:'10px 20px', background:'#0E1116', border:'none', borderRadius:10, color:'#fff', fontWeight:600, fontSize:14, cursor:'pointer' }}>
+            style={{ padding:'10px 20px', background:'var(--btn-primary-bg)', border:'none', borderRadius:10, color:'var(--bg-page)', fontWeight:600, fontSize:14, cursor:'pointer' }}>
             + {lang==='fr'?'Ajouter':'Add'}
           </button>
         </div>
@@ -366,7 +374,7 @@ export default function Reseau() {
 
         {/* ── Bannière Mon Avenir / stats secteur ── */}
         {!progSecteur ? (
-          <div style={{ padding:'12px 16px', background:'#0E111608', border:`1px solid ${'#0E1116'}25`, borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
+          <div style={{ padding:'12px 16px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
             <span style={{ fontSize:16 }}>💡</span>
             <p style={{ fontSize:13, color:'var(--text-muted)', flex:1, margin:0 }}>
               {lang==='fr'
@@ -380,12 +388,12 @@ export default function Reseau() {
         ) : (() => {
           const nbSecteur = contacts.filter(c => c.secteur === progSecteur).length
           return (
-            <div style={{ padding:'12px 16px', background:'#0E111608', border:`1px solid ${'#0E1116'}25`, borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
+            <div style={{ padding:'12px 16px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:10, marginBottom:24, display:'flex', alignItems:'center', gap:10 }}>
               <span style={{ fontSize:16 }}>🎯</span>
               <p style={{ fontSize:13, color:'var(--text-muted)', flex:1, margin:0 }}>
                 {lang==='fr'
-                  ? `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} dans ton secteur cible (${progSecteur}) sur ${contacts.length} au total.`
-                  : `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} in your target sector (${progSecteur}) out of ${contacts.length} total.`}
+                  ? `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} dans ton secteur cible (${(SECTEURS.find(s=>s.id===progSecteur)?.fr)||progSecteur}) sur ${contacts.length} au total.`
+                  : `${nbSecteur} contact${nbSecteur > 1 ? 's' : ''} in your target sector (${(SECTEURS.find(s=>s.id===progSecteur)?.en)||progSecteur}) out of ${contacts.length} total.`}
                 {nbSecteur === 0 && (
                   <span> {lang==='fr' ? 'Ajoute des contacts dans ce secteur pour développer ton réseau.' : 'Add contacts in this sector to grow your network.'}</span>
                 )}
@@ -398,7 +406,7 @@ export default function Reseau() {
         {rappelsUrgents.map(c => {
           const jRestants = joursAvant(c.date_rencontre, c.rappel_dans)
           return (
-            <div key={c.id} style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px', background:'#6B6F7608', border:`1px solid ${'#6B6F76'}30`, borderRadius:12, marginBottom:10, flexWrap:'wrap' }}>
+            <div key={c.id} style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:12, marginBottom:10, flexWrap:'wrap' }}>
               <span style={{ fontSize:18 }}>⏰</span>
               <p style={{ fontSize:13, color:'var(--text-h1)', flex:1 }}>
                 <strong>{c.prenom}{c.nom?' '+c.nom:''}</strong>
@@ -408,7 +416,7 @@ export default function Reseau() {
                   : `you should reconnect (met ${joursDepuis(c.date_rencontre)} days ago)`}
               </p>
               <button onClick={()=>marquerContacte(c)} disabled={contacte===c.id}
-                style={{ padding:'7px 14px', background:contacte===c.id?'#3A3D40':'#6B6F76', border:'none', borderRadius:8, color:'#fff', fontWeight:600, fontSize:12, cursor:'pointer', whiteSpace:'nowrap', opacity:contacte===c.id?0.8:1 }}>
+                style={{ padding:'7px 14px', background:contacte===c.id?'var(--text-muted)':'var(--btn-primary-bg)', border:'none', borderRadius:8, color:'var(--bg-page)', fontWeight:600, fontSize:12, cursor:'pointer', whiteSpace:'nowrap', opacity:contacte===c.id?0.8:1 }}>
                 {contacte===c.id?'✓':(lang==='fr'?'Marquer contacté':'Mark as contacted')}
               </button>
             </div>
@@ -423,10 +431,10 @@ export default function Reseau() {
               {[
                 { id:'tous',   fr:'Tous', en:'All' },
                 { id:'rappel', fr:'Rappels urgents', en:'Urgent reminders' },
-                ...SECTEURS.filter(s => contacts.some(c=>c.secteur===s)).map(s=>({ id:s, fr:s, en:s })),
+                ...SECTEURS.filter(s => contacts.some(c=>c.secteur===s.id)).map(s=>({ id:s.id, fr:s.fr, en:s.en })),
               ].map(f => (
                 <button key={f.id} onClick={()=>setFiltre(f.id)}
-                  style={{ padding:'6px 14px', borderRadius:20, border:`1px solid ${filtre===f.id?'#0E111650':'#EBEBE9'}`, background:filtre===f.id?'#0E111615':'transparent', color:filtre===f.id?'#3A3D40':'#6B6F76', fontSize:12, fontWeight:500, cursor:'pointer' }}>
+                  style={{ padding:'6px 14px', borderRadius:20, border:`1px solid ${filtre===f.id?'var(--border-strong)':'var(--border)'}`, background:filtre===f.id?'var(--bg-subtle)':'transparent', color:filtre===f.id?'var(--text-h1)':'var(--text-muted)', fontSize:12, fontWeight:500, cursor:'pointer' }}>
                   {lang==='fr'?f.fr:f.en}
                 </button>
               ))}
@@ -447,7 +455,7 @@ export default function Reseau() {
         ) : contactsFiltres.length === 0 && contacts.length === 0 ? (
           /* État vide */
           <div style={{ textAlign:'center', padding:'52px 24px', background:'var(--bg-card)', border:'1px solid var(--border)', borderRadius:16, marginBottom:24 }}>
-            <div style={{ width:44, height:44, borderRadius:12, background:"#F7F7F5", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0E1116" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <div style={{ width:44, height:44, borderRadius:12, background:"var(--bg-subtle)", display:"flex", alignItems:"center", justifyContent:"center", marginBottom:14 }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-h1)" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <p style={{ fontWeight:600, fontSize:15, color:'var(--text-h1)', marginBottom:8 }}>
               {lang==='fr'?'Ton réseau commence ici.':'Your network starts here.'}
             </p>
@@ -456,7 +464,7 @@ export default function Reseau() {
                 ? 'Ajoute les personnes que tu rencontres — événements, université, LinkedIn.'
                 : 'Add people you meet — events, university, LinkedIn.'}
             </p>
-            <button onClick={ouvrirAjout} style={{ padding:'10px 22px', background:'#0E1116', border:'none', borderRadius:9, color:'#fff', fontWeight:600, fontSize:13, cursor:'pointer' }}>
+            <button onClick={ouvrirAjout} style={{ padding:'10px 22px', background:'var(--btn-primary-bg)', border:'none', borderRadius:9, color:'var(--bg-page)', fontWeight:600, fontSize:13, cursor:'pointer' }}>
               + {lang==='fr'?'Ajouter mon premier contact':'Add my first contact'}
             </button>
           </div>
@@ -471,10 +479,10 @@ export default function Reseau() {
               const ctx    = CONTEXTES.find(x => x.id === c.contexte_rencontre)
 
               return (
-                <div key={c.id} style={{ background:'var(--bg-card)', border:`1px solid ${urgent?'#6B6F7640':'#EBEBE9'}`, borderRadius:14, padding:'16px 18px' }}>
+                <div key={c.id} style={{ background:'var(--bg-card)', border:`1px solid ${urgent?'var(--border-strong)':'var(--border)'}`, borderRadius:14, padding:'16px 18px' }}>
                   {/* Header carte */}
                   <div style={{ display:'flex', alignItems:'flex-start', gap:12, marginBottom:12 }}>
-                    <div style={{ width:42, height:42, borderRadius:'50%', background:'#0E111618', border:`1.5px solid ${'#0E1116'}30`, display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:15, color:'var(--text-body)', flexShrink:0 }}>
+                    <div style={{ width:42, height:42, borderRadius:'50%', background:'var(--bg-subtle)', border:'1.5px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:700, fontSize:15, color:'var(--text-body)', flexShrink:0 }}>
                       {initiales(c.prenom, c.nom)}
                     </div>
                     <div style={{ flex:1, minWidth:0 }}>
@@ -488,7 +496,9 @@ export default function Reseau() {
                       )}
                     </div>
                     {c.secteur && (
-                      <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:20, background:'#0E111610', color:'var(--text-body)', flexShrink:0 }}>{c.secteur}</span>
+                      <span style={{ fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:20, background:'var(--bg-subtle)', color:'var(--text-body)', flexShrink:0 }}>
+                        {(SECTEURS.find(s=>s.id===c.secteur)?.[lang==='fr'?'fr':'en']) || c.secteur}
+                      </span>
                     )}
                   </div>
 
@@ -515,12 +525,12 @@ export default function Reseau() {
                     {c.linkedin_url && (
                       <a href={c.linkedin_url.startsWith('http')?c.linkedin_url:`https://${c.linkedin_url}`}
                         target="_blank" rel="noreferrer"
-                        style={{ padding:'6px 12px', background:'#0E111612', border:`1px solid ${'#0E1116'}25`, borderRadius:8, color:'var(--text-body)', fontSize:12, fontWeight:600, textDecoration:'none' }}>
+                        style={{ padding:'6px 12px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-body)', fontSize:12, fontWeight:600, textDecoration:'none' }}>
                         LinkedIn →
                       </a>
                     )}
                     <button onClick={()=>ouvrirEdition(c)}
-                      style={{ padding:'6px 10px', background:'#0E111608', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:13, cursor:'pointer' }}>✏️</button>
+                      style={{ padding:'6px 10px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:8, color:'var(--text-muted)', fontSize:13, cursor:'pointer' }}>✏️</button>
                     <button onClick={()=>supprimer(c.id)} disabled={deleting===c.id}
                       style={{ padding:'6px 10px', background:'#DC262608', border:`1px solid ${'#DC2626'}20`, borderRadius:8, color:'#DC2626', fontSize:13, cursor:deleting===c.id?'not-allowed':'pointer', opacity:deleting===c.id?0.5:1 }}>🗑</button>
                   </div>
@@ -554,7 +564,7 @@ export default function Reseau() {
 
         {/* ── Conseil IA si réseau < 5 ── */}
         {ready && contacts.length < 5 && (
-          <div style={{ display:'flex', gap:12, padding:'14px 16px', background:'#0E111606', border:`1px solid ${'#0E1116'}18`, borderRadius:12 }}>
+          <div style={{ display:'flex', gap:12, padding:'14px 16px', background:'var(--bg-subtle)', border:'1px solid var(--border)', borderRadius:12 }}>
             <span style={{ fontSize:20 }}>💡</span>
             <div style={{ flex:1 }}>
               <p style={{ fontSize:13, color:'var(--text-h1)', lineHeight:1.6, marginBottom:8 }}>
