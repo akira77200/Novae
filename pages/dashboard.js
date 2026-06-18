@@ -822,7 +822,7 @@ export default function Dashboard() {
         )}
 
         {/* ── STATS ── */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10, marginBottom:28 }}>
+        <div className="stats-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10, marginBottom:28 }}>
           {[
             { val:`${prog}%`, label: t.dash_progress,                       bar:prog },
             { val:faites.length,                    label: t.dash_done      },
@@ -1119,6 +1119,14 @@ export default function Dashboard() {
         @media (max-width: 768px) {
           .dashboard-grid {
             grid-template-columns: 1fr !important;
+          }
+          .stats-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .dashboard-grid > div,
+          .dashboard-grid > section {
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
         }
       `}</style>

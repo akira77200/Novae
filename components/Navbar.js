@@ -234,7 +234,7 @@ export default function Navbar() {
       </aside>
 
       {/* Hamburger mobile */}
-      <button className="hamburger-btn" onClick={() => setMobileOpen(true)} style={{ display: 'none', position: 'fixed', top: 16, left: 16, zIndex: 150, width: 38, height: 38, borderRadius: 8, border: '1px solid rgba(255,255,255,0.10)', background: 'var(--bg-sidebar)', color: '#FAFAF8', fontSize: 16, alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} aria-label="Menu">☰</button>
+      <button className="hamburger-btn" onClick={() => setMobileOpen(true)} style={{ display: 'none', position: 'fixed', top: 16, left: 16, zIndex: 300, width: 38, height: 38, borderRadius: 8, border: '1px solid rgba(255,255,255,0.10)', background: 'var(--bg-sidebar)', color: '#FAFAF8', fontSize: 16, alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} aria-label="Menu">☰</button>
 
       {/* Overlay mobile */}
       {mobileOpen && <div onClick={() => setMobileOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 190, background: 'rgba(0,0,0,0.50)', backdropFilter: 'blur(3px)' }} />}
