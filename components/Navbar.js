@@ -1,5 +1,5 @@
-// components/Navbar.js — NOVAE — Sidebar boussole
-import { useState } from 'react'
+// components/Navbar.js — NOVAE — Sidebar boussole avec accordéon
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useApp } from '../context/AppContext'
@@ -47,6 +47,15 @@ const IconSun = () => (
     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
   </svg>
 )
+const IconChevron = ({ open }) => (
+  <svg
+    width="10" height="10" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+    style={{ transition: 'transform 0.2s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0 }}
+  >
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+)
 
 // ── Logo boussole ─────────────────────────────────────────────────
 const LogoCompass = ({ light = true }) => {
@@ -65,24 +74,86 @@ const LogoCompass = ({ light = true }) => {
   )
 }
 
+// ── Structure de navigation avec sous-items ────────────────────────
+// /orientation-type est dans paths d'Académie pour l'active detection,
+// mais n'apparaît PAS comme sous-item (accessible depuis mon-avenir.js).
 const PILIERS_NAV = [
-  { Icon: IconPlane,     fr: 'Immigration', en: 'Immigration', paths: ['/dashboard', '/documents', '/echeances', '/arrivee'],                                                                 href: '/dashboard'  },
-  { Icon: IconGradCap,   fr: 'Académie',    en: 'Academia',    paths: ['/mon-avenir', '/bourses', '/orientation-type', '/simulateur-budget', '/calendrier-academique'],                       href: '/mon-avenir'  },
-  { Icon: IconBriefcase, fr: 'Carrière',    en: 'Career',      paths: ['/mentors', '/cv', '/entrevue', '/reseau'],                                                                           href: '/mentors'     },
-  { Icon: IconHome,      fr: 'Intégration', en: 'Integration', paths: ['/day-to-day', '/todo', '/bienetre', '/parrainage', '/culture', '/quiz-culture'],                                     href: '/day-to-day'  },
+  {
+    Icon: IconPlane,
+    fr: 'Immigration', en: 'Immigration',
+    paths: ['/dashboard', '/documents', '/echeances', '/arrivee'],
+    items: [
+      { fr: 'Dashboard',  en: 'Dashboard',  href: '/dashboard' },
+      { fr: 'Documents',  en: 'Documents',  href: '/documents' },
+      { fr: 'Échéances',  en: 'Deadlines',  href: '/echeances' },
+      { fr: 'Arrivée',    en: 'Arrival',    href: '/arrivee' },
+    ],
+  },
+  {
+    Icon: IconGradCap,
+    fr: 'Académie', en: 'Academia',
+    paths: ['/mon-avenir', '/bourses', '/calendrier-academique', '/orientation-type'],
+    items: [
+      { fr: 'Mon Avenir',  en: 'My Future',    href: '/mon-avenir' },
+      { fr: 'Bourses',     en: 'Scholarships', href: '/bourses' },
+      { fr: 'Calendrier',  en: 'Calendar',     href: '/calendrier-academique' },
+    ],
+  },
+  {
+    Icon: IconBriefcase,
+    fr: 'Carrière', en: 'Career',
+    paths: ['/cv', '/entrevue', '/reseau', '/mon-avenir'],
+    items: [
+      { fr: 'CV',         en: 'Resume',    href: '/cv' },
+      { fr: 'Réseau',     en: 'Network',   href: '/reseau' },
+      { fr: 'Entrevue',   en: 'Interview', href: '/entrevue' },
+      { fr: 'Mon Avenir', en: 'My Future', href: '/mon-avenir' },
+    ],
+  },
+  {
+    Icon: IconHome,
+    fr: 'Intégration', en: 'Integration',
+    paths: ['/day-to-day', '/simulateur-budget', '/bienetre', '/culture', '/quiz-culture', '/mentors', '/parrainage', '/todo'],
+    items: [
+      { fr: 'Quotidien',    en: 'Daily life',     href: '/day-to-day' },
+      { fr: 'Budget',       en: 'Budget',         href: '/simulateur-budget' },
+      { fr: 'Bien-être',    en: 'Well-being',     href: '/bienetre' },
+      { fr: 'Culture',      en: 'Culture',        href: '/culture' },
+      { fr: 'Quiz culture', en: 'Culture quiz',   href: '/quiz-culture' },
+      { fr: 'Mentors',      en: 'Mentors',        href: '/mentors' },
+      { fr: 'Parrainage',   en: 'Peer mentoring', href: '/parrainage' },
+      { fr: 'Todo',         en: 'Todo',           href: '/todo' },
+    ],
+  },
 ]
 
 export default function Navbar() {
   const { t, lang, setLang, theme, setTheme, user, profile, userPlan, sb } = useApp()
   const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [openSection, setOpenSection] = useState(null)
 
   const isFr = lang === 'fr'
-  const isActive = (paths) => paths.some(p => router.pathname === p || router.pathname.startsWith(p + '/'))
+
+  const isActiveSection = (paths) =>
+    paths.some(p => router.pathname === p || router.pathname.startsWith(p + '/'))
+
+  const isActiveItem = (href) =>
+    router.pathname === href || router.pathname.startsWith(href + '/')
+
+  // Auto-ouvre la section correspondant à la page courante
+  useEffect(() => {
+    const idx = PILIERS_NAV.findIndex(p => isActiveSection(p.paths))
+    setOpenSection(idx >= 0 ? idx : null)
+  }, [router.pathname])
 
   const handleLogout = async () => {
     if (sb) await sb.auth.signOut()
     router.push('/')
+  }
+
+  const toggleSection = (idx) => {
+    setOpenSection(prev => prev === idx ? null : idx)
   }
 
   const sidebarContent = (onLinkClick) => (
@@ -93,35 +164,74 @@ export default function Navbar() {
         <span style={{ fontWeight: 600, fontSize: 13, color: '#FAFAF8', letterSpacing: '-0.01em' }}>novae</span>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation accordéon */}
       <nav style={{ flex: 1, overflowY: 'auto', padding: '0 8px 8px' }}>
-        {PILIERS_NAV.map(pilier => {
-          const active = isActive(pilier.paths)
-          const textColor = active ? '#FAFAF8' : '#6B6F76'
+        {PILIERS_NAV.map((pilier, idx) => {
+          const sectionActive = isActiveSection(pilier.paths)
+          const isOpen = openSection === idx
+          const headerColor = sectionActive ? '#FAFAF8' : '#6B6F76'
+
           return (
-            <Link
-              key={pilier.fr}
-              href={pilier.href}
-              onClick={onLinkClick}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 9,
-                padding: '7px 10px',
-                borderRadius: 6,
-                margin: '2px 0',
-                cursor: 'pointer',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: active ? 500 : 400,
-                color: textColor,
-                background: active ? 'rgba(255,255,255,0.08)' : 'transparent',
-                transition: 'background 0.12s, color 0.12s',
-              }}
-            >
-              <pilier.Icon color={textColor} />
-              {isFr ? pilier.fr : pilier.en}
-            </Link>
+            <div key={pilier.fr} style={{ margin: '2px 0' }}>
+              {/* En-tête de section — cliquable pour toggle */}
+              <button
+                onClick={() => toggleSection(idx)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 9,
+                  width: '100%',
+                  padding: '7px 10px',
+                  borderRadius: 6,
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: 13,
+                  fontWeight: sectionActive ? 500 : 400,
+                  color: headerColor,
+                  background: sectionActive ? 'rgba(255,255,255,0.08)' : 'transparent',
+                  transition: 'background 0.12s, color 0.12s',
+                  textAlign: 'left',
+                }}
+              >
+                <pilier.Icon color={headerColor} />
+                <span style={{ flex: 1 }}>{isFr ? pilier.fr : pilier.en}</span>
+                <span style={{ color: headerColor, opacity: 0.6 }}>
+                  <IconChevron open={isOpen} />
+                </span>
+              </button>
+
+              {/* Sous-items — visibles uniquement quand section ouverte */}
+              {isOpen && (
+                <div style={{ paddingLeft: 12, marginTop: 2, marginBottom: 4 }}>
+                  {pilier.items.map(item => {
+                    const itemActive = isActiveItem(item.href)
+                    return (
+                      <Link
+                        key={item.href + item.fr}
+                        href={item.href}
+                        onClick={onLinkClick}
+                        style={{
+                          display: 'block',
+                          padding: '5px 10px 5px 22px',
+                          borderRadius: 5,
+                          margin: '1px 0',
+                          fontSize: 12,
+                          fontWeight: itemActive ? 500 : 400,
+                          color: itemActive ? '#FAFAF8' : '#6B6F76',
+                          background: itemActive ? 'rgba(255,255,255,0.07)' : 'transparent',
+                          textDecoration: 'none',
+                          transition: 'background 0.1s, color 0.1s',
+                          borderLeft: itemActive ? '2px solid rgba(255,255,255,0.35)' : '2px solid transparent',
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {isFr ? item.fr : item.en}
+                      </Link>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           )
         })}
       </nav>
