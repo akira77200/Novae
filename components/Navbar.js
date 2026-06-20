@@ -181,7 +181,7 @@ export default function Navbar() {
                   alignItems: 'center',
                   gap: 9,
                   width: '100%',
-                  padding: '7px 10px',
+                  padding: '10px 10px',
                   borderRadius: 6,
                   border: 'none',
                   cursor: 'pointer',
@@ -212,7 +212,7 @@ export default function Navbar() {
                         onClick={onLinkClick}
                         style={{
                           display: 'block',
-                          padding: '5px 10px 5px 22px',
+                          padding: '9px 10px 9px 22px',
                           borderRadius: 5,
                           margin: '1px 0',
                           fontSize: 12,
