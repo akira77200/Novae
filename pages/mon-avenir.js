@@ -810,9 +810,28 @@ export default function MonAvenir() {
         <h1 style={{ fontSize:28, fontWeight:800, color:'var(--text-h1)', letterSpacing:-0.5, marginBottom:6 }}>
           {lang === 'fr' ? 'Mon Avenir' : 'My Future'}
         </h1>
-        <p style={{ fontSize:15, color:'var(--text-muted)', marginBottom:28, lineHeight:1.6 }}>
+        <p style={{ fontSize:15, color:'var(--text-muted)', marginBottom:20, lineHeight:1.6 }}>
           {lang === 'fr' ? 'Découvre les programmes qui te correspondent et construis ta vision.' : 'Discover the programs that match you and build your vision.'}
         </p>
+
+        {/* Encart orientation-type */}
+        <a href="/orientation-type" style={{
+          display:'flex', alignItems:'center', justifyContent:'space-between',
+          background:'var(--bg-subtle)', border:'1px solid var(--border)',
+          borderRadius:'var(--radius-md)', padding:'12px 16px', marginBottom:24,
+          textDecoration:'none', color:'var(--text-body)', fontSize:13,
+          transition:'background 0.12s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-card)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
+        >
+          <span>
+            {lang === 'fr'
+              ? 'Université ou collège ? Compare les deux voies'
+              : 'University or college? Compare both paths'}
+          </span>
+          <span style={{ color:'var(--text-muted)', marginLeft:12 }}>→</span>
+        </a>
 
         {/* Stepper de progression */}
         <div style={{ display:'flex', alignItems:'center', gap:4, marginBottom:16, flexWrap:'nowrap', overflowX:'auto' }}>
