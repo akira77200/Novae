@@ -65,6 +65,7 @@ class ErrorBoundary extends React.Component {
 // ── Pages publiques (sans sidebar) ───────────────────────────────
 const PUBLIC_PAGES = [
   '/',
+  '/a-propos',
   '/auth/login',
   '/auth/register',
   '/auth/forgot-password',

@@ -158,11 +158,11 @@ export default function Navbar() {
 
   const sidebarContent = (onLinkClick) => (
     <>
-      {/* Logo boussole */}
-      <div style={{ padding: '22px 16px 18px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+      {/* Logo boussole — lien vers /a-propos */}
+      <Link href="/a-propos" onClick={onLinkClick} style={{ padding: '22px 16px 18px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0, textDecoration: 'none' }}>
         <LogoCompass light />
         <span style={{ fontWeight: 600, fontSize: 13, color: '#FAFAF8', letterSpacing: '-0.01em' }}>novae</span>
-      </div>
+      </Link>
 
       {/* Navigation accordéon */}
       <nav style={{ flex: 1, overflowY: 'auto', padding: '0 8px 8px' }}>
