@@ -31,12 +31,10 @@ const PLANS = [
     excludedFr: [
       'Recommandations IA illimitées',
       'Simulation entrevue',
-      'Accès mentors',
     ],
     excludedEn: [
       'Unlimited AI recommendations',
       'Interview simulation',
-      'Mentor access',
     ],
     ctaFr: 'Commencer gratuitement',
     ctaEn: 'Get started for free',
@@ -46,7 +44,7 @@ const PLANS = [
     id: 'starter',
     nameFr: 'Starter',
     nameEn: 'Starter',
-    price: 9.99,
+    price: 4.99,
     periodFr: 'mois',
     periodEn: 'mo',
     color: 'var(--text-h1)',
@@ -70,47 +68,10 @@ const PLANS = [
       'Unlimited documents',
       'Scholarships & universities',
     ],
-    excludedFr: [
-      'Accès mentors prioritaire',
-    ],
-    excludedEn: [
-      'Priority mentor access',
-    ],
-    ctaFr: 'Commencer — 9.99$/mois',
-    ctaEn: 'Start — 9.99$/mo',
-    href: null, // Stripe checkout
-  },
-  {
-    id: 'premium',
-    nameFr: 'Premium',
-    nameEn: 'Premium',
-    price: 19.99,
-    periodFr: 'mois',
-    periodEn: 'mo',
-    color: 'var(--text-h1)',
-    badge: '⭐ Premium',
-    featuresFr: [
-      'Tout le plan Starter',
-      'CV illimités',
-      'Nova illimitée',
-      'Simulations entrevue illimitées',
-      'Accès mentors prioritaire',
-      'Support prioritaire',
-      'Nouvelles fonctionnalités en avant-première',
-    ],
-    featuresEn: [
-      'Everything in Starter',
-      'Unlimited resumes',
-      'Unlimited Nova',
-      'Unlimited interview simulations',
-      'Priority mentor access',
-      'Priority support',
-      'Early access to new features',
-    ],
     excludedFr: [],
     excludedEn: [],
-    ctaFr: 'Commencer — 19.99$/mois',
-    ctaEn: 'Start — 19.99$/mo',
+    ctaFr: 'Commencer — 4.99$/mois',
+    ctaEn: 'Start — 4.99$/mo',
     href: null, // Stripe checkout
   },
 ]
@@ -121,7 +82,6 @@ export default function Abonnement() {
   const [error, setError] = useState('')
 
   const isFr = lang === 'fr'
-  const isDark = '#FAFAF9' === '#0E1116'
 
   const handleSubscribe = async (planId) => {
     if (planId === 'gratuit') {
@@ -197,10 +157,10 @@ export default function Abonnement() {
         )}
 
         {/* Plans grid */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24 }}>
+        <div className="plans-grid">
           {PLANS.map((plan, i) => (
             <div key={plan.id} style={{
-              background: isDark ? '#0E1116' : '#fff',
+              background: 'var(--bg-card)',
               borderLeft: `4px solid ${plan.color}`,
               borderRadius: 16,
               padding: '32px 28px',
@@ -320,6 +280,22 @@ export default function Abonnement() {
         </div>
 
       </main>
+
+      <style jsx global>{`
+        .plans-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+          max-width: 760px;
+          margin: 0 auto;
+        }
+        @media (max-width: 600px) {
+          .plans-grid {
+            grid-template-columns: 1fr;
+            max-width: 440px;
+          }
+        }
+      `}</style>
     </div>
   )
 }
