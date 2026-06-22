@@ -1,4 +1,4 @@
-﻿// pages/index.js â€” NOVAE v5 â€” Homepage hub
+// pages/index.js — NOVAE v5 — Homepage hub
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -6,61 +6,61 @@ import { useApp } from '../context/AppContext'
 
 const PILIERS = [
   {
-    emoji: 'âœˆï¸',
+    emoji: '✈️',
     titleFr: 'Immigration',
     titleEn: 'Immigration',
-    descFr: 'Checklist d\'arrivÃ©e Â· Coffre-fort documents Â· Calendrier d\'Ã©chÃ©ances Â· Guide d\'arrivÃ©e au Canada.',
-    descEn: 'Arrival checklist Â· Document vault Â· Deadline calendar Â· Canada arrival guide.',
+    descFr: 'Checklist d\'arrivée · Coffre-fort documents · Calendrier d\'échéances · Guide d\'arrivée au Canada.',
+    descEn: 'Arrival checklist · Document vault · Deadline calendar · Canada arrival guide.',
     href: '/dashboard',
     color: 'var(--text-h1)',
     colorLight: '#6B6F76',
     bg: 'rgba(21,101,192,0.10)',
     border: 'rgba(21,101,192,0.28)',
-    items: ['Checklist', 'ðŸ“ Documents', 'ðŸ“… Ã‰chÃ©ances', 'Guide arrivÃ©e'],
+    items: ['Checklist', '📁 Documents', '📅 Échéances', 'Guide arrivée'],
   },
   {
-    emoji: 'ðŸŽ“',
-    titleFr: 'AcadÃ©mie',
+    emoji: '🎓',
+    titleFr: 'Académie',
     titleEn: 'Academia',
-    descFr: 'Mon orientation Â· Bourses & universitÃ©s Â· Comparateur Â· Simulateur budget Â· Calendrier acadÃ©mique.',
-    descEn: 'My path Â· Scholarships & universities Â· Comparator Â· Budget simulator Â· Academic calendar.',
+    descFr: 'Mon orientation · Bourses & universités · Comparateur · Simulateur budget · Calendrier académique.',
+    descEn: 'My path · Scholarships & universities · Comparator · Budget simulator · Academic calendar.',
     href: '/mon-avenir',
     color: 'var(--text-body)',
     colorLight: '#6B6F76',
     bg: 'rgba(106,27,154,0.10)',
     border: 'rgba(106,27,154,0.28)',
-    items: ['Mon orientation', 'Bourses & Univs', 'ðŸ›ï¸ Univ. ou CollÃ¨ge', 'ðŸ’° Budget', 'ðŸ—“ï¸ Calendrier'],
+    items: ['Mon orientation', 'Bourses & Univs', '🏛️ Univ. ou Collège', '💰 Budget', '🗓️ Calendrier'],
   },
   {
-    emoji: 'ðŸ’¼',
-    titleFr: 'CarriÃ¨re',
+    emoji: '💼',
+    titleFr: 'Carrière',
     titleEn: 'Career',
-    descFr: 'Mentors Â· CrÃ©ateur CV canadien Â· Simulation entrevue Â· RÃ©seau professionnel.',
-    descEn: 'Mentors Â· Canadian resume builder Â· Interview simulator Â· Professional network.',
+    descFr: 'Mentors · Créateur CV canadien · Simulation entrevue · Réseau professionnel.',
+    descEn: 'Mentors · Canadian resume builder · Interview simulator · Professional network.',
     href: '/mentors',
     color: 'var(--text-body)',
     colorLight: '#6B6F76',
     bg: 'rgba(230,81,0,0.10)',
     border: 'rgba(230,81,0,0.28)',
-    items: ['Mentors', 'ðŸ“„ CV', 'ðŸŽ™ï¸ Entrevue IA', 'ðŸŽ¯ RÃ©seau'],
+    items: ['Mentors', '📄 CV', '🎙️ Entrevue IA', '🎯 Réseau'],
   },
   {
-    emoji: 'ðŸ ',
-    titleFr: 'IntÃ©gration',
+    emoji: '🏠',
+    titleFr: 'Intégration',
     titleEn: 'Integration',
-    descFr: 'Vie quotidienne Â· Mes tÃ¢ches Â· Bien-Ãªtre Â· Parrainage Â· Culture canadienne Â· Quiz culture.',
-    descEn: 'Daily life Â· My tasks Â· Wellbeing Â· Peer mentoring Â· Canadian culture Â· Culture quiz.',
+    descFr: 'Vie quotidienne · Mes tâches · Bien-être · Parrainage · Culture canadienne · Quiz culture.',
+    descEn: 'Daily life · My tasks · Wellbeing · Peer mentoring · Canadian culture · Culture quiz.',
     href: '/day-to-day',
     color: 'var(--text-h1)',
     colorLight: '#0E1116',
     bg: 'rgba(30,58,95,0.12)',
     border: 'rgba(45,106,79,0.30)',
-    items: ['Vie quotidienne', 'Mes tÃ¢ches', 'ðŸŒ± Bien-Ãªtre', 'ðŸ¤ Parrainage', 'Culture', 'ðŸŽ® Quiz'],
+    items: ['Vie quotidienne', 'Mes tâches', '🌱 Bien-être', '🤝 Parrainage', 'Culture', '🎮 Quiz'],
   },
 ]
 
 const STATS = [
-  { numFr: '150+',  numEn: '150+',  labelFr: 'pays reprÃ©sentÃ©s',         labelEn: 'countries represented'  },
+  { numFr: '150+',  numEn: '150+',  labelFr: 'pays représentés',         labelEn: 'countries represented'  },
   { numFr: '4',     numEn: '4',     labelFr: "piliers d'accompagnement", labelEn: 'pillars of support'     },
   { numFr: '100%',  numEn: '100%',  labelFr: 'gratuit pour commencer',   labelEn: 'free to get started'    },
 ]
@@ -71,7 +71,7 @@ export default function Home() {
   const { C, t, theme, lang, user, sb, mounted } = useApp()
   const [oauthHandled, setOauthHandled] = useState(false)
 
-  // OAuth redirect handling â€” only when tokens present in URL
+  // OAuth redirect handling — only when tokens present in URL
   useEffect(() => {
     if (!sb) return
     const hash   = typeof window !== 'undefined' ? window.location.hash   : ''
@@ -106,7 +106,7 @@ export default function Home() {
       <div style={{ minHeight:'100vh', background:'#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'system-ui,sans-serif' }}>
         <div style={{ textAlign:'center' }}>
           <div style={{ width:48, height:48, borderRadius:14, background:'#0E1116', display:'flex', alignItems:'center', justifyContent:'center', fontSize:22, fontWeight:800, color:'#fff', margin:'0 auto 16px' }}>N</div>
-          <p style={{ color:'var(--text-muted)', fontSize:14 }}>Connexion en coursâ€¦</p>
+          <p style={{ color:'var(--text-muted)', fontSize:14 }}>Connexion en cours…</p>
         </div>
       </div>
     )
@@ -121,7 +121,7 @@ export default function Home() {
   return (
     <div style={{ minHeight:'100vh', background: 'var(--bg-page)', fontFamily:'system-ui,-apple-system,sans-serif', color: 'var(--text-h1)' }}>
 
-      {/* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section style={{ position:'relative', overflow:'hidden', padding:'100px 24px 80px' }}>
         {/* Gradient orbs */}
         <div style={{ position:'absolute', top:-120, left:'50%', transform:'translateX(-50%)', width:700, height:700, borderRadius:'50%', background:'radial-gradient(circle, rgba(30,58,95,0.18) 0%, transparent 65%)', pointerEvents:'none' }} />
@@ -130,7 +130,7 @@ export default function Home() {
         <div style={{ maxWidth:780, margin:'0 auto', textAlign:'center', position:'relative' }}>
           {/* Badge */}
           <div style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'6px 14px', borderRadius:100, border:`1px solid ${'#0E1116'}40`, background:'#0E111612', marginBottom:28 }}>
-            <span style={{ fontSize:13 }}>ðŸŒ</span>
+            <span style={{ fontSize:13 }}>🌍</span>
             <span style={{ fontSize:13, color: 'var(--text-body)', fontWeight:600, letterSpacing:0.3 }}>
               {isFr ? 'Pour les nouveaux arrivants au Canada' : 'For newcomers to Canada'}
             </span>
@@ -139,7 +139,7 @@ export default function Home() {
           {/* Title */}
           <h1 style={{ fontSize:'clamp(2rem,5vw,3.6rem)', fontWeight:800, lineHeight:1.12, letterSpacing:-1.5, margin:'0 0 20px' }}>
             <span style={{ color: 'var(--text-h1)' }}>
-              {isFr ? 'RÃ©ussis ton parcours' : 'Succeed in your journey'}
+              {isFr ? 'Réussis ton parcours' : 'Succeed in your journey'}
             </span>
             <br />
             <span style={{ background:'var(--bg-subtle)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
@@ -150,13 +150,13 @@ export default function Home() {
           {/* Subtitle */}
           <p style={{ fontSize:'clamp(1rem,2.2vw,1.2rem)', color: 'var(--text-muted)', lineHeight:1.7, maxWidth:580, margin:'0 auto 10px', fontWeight:500 }}>
             {isFr
-              ? 'La plateforme qui accompagne les Ã©tudiants internationaux au Canada'
+              ? 'La plateforme qui accompagne les étudiants internationaux au Canada'
               : 'The platform that supports international students in Canada'}
           </p>
           <p style={{ fontSize:'clamp(0.9rem,1.8vw,1rem)', color: 'var(--text-muted)', lineHeight:1.7, maxWidth:540, margin:'0 auto 36px' }}>
             {isFr
-              ? "De l'orientation Ã  la carriÃ¨re â€” ton parcours complet, peu importe d'oÃ¹ tu viens."
-              : 'From orientation to career â€” your complete journey, wherever you come from.'}
+              ? "De l'orientation à la carrière — ton parcours complet, peu importe d'où tu viens."
+              : 'From orientation to career — your complete journey, wherever you come from.'}
           </p>
 
           {/* CTAs */}
@@ -164,16 +164,16 @@ export default function Home() {
             {user ? (
               <>
                 <Link href="/dashboard" style={{ padding:'14px 28px', borderRadius:12, background: '#0E1116', color:'#fff', fontWeight:700, fontSize:15, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8 }}>
-                  {isFr ? 'Mon tableau de bord' : 'My dashboard'} â†’
+                  {isFr ? 'Mon tableau de bord' : 'My dashboard'} →
                 </Link>
                 <Link href="/mon-avenir" style={{ padding:'14px 28px', borderRadius:12, border:'1.5px solid var(--border)', background:'transparent', color: 'var(--text-muted)', fontWeight:600, fontSize:15, textDecoration:'none' }}>
-                  {isFr ? 'DÃ©couvrir mon avenir' : 'Discover my future'}
+                  {isFr ? 'Découvrir mon avenir' : 'Discover my future'}
                 </Link>
               </>
             ) : (
               <>
                 <Link href="/auth/register" style={{ padding:'14px 28px', borderRadius:12, background: '#0E1116', color:'#fff', fontWeight:700, fontSize:15, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:8 }}>
-                  {isFr ? 'Commencer gratuitement' : 'Get started for free'} â†’
+                  {isFr ? 'Commencer gratuitement' : 'Get started for free'} →
                 </Link>
                 <Link href="/auth/login" style={{ padding:'14px 28px', borderRadius:12, border:'1.5px solid var(--border)', background:'transparent', color: 'var(--text-muted)', fontWeight:600, fontSize:15, textDecoration:'none' }}>
                   {isFr ? 'Se connecter' : 'Sign in'}
@@ -184,14 +184,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* â”€â”€ 4 PILIERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── 4 PILIERS ─────────────────────────────────────────────────── */}
       <section style={{ padding:'0 24px 80px', maxWidth:1100, margin:'0 auto' }}>
         <div style={{ textAlign:'center', marginBottom:40 }}>
           <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
-            {isFr ? '4 piliers pour rÃ©ussir' : '4 pillars to succeed'}
+            {isFr ? '4 piliers pour réussir' : '4 pillars to succeed'}
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize:15 }}>
-            {isFr ? 'Un Ã©cosystÃ¨me complet pensÃ© pour toi' : 'A complete ecosystem designed for you'}
+            {isFr ? 'Un écosystème complet pensé pour toi' : 'A complete ecosystem designed for you'}
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export default function Home() {
                   </div>
                 )}
                 <div style={{ display:'flex', alignItems:'center', gap:6, color: p.colorLight, fontSize:13, fontWeight:600, marginTop:'auto' }}>
-                  {isFr ? 'Explorer' : 'Explore'} <span>â†’</span>
+                  {isFr ? 'Explorer' : 'Explore'} <span>→</span>
                 </div>
               </div>
             </Link>
@@ -240,7 +240,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* â”€â”€ STATS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── STATS ─────────────────────────────────────────────────────── */}
       <section style={{ padding:'52px 24px', background: isDark ? '#FFFFFF' : '#F7F7F5', borderTop:'1px solid var(--border)', borderBottom:'1px solid var(--border)' }}>
         <div style={{ maxWidth:700, margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:20, textAlign:'center' }}>
           {STATS.map((s, i) => (
@@ -256,31 +256,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* â”€â”€ CTA BOTTOM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── CTA BOTTOM ────────────────────────────────────────────────── */}
       {!user && (
         <section style={{ padding:'64px 24px 80px', textAlign:'center' }}>
           <div style={{ maxWidth:560, margin:'0 auto' }}>
             <h2 style={{ fontSize:'clamp(1.3rem,3vw,1.9rem)', fontWeight:700, letterSpacing:-0.5, marginBottom:14 }}>
-              {isFr ? 'PrÃªt Ã  commencer ?' : 'Ready to start?'}
+              {isFr ? 'Prêt à commencer ?' : 'Ready to start?'}
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize:15, marginBottom:28 }}>
-              {isFr ? 'Rejoins des milliers de nouveaux arrivants qui rÃ©ussissent au Canada.' : 'Join thousands of newcomers succeeding in Canada.'}
+              {isFr ? 'Rejoins des milliers de nouveaux arrivants qui réussissent au Canada.' : 'Join thousands of newcomers succeeding in Canada.'}
             </p>
             <Link href="/auth/register" style={{ display:'inline-block', padding:'15px 36px', borderRadius:12, background: '#0E1116', color:'#fff', fontWeight:700, fontSize:16, textDecoration:'none' }}>
-              {isFr ? 'CrÃ©er mon compte gratuit' : 'Create my free account'}
+              {isFr ? 'Créer mon compte gratuit' : 'Create my free account'}
             </Link>
           </div>
         </section>
       )}
 
-      {/* â”€â”€ ABONNEMENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── ABONNEMENTS ───────────────────────────────────────────────── */}
       <section style={{ padding:'72px 24px 80px', maxWidth:1100, margin:'0 auto' }}>
         <div style={{ textAlign:'center', marginBottom:44 }}>
           <h2 style={{ fontSize:'clamp(1.4rem,3vw,2rem)', fontWeight:700, margin:'0 0 10px', letterSpacing:-0.5 }}>
             {isFr ? 'Nos abonnements' : 'Our plans'}
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize:15 }}>
-            {isFr ? 'Choisis le plan qui correspond Ã  tes besoins' : 'Choose the plan that fits your needs'}
+            {isFr ? 'Choisis le plan qui correspond à tes besoins' : 'Choose the plan that fits your needs'}
           </p>
         </div>
 
@@ -305,16 +305,16 @@ export default function Home() {
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
               {[
-                isFr ? 'âœ… Dashboard + checklist' : 'âœ… Dashboard + checklist',
-                isFr ? 'âœ… Guides gratuits' : 'âœ… Free guides',
-                isFr ? 'âœ… Quiz culture' : 'âœ… Culture quiz',
-                isFr ? 'âœ… Carte vie quotidienne' : 'âœ… Daily life map',
-                isFr ? 'âœ… 1 CV gÃ©nÃ©rÃ© par IA' : 'âœ… 1 AI-generated resume',
-                isFr ? 'âœ… 5 messages Ã  Nova par jour' : 'âœ… 5 Nova messages/day',
-                isFr ? 'âŒ Recommandations IA illimitÃ©es' : 'âŒ Unlimited AI recommendations',
-                isFr ? 'âŒ Simulation entrevue' : 'âŒ Interview simulation',
+                isFr ? '✅ Dashboard + checklist' : '✅ Dashboard + checklist',
+                isFr ? '✅ Guides gratuits' : '✅ Free guides',
+                isFr ? '✅ Quiz culture' : '✅ Culture quiz',
+                isFr ? '✅ Carte vie quotidienne' : '✅ Daily life map',
+                isFr ? '✅ 1 CV généré par IA' : '✅ 1 AI-generated resume',
+                isFr ? '✅ 5 messages à Nova par jour' : '✅ 5 Nova messages/day',
+                isFr ? '❌ Recommandations IA illimitées' : '❌ Unlimited AI recommendations',
+                isFr ? '❌ Simulation entrevue' : '❌ Interview simulation',
               ].map((item, i) => (
-                <p key={i} style={{ fontSize:13, color: item.startsWith('âœ…') ? '#0E1116' : '#6B6F76', margin:0 }}>
+                <p key={i} style={{ fontSize:13, color: item.startsWith('✅') ? '#0E1116' : '#6B6F76', margin:0 }}>
                   {item}
                 </p>
               ))}
@@ -358,15 +358,15 @@ export default function Home() {
             </div>
             <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:24 }}>
               {[
-                isFr ? 'âœ… Tout le plan gratuit' : 'âœ… Everything in Free',
-                isFr ? 'âœ… 5 CV gÃ©nÃ©rÃ©s par IA' : 'âœ… 5 AI-generated resumes',
-                isFr ? 'âœ… 20 messages Ã  Nova par jour' : 'âœ… 20 Nova messages/day',
-                isFr ? 'âœ… Recommandations IA illimitÃ©es' : 'âœ… Unlimited AI recommendations',
-                isFr ? 'âœ… 3 simulations entrevue par mois' : 'âœ… 3 interview simulations/month',
-                isFr ? 'âœ… Documents illimitÃ©s' : 'âœ… Unlimited documents',
-                isFr ? 'âœ… Bourses et universitÃ©s' : 'âœ… Scholarships & universities',
+                isFr ? '✅ Tout le plan gratuit' : '✅ Everything in Free',
+                isFr ? '✅ 5 CV générés par IA' : '✅ 5 AI-generated resumes',
+                isFr ? '✅ 20 messages à Nova par jour' : '✅ 20 Nova messages/day',
+                isFr ? '✅ Recommandations IA illimitées' : '✅ Unlimited AI recommendations',
+                isFr ? '✅ 3 simulations entrevue par mois' : '✅ 3 interview simulations/month',
+                isFr ? '✅ Documents illimités' : '✅ Unlimited documents',
+                isFr ? '✅ Bourses et universités' : '✅ Scholarships & universities',
               ].map((item, i) => (
-                <p key={i} style={{ fontSize:13, color: item.startsWith('âœ…') ? '#0E1116' : '#6B6F76', margin:0 }}>
+                <p key={i} style={{ fontSize:13, color: item.startsWith('✅') ? '#0E1116' : '#6B6F76', margin:0 }}>
                   {item}
                 </p>
               ))}
@@ -377,10 +377,9 @@ export default function Home() {
               color:'#fff', fontWeight:600, fontSize:14,
               textDecoration:'none', textAlign:'center',
             }}>
-              {isFr ? 'Commencer â€” 4.99$/mois' : 'Start â€” 4.99$/mo'}
+              {isFr ? 'Commencer — 4.99$/mois' : 'Start — 4.99$/mo'}
             </Link>
           </div>
-
         </div>
       </section>
 
@@ -404,7 +403,7 @@ export default function Home() {
         }
       `}</style>
 
-      {/* â”€â”€ FOOTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* ── FOOTER ────────────────────────────────────────────────────── */}
       <footer style={{ borderTop:'1px solid var(--border)', padding:'32px 24px', background: isDark ? '#FFFFFF' : '#F7F7F5' }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', flexWrap:'wrap', gap:16, alignItems:'center', justifyContent:'space-between' }}>
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
@@ -415,16 +414,16 @@ export default function Home() {
             {[
               { href:'/dashboard',             fr:'Checklist',         en:'Checklist'       },
               { href:'/documents',             fr:'Documents',         en:'Documents'       },
-              { href:'/bienetre',              fr:'Bien-Ãªtre',         en:'Wellbeing'       },
+              { href:'/bienetre',              fr:'Bien-être',         en:'Wellbeing'       },
               { href:'/parrainage',            fr:'Parrainage',        en:'Peer mentoring'  },
               { href:'/bourses',               fr:'Bourses',           en:'Scholarships'    },
               { href:'/simulateur-budget',     fr:'Budget',            en:'Budget'          },
               { href:'/calendrier-academique', fr:'Calendrier',        en:'Calendar'        },
               { href:'/mon-avenir',            fr:'Mon Avenir',        en:'My Future'       },
               { href:'/cv',                    fr:'CV',                en:'Resume'          },
-              { href:'/reseau',                fr:'RÃ©seau',            en:'Network'         },
+              { href:'/reseau',                fr:'Réseau',            en:'Network'         },
               { href:'/entrevue',              fr:'Entrevue IA',       en:'Mock Interview'  },
-              { href:'/bug-report',            fr:'Signaler un bug ðŸ›', en:'Report a bug ðŸ›' },
+              { href:'/bug-report',            fr:'Signaler un bug 🐛', en:'Report a bug 🐛' },
             ].map(l => (
               <Link key={l.href} href={l.href} style={{ fontSize:12, color: 'var(--text-muted)', textDecoration:'none' }}>
                 {isFr ? l.fr : l.en}
@@ -432,7 +431,7 @@ export default function Home() {
             ))}
           </div>
           <div style={{ fontSize:12, color: 'var(--text-muted)' }}>
-            Â© {new Date().getFullYear()} Novae Â· {isFr ? 'Fait avec â¤ï¸ pour les nouveaux arrivants' : 'Made with â¤ï¸ for newcomers'}
+            © {new Date().getFullYear()} Novae · {isFr ? 'Fait avec ❤️ pour les nouveaux arrivants' : 'Made with ❤️ for newcomers'}
           </div>
         </div>
       </footer>
@@ -469,4 +468,3 @@ export default function Home() {
     </div>
   )
 }
-
